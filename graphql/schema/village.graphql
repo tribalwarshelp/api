@@ -1,0 +1,47 @@
+type Village {
+  id: Int!
+  name: String!
+  points: Int!
+  x: Int!
+  y: Int!
+  bonus: Int!
+  player: Player @goField(forceResolver: true)
+}
+
+type VillageList {
+  items: [Village!]
+  total: Int!
+}
+
+input VillageFilter {
+  id: [Int!]
+  idNEQ: [Int!]
+
+  name: [String!]
+  nameNEQ: [String!]
+  nameMATCH: String
+  nameIEQ: String
+
+  points: Int
+  pointsGT: Int
+  pointsGTE: Int
+  pointsLT: Int
+  pointsLTE: Int
+
+  bonus: Int
+  bonusGT: Int
+  bonusGTE: Int
+  bonusLT: Int
+  bonusLTE: Int
+
+  playerID: [Int!]
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  villages(server: String!, filter: VillageFilter): VillageList!
+  village(server: String!, id: Int!): Village
+}

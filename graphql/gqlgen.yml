@@ -1,0 +1,38 @@
+schema:
+  - 'schema/*.graphql'
+exec:
+  filename: generated/generated.go
+  package: generated
+model:
+  filename: generated/models.go
+  package: generated
+resolver:
+  filename: resolvers/resolver.go
+  package: resolvers
+  type: Resolver
+struct_tag: gqlgen
+models:
+  LanguageTag:
+    model: github.com/tribalwarshelp/shared/models.LanguageTag
+  ServerStatus:
+    model: github.com/tribalwarshelp/shared/models.ServerStatus
+  LangVersion:
+    model: github.com/tribalwarshelp/shared/models.LangVersion
+  LangVersionFilter:
+    model: github.com/tribalwarshelp/shared/models.LangVersionFilter
+  Server:
+    model: github.com/tribalwarshelp/shared/models.Server
+  ServerFilter:
+    model: github.com/tribalwarshelp/shared/models.ServerFilter
+  Player:
+    model: github.com/tribalwarshelp/shared/models.Player
+  PlayerFilter:
+    model: github.com/tribalwarshelp/shared/models.PlayerFilter
+  Tribe:
+    model: github.com/tribalwarshelp/shared/models.Tribe
+  TribeFilter:
+    model: github.com/tribalwarshelp/shared/models.TribeFilter
+  Village:
+    model: github.com/tribalwarshelp/shared/models.Village
+  VillageFilter:
+    model: github.com/tribalwarshelp/shared/models.VillageFilter

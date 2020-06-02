@@ -1,0 +1,114 @@
+type Tribe {
+  id: Int!
+  name: String!
+  tag: String!
+  totalMembers: Int!
+  totalVillages: Int!
+  points: Int!
+  allPoints: Int!
+  rank: Int!
+  exist: Boolean!
+  rankAtt: Int!
+  scoreAtt: Int!
+  rankDef: Int!
+  scoreDef: Int!
+  rankTotal: Int!
+  scoreTotal: Int!
+}
+
+type TribeList {
+  items: [Tribe!]
+  total: Int!
+}
+
+input TribeFilter {
+  id: [Int!]
+  idNEQ: [Int!]
+
+  exist: Boolean
+
+  tag: [String!]
+  tagNEQ: [String!]
+  tagMATCH: String
+  tagIEQ: String
+
+  name: [String!]
+  nameNEQ: [String!]
+  nameMATCH: String
+  nameIEQ: String
+
+  totalMembers: Int
+  totalMembersGT: Int
+  totalMembersGTE: Int
+  totalMembersLT: Int
+  totalMembersLTE: Int
+
+  totalVillages: Int
+  totalVillagesGT: Int
+  totalVillagesGTE: Int
+  totalVillagesLT: Int
+  totalVillagesLTE: Int
+
+  points: Int
+  pointsGT: Int
+  pointsGTE: Int
+  pointsLT: Int
+  pointsLTE: Int
+
+  allPoints: Int
+  allPointsGT: Int
+  allPointsGTE: Int
+  allPointsLT: Int
+  allPointsLTE: Int
+
+  rank: Int
+  rankGT: Int
+  rankGTE: Int
+  rankLT: Int
+  rankLTE: Int
+
+  rankAtt: Int
+  rankAttGT: Int
+  rankAttGTE: Int
+  rankAttLT: Int
+  rankAttLTE: Int
+
+  scoreAtt: Int
+  scoreAttGT: Int
+  scoreAttGTE: Int
+  scoreAttLT: Int
+  scoreAttLTE: Int
+
+  rankDef: Int
+  rankDefGT: Int
+  rankDefGTE: Int
+  rankDefLT: Int
+  rankDefLTE: Int
+
+  scoreDef: Int
+  scoreDefGT: Int
+  scoreDefGTE: Int
+  scoreDefLT: Int
+  scoreDefLTE: Int
+
+  rankTotal: Int
+  rankTotalGT: Int
+  rankTotalGTE: Int
+  rankTotalLT: Int
+  rankTotalLTE: Int
+
+  scoreTotal: Int
+  scoreTotalGT: Int
+  scoreTotalGTE: Int
+  scoreTotalLT: Int
+  scoreTotalLTE: Int
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  tribes(server: String!, filter: TribeFilter): TribeList!
+  tribe(server: String!, id: Int!): Tribe
+}

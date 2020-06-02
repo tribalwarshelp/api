@@ -1,0 +1,111 @@
+type Player {
+  id: Int!
+  name: String!
+  totalVillages: Int!
+  points: Int!
+  rank: Int!
+  exist: Boolean!
+  rankAtt: Int!
+  scoreAtt: Int!
+  rankDef: Int!
+  scoreDef: Int!
+  rankSup: Int!
+  scoreSup: Int!
+  rankTotal: Int!
+  scoreTotal: Int!
+  tribe: Tribe @goField(forceResolver: true)
+}
+
+type PlayerList {
+  items: [Player!]
+  total: Int!
+}
+
+input PlayerFilter {
+  id: [Int!]
+  idNEQ: [Int!]
+
+  exist: Boolean
+
+  name: [String!]
+  nameNEQ: [String!]
+  nameMATCH: String
+  nameIEQ: String
+
+  totalVillages: Int
+  totalVillagesGT: Int
+  totalVillagesGTE: Int
+  totalVillagesLT: Int
+  totalVillagesLTE: Int
+
+  points: Int
+  pointsGT: Int
+  pointsGTE: Int
+  pointsLT: Int
+  pointsLTE: Int
+
+  rank: Int
+  rankGT: Int
+  rankGTE: Int
+  rankLT: Int
+  rankLTE: Int
+
+  rankAtt: Int
+  rankAttGT: Int
+  rankAttGTE: Int
+  rankAttLT: Int
+  rankAttLTE: Int
+
+  scoreAtt: Int
+  scoreAttGT: Int
+  scoreAttGTE: Int
+  scoreAttLT: Int
+  scoreAttLTE: Int
+
+  rankDef: Int
+  rankDefGT: Int
+  rankDefGTE: Int
+  rankDefLT: Int
+  rankDefLTE: Int
+
+  scoreDef: Int
+  scoreDefGT: Int
+  scoreDefGTE: Int
+  scoreDefLT: Int
+  scoreDefLTE: Int
+
+  rankSup: Int
+  rankSupGT: Int
+  rankSupGTE: Int
+  rankSupLT: Int
+  rankSupLTE: Int
+
+  scoreSup: Int
+  scoreSupGT: Int
+  scoreSupGTE: Int
+  scoreSupLT: Int
+  scoreSupLTE: Int
+
+  rankTotal: Int
+  rankTotalGT: Int
+  rankTotalGTE: Int
+  rankTotalLT: Int
+  rankTotalLTE: Int
+
+  scoreTotal: Int
+  scoreTotalGT: Int
+  scoreTotalGTE: Int
+  scoreTotalLT: Int
+  scoreTotalLTE: Int
+
+  tribeID: [Int!]
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  players(server: String!, filter: PlayerFilter): PlayerList!
+  player(server: String!, id: Int!): Player
+}

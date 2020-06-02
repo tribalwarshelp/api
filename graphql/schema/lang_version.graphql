@@ -1,0 +1,36 @@
+enum LanguageTag {
+  PL
+  EN
+  DE
+}
+
+type LangVersion {
+  tag: LanguageTag!
+  name: String!
+  host: String!
+  timezone: String!
+}
+
+input LangVersionFilter {
+  tag: [LanguageTag!]
+  tagNEQ: [LanguageTag!]
+
+  host: [String!]
+  hostNEQ: [String!]
+  hostMATCH: String
+  hostIEQ: String
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+type LangVersionList {
+  items: [LangVersion!]
+  total: Int!
+}
+
+extend type Query {
+  langVersions(filter: LangVersionFilter): LangVersionList!
+  langVersion(tag: LanguageTag!): LangVersion
+}

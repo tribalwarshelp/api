@@ -1,0 +1,41 @@
+enum ServerStatus {
+  OPEN
+  CLOSED
+}
+
+type Server {
+  id: Int!
+  key: String!
+  status: ServerStatus!
+  langVersionTag: LanguageTag!
+}
+
+type ServerList {
+  items: [Server!]
+  total: Int!
+}
+
+input ServerFilter {
+  id: [Int!]
+  idNEQ: [Int!]
+
+  key: [String!]
+  keyNEQ: [String!]
+  keyMATCH: String
+  keyIEQ: String
+
+  status: [ServerStatus!]
+  statusNEQ: [ServerStatus!]
+
+  langVersionTag: [LanguageTag!]
+  langVersionTagNEQ: [LanguageTag!]
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  servers(filter: ServerFilter): ServerList!
+  server(key: String!): Server
+}
