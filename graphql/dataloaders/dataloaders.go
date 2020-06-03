@@ -2,22 +2,24 @@ package dataloaders
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/api/tribe"
+	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/shared/models"
 )
 
 type DataLoaders struct {
-	PlayerByID PlayerLoader
-	TribeByID  TribeLoader
+	PlayerByID  PlayerLoader
+	TribeByID   TribeLoader
+	VillageByID VillageLoader
 }
 
 type Config struct {
-	PlayerRepo player.Repository
-	TribeRepo  tribe.Repository
+	PlayerRepo  player.Repository
+	TribeRepo   tribe.Repository
+	VillageRepo village.Repository
 }
 
 func New(server string, cfg Config) *DataLoaders {
@@ -26,7 +28,6 @@ func New(server string, cfg Config) *DataLoaders {
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(ids []int) ([]*models.Player, []error) {
-				log.Println("playerbyid", ids)
 				players, _, err := cfg.PlayerRepo.Fetch(context.Background(), server, &models.PlayerFilter{
 					ID: ids,
 				})
@@ -51,7 +52,6 @@ func New(server string, cfg Config) *DataLoaders {
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(ids []int) ([]*models.Tribe, []error) {
-				log.Println("tribebyid", ids)
 				tribes, _, err := cfg.TribeRepo.Fetch(context.Background(), server, &models.TribeFilter{
 					ID: ids,
 				})
@@ -67,6 +67,30 @@ func New(server string, cfg Config) *DataLoaders {
 				sorted := make([]*models.Tribe, len(ids))
 				for i, id := range ids {
 					sorted[i] = tribeByID[id]
+				}
+
+				return sorted, nil
+			},
+		},
+		VillageByID: VillageLoader{
+			wait:     2 * time.Millisecond,
+			maxBatch: 0,
+			fetch: func(ids []int) ([]*models.Village, []error) {
+				villages, _, err := cfg.VillageRepo.Fetch(context.Background(), server, &models.VillageFilter{
+					ID: ids,
+				})
+				if err != nil {
+					return nil, []error{err}
+				}
+
+				villageByID := make(map[int]*models.Village)
+				for _, village := range villages {
+					villageByID[village.ID] = village
+				}
+
+				sorted := make([]*models.Village, len(ids))
+				for i, id := range ids {
+					sorted[i] = villageByID[id]
 				}
 
 				return sorted, nil

@@ -36,3 +36,5 @@ models:
     model: github.com/tribalwarshelp/shared/models.Village
   VillageFilter:
     model: github.com/tribalwarshelp/shared/models.VillageFilter
+  Ennoblement:
+    model: github.com/tribalwarshelp/shared/models.Ennoblement

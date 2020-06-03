@@ -1,0 +1,10 @@
+type Ennoblement {
+  village: Village @goField(forceResolver: true)
+  newOwner: Player @goField(forceResolver: true)
+  oldOwner: Player @goField(forceResolver: true)
+  ennobledAt: Time!
+}
+
+extend type Query {
+  ennoblements(server: String!): [Ennoblement!]
+}
