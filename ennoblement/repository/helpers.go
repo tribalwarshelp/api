@@ -42,7 +42,7 @@ func parseLine(line []string, timezone string) (*models.Ennoblement, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "*models.Ennoblement.NewOwnerID")
 	}
-	e.OldOwnerID, err = strconv.Atoi(line[2])
+	e.OldOwnerID, err = strconv.Atoi(line[3])
 	if err != nil {
 		return nil, errors.Wrap(err, "*models.Ennoblement.OldOwnerID")
 	}
