@@ -1,5 +1,5 @@
 package village
 
 const (
-	PaginationLimit = 100
+	PaginationLimit = 1000
 )

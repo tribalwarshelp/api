@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/tribalwarshelp/api/tribe"
+	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -23,6 +24,7 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.T
 	if filter.Limit > tribe.PaginationLimit || filter.Limit <= 0 {
 		filter.Limit = tribe.PaginationLimit
 	}
+	filter.Sort = utils.SanitizeSort(filter.Sort)
 	return ucase.repo.Fetch(ctx, server, filter)
 }
 
