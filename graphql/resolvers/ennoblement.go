@@ -13,9 +13,7 @@ func (r *ennoblementResolver) NewOwner(ctx context.Context, obj *models.Ennoblem
 		return obj.NewOwner, nil
 	}
 
-	rctx := graphql.GetFieldContext(ctx)
-	server, ok := rctx.Parent.Parent.Args["server"].(string)
-	if ok {
+	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
 		dataloaders := middleware.DataLoadersFromContext(ctx)
 		if dataloaders != nil {
 			if dataloader, ok := dataloaders[server]; ok {
@@ -35,9 +33,7 @@ func (r *ennoblementResolver) OldOwner(ctx context.Context, obj *models.Ennoblem
 		return obj.OldOwner, nil
 	}
 
-	rctx := graphql.GetFieldContext(ctx)
-	server, ok := rctx.Parent.Parent.Args["server"].(string)
-	if ok {
+	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
 		dataloaders := middleware.DataLoadersFromContext(ctx)
 		if dataloaders != nil {
 			if dataloader, ok := dataloaders[server]; ok {
@@ -57,9 +53,7 @@ func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennobleme
 		return obj.Village, nil
 	}
 
-	rctx := graphql.GetFieldContext(ctx)
-	server, ok := rctx.Parent.Parent.Args["server"].(string)
-	if ok {
+	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
 		dataloaders := middleware.DataLoadersFromContext(ctx)
 		if dataloaders != nil {
 			if dataloader, ok := dataloaders[server]; ok {

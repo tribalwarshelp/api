@@ -6,7 +6,7 @@ func SanitizeSort(sort string) string {
 	trimmed := strings.TrimSpace(sort)
 	splitted := strings.Split(trimmed, " ")
 	length := len(splitted)
-	if length < 1 {
+	if length != 2 {
 		return ""
 	}
 	keyword := "ASC"

@@ -14,9 +14,7 @@ func (r *playerResolver) Tribe(ctx context.Context, obj *models.Player) (*models
 		return obj.Tribe, nil
 	}
 
-	rctx := graphql.GetFieldContext(ctx)
-	server, ok := rctx.Parent.Parent.Parent.Args["server"].(string)
-	if ok {
+	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
 		dataloaders := middleware.DataLoadersFromContext(ctx)
 		if dataloaders != nil {
 			if dataloader, ok := dataloaders[server]; ok {

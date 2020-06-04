@@ -14,9 +14,7 @@ func (r *villageResolver) Player(ctx context.Context, obj *models.Village) (*mod
 		return obj.Player, nil
 	}
 
-	rctx := graphql.GetFieldContext(ctx)
-	server, ok := rctx.Parent.Parent.Parent.Args["server"].(string)
-	if ok {
+	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
 		dataloaders := middleware.DataLoadersFromContext(ctx)
 		if dataloaders != nil {
 			if dataloader, ok := dataloaders[server]; ok {
