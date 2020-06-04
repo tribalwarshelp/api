@@ -31,9 +31,9 @@ func (r *villageResolver) Player(ctx context.Context, obj *models.Village) (*mod
 	return nil, nil
 }
 
-func (r *queryResolver) Villages(ctx context.Context, server string, filter *models.VillageFilter) (*generated.VillageList, error) {
+func (r *queryResolver) Villages(ctx context.Context, server string, filter *models.VillageFilter) (*generated.VillagesList, error) {
 	var err error
-	list := &generated.VillageList{}
+	list := &generated.VillagesList{}
 	list.Items, list.Total, err = r.VillageUcase.Fetch(ctx, server, filter)
 	return list, err
 }

@@ -31,9 +31,9 @@ func (r *playerResolver) Tribe(ctx context.Context, obj *models.Player) (*models
 	return nil, nil
 }
 
-func (r *queryResolver) Players(ctx context.Context, server string, filter *models.PlayerFilter) (*generated.PlayerList, error) {
+func (r *queryResolver) Players(ctx context.Context, server string, filter *models.PlayerFilter) (*generated.PlayersList, error) {
 	var err error
-	list := &generated.PlayerList{}
+	list := &generated.PlayersList{}
 	list.Items, list.Total, err = r.PlayerUcase.Fetch(ctx, server, filter)
 	return list, err
 }

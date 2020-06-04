@@ -10,7 +10,7 @@ type Server {
   langVersionTag: LanguageTag!
 }
 
-type ServerList {
+type ServersList {
   items: [Server!]
   total: Int!
 }
@@ -36,6 +36,6 @@ input ServerFilter {
 }
 
 extend type Query {
-  servers(filter: ServerFilter): ServerList!
+  servers(filter: ServerFilter): ServersList!
   server(key: String!): Server
 }

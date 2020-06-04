@@ -16,7 +16,7 @@ type Tribe {
   scoreTotal: Int!
 }
 
-type TribeList {
+type TribesList {
   items: [Tribe!]
   total: Int!
 }
@@ -109,6 +109,6 @@ input TribeFilter {
 }
 
 extend type Query {
-  tribes(server: String!, filter: TribeFilter): TribeList!
+  tribes(server: String!, filter: TribeFilter): TribesList!
   tribe(server: String!, id: Int!): Tribe
 }

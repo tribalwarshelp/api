@@ -25,12 +25,12 @@ input LangVersionFilter {
   sort: String
 }
 
-type LangVersionList {
+type LangVersionsList {
   items: [LangVersion!]
   total: Int!
 }
 
 extend type Query {
-  langVersions(filter: LangVersionFilter): LangVersionList!
+  langVersions(filter: LangVersionFilter): LangVersionsList!
   langVersion(tag: LanguageTag!): LangVersion
 }
