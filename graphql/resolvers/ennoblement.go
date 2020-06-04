@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"context"
-	"log"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/tribalwarshelp/api/middleware"
@@ -64,7 +63,6 @@ func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennobleme
 		dataloaders := middleware.DataLoadersFromContext(ctx)
 		if dataloaders != nil {
 			if dataloader, ok := dataloaders[server]; ok {
-				log.Print("?")
 				village, _ := dataloader.VillageByID.Load(obj.VillageID)
 				if village != nil {
 					return village, nil
