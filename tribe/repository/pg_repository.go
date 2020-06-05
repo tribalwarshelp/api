@@ -33,6 +33,10 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.Tr
 		if f.Sort != "" {
 			query = query.Order(f.Sort)
 		}
+
+		if f.Exist != nil {
+			query = query.Where("exist = ?", *f.Exist)
+		}
 	}
 
 	total, err := query.SelectAndCount()
