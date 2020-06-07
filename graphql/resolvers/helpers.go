@@ -5,13 +5,12 @@ import "github.com/99designs/gqlgen/graphql"
 func getServer(rctx *graphql.FieldContext) (string, bool) {
 	server := ""
 	ok := false
-	parent := rctx.Parent
-	for parent != nil {
-		server, ok = parent.Args["server"].(string)
+	for rctx != nil {
+		server, ok = rctx.Args["server"].(string)
 		if ok {
 			break
 		}
-		parent = parent.Parent
+		rctx = rctx.Parent
 	}
 	return server, ok
 }

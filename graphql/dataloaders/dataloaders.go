@@ -40,12 +40,12 @@ func New(server string, cfg Config) *DataLoaders {
 					playerByID[player.ID] = player
 				}
 
-				sorted := make([]*models.Player, len(ids))
+				inOrder := make([]*models.Player, len(ids))
 				for i, id := range ids {
-					sorted[i] = playerByID[id]
+					inOrder[i] = playerByID[id]
 				}
 
-				return sorted, nil
+				return inOrder, nil
 			},
 		},
 		TribeByID: TribeLoader{
@@ -64,12 +64,12 @@ func New(server string, cfg Config) *DataLoaders {
 					tribeByID[tribe.ID] = tribe
 				}
 
-				sorted := make([]*models.Tribe, len(ids))
+				inOrder := make([]*models.Tribe, len(ids))
 				for i, id := range ids {
-					sorted[i] = tribeByID[id]
+					inOrder[i] = tribeByID[id]
 				}
 
-				return sorted, nil
+				return inOrder, nil
 			},
 		},
 		VillageByID: VillageLoader{
@@ -88,12 +88,12 @@ func New(server string, cfg Config) *DataLoaders {
 					villageByID[village.ID] = village
 				}
 
-				sorted := make([]*models.Village, len(ids))
+				inOrder := make([]*models.Village, len(ids))
 				for i, id := range ids {
-					sorted[i] = villageByID[id]
+					inOrder[i] = villageByID[id]
 				}
 
-				return sorted, nil
+				return inOrder, nil
 			},
 		},
 	}

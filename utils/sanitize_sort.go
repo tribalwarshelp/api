@@ -10,7 +10,7 @@ func SanitizeSort(sort string) string {
 		return ""
 	}
 	keyword := "ASC"
-	if length == 2 && strings.ToUpper(splitted[1]) == "DESC" {
+	if strings.ToUpper(splitted[1]) == "DESC" {
 		keyword = "DESC"
 	}
 	return strings.ToLower(Underscore(splitted[0])) + " " + keyword
