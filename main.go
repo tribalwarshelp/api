@@ -8,6 +8,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/go-redis/redis/v8"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/mode"
 
 	httpdelivery "github.com/tribalwarshelp/api/graphql/delivery/http"
@@ -55,6 +57,20 @@ func main() {
 			log.Fatal("Database disconnecting:", err)
 		}
 	}()
+	//single server redis
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     os.Getenv("REDIS_HOST") + ":" + os.Getenv("REDIS_PORT"),
+		Password: os.Getenv("REDIS_PASSWORD"),
+	})
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
+	if err := redisClient.Ping(ctx).Err(); err != nil {
+		log.Fatal(errors.Wrap(err, "cannot establish a connection with Redis"))
+	}
+	defer func() {
+		if err := redisClient.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	langversionRepo, err := langversionrepo.NewPGRepository(db)
 	if err != nil {
@@ -67,7 +83,7 @@ func main() {
 	tribeRepo := triberepo.NewPGRepository(db)
 	playerRepo := playerrepo.NewPGRepository(db)
 	villageRepo := villagerepo.NewPGRepository(db)
-	ennoblementRepo := ennoblementrepo.NewPGRepository(db)
+	ennoblementRepo := ennoblementrepo.NewPGRepository(db, redisClient)
 
 	router := gin.Default()
 	v1 := router.Group("")

@@ -2,8 +2,11 @@ package repository
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
+
+	"github.com/go-redis/redis/v8"
 
 	"github.com/tribalwarshelp/api/ennoblement"
 
@@ -12,15 +15,25 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
+var (
+	cacheKey   = "ennoblements-%s"
+	expiration = time.Second * 15
+)
+
 type pgRepository struct {
 	*pg.DB
+	cache redis.UniversalClient
 }
 
-func NewPGRepository(db *pg.DB) ennoblement.Repository {
-	return &pgRepository{db}
+func NewPGRepository(db *pg.DB, cache redis.UniversalClient) ennoblement.Repository {
+	return &pgRepository{db, cache}
 }
 
 func (repo *pgRepository) Fetch(ctx context.Context, server string) ([]*models.Ennoblement, error) {
+	if ennoblements, loaded := repo.loadEnnoblementsFromCache(server); loaded {
+		return ennoblements, nil
+	}
+
 	s := &models.Server{}
 	if err := repo.Model(s).Where("key = ?", server).Relation("LangVersion").Select(); err != nil {
 		if err == pg.ErrNoRows {
@@ -54,5 +67,30 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string) ([]*models.E
 		e = append(e, ennoblement)
 	}
 
+	go repo.cacheEnnoblements(server, e)
+
 	return e, nil
+}
+
+func (repo *pgRepository) loadEnnoblementsFromCache(server string) ([]*models.Ennoblement, bool) {
+	ennoblementsJSON, err := repo.cache.Get(context.Background(), fmt.Sprintf(cacheKey, server)).Result()
+	if err != nil || ennoblementsJSON == "" {
+		return nil, false
+	}
+	ennoblements := []*models.Ennoblement{}
+	if json.Unmarshal([]byte(ennoblementsJSON), &ennoblements) != nil {
+		return nil, false
+	}
+	return ennoblements, true
+}
+
+func (repo *pgRepository) cacheEnnoblements(server string, ennoblements []*models.Ennoblement) error {
+	ennoblementsJSON, err := json.Marshal(&ennoblements)
+	if err != nil {
+		return errors.Wrap(err, "cacheEnnoblements")
+	}
+	if err := repo.cache.Set(context.Background(), fmt.Sprintf(cacheKey, server), ennoblementsJSON, expiration).Err(); err != nil {
+		return errors.Wrap(err, "cacheEnnoblements")
+	}
+	return nil
 }

@@ -2,6 +2,7 @@ package httpdelivery
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
@@ -13,6 +14,10 @@ import (
 	"github.com/tribalwarshelp/api/graphql/resolvers"
 )
 
+const (
+	playgroundTTL = time.Hour / time.Second
+)
+
 type Config struct {
 	RouterGroup *gin.RouterGroup
 	Resolver    *resolvers.Resolver
@@ -22,7 +27,9 @@ func Attach(cfg Config) error {
 	if cfg.Resolver == nil {
 		return fmt.Errorf("Graphql resolver cannot be nil")
 	}
-	cfg.RouterGroup.POST("/graphql", graphqlHandler(cfg.Resolver))
+	gqlHandler := graphqlHandler(cfg.Resolver)
+	cfg.RouterGroup.GET("/graphql", gqlHandler)
+	cfg.RouterGroup.POST("/graphql", gqlHandler)
 	cfg.RouterGroup.GET("/", playgroundHandler())
 	return nil
 }
@@ -51,6 +58,7 @@ func playgroundHandler() gin.HandlerFunc {
 	h := playground.Handler("Playground", "/graphql")
 
 	return func(c *gin.Context) {
+		c.Header("Cache-Control", fmt.Sprintf(`public, must-revalidate, max-age=%d, s-maxage=%d`, playgroundTTL, playgroundTTL))
 		h.ServeHTTP(c.Writer, c.Request)
 	}
 }
