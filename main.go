@@ -88,9 +88,10 @@ func main() {
 	router := gin.Default()
 	v1 := router.Group("")
 	v1.Use(middleware.DataLoadersToContext(serverRepo, dataloaders.Config{
-		PlayerRepo:  playerRepo,
-		TribeRepo:   tribeRepo,
-		VillageRepo: villageRepo,
+		PlayerRepo:      playerRepo,
+		TribeRepo:       tribeRepo,
+		VillageRepo:     villageRepo,
+		LangVersionRepo: langversionRepo,
 	}))
 	httpdelivery.Attach(httpdelivery.Config{
 		RouterGroup: v1,

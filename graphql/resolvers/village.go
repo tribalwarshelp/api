@@ -15,7 +15,7 @@ func (r *villageResolver) Player(ctx context.Context, obj *models.Village) (*mod
 	}
 
 	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
-		dataloaders := middleware.DataLoadersFromContext(ctx)
+		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
 		if dataloaders != nil {
 			if dataloader, ok := dataloaders[server]; ok {
 				tribe, _ := dataloader.PlayerByID.Load(obj.PlayerID)

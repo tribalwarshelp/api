@@ -39,6 +39,7 @@ type ResolverRoot interface {
 	Ennoblement() EnnoblementResolver
 	Player() PlayerResolver
 	Query() QueryResolver
+	Server() ServerResolver
 	Village() VillageResolver
 }
 
@@ -103,10 +104,10 @@ type ComplexityRoot struct {
 	}
 
 	Server struct {
-		ID             func(childComplexity int) int
-		Key            func(childComplexity int) int
-		LangVersionTag func(childComplexity int) int
-		Status         func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Key         func(childComplexity int) int
+		LangVersion func(childComplexity int) int
+		Status      func(childComplexity int) int
 	}
 
 	ServersList struct {
@@ -173,6 +174,9 @@ type QueryResolver interface {
 	Tribe(ctx context.Context, server string, id int) (*models.Tribe, error)
 	Villages(ctx context.Context, server string, filter *models.VillageFilter) (*VillagesList, error)
 	Village(ctx context.Context, server string, id int) (*models.Village, error)
+}
+type ServerResolver interface {
+	LangVersion(ctx context.Context, obj *models.Server) (*models.LangVersion, error)
 }
 type VillageResolver interface {
 	Player(ctx context.Context, obj *models.Village) (*models.Player, error)
@@ -528,12 +532,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Server.Key(childComplexity), true
 
-	case "Server.langVersionTag":
-		if e.complexity.Server.LangVersionTag == nil {
+	case "Server.langVersion":
+		if e.complexity.Server.LangVersion == nil {
 			break
 		}
 
-		return e.complexity.Server.LangVersionTag(childComplexity), true
+		return e.complexity.Server.LangVersion(childComplexity), true
 
 	case "Server.status":
 		if e.complexity.Server.Status == nil {
@@ -964,7 +968,7 @@ type Server {
   id: Int!
   key: String!
   status: ServerStatus!
-  langVersionTag: LanguageTag!
+  langVersion: LangVersion @goField(forceResolver: true)
 }
 
 type ServersList {
@@ -2923,7 +2927,7 @@ func (ec *executionContext) _Server_status(ctx context.Context, field graphql.Co
 	return ec.marshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_langVersionTag(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_langVersion(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2934,27 +2938,24 @@ func (ec *executionContext) _Server_langVersionTag(ctx context.Context, field gr
 		Object:   "Server",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.LangVersionTag, nil
+		return ec.resolvers.Server().LangVersion(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(models.LanguageTag)
+	res := resTmp.(*models.LangVersion)
 	fc.Result = res
-	return ec.marshalNLanguageTag2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLanguageTag(ctx, field.Selections, res)
+	return ec.marshalOLangVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLangVersion(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _ServersList_items(ctx context.Context, field graphql.CollectedField, obj *ServersList) (ret graphql.Marshaler) {
@@ -6525,23 +6526,29 @@ func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, o
 		case "id":
 			out.Values[i] = ec._Server_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "key":
 			out.Values[i] = ec._Server_key(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "status":
 			out.Values[i] = ec._Server_status(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
-		case "langVersionTag":
-			out.Values[i] = ec._Server_langVersionTag(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+		case "langVersion":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Server_langVersion(ctx, field, obj)
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

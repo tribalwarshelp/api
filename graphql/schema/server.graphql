@@ -7,7 +7,7 @@ type Server {
   id: Int!
   key: String!
   status: ServerStatus!
-  langVersionTag: LanguageTag!
+  langVersion: LangVersion @goField(forceResolver: true)
 }
 
 type ServersList {

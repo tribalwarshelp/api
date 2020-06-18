@@ -4,26 +4,17 @@ import (
 	"context"
 	"time"
 
-	"github.com/tribalwarshelp/api/player"
-	"github.com/tribalwarshelp/api/tribe"
-	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/shared/models"
 )
 
-type DataLoaders struct {
+type ServerDataLoaders struct {
 	PlayerByID  PlayerLoader
 	TribeByID   TribeLoader
 	VillageByID VillageLoader
 }
 
-type Config struct {
-	PlayerRepo  player.Repository
-	TribeRepo   tribe.Repository
-	VillageRepo village.Repository
-}
-
-func New(server string, cfg Config) *DataLoaders {
-	return &DataLoaders{
+func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
+	return &ServerDataLoaders{
 		PlayerByID: PlayerLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
