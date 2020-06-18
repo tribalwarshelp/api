@@ -37,7 +37,7 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*mode
 		return nil, err
 	}
 	if total == 0 {
-		return nil, fmt.Errorf("Player with id: %d not found.", id)
+		return nil, fmt.Errorf("Player (ID: %d) not found.", id)
 	}
 	return players[0], nil
 }

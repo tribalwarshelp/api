@@ -37,7 +37,7 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*mode
 		return nil, err
 	}
 	if total == 0 {
-		return nil, fmt.Errorf("Village with id: %d not found.", id)
+		return nil, fmt.Errorf("Village (ID: %d) not found.", id)
 	}
 	return villages[0], nil
 }

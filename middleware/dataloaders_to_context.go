@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var DataloadersContextKey ContextKey = "dataloaders"
+var dataloadersContextKey ContextKey = "dataloaders"
 
 func DataLoadersToContext(serverRepo server.Repository, cfg dataloaders.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -35,11 +35,11 @@ func DataLoadersToContext(serverRepo server.Repository, cfg dataloaders.Config) 
 }
 
 func StoreDataLoadersInContext(ctx context.Context, loaders map[string]*dataloaders.DataLoaders) context.Context {
-	return context.WithValue(ctx, DataloadersContextKey, loaders)
+	return context.WithValue(ctx, dataloadersContextKey, loaders)
 }
 
 func DataLoadersFromContext(ctx context.Context) map[string]*dataloaders.DataLoaders {
-	dl := ctx.Value(DataloadersContextKey)
+	dl := ctx.Value(dataloadersContextKey)
 	if dl == nil {
 		return nil
 	}

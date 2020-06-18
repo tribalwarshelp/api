@@ -37,7 +37,7 @@ func (ucase *usecase) GetByKey(ctx context.Context, key string) (*models.Server,
 		return nil, err
 	}
 	if total == 0 {
-		return nil, fmt.Errorf("Server with key: %s not found.", key)
+		return nil, fmt.Errorf("Server (key: %s) not found.", key)
 	}
 	return servers[0], nil
 }
