@@ -28,6 +28,15 @@ input VillageFilter {
   pointsLT: Int
   pointsLTE: Int
 
+  xGT: Int
+  xGTE: Int
+  xLT: Int
+  xLTE: Int
+  yGT: Int
+  yGTE: Int
+  yLT: Int
+  yLTE: Int
+
   bonus: Int
   bonusGT: Int
   bonusGTE: Int

@@ -1146,6 +1146,15 @@ input VillageFilter {
   pointsLT: Int
   pointsLTE: Int
 
+  xGT: Int
+  xGTE: Int
+  xLT: Int
+  xLTE: Int
+  yGT: Int
+  yGTE: Int
+  yLT: Int
+  yLTE: Int
+
   bonus: Int
   bonusGT: Int
   bonusGTE: Int
@@ -6012,6 +6021,54 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 		case "pointsLTE":
 			var err error
 			it.PointsLTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "xGT":
+			var err error
+			it.XGT, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "xGTE":
+			var err error
+			it.XGTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "xLT":
+			var err error
+			it.XLT, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "xLTE":
+			var err error
+			it.XLTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "yGT":
+			var err error
+			it.YGT, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "yGTE":
+			var err error
+			it.YGTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "yLT":
+			var err error
+			it.YLT, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "yLTE":
+			var err error
+			it.YLTE, err = ec.unmarshalOInt2int(ctx, v)
 			if err != nil {
 				return it, err
 			}

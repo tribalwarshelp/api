@@ -34,7 +34,7 @@ func Attach(cfg Config) error {
 	return nil
 }
 
-// Defining the Graphql handler
+// Defining the GraphQL handler
 func graphqlHandler(r *resolvers.Resolver) gin.HandlerFunc {
 	cfg := generated.Config{Resolvers: r}
 	srv := handler.New(generated.NewExecutableSchema(cfg))

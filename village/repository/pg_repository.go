@@ -30,6 +30,28 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.Vi
 			Limit(f.Limit).
 			Offset(f.Offset)
 
+		if f.XGTE != 0 {
+			query = query.Where("x >= ?", f.XGTE)
+		} else if f.XGT != 0 {
+			query = query.Where("x > ?", f.XGT)
+		}
+		if f.XLTE != 0 {
+			query = query.Where("x <= ?", f.XLTE)
+		} else if f.XLT != 0 {
+			query = query.Where("x < ?", f.XLT)
+		}
+
+		if f.YGTE != 0 {
+			query = query.Where("y >= ?", f.YGTE)
+		} else if f.YGT != 0 {
+			query = query.Where("y > ?", f.YGT)
+		}
+		if f.YLTE != 0 {
+			query = query.Where("y <= ?", f.YLTE)
+		} else if f.YLT != 0 {
+			query = query.Where("y < ?", f.YLT)
+		}
+
 		if f.Sort != "" {
 			query = query.Order(f.Sort)
 		}
