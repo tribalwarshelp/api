@@ -1,0 +1,149 @@
+type ServerConfigBuild {
+  destroy: Int!
+}
+
+type ServerConfigMisc {
+  killRanking: Int!
+  tutorial: Int!
+  tradeCancelTime: Int!
+}
+
+type ServerConfigCommands {
+  millisArrival: Int!
+  commandCancelTime: Int!
+}
+
+type ServerConfigNewbie {
+  days: Int!
+  ratioDays: Int!
+  ratio: Int!
+  removeNewbieVillages: Int!
+}
+
+type ServerConfigGame {
+  buildtimeFormula: Int!
+  knight: Int!
+  knightNewItems: Boolean!
+  archer: Int!
+  tech: Int!
+  farmLimit: Int!
+  church: Int!
+  watchtower: Int!
+  stronghold: Int!
+  fakeLimit: Int!
+  barbarianRise: Float!
+  barbarianShrink: Int!
+  barbarianMaxPoints: Int!
+  hauls: Int!
+  haulsBase: Int!
+  haulsMax: Int!
+  baseProduction: Int!
+  event: Int!
+  suppressEvents: Int!
+}
+
+type ServerConfigBuildings {
+  customMain: Int!
+  customFarm: Int!
+  customStorage: Int!
+  customPlace: Int!
+  customBarracks: Int!
+  customChurch: Int!
+  customSmith: Int!
+  customWood: Int!
+  customStone: Int!
+  customIron: Int!
+  customMarket: Int!
+  customStable: Int!
+  customWall: Int!
+  customGarage: Int!
+  customHide: Int!
+  customSnob: Int!
+  customStatue: Int!
+  customWatchtower: Int!
+}
+
+type ServerConfigSnob {
+  gold: Int!
+  cheapRebuild: Int!
+  rise: Int!
+  maxDist: Int!
+  factor: Float!
+  coinWood: Int!
+  coinStone: Int!
+  coinIron: Int!
+  noBarbConquer: Boolean!
+}
+
+type ServerConfigAlly {
+  noHarm: Int!
+  noOtherSupport: Int!
+  allytimeSupport: Int!
+  noLeave: Int!
+  noJoin: Int!
+  limit: Int!
+  fixedAllies: Int!
+  pointsMemberCount: Int!
+  warsMemberRequirement: Int!
+  warsPointsRequirement: Int!
+  warsAutoacceptDays: Int!
+  levels: Int!
+  xpRequirements: String!
+}
+
+type ServerConfigCoord {
+  mapSize: Int!
+  func: Int!
+  emptyVillages: Int!
+  bonusVillages: Int!
+  bonusNew: Int!
+  inner: Int!
+  selectStart: Int!
+  villageMoveWait: Int!
+  nobleRestart: Int!
+  startVillages: Int!
+}
+
+type ServerConfigSitter {
+  allow: Int!
+}
+
+type ServerConfigSleep {
+  active: Int!
+  delay: Int!
+  min: Int!
+  max: Int!
+  minAwake: Int!
+  maxAwake: Int!
+  warnTime: Int!
+}
+
+type ServerConfigNight {
+  active: Int!
+  startHour: Int!
+  endHour: Int!
+  defFactor: Int!
+}
+
+type ServerConfigWin {
+  check: Int!
+}
+
+type ServerConfig {
+  speed: Float!
+  unitSpeed: Float!
+  moral: Int!
+  build: ServerConfigBuild!
+  misc: ServerConfigMisc!
+  commands: ServerConfigCommands!
+  newbie: ServerConfigNewbie!
+  game: ServerConfigGame!
+  buildings: ServerConfigBuildings!
+  snob: ServerConfigSnob!
+  ally: ServerConfigAlly!
+  coord: ServerConfigCoord!
+  sitter: ServerConfigSitter!
+  sleep: ServerConfigSleep!
+  night: ServerConfigNight!
+  win: ServerConfigWin!
+}

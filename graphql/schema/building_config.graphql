@@ -1,0 +1,34 @@
+type Building {
+  maxLevel: Int!
+  minLevel: Int!
+  wood: Int!
+  stone: Int!
+  iron: Int!
+  pop: Int!
+  woodFactor: Float!
+  stoneFactor: Float!
+  ironFactor: Float!
+  popFactor: Float!
+  buildTime: Float!
+  buildTimeFactor: Float!
+}
+
+type BuildingConfig {
+  main: Building!
+  barracks: Building!
+  stable: Building!
+  garage: Building!
+  watchtower: Building!
+  snob: Building!
+  smith: Building!
+  place: Building!
+  statue: Building!
+  market: Building!
+  wood: Building!
+  stone: Building!
+  iron: Building!
+  farm: Building!
+  storage: Building!
+  hide: Building!
+  wall: Building!
+}

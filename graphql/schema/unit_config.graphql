@@ -1,0 +1,26 @@
+type Unit {
+  buildTime: Float!
+  pop: Int!
+  speed: Float!
+  attack: Int!
+  defense: Int!
+  defenseCavalry: Int!
+  defenseArcher: Int!
+  carry: Int!
+}
+
+type UnitConfig {
+  spear: Unit!
+  sword: Unit!
+  axe: Unit!
+  archer: Unit!
+  spy: Unit!
+  light: Unit!
+  marcher: Unit!
+  heavy: Unit!
+  ram: Unit!
+  catapult: Unit!
+  knight: Unit!
+  snob: Unit!
+  militia: Unit!
+}

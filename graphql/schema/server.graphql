@@ -8,6 +8,10 @@ type Server {
   key: String!
   status: ServerStatus!
   langVersion: LangVersion @goField(forceResolver: true)
+  config: ServerConfig!
+  unitConfig: UnitConfig!
+  buildingConfig: BuildingConfig!
+  dataUpdatedAt: Time! @goField(forceResolver: true)
 }
 
 type ServersList {

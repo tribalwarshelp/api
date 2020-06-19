@@ -47,6 +47,41 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Building struct {
+		BuildTime       func(childComplexity int) int
+		BuildTimeFactor func(childComplexity int) int
+		Iron            func(childComplexity int) int
+		IronFactor      func(childComplexity int) int
+		MaxLevel        func(childComplexity int) int
+		MinLevel        func(childComplexity int) int
+		Pop             func(childComplexity int) int
+		PopFactor       func(childComplexity int) int
+		Stone           func(childComplexity int) int
+		StoneFactor     func(childComplexity int) int
+		Wood            func(childComplexity int) int
+		WoodFactor      func(childComplexity int) int
+	}
+
+	BuildingConfig struct {
+		Barracks   func(childComplexity int) int
+		Farm       func(childComplexity int) int
+		Garage     func(childComplexity int) int
+		Hide       func(childComplexity int) int
+		Iron       func(childComplexity int) int
+		Main       func(childComplexity int) int
+		Market     func(childComplexity int) int
+		Place      func(childComplexity int) int
+		Smith      func(childComplexity int) int
+		Snob       func(childComplexity int) int
+		Stable     func(childComplexity int) int
+		Statue     func(childComplexity int) int
+		Stone      func(childComplexity int) int
+		Storage    func(childComplexity int) int
+		Wall       func(childComplexity int) int
+		Watchtower func(childComplexity int) int
+		Wood       func(childComplexity int) int
+	}
+
 	Ennoblement struct {
 		EnnobledAt func(childComplexity int) int
 		NewOwner   func(childComplexity int) int
@@ -104,10 +139,164 @@ type ComplexityRoot struct {
 	}
 
 	Server struct {
-		ID          func(childComplexity int) int
-		Key         func(childComplexity int) int
-		LangVersion func(childComplexity int) int
-		Status      func(childComplexity int) int
+		BuildingConfig func(childComplexity int) int
+		Config         func(childComplexity int) int
+		DataUpdatedAt  func(childComplexity int) int
+		ID             func(childComplexity int) int
+		Key            func(childComplexity int) int
+		LangVersion    func(childComplexity int) int
+		Status         func(childComplexity int) int
+		UnitConfig     func(childComplexity int) int
+	}
+
+	ServerConfig struct {
+		Ally      func(childComplexity int) int
+		Build     func(childComplexity int) int
+		Buildings func(childComplexity int) int
+		Commands  func(childComplexity int) int
+		Coord     func(childComplexity int) int
+		Game      func(childComplexity int) int
+		Misc      func(childComplexity int) int
+		Moral     func(childComplexity int) int
+		Newbie    func(childComplexity int) int
+		Night     func(childComplexity int) int
+		Sitter    func(childComplexity int) int
+		Sleep     func(childComplexity int) int
+		Snob      func(childComplexity int) int
+		Speed     func(childComplexity int) int
+		UnitSpeed func(childComplexity int) int
+		Win       func(childComplexity int) int
+	}
+
+	ServerConfigAlly struct {
+		AllytimeSupport       func(childComplexity int) int
+		FixedAllies           func(childComplexity int) int
+		Levels                func(childComplexity int) int
+		Limit                 func(childComplexity int) int
+		NoHarm                func(childComplexity int) int
+		NoJoin                func(childComplexity int) int
+		NoLeave               func(childComplexity int) int
+		NoOtherSupport        func(childComplexity int) int
+		PointsMemberCount     func(childComplexity int) int
+		WarsAutoacceptDays    func(childComplexity int) int
+		WarsMemberRequirement func(childComplexity int) int
+		WarsPointsRequirement func(childComplexity int) int
+		XpRequirements        func(childComplexity int) int
+	}
+
+	ServerConfigBuild struct {
+		Destroy func(childComplexity int) int
+	}
+
+	ServerConfigBuildings struct {
+		CustomBarracks   func(childComplexity int) int
+		CustomChurch     func(childComplexity int) int
+		CustomFarm       func(childComplexity int) int
+		CustomGarage     func(childComplexity int) int
+		CustomHide       func(childComplexity int) int
+		CustomIron       func(childComplexity int) int
+		CustomMain       func(childComplexity int) int
+		CustomMarket     func(childComplexity int) int
+		CustomPlace      func(childComplexity int) int
+		CustomSmith      func(childComplexity int) int
+		CustomSnob       func(childComplexity int) int
+		CustomStable     func(childComplexity int) int
+		CustomStatue     func(childComplexity int) int
+		CustomStone      func(childComplexity int) int
+		CustomStorage    func(childComplexity int) int
+		CustomWall       func(childComplexity int) int
+		CustomWatchtower func(childComplexity int) int
+		CustomWood       func(childComplexity int) int
+	}
+
+	ServerConfigCommands struct {
+		CommandCancelTime func(childComplexity int) int
+		MillisArrival     func(childComplexity int) int
+	}
+
+	ServerConfigCoord struct {
+		BonusNew        func(childComplexity int) int
+		BonusVillages   func(childComplexity int) int
+		EmptyVillages   func(childComplexity int) int
+		Func            func(childComplexity int) int
+		Inner           func(childComplexity int) int
+		MapSize         func(childComplexity int) int
+		NobleRestart    func(childComplexity int) int
+		SelectStart     func(childComplexity int) int
+		StartVillages   func(childComplexity int) int
+		VillageMoveWait func(childComplexity int) int
+	}
+
+	ServerConfigGame struct {
+		Archer             func(childComplexity int) int
+		BarbarianMaxPoints func(childComplexity int) int
+		BarbarianRise      func(childComplexity int) int
+		BarbarianShrink    func(childComplexity int) int
+		BaseProduction     func(childComplexity int) int
+		BuildtimeFormula   func(childComplexity int) int
+		Church             func(childComplexity int) int
+		Event              func(childComplexity int) int
+		FakeLimit          func(childComplexity int) int
+		FarmLimit          func(childComplexity int) int
+		Hauls              func(childComplexity int) int
+		HaulsBase          func(childComplexity int) int
+		HaulsMax           func(childComplexity int) int
+		Knight             func(childComplexity int) int
+		KnightNewItems     func(childComplexity int) int
+		Stronghold         func(childComplexity int) int
+		SuppressEvents     func(childComplexity int) int
+		Tech               func(childComplexity int) int
+		Watchtower         func(childComplexity int) int
+	}
+
+	ServerConfigMisc struct {
+		KillRanking     func(childComplexity int) int
+		TradeCancelTime func(childComplexity int) int
+		Tutorial        func(childComplexity int) int
+	}
+
+	ServerConfigNewbie struct {
+		Days                 func(childComplexity int) int
+		Ratio                func(childComplexity int) int
+		RatioDays            func(childComplexity int) int
+		RemoveNewbieVillages func(childComplexity int) int
+	}
+
+	ServerConfigNight struct {
+		Active    func(childComplexity int) int
+		DefFactor func(childComplexity int) int
+		EndHour   func(childComplexity int) int
+		StartHour func(childComplexity int) int
+	}
+
+	ServerConfigSitter struct {
+		Allow func(childComplexity int) int
+	}
+
+	ServerConfigSleep struct {
+		Active   func(childComplexity int) int
+		Delay    func(childComplexity int) int
+		Max      func(childComplexity int) int
+		MaxAwake func(childComplexity int) int
+		Min      func(childComplexity int) int
+		MinAwake func(childComplexity int) int
+		WarnTime func(childComplexity int) int
+	}
+
+	ServerConfigSnob struct {
+		CheapRebuild  func(childComplexity int) int
+		CoinIron      func(childComplexity int) int
+		CoinStone     func(childComplexity int) int
+		CoinWood      func(childComplexity int) int
+		Factor        func(childComplexity int) int
+		Gold          func(childComplexity int) int
+		MaxDist       func(childComplexity int) int
+		NoBarbConquer func(childComplexity int) int
+		Rise          func(childComplexity int) int
+	}
+
+	ServerConfigWin struct {
+		Check func(childComplexity int) int
 	}
 
 	ServersList struct {
@@ -136,6 +325,33 @@ type ComplexityRoot struct {
 	TribesList struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
+	}
+
+	Unit struct {
+		Attack         func(childComplexity int) int
+		BuildTime      func(childComplexity int) int
+		Carry          func(childComplexity int) int
+		Defense        func(childComplexity int) int
+		DefenseArcher  func(childComplexity int) int
+		DefenseCavalry func(childComplexity int) int
+		Pop            func(childComplexity int) int
+		Speed          func(childComplexity int) int
+	}
+
+	UnitConfig struct {
+		Archer   func(childComplexity int) int
+		Axe      func(childComplexity int) int
+		Catapult func(childComplexity int) int
+		Heavy    func(childComplexity int) int
+		Knight   func(childComplexity int) int
+		Light    func(childComplexity int) int
+		Marcher  func(childComplexity int) int
+		Militia  func(childComplexity int) int
+		Ram      func(childComplexity int) int
+		Snob     func(childComplexity int) int
+		Spear    func(childComplexity int) int
+		Spy      func(childComplexity int) int
+		Sword    func(childComplexity int) int
 	}
 
 	Village struct {
@@ -177,6 +393,8 @@ type QueryResolver interface {
 }
 type ServerResolver interface {
 	LangVersion(ctx context.Context, obj *models.Server) (*models.LangVersion, error)
+
+	DataUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error)
 }
 type VillageResolver interface {
 	Player(ctx context.Context, obj *models.Village) (*models.Player, error)
@@ -196,6 +414,209 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "Building.buildTime":
+		if e.complexity.Building.BuildTime == nil {
+			break
+		}
+
+		return e.complexity.Building.BuildTime(childComplexity), true
+
+	case "Building.buildTimeFactor":
+		if e.complexity.Building.BuildTimeFactor == nil {
+			break
+		}
+
+		return e.complexity.Building.BuildTimeFactor(childComplexity), true
+
+	case "Building.iron":
+		if e.complexity.Building.Iron == nil {
+			break
+		}
+
+		return e.complexity.Building.Iron(childComplexity), true
+
+	case "Building.ironFactor":
+		if e.complexity.Building.IronFactor == nil {
+			break
+		}
+
+		return e.complexity.Building.IronFactor(childComplexity), true
+
+	case "Building.maxLevel":
+		if e.complexity.Building.MaxLevel == nil {
+			break
+		}
+
+		return e.complexity.Building.MaxLevel(childComplexity), true
+
+	case "Building.minLevel":
+		if e.complexity.Building.MinLevel == nil {
+			break
+		}
+
+		return e.complexity.Building.MinLevel(childComplexity), true
+
+	case "Building.pop":
+		if e.complexity.Building.Pop == nil {
+			break
+		}
+
+		return e.complexity.Building.Pop(childComplexity), true
+
+	case "Building.popFactor":
+		if e.complexity.Building.PopFactor == nil {
+			break
+		}
+
+		return e.complexity.Building.PopFactor(childComplexity), true
+
+	case "Building.stone":
+		if e.complexity.Building.Stone == nil {
+			break
+		}
+
+		return e.complexity.Building.Stone(childComplexity), true
+
+	case "Building.stoneFactor":
+		if e.complexity.Building.StoneFactor == nil {
+			break
+		}
+
+		return e.complexity.Building.StoneFactor(childComplexity), true
+
+	case "Building.wood":
+		if e.complexity.Building.Wood == nil {
+			break
+		}
+
+		return e.complexity.Building.Wood(childComplexity), true
+
+	case "Building.woodFactor":
+		if e.complexity.Building.WoodFactor == nil {
+			break
+		}
+
+		return e.complexity.Building.WoodFactor(childComplexity), true
+
+	case "BuildingConfig.barracks":
+		if e.complexity.BuildingConfig.Barracks == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Barracks(childComplexity), true
+
+	case "BuildingConfig.farm":
+		if e.complexity.BuildingConfig.Farm == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Farm(childComplexity), true
+
+	case "BuildingConfig.garage":
+		if e.complexity.BuildingConfig.Garage == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Garage(childComplexity), true
+
+	case "BuildingConfig.hide":
+		if e.complexity.BuildingConfig.Hide == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Hide(childComplexity), true
+
+	case "BuildingConfig.iron":
+		if e.complexity.BuildingConfig.Iron == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Iron(childComplexity), true
+
+	case "BuildingConfig.main":
+		if e.complexity.BuildingConfig.Main == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Main(childComplexity), true
+
+	case "BuildingConfig.market":
+		if e.complexity.BuildingConfig.Market == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Market(childComplexity), true
+
+	case "BuildingConfig.place":
+		if e.complexity.BuildingConfig.Place == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Place(childComplexity), true
+
+	case "BuildingConfig.smith":
+		if e.complexity.BuildingConfig.Smith == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Smith(childComplexity), true
+
+	case "BuildingConfig.snob":
+		if e.complexity.BuildingConfig.Snob == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Snob(childComplexity), true
+
+	case "BuildingConfig.stable":
+		if e.complexity.BuildingConfig.Stable == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Stable(childComplexity), true
+
+	case "BuildingConfig.statue":
+		if e.complexity.BuildingConfig.Statue == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Statue(childComplexity), true
+
+	case "BuildingConfig.stone":
+		if e.complexity.BuildingConfig.Stone == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Stone(childComplexity), true
+
+	case "BuildingConfig.storage":
+		if e.complexity.BuildingConfig.Storage == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Storage(childComplexity), true
+
+	case "BuildingConfig.wall":
+		if e.complexity.BuildingConfig.Wall == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Wall(childComplexity), true
+
+	case "BuildingConfig.watchtower":
+		if e.complexity.BuildingConfig.Watchtower == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Watchtower(childComplexity), true
+
+	case "BuildingConfig.wood":
+		if e.complexity.BuildingConfig.Wood == nil {
+			break
+		}
+
+		return e.complexity.BuildingConfig.Wood(childComplexity), true
 
 	case "Ennoblement.ennobledAt":
 		if e.complexity.Ennoblement.EnnobledAt == nil {
@@ -518,6 +939,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Villages(childComplexity, args["server"].(string), args["filter"].(*models.VillageFilter)), true
 
+	case "Server.buildingConfig":
+		if e.complexity.Server.BuildingConfig == nil {
+			break
+		}
+
+		return e.complexity.Server.BuildingConfig(childComplexity), true
+
+	case "Server.config":
+		if e.complexity.Server.Config == nil {
+			break
+		}
+
+		return e.complexity.Server.Config(childComplexity), true
+
+	case "Server.dataUpdatedAt":
+		if e.complexity.Server.DataUpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Server.DataUpdatedAt(childComplexity), true
+
 	case "Server.id":
 		if e.complexity.Server.ID == nil {
 			break
@@ -545,6 +987,769 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Server.Status(childComplexity), true
+
+	case "Server.unitConfig":
+		if e.complexity.Server.UnitConfig == nil {
+			break
+		}
+
+		return e.complexity.Server.UnitConfig(childComplexity), true
+
+	case "ServerConfig.ally":
+		if e.complexity.ServerConfig.Ally == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Ally(childComplexity), true
+
+	case "ServerConfig.build":
+		if e.complexity.ServerConfig.Build == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Build(childComplexity), true
+
+	case "ServerConfig.buildings":
+		if e.complexity.ServerConfig.Buildings == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Buildings(childComplexity), true
+
+	case "ServerConfig.commands":
+		if e.complexity.ServerConfig.Commands == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Commands(childComplexity), true
+
+	case "ServerConfig.coord":
+		if e.complexity.ServerConfig.Coord == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Coord(childComplexity), true
+
+	case "ServerConfig.game":
+		if e.complexity.ServerConfig.Game == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Game(childComplexity), true
+
+	case "ServerConfig.misc":
+		if e.complexity.ServerConfig.Misc == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Misc(childComplexity), true
+
+	case "ServerConfig.moral":
+		if e.complexity.ServerConfig.Moral == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Moral(childComplexity), true
+
+	case "ServerConfig.newbie":
+		if e.complexity.ServerConfig.Newbie == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Newbie(childComplexity), true
+
+	case "ServerConfig.night":
+		if e.complexity.ServerConfig.Night == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Night(childComplexity), true
+
+	case "ServerConfig.sitter":
+		if e.complexity.ServerConfig.Sitter == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Sitter(childComplexity), true
+
+	case "ServerConfig.sleep":
+		if e.complexity.ServerConfig.Sleep == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Sleep(childComplexity), true
+
+	case "ServerConfig.snob":
+		if e.complexity.ServerConfig.Snob == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Snob(childComplexity), true
+
+	case "ServerConfig.speed":
+		if e.complexity.ServerConfig.Speed == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Speed(childComplexity), true
+
+	case "ServerConfig.unitSpeed":
+		if e.complexity.ServerConfig.UnitSpeed == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.UnitSpeed(childComplexity), true
+
+	case "ServerConfig.win":
+		if e.complexity.ServerConfig.Win == nil {
+			break
+		}
+
+		return e.complexity.ServerConfig.Win(childComplexity), true
+
+	case "ServerConfigAlly.allytimeSupport":
+		if e.complexity.ServerConfigAlly.AllytimeSupport == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.AllytimeSupport(childComplexity), true
+
+	case "ServerConfigAlly.fixedAllies":
+		if e.complexity.ServerConfigAlly.FixedAllies == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.FixedAllies(childComplexity), true
+
+	case "ServerConfigAlly.levels":
+		if e.complexity.ServerConfigAlly.Levels == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.Levels(childComplexity), true
+
+	case "ServerConfigAlly.limit":
+		if e.complexity.ServerConfigAlly.Limit == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.Limit(childComplexity), true
+
+	case "ServerConfigAlly.noHarm":
+		if e.complexity.ServerConfigAlly.NoHarm == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.NoHarm(childComplexity), true
+
+	case "ServerConfigAlly.noJoin":
+		if e.complexity.ServerConfigAlly.NoJoin == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.NoJoin(childComplexity), true
+
+	case "ServerConfigAlly.noLeave":
+		if e.complexity.ServerConfigAlly.NoLeave == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.NoLeave(childComplexity), true
+
+	case "ServerConfigAlly.noOtherSupport":
+		if e.complexity.ServerConfigAlly.NoOtherSupport == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.NoOtherSupport(childComplexity), true
+
+	case "ServerConfigAlly.pointsMemberCount":
+		if e.complexity.ServerConfigAlly.PointsMemberCount == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.PointsMemberCount(childComplexity), true
+
+	case "ServerConfigAlly.warsAutoacceptDays":
+		if e.complexity.ServerConfigAlly.WarsAutoacceptDays == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.WarsAutoacceptDays(childComplexity), true
+
+	case "ServerConfigAlly.warsMemberRequirement":
+		if e.complexity.ServerConfigAlly.WarsMemberRequirement == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.WarsMemberRequirement(childComplexity), true
+
+	case "ServerConfigAlly.warsPointsRequirement":
+		if e.complexity.ServerConfigAlly.WarsPointsRequirement == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.WarsPointsRequirement(childComplexity), true
+
+	case "ServerConfigAlly.xpRequirements":
+		if e.complexity.ServerConfigAlly.XpRequirements == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigAlly.XpRequirements(childComplexity), true
+
+	case "ServerConfigBuild.destroy":
+		if e.complexity.ServerConfigBuild.Destroy == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuild.Destroy(childComplexity), true
+
+	case "ServerConfigBuildings.customBarracks":
+		if e.complexity.ServerConfigBuildings.CustomBarracks == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomBarracks(childComplexity), true
+
+	case "ServerConfigBuildings.customChurch":
+		if e.complexity.ServerConfigBuildings.CustomChurch == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomChurch(childComplexity), true
+
+	case "ServerConfigBuildings.customFarm":
+		if e.complexity.ServerConfigBuildings.CustomFarm == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomFarm(childComplexity), true
+
+	case "ServerConfigBuildings.customGarage":
+		if e.complexity.ServerConfigBuildings.CustomGarage == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomGarage(childComplexity), true
+
+	case "ServerConfigBuildings.customHide":
+		if e.complexity.ServerConfigBuildings.CustomHide == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomHide(childComplexity), true
+
+	case "ServerConfigBuildings.customIron":
+		if e.complexity.ServerConfigBuildings.CustomIron == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomIron(childComplexity), true
+
+	case "ServerConfigBuildings.customMain":
+		if e.complexity.ServerConfigBuildings.CustomMain == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomMain(childComplexity), true
+
+	case "ServerConfigBuildings.customMarket":
+		if e.complexity.ServerConfigBuildings.CustomMarket == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomMarket(childComplexity), true
+
+	case "ServerConfigBuildings.customPlace":
+		if e.complexity.ServerConfigBuildings.CustomPlace == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomPlace(childComplexity), true
+
+	case "ServerConfigBuildings.customSmith":
+		if e.complexity.ServerConfigBuildings.CustomSmith == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomSmith(childComplexity), true
+
+	case "ServerConfigBuildings.customSnob":
+		if e.complexity.ServerConfigBuildings.CustomSnob == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomSnob(childComplexity), true
+
+	case "ServerConfigBuildings.customStable":
+		if e.complexity.ServerConfigBuildings.CustomStable == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomStable(childComplexity), true
+
+	case "ServerConfigBuildings.customStatue":
+		if e.complexity.ServerConfigBuildings.CustomStatue == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomStatue(childComplexity), true
+
+	case "ServerConfigBuildings.customStone":
+		if e.complexity.ServerConfigBuildings.CustomStone == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomStone(childComplexity), true
+
+	case "ServerConfigBuildings.customStorage":
+		if e.complexity.ServerConfigBuildings.CustomStorage == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomStorage(childComplexity), true
+
+	case "ServerConfigBuildings.customWall":
+		if e.complexity.ServerConfigBuildings.CustomWall == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomWall(childComplexity), true
+
+	case "ServerConfigBuildings.customWatchtower":
+		if e.complexity.ServerConfigBuildings.CustomWatchtower == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomWatchtower(childComplexity), true
+
+	case "ServerConfigBuildings.customWood":
+		if e.complexity.ServerConfigBuildings.CustomWood == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigBuildings.CustomWood(childComplexity), true
+
+	case "ServerConfigCommands.commandCancelTime":
+		if e.complexity.ServerConfigCommands.CommandCancelTime == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCommands.CommandCancelTime(childComplexity), true
+
+	case "ServerConfigCommands.millisArrival":
+		if e.complexity.ServerConfigCommands.MillisArrival == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCommands.MillisArrival(childComplexity), true
+
+	case "ServerConfigCoord.bonusNew":
+		if e.complexity.ServerConfigCoord.BonusNew == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.BonusNew(childComplexity), true
+
+	case "ServerConfigCoord.bonusVillages":
+		if e.complexity.ServerConfigCoord.BonusVillages == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.BonusVillages(childComplexity), true
+
+	case "ServerConfigCoord.emptyVillages":
+		if e.complexity.ServerConfigCoord.EmptyVillages == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.EmptyVillages(childComplexity), true
+
+	case "ServerConfigCoord.func":
+		if e.complexity.ServerConfigCoord.Func == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.Func(childComplexity), true
+
+	case "ServerConfigCoord.inner":
+		if e.complexity.ServerConfigCoord.Inner == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.Inner(childComplexity), true
+
+	case "ServerConfigCoord.mapSize":
+		if e.complexity.ServerConfigCoord.MapSize == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.MapSize(childComplexity), true
+
+	case "ServerConfigCoord.nobleRestart":
+		if e.complexity.ServerConfigCoord.NobleRestart == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.NobleRestart(childComplexity), true
+
+	case "ServerConfigCoord.selectStart":
+		if e.complexity.ServerConfigCoord.SelectStart == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.SelectStart(childComplexity), true
+
+	case "ServerConfigCoord.startVillages":
+		if e.complexity.ServerConfigCoord.StartVillages == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.StartVillages(childComplexity), true
+
+	case "ServerConfigCoord.villageMoveWait":
+		if e.complexity.ServerConfigCoord.VillageMoveWait == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigCoord.VillageMoveWait(childComplexity), true
+
+	case "ServerConfigGame.archer":
+		if e.complexity.ServerConfigGame.Archer == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.Archer(childComplexity), true
+
+	case "ServerConfigGame.barbarianMaxPoints":
+		if e.complexity.ServerConfigGame.BarbarianMaxPoints == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.BarbarianMaxPoints(childComplexity), true
+
+	case "ServerConfigGame.barbarianRise":
+		if e.complexity.ServerConfigGame.BarbarianRise == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.BarbarianRise(childComplexity), true
+
+	case "ServerConfigGame.barbarianShrink":
+		if e.complexity.ServerConfigGame.BarbarianShrink == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.BarbarianShrink(childComplexity), true
+
+	case "ServerConfigGame.baseProduction":
+		if e.complexity.ServerConfigGame.BaseProduction == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.BaseProduction(childComplexity), true
+
+	case "ServerConfigGame.buildtimeFormula":
+		if e.complexity.ServerConfigGame.BuildtimeFormula == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.BuildtimeFormula(childComplexity), true
+
+	case "ServerConfigGame.church":
+		if e.complexity.ServerConfigGame.Church == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.Church(childComplexity), true
+
+	case "ServerConfigGame.event":
+		if e.complexity.ServerConfigGame.Event == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.Event(childComplexity), true
+
+	case "ServerConfigGame.fakeLimit":
+		if e.complexity.ServerConfigGame.FakeLimit == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.FakeLimit(childComplexity), true
+
+	case "ServerConfigGame.farmLimit":
+		if e.complexity.ServerConfigGame.FarmLimit == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.FarmLimit(childComplexity), true
+
+	case "ServerConfigGame.hauls":
+		if e.complexity.ServerConfigGame.Hauls == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.Hauls(childComplexity), true
+
+	case "ServerConfigGame.haulsBase":
+		if e.complexity.ServerConfigGame.HaulsBase == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.HaulsBase(childComplexity), true
+
+	case "ServerConfigGame.haulsMax":
+		if e.complexity.ServerConfigGame.HaulsMax == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.HaulsMax(childComplexity), true
+
+	case "ServerConfigGame.knight":
+		if e.complexity.ServerConfigGame.Knight == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.Knight(childComplexity), true
+
+	case "ServerConfigGame.knightNewItems":
+		if e.complexity.ServerConfigGame.KnightNewItems == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.KnightNewItems(childComplexity), true
+
+	case "ServerConfigGame.stronghold":
+		if e.complexity.ServerConfigGame.Stronghold == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.Stronghold(childComplexity), true
+
+	case "ServerConfigGame.suppressEvents":
+		if e.complexity.ServerConfigGame.SuppressEvents == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.SuppressEvents(childComplexity), true
+
+	case "ServerConfigGame.tech":
+		if e.complexity.ServerConfigGame.Tech == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.Tech(childComplexity), true
+
+	case "ServerConfigGame.watchtower":
+		if e.complexity.ServerConfigGame.Watchtower == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigGame.Watchtower(childComplexity), true
+
+	case "ServerConfigMisc.killRanking":
+		if e.complexity.ServerConfigMisc.KillRanking == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigMisc.KillRanking(childComplexity), true
+
+	case "ServerConfigMisc.tradeCancelTime":
+		if e.complexity.ServerConfigMisc.TradeCancelTime == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigMisc.TradeCancelTime(childComplexity), true
+
+	case "ServerConfigMisc.tutorial":
+		if e.complexity.ServerConfigMisc.Tutorial == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigMisc.Tutorial(childComplexity), true
+
+	case "ServerConfigNewbie.days":
+		if e.complexity.ServerConfigNewbie.Days == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigNewbie.Days(childComplexity), true
+
+	case "ServerConfigNewbie.ratio":
+		if e.complexity.ServerConfigNewbie.Ratio == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigNewbie.Ratio(childComplexity), true
+
+	case "ServerConfigNewbie.ratioDays":
+		if e.complexity.ServerConfigNewbie.RatioDays == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigNewbie.RatioDays(childComplexity), true
+
+	case "ServerConfigNewbie.removeNewbieVillages":
+		if e.complexity.ServerConfigNewbie.RemoveNewbieVillages == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigNewbie.RemoveNewbieVillages(childComplexity), true
+
+	case "ServerConfigNight.active":
+		if e.complexity.ServerConfigNight.Active == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigNight.Active(childComplexity), true
+
+	case "ServerConfigNight.defFactor":
+		if e.complexity.ServerConfigNight.DefFactor == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigNight.DefFactor(childComplexity), true
+
+	case "ServerConfigNight.endHour":
+		if e.complexity.ServerConfigNight.EndHour == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigNight.EndHour(childComplexity), true
+
+	case "ServerConfigNight.startHour":
+		if e.complexity.ServerConfigNight.StartHour == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigNight.StartHour(childComplexity), true
+
+	case "ServerConfigSitter.allow":
+		if e.complexity.ServerConfigSitter.Allow == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSitter.Allow(childComplexity), true
+
+	case "ServerConfigSleep.active":
+		if e.complexity.ServerConfigSleep.Active == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSleep.Active(childComplexity), true
+
+	case "ServerConfigSleep.delay":
+		if e.complexity.ServerConfigSleep.Delay == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSleep.Delay(childComplexity), true
+
+	case "ServerConfigSleep.max":
+		if e.complexity.ServerConfigSleep.Max == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSleep.Max(childComplexity), true
+
+	case "ServerConfigSleep.maxAwake":
+		if e.complexity.ServerConfigSleep.MaxAwake == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSleep.MaxAwake(childComplexity), true
+
+	case "ServerConfigSleep.min":
+		if e.complexity.ServerConfigSleep.Min == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSleep.Min(childComplexity), true
+
+	case "ServerConfigSleep.minAwake":
+		if e.complexity.ServerConfigSleep.MinAwake == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSleep.MinAwake(childComplexity), true
+
+	case "ServerConfigSleep.warnTime":
+		if e.complexity.ServerConfigSleep.WarnTime == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSleep.WarnTime(childComplexity), true
+
+	case "ServerConfigSnob.cheapRebuild":
+		if e.complexity.ServerConfigSnob.CheapRebuild == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.CheapRebuild(childComplexity), true
+
+	case "ServerConfigSnob.coinIron":
+		if e.complexity.ServerConfigSnob.CoinIron == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.CoinIron(childComplexity), true
+
+	case "ServerConfigSnob.coinStone":
+		if e.complexity.ServerConfigSnob.CoinStone == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.CoinStone(childComplexity), true
+
+	case "ServerConfigSnob.coinWood":
+		if e.complexity.ServerConfigSnob.CoinWood == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.CoinWood(childComplexity), true
+
+	case "ServerConfigSnob.factor":
+		if e.complexity.ServerConfigSnob.Factor == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.Factor(childComplexity), true
+
+	case "ServerConfigSnob.gold":
+		if e.complexity.ServerConfigSnob.Gold == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.Gold(childComplexity), true
+
+	case "ServerConfigSnob.maxDist":
+		if e.complexity.ServerConfigSnob.MaxDist == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.MaxDist(childComplexity), true
+
+	case "ServerConfigSnob.noBarbConquer":
+		if e.complexity.ServerConfigSnob.NoBarbConquer == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.NoBarbConquer(childComplexity), true
+
+	case "ServerConfigSnob.rise":
+		if e.complexity.ServerConfigSnob.Rise == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigSnob.Rise(childComplexity), true
+
+	case "ServerConfigWin.check":
+		if e.complexity.ServerConfigWin.Check == nil {
+			break
+		}
+
+		return e.complexity.ServerConfigWin.Check(childComplexity), true
 
 	case "ServersList.items":
 		if e.complexity.ServersList.Items == nil {
@@ -679,6 +1884,153 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TribesList.Total(childComplexity), true
 
+	case "Unit.attack":
+		if e.complexity.Unit.Attack == nil {
+			break
+		}
+
+		return e.complexity.Unit.Attack(childComplexity), true
+
+	case "Unit.buildTime":
+		if e.complexity.Unit.BuildTime == nil {
+			break
+		}
+
+		return e.complexity.Unit.BuildTime(childComplexity), true
+
+	case "Unit.carry":
+		if e.complexity.Unit.Carry == nil {
+			break
+		}
+
+		return e.complexity.Unit.Carry(childComplexity), true
+
+	case "Unit.defense":
+		if e.complexity.Unit.Defense == nil {
+			break
+		}
+
+		return e.complexity.Unit.Defense(childComplexity), true
+
+	case "Unit.defenseArcher":
+		if e.complexity.Unit.DefenseArcher == nil {
+			break
+		}
+
+		return e.complexity.Unit.DefenseArcher(childComplexity), true
+
+	case "Unit.defenseCavalry":
+		if e.complexity.Unit.DefenseCavalry == nil {
+			break
+		}
+
+		return e.complexity.Unit.DefenseCavalry(childComplexity), true
+
+	case "Unit.pop":
+		if e.complexity.Unit.Pop == nil {
+			break
+		}
+
+		return e.complexity.Unit.Pop(childComplexity), true
+
+	case "Unit.speed":
+		if e.complexity.Unit.Speed == nil {
+			break
+		}
+
+		return e.complexity.Unit.Speed(childComplexity), true
+
+	case "UnitConfig.archer":
+		if e.complexity.UnitConfig.Archer == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Archer(childComplexity), true
+
+	case "UnitConfig.axe":
+		if e.complexity.UnitConfig.Axe == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Axe(childComplexity), true
+
+	case "UnitConfig.catapult":
+		if e.complexity.UnitConfig.Catapult == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Catapult(childComplexity), true
+
+	case "UnitConfig.heavy":
+		if e.complexity.UnitConfig.Heavy == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Heavy(childComplexity), true
+
+	case "UnitConfig.knight":
+		if e.complexity.UnitConfig.Knight == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Knight(childComplexity), true
+
+	case "UnitConfig.light":
+		if e.complexity.UnitConfig.Light == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Light(childComplexity), true
+
+	case "UnitConfig.marcher":
+		if e.complexity.UnitConfig.Marcher == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Marcher(childComplexity), true
+
+	case "UnitConfig.militia":
+		if e.complexity.UnitConfig.Militia == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Militia(childComplexity), true
+
+	case "UnitConfig.ram":
+		if e.complexity.UnitConfig.Ram == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Ram(childComplexity), true
+
+	case "UnitConfig.snob":
+		if e.complexity.UnitConfig.Snob == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Snob(childComplexity), true
+
+	case "UnitConfig.spear":
+		if e.complexity.UnitConfig.Spear == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Spear(childComplexity), true
+
+	case "UnitConfig.spy":
+		if e.complexity.UnitConfig.Spy == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Spy(childComplexity), true
+
+	case "UnitConfig.sword":
+		if e.complexity.UnitConfig.Sword == nil {
+			break
+		}
+
+		return e.complexity.UnitConfig.Sword(childComplexity), true
+
 	case "Village.bonus":
 		if e.complexity.Village.Bonus == nil {
 			break
@@ -792,6 +2144,41 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
+	&ast.Source{Name: "schema/building_config.graphql", Input: `type Building {
+  maxLevel: Int!
+  minLevel: Int!
+  wood: Int!
+  stone: Int!
+  iron: Int!
+  pop: Int!
+  woodFactor: Float!
+  stoneFactor: Float!
+  ironFactor: Float!
+  popFactor: Float!
+  buildTime: Float!
+  buildTimeFactor: Float!
+}
+
+type BuildingConfig {
+  main: Building!
+  barracks: Building!
+  stable: Building!
+  garage: Building!
+  watchtower: Building!
+  snob: Building!
+  smith: Building!
+  place: Building!
+  statue: Building!
+  market: Building!
+  wood: Building!
+  stone: Building!
+  iron: Building!
+  farm: Building!
+  storage: Building!
+  hide: Building!
+  wall: Building!
+}
+`, BuiltIn: false},
 	&ast.Source{Name: "schema/directives.graphql", Input: `directive @goField(
   forceResolver: Boolean
   name: String
@@ -969,6 +2356,10 @@ type Server {
   key: String!
   status: ServerStatus!
   langVersion: LangVersion @goField(forceResolver: true)
+  config: ServerConfig!
+  unitConfig: UnitConfig!
+  buildingConfig: BuildingConfig!
+  dataUpdatedAt: Time! @goField(forceResolver: true)
 }
 
 type ServersList {
@@ -999,6 +2390,156 @@ input ServerFilter {
 extend type Query {
   servers(filter: ServerFilter): ServersList!
   server(key: String!): Server
+}
+`, BuiltIn: false},
+	&ast.Source{Name: "schema/server_config.graphql", Input: `type ServerConfigBuild {
+  destroy: Int!
+}
+
+type ServerConfigMisc {
+  killRanking: Int!
+  tutorial: Int!
+  tradeCancelTime: Int!
+}
+
+type ServerConfigCommands {
+  millisArrival: Int!
+  commandCancelTime: Int!
+}
+
+type ServerConfigNewbie {
+  days: Int!
+  ratioDays: Int!
+  ratio: Int!
+  removeNewbieVillages: Int!
+}
+
+type ServerConfigGame {
+  buildtimeFormula: Int!
+  knight: Int!
+  knightNewItems: Boolean!
+  archer: Int!
+  tech: Int!
+  farmLimit: Int!
+  church: Int!
+  watchtower: Int!
+  stronghold: Int!
+  fakeLimit: Int!
+  barbarianRise: Float!
+  barbarianShrink: Int!
+  barbarianMaxPoints: Int!
+  hauls: Int!
+  haulsBase: Int!
+  haulsMax: Int!
+  baseProduction: Int!
+  event: Int!
+  suppressEvents: Int!
+}
+
+type ServerConfigBuildings {
+  customMain: Int!
+  customFarm: Int!
+  customStorage: Int!
+  customPlace: Int!
+  customBarracks: Int!
+  customChurch: Int!
+  customSmith: Int!
+  customWood: Int!
+  customStone: Int!
+  customIron: Int!
+  customMarket: Int!
+  customStable: Int!
+  customWall: Int!
+  customGarage: Int!
+  customHide: Int!
+  customSnob: Int!
+  customStatue: Int!
+  customWatchtower: Int!
+}
+
+type ServerConfigSnob {
+  gold: Int!
+  cheapRebuild: Int!
+  rise: Int!
+  maxDist: Int!
+  factor: Float!
+  coinWood: Int!
+  coinStone: Int!
+  coinIron: Int!
+  noBarbConquer: Boolean!
+}
+
+type ServerConfigAlly {
+  noHarm: Int!
+  noOtherSupport: Int!
+  allytimeSupport: Int!
+  noLeave: Int!
+  noJoin: Int!
+  limit: Int!
+  fixedAllies: Int!
+  pointsMemberCount: Int!
+  warsMemberRequirement: Int!
+  warsPointsRequirement: Int!
+  warsAutoacceptDays: Int!
+  levels: Int!
+  xpRequirements: String!
+}
+
+type ServerConfigCoord {
+  mapSize: Int!
+  func: Int!
+  emptyVillages: Int!
+  bonusVillages: Int!
+  bonusNew: Int!
+  inner: Int!
+  selectStart: Int!
+  villageMoveWait: Int!
+  nobleRestart: Int!
+  startVillages: Int!
+}
+
+type ServerConfigSitter {
+  allow: Int!
+}
+
+type ServerConfigSleep {
+  active: Int!
+  delay: Int!
+  min: Int!
+  max: Int!
+  minAwake: Int!
+  maxAwake: Int!
+  warnTime: Int!
+}
+
+type ServerConfigNight {
+  active: Int!
+  startHour: Int!
+  endHour: Int!
+  defFactor: Int!
+}
+
+type ServerConfigWin {
+  check: Int!
+}
+
+type ServerConfig {
+  speed: Float!
+  unitSpeed: Float!
+  moral: Int!
+  build: ServerConfigBuild!
+  misc: ServerConfigMisc!
+  commands: ServerConfigCommands!
+  newbie: ServerConfigNewbie!
+  game: ServerConfigGame!
+  buildings: ServerConfigBuildings!
+  snob: ServerConfigSnob!
+  ally: ServerConfigAlly!
+  coord: ServerConfigCoord!
+  sitter: ServerConfigSitter!
+  sleep: ServerConfigSleep!
+  night: ServerConfigNight!
+  win: ServerConfigWin!
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "schema/tribe.graphql", Input: `type Tribe {
@@ -1114,6 +2655,33 @@ input TribeFilter {
 extend type Query {
   tribes(server: String!, filter: TribeFilter): TribesList!
   tribe(server: String!, id: Int!): Tribe
+}
+`, BuiltIn: false},
+	&ast.Source{Name: "schema/unit_config.graphql", Input: `type Unit {
+  buildTime: Float!
+  pop: Int!
+  speed: Float!
+  attack: Int!
+  defense: Int!
+  defenseCavalry: Int!
+  defenseArcher: Int!
+  carry: Int!
+}
+
+type UnitConfig {
+  spear: Unit!
+  sword: Unit!
+  axe: Unit!
+  archer: Unit!
+  spy: Unit!
+  light: Unit!
+  marcher: Unit!
+  heavy: Unit!
+  ram: Unit!
+  catapult: Unit!
+  knight: Unit!
+  snob: Unit!
+  militia: Unit!
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "schema/village.graphql", Input: `type Village {
@@ -1431,6 +2999,992 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 // endregion ************************** directives.gotpl **************************
 
 // region    **************************** field.gotpl *****************************
+
+func (ec *executionContext) _Building_maxLevel(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MaxLevel, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_minLevel(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MinLevel, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_wood(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Wood, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_stone(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Stone, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_iron(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Iron, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_pop(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Pop, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_woodFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WoodFactor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_stoneFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.StoneFactor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_ironFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IronFactor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_popFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PopFactor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_buildTime(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BuildTime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Building_buildTimeFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Building",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BuildTimeFactor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_main(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Main, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_barracks(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Barracks, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_stable(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Stable, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_garage(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Garage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_watchtower(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Watchtower, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_snob(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Snob, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_smith(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Smith, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_place(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Place, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_statue(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Statue, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_market(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Market, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_wood(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Wood, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_stone(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Stone, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_iron(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Iron, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_farm(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Farm, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_storage(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Storage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_hide(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hide, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _BuildingConfig_wall(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "BuildingConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Wall, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Building)
+	fc.Result = res
+	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
+}
 
 func (ec *executionContext) _Ennoblement_village(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
@@ -2967,6 +5521,3814 @@ func (ec *executionContext) _Server_langVersion(ctx context.Context, field graph
 	return ec.marshalOLangVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLangVersion(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Server_config(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Config, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfig)
+	fc.Result = res
+	return ec.marshalNServerConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfig(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Server_unitConfig(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UnitConfig, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.UnitConfig)
+	fc.Result = res
+	return ec.marshalNUnitConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnitConfig(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Server_buildingConfig(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BuildingConfig, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.BuildingConfig)
+	fc.Result = res
+	return ec.marshalNBuildingConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuildingConfig(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Server_dataUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Server().DataUpdatedAt(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_speed(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Speed, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_unitSpeed(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UnitSpeed, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_moral(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Moral, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_build(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Build, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigBuild)
+	fc.Result = res
+	return ec.marshalNServerConfigBuild2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuild(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_misc(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Misc, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigMisc)
+	fc.Result = res
+	return ec.marshalNServerConfigMisc2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigMisc(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_commands(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Commands, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigCommands)
+	fc.Result = res
+	return ec.marshalNServerConfigCommands2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCommands(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_newbie(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Newbie, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigNewbie)
+	fc.Result = res
+	return ec.marshalNServerConfigNewbie2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNewbie(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_game(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Game, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigGame)
+	fc.Result = res
+	return ec.marshalNServerConfigGame2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigGame(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_buildings(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Buildings, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigBuildings)
+	fc.Result = res
+	return ec.marshalNServerConfigBuildings2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuildings(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_snob(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Snob, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigSnob)
+	fc.Result = res
+	return ec.marshalNServerConfigSnob2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSnob(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_ally(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Ally, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigAlly)
+	fc.Result = res
+	return ec.marshalNServerConfigAlly2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigAlly(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_coord(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Coord, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigCoord)
+	fc.Result = res
+	return ec.marshalNServerConfigCoord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCoord(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_sitter(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sitter, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigSitter)
+	fc.Result = res
+	return ec.marshalNServerConfigSitter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSitter(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_sleep(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sleep, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigSleep)
+	fc.Result = res
+	return ec.marshalNServerConfigSleep2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSleep(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_night(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Night, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigNight)
+	fc.Result = res
+	return ec.marshalNServerConfigNight2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNight(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfig_win(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Win, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.ServerConfigWin)
+	fc.Result = res
+	return ec.marshalNServerConfigWin2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigWin(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_noHarm(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NoHarm, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_noOtherSupport(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NoOtherSupport, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_allytimeSupport(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AllytimeSupport, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_noLeave(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NoLeave, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_noJoin(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NoJoin, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_limit(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Limit, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_fixedAllies(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FixedAllies, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_pointsMemberCount(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PointsMemberCount, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_warsMemberRequirement(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WarsMemberRequirement, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_warsPointsRequirement(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WarsPointsRequirement, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_warsAutoacceptDays(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WarsAutoacceptDays, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_levels(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Levels, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigAlly_xpRequirements(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigAlly",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.XpRequirements, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuild_destroy(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuild) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuild",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Destroy, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customMain(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomMain, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customFarm(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomFarm, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customStorage(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomStorage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customPlace(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomPlace, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customBarracks(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomBarracks, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customChurch(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomChurch, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customSmith(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomSmith, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customWood(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomWood, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customStone(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomStone, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customIron(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomIron, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customMarket(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomMarket, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customStable(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomStable, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customWall(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomWall, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customGarage(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomGarage, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customHide(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomHide, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customSnob(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomSnob, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customStatue(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomStatue, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigBuildings_customWatchtower(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigBuildings",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CustomWatchtower, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCommands_millisArrival(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCommands) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCommands",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MillisArrival, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCommands_commandCancelTime(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCommands) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCommands",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CommandCancelTime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_mapSize(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MapSize, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_func(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Func, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_emptyVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EmptyVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_bonusVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BonusVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_bonusNew(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BonusNew, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_inner(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Inner, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_selectStart(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SelectStart, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_villageMoveWait(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.VillageMoveWait, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_nobleRestart(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NobleRestart, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigCoord_startVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigCoord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.StartVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_buildtimeFormula(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BuildtimeFormula, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_knight(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Knight, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_knightNewItems(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.KnightNewItems, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_archer(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Archer, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_tech(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tech, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_farmLimit(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FarmLimit, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_church(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Church, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_watchtower(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Watchtower, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_stronghold(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Stronghold, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_fakeLimit(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FakeLimit, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_barbarianRise(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BarbarianRise, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_barbarianShrink(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BarbarianShrink, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_barbarianMaxPoints(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BarbarianMaxPoints, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_hauls(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hauls, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_haulsBase(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.HaulsBase, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_haulsMax(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.HaulsMax, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_baseProduction(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BaseProduction, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_event(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Event, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigGame_suppressEvents(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigGame",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SuppressEvents, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigMisc_killRanking(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigMisc) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigMisc",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.KillRanking, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigMisc_tutorial(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigMisc) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigMisc",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tutorial, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigMisc_tradeCancelTime(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigMisc) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigMisc",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TradeCancelTime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigNewbie_days(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNewbie) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigNewbie",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Days, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigNewbie_ratioDays(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNewbie) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigNewbie",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RatioDays, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigNewbie_ratio(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNewbie) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigNewbie",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Ratio, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigNewbie_removeNewbieVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNewbie) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigNewbie",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RemoveNewbieVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigNight_active(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNight) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigNight",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Active, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigNight_startHour(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNight) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigNight",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.StartHour, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigNight_endHour(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNight) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigNight",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EndHour, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigNight_defFactor(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNight) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigNight",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DefFactor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSitter_allow(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSitter) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSitter",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Allow, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSleep_active(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSleep",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Active, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSleep_delay(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSleep",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Delay, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSleep_min(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSleep",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Min, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSleep_max(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSleep",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Max, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSleep_minAwake(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSleep",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MinAwake, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSleep_maxAwake(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSleep",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MaxAwake, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSleep_warnTime(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSleep",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.WarnTime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_gold(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Gold, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_cheapRebuild(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CheapRebuild, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_rise(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Rise, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_maxDist(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MaxDist, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_factor(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Factor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_coinWood(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CoinWood, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_coinStone(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CoinStone, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_coinIron(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CoinIron, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigSnob_noBarbConquer(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigSnob",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NoBarbConquer, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerConfigWin_check(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigWin) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerConfigWin",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Check, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _ServersList_items(ctx context.Context, field graphql.CollectedField, obj *ServersList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -3605,6 +9967,720 @@ func (ec *executionContext) _TribesList_total(ctx context.Context, field graphql
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Unit_buildTime(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Unit",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BuildTime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Unit_pop(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Unit",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Pop, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Unit_speed(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Unit",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Speed, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Unit_attack(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Unit",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Attack, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Unit_defense(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Unit",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Defense, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Unit_defenseCavalry(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Unit",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DefenseCavalry, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Unit_defenseArcher(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Unit",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DefenseArcher, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Unit_carry(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Unit",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Carry, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_spear(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Spear, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_sword(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sword, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_axe(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Axe, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_archer(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Archer, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_spy(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Spy, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_light(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Light, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_marcher(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Marcher, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_heavy(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Heavy, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_ram(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Ram, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_catapult(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Catapult, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_knight(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Knight, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_snob(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Snob, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _UnitConfig_militia(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "UnitConfig",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Militia, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Unit)
+	fc.Result = res
+	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Village_id(ctx context.Context, field graphql.CollectedField, obj *models.Village) (ret graphql.Marshaler) {
@@ -6140,6 +13216,195 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 
 // region    **************************** object.gotpl ****************************
 
+var buildingImplementors = []string{"Building"}
+
+func (ec *executionContext) _Building(ctx context.Context, sel ast.SelectionSet, obj *models.Building) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, buildingImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Building")
+		case "maxLevel":
+			out.Values[i] = ec._Building_maxLevel(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "minLevel":
+			out.Values[i] = ec._Building_minLevel(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "wood":
+			out.Values[i] = ec._Building_wood(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "stone":
+			out.Values[i] = ec._Building_stone(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "iron":
+			out.Values[i] = ec._Building_iron(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "pop":
+			out.Values[i] = ec._Building_pop(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "woodFactor":
+			out.Values[i] = ec._Building_woodFactor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "stoneFactor":
+			out.Values[i] = ec._Building_stoneFactor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "ironFactor":
+			out.Values[i] = ec._Building_ironFactor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "popFactor":
+			out.Values[i] = ec._Building_popFactor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "buildTime":
+			out.Values[i] = ec._Building_buildTime(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "buildTimeFactor":
+			out.Values[i] = ec._Building_buildTimeFactor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var buildingConfigImplementors = []string{"BuildingConfig"}
+
+func (ec *executionContext) _BuildingConfig(ctx context.Context, sel ast.SelectionSet, obj *models.BuildingConfig) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, buildingConfigImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("BuildingConfig")
+		case "main":
+			out.Values[i] = ec._BuildingConfig_main(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "barracks":
+			out.Values[i] = ec._BuildingConfig_barracks(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "stable":
+			out.Values[i] = ec._BuildingConfig_stable(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "garage":
+			out.Values[i] = ec._BuildingConfig_garage(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "watchtower":
+			out.Values[i] = ec._BuildingConfig_watchtower(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "snob":
+			out.Values[i] = ec._BuildingConfig_snob(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "smith":
+			out.Values[i] = ec._BuildingConfig_smith(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "place":
+			out.Values[i] = ec._BuildingConfig_place(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "statue":
+			out.Values[i] = ec._BuildingConfig_statue(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "market":
+			out.Values[i] = ec._BuildingConfig_market(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "wood":
+			out.Values[i] = ec._BuildingConfig_wood(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "stone":
+			out.Values[i] = ec._BuildingConfig_stone(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "iron":
+			out.Values[i] = ec._BuildingConfig_iron(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "farm":
+			out.Values[i] = ec._BuildingConfig_farm(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "storage":
+			out.Values[i] = ec._BuildingConfig_storage(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "hide":
+			out.Values[i] = ec._BuildingConfig_hide(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "wall":
+			out.Values[i] = ec._BuildingConfig_wall(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var ennoblementImplementors = []string{"Ennoblement"}
 
 func (ec *executionContext) _Ennoblement(ctx context.Context, sel ast.SelectionSet, obj *models.Ennoblement) graphql.Marshaler {
@@ -6606,6 +13871,883 @@ func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, o
 				res = ec._Server_langVersion(ctx, field, obj)
 				return res
 			})
+		case "config":
+			out.Values[i] = ec._Server_config(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "unitConfig":
+			out.Values[i] = ec._Server_unitConfig(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "buildingConfig":
+			out.Values[i] = ec._Server_buildingConfig(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "dataUpdatedAt":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Server_dataUpdatedAt(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigImplementors = []string{"ServerConfig"}
+
+func (ec *executionContext) _ServerConfig(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfig) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfig")
+		case "speed":
+			out.Values[i] = ec._ServerConfig_speed(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "unitSpeed":
+			out.Values[i] = ec._ServerConfig_unitSpeed(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "moral":
+			out.Values[i] = ec._ServerConfig_moral(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "build":
+			out.Values[i] = ec._ServerConfig_build(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "misc":
+			out.Values[i] = ec._ServerConfig_misc(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "commands":
+			out.Values[i] = ec._ServerConfig_commands(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "newbie":
+			out.Values[i] = ec._ServerConfig_newbie(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "game":
+			out.Values[i] = ec._ServerConfig_game(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "buildings":
+			out.Values[i] = ec._ServerConfig_buildings(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "snob":
+			out.Values[i] = ec._ServerConfig_snob(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "ally":
+			out.Values[i] = ec._ServerConfig_ally(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "coord":
+			out.Values[i] = ec._ServerConfig_coord(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "sitter":
+			out.Values[i] = ec._ServerConfig_sitter(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "sleep":
+			out.Values[i] = ec._ServerConfig_sleep(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "night":
+			out.Values[i] = ec._ServerConfig_night(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "win":
+			out.Values[i] = ec._ServerConfig_win(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigAllyImplementors = []string{"ServerConfigAlly"}
+
+func (ec *executionContext) _ServerConfigAlly(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigAlly) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigAllyImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigAlly")
+		case "noHarm":
+			out.Values[i] = ec._ServerConfigAlly_noHarm(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "noOtherSupport":
+			out.Values[i] = ec._ServerConfigAlly_noOtherSupport(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "allytimeSupport":
+			out.Values[i] = ec._ServerConfigAlly_allytimeSupport(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "noLeave":
+			out.Values[i] = ec._ServerConfigAlly_noLeave(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "noJoin":
+			out.Values[i] = ec._ServerConfigAlly_noJoin(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "limit":
+			out.Values[i] = ec._ServerConfigAlly_limit(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "fixedAllies":
+			out.Values[i] = ec._ServerConfigAlly_fixedAllies(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "pointsMemberCount":
+			out.Values[i] = ec._ServerConfigAlly_pointsMemberCount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "warsMemberRequirement":
+			out.Values[i] = ec._ServerConfigAlly_warsMemberRequirement(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "warsPointsRequirement":
+			out.Values[i] = ec._ServerConfigAlly_warsPointsRequirement(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "warsAutoacceptDays":
+			out.Values[i] = ec._ServerConfigAlly_warsAutoacceptDays(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "levels":
+			out.Values[i] = ec._ServerConfigAlly_levels(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "xpRequirements":
+			out.Values[i] = ec._ServerConfigAlly_xpRequirements(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigBuildImplementors = []string{"ServerConfigBuild"}
+
+func (ec *executionContext) _ServerConfigBuild(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigBuild) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigBuildImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigBuild")
+		case "destroy":
+			out.Values[i] = ec._ServerConfigBuild_destroy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigBuildingsImplementors = []string{"ServerConfigBuildings"}
+
+func (ec *executionContext) _ServerConfigBuildings(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigBuildings) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigBuildingsImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigBuildings")
+		case "customMain":
+			out.Values[i] = ec._ServerConfigBuildings_customMain(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customFarm":
+			out.Values[i] = ec._ServerConfigBuildings_customFarm(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customStorage":
+			out.Values[i] = ec._ServerConfigBuildings_customStorage(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customPlace":
+			out.Values[i] = ec._ServerConfigBuildings_customPlace(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customBarracks":
+			out.Values[i] = ec._ServerConfigBuildings_customBarracks(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customChurch":
+			out.Values[i] = ec._ServerConfigBuildings_customChurch(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customSmith":
+			out.Values[i] = ec._ServerConfigBuildings_customSmith(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customWood":
+			out.Values[i] = ec._ServerConfigBuildings_customWood(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customStone":
+			out.Values[i] = ec._ServerConfigBuildings_customStone(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customIron":
+			out.Values[i] = ec._ServerConfigBuildings_customIron(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customMarket":
+			out.Values[i] = ec._ServerConfigBuildings_customMarket(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customStable":
+			out.Values[i] = ec._ServerConfigBuildings_customStable(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customWall":
+			out.Values[i] = ec._ServerConfigBuildings_customWall(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customGarage":
+			out.Values[i] = ec._ServerConfigBuildings_customGarage(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customHide":
+			out.Values[i] = ec._ServerConfigBuildings_customHide(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customSnob":
+			out.Values[i] = ec._ServerConfigBuildings_customSnob(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customStatue":
+			out.Values[i] = ec._ServerConfigBuildings_customStatue(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "customWatchtower":
+			out.Values[i] = ec._ServerConfigBuildings_customWatchtower(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigCommandsImplementors = []string{"ServerConfigCommands"}
+
+func (ec *executionContext) _ServerConfigCommands(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigCommands) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigCommandsImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigCommands")
+		case "millisArrival":
+			out.Values[i] = ec._ServerConfigCommands_millisArrival(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "commandCancelTime":
+			out.Values[i] = ec._ServerConfigCommands_commandCancelTime(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigCoordImplementors = []string{"ServerConfigCoord"}
+
+func (ec *executionContext) _ServerConfigCoord(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigCoord) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigCoordImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigCoord")
+		case "mapSize":
+			out.Values[i] = ec._ServerConfigCoord_mapSize(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "func":
+			out.Values[i] = ec._ServerConfigCoord_func(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "emptyVillages":
+			out.Values[i] = ec._ServerConfigCoord_emptyVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "bonusVillages":
+			out.Values[i] = ec._ServerConfigCoord_bonusVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "bonusNew":
+			out.Values[i] = ec._ServerConfigCoord_bonusNew(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "inner":
+			out.Values[i] = ec._ServerConfigCoord_inner(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "selectStart":
+			out.Values[i] = ec._ServerConfigCoord_selectStart(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "villageMoveWait":
+			out.Values[i] = ec._ServerConfigCoord_villageMoveWait(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "nobleRestart":
+			out.Values[i] = ec._ServerConfigCoord_nobleRestart(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "startVillages":
+			out.Values[i] = ec._ServerConfigCoord_startVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigGameImplementors = []string{"ServerConfigGame"}
+
+func (ec *executionContext) _ServerConfigGame(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigGame) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigGameImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigGame")
+		case "buildtimeFormula":
+			out.Values[i] = ec._ServerConfigGame_buildtimeFormula(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "knight":
+			out.Values[i] = ec._ServerConfigGame_knight(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "knightNewItems":
+			out.Values[i] = ec._ServerConfigGame_knightNewItems(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "archer":
+			out.Values[i] = ec._ServerConfigGame_archer(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "tech":
+			out.Values[i] = ec._ServerConfigGame_tech(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "farmLimit":
+			out.Values[i] = ec._ServerConfigGame_farmLimit(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "church":
+			out.Values[i] = ec._ServerConfigGame_church(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "watchtower":
+			out.Values[i] = ec._ServerConfigGame_watchtower(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "stronghold":
+			out.Values[i] = ec._ServerConfigGame_stronghold(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "fakeLimit":
+			out.Values[i] = ec._ServerConfigGame_fakeLimit(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "barbarianRise":
+			out.Values[i] = ec._ServerConfigGame_barbarianRise(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "barbarianShrink":
+			out.Values[i] = ec._ServerConfigGame_barbarianShrink(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "barbarianMaxPoints":
+			out.Values[i] = ec._ServerConfigGame_barbarianMaxPoints(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "hauls":
+			out.Values[i] = ec._ServerConfigGame_hauls(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "haulsBase":
+			out.Values[i] = ec._ServerConfigGame_haulsBase(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "haulsMax":
+			out.Values[i] = ec._ServerConfigGame_haulsMax(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "baseProduction":
+			out.Values[i] = ec._ServerConfigGame_baseProduction(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "event":
+			out.Values[i] = ec._ServerConfigGame_event(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "suppressEvents":
+			out.Values[i] = ec._ServerConfigGame_suppressEvents(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigMiscImplementors = []string{"ServerConfigMisc"}
+
+func (ec *executionContext) _ServerConfigMisc(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigMisc) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigMiscImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigMisc")
+		case "killRanking":
+			out.Values[i] = ec._ServerConfigMisc_killRanking(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "tutorial":
+			out.Values[i] = ec._ServerConfigMisc_tutorial(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "tradeCancelTime":
+			out.Values[i] = ec._ServerConfigMisc_tradeCancelTime(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigNewbieImplementors = []string{"ServerConfigNewbie"}
+
+func (ec *executionContext) _ServerConfigNewbie(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigNewbie) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigNewbieImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigNewbie")
+		case "days":
+			out.Values[i] = ec._ServerConfigNewbie_days(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "ratioDays":
+			out.Values[i] = ec._ServerConfigNewbie_ratioDays(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "ratio":
+			out.Values[i] = ec._ServerConfigNewbie_ratio(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "removeNewbieVillages":
+			out.Values[i] = ec._ServerConfigNewbie_removeNewbieVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigNightImplementors = []string{"ServerConfigNight"}
+
+func (ec *executionContext) _ServerConfigNight(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigNight) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigNightImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigNight")
+		case "active":
+			out.Values[i] = ec._ServerConfigNight_active(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "startHour":
+			out.Values[i] = ec._ServerConfigNight_startHour(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "endHour":
+			out.Values[i] = ec._ServerConfigNight_endHour(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "defFactor":
+			out.Values[i] = ec._ServerConfigNight_defFactor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigSitterImplementors = []string{"ServerConfigSitter"}
+
+func (ec *executionContext) _ServerConfigSitter(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigSitter) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigSitterImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigSitter")
+		case "allow":
+			out.Values[i] = ec._ServerConfigSitter_allow(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigSleepImplementors = []string{"ServerConfigSleep"}
+
+func (ec *executionContext) _ServerConfigSleep(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigSleep) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigSleepImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigSleep")
+		case "active":
+			out.Values[i] = ec._ServerConfigSleep_active(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "delay":
+			out.Values[i] = ec._ServerConfigSleep_delay(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "min":
+			out.Values[i] = ec._ServerConfigSleep_min(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "max":
+			out.Values[i] = ec._ServerConfigSleep_max(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "minAwake":
+			out.Values[i] = ec._ServerConfigSleep_minAwake(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "maxAwake":
+			out.Values[i] = ec._ServerConfigSleep_maxAwake(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "warnTime":
+			out.Values[i] = ec._ServerConfigSleep_warnTime(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigSnobImplementors = []string{"ServerConfigSnob"}
+
+func (ec *executionContext) _ServerConfigSnob(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigSnob) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigSnobImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigSnob")
+		case "gold":
+			out.Values[i] = ec._ServerConfigSnob_gold(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "cheapRebuild":
+			out.Values[i] = ec._ServerConfigSnob_cheapRebuild(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "rise":
+			out.Values[i] = ec._ServerConfigSnob_rise(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "maxDist":
+			out.Values[i] = ec._ServerConfigSnob_maxDist(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "factor":
+			out.Values[i] = ec._ServerConfigSnob_factor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "coinWood":
+			out.Values[i] = ec._ServerConfigSnob_coinWood(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "coinStone":
+			out.Values[i] = ec._ServerConfigSnob_coinStone(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "coinIron":
+			out.Values[i] = ec._ServerConfigSnob_coinIron(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "noBarbConquer":
+			out.Values[i] = ec._ServerConfigSnob_noBarbConquer(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverConfigWinImplementors = []string{"ServerConfigWin"}
+
+func (ec *executionContext) _ServerConfigWin(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigWin) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigWinImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerConfigWin")
+		case "check":
+			out.Values[i] = ec._ServerConfigWin_check(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -6758,6 +14900,155 @@ func (ec *executionContext) _TribesList(ctx context.Context, sel ast.SelectionSe
 			out.Values[i] = ec._TribesList_items(ctx, field, obj)
 		case "total":
 			out.Values[i] = ec._TribesList_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var unitImplementors = []string{"Unit"}
+
+func (ec *executionContext) _Unit(ctx context.Context, sel ast.SelectionSet, obj *models.Unit) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, unitImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Unit")
+		case "buildTime":
+			out.Values[i] = ec._Unit_buildTime(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "pop":
+			out.Values[i] = ec._Unit_pop(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "speed":
+			out.Values[i] = ec._Unit_speed(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "attack":
+			out.Values[i] = ec._Unit_attack(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "defense":
+			out.Values[i] = ec._Unit_defense(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "defenseCavalry":
+			out.Values[i] = ec._Unit_defenseCavalry(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "defenseArcher":
+			out.Values[i] = ec._Unit_defenseArcher(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "carry":
+			out.Values[i] = ec._Unit_carry(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var unitConfigImplementors = []string{"UnitConfig"}
+
+func (ec *executionContext) _UnitConfig(ctx context.Context, sel ast.SelectionSet, obj *models.UnitConfig) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, unitConfigImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("UnitConfig")
+		case "spear":
+			out.Values[i] = ec._UnitConfig_spear(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "sword":
+			out.Values[i] = ec._UnitConfig_sword(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "axe":
+			out.Values[i] = ec._UnitConfig_axe(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "archer":
+			out.Values[i] = ec._UnitConfig_archer(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "spy":
+			out.Values[i] = ec._UnitConfig_spy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "light":
+			out.Values[i] = ec._UnitConfig_light(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "marcher":
+			out.Values[i] = ec._UnitConfig_marcher(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "heavy":
+			out.Values[i] = ec._UnitConfig_heavy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "ram":
+			out.Values[i] = ec._UnitConfig_ram(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "catapult":
+			out.Values[i] = ec._UnitConfig_catapult(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "knight":
+			out.Values[i] = ec._UnitConfig_knight(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "snob":
+			out.Values[i] = ec._UnitConfig_snob(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "militia":
+			out.Values[i] = ec._UnitConfig_militia(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -7141,6 +15432,14 @@ func (ec *executionContext) marshalNBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalNBoolean2bool(ctx, sel, *v)
 }
 
+func (ec *executionContext) marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx context.Context, sel ast.SelectionSet, v models.Building) graphql.Marshaler {
+	return ec._Building(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNBuildingConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuildingConfig(ctx context.Context, sel ast.SelectionSet, v models.BuildingConfig) graphql.Marshaler {
+	return ec._BuildingConfig(ctx, sel, &v)
+}
+
 func (ec *executionContext) marshalNEnnoblement2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblement(ctx context.Context, sel ast.SelectionSet, v models.Ennoblement) graphql.Marshaler {
 	return ec._Ennoblement(ctx, sel, &v)
 }
@@ -7153,6 +15452,20 @@ func (ec *executionContext) marshalNEnnoblement2ᚖgithubᚗcomᚋtribalwarshelp
 		return graphql.Null
 	}
 	return ec._Ennoblement(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNFloat2float64(ctx context.Context, v interface{}) (float64, error) {
+	return graphql.UnmarshalFloat(v)
+}
+
+func (ec *executionContext) marshalNFloat2float64(ctx context.Context, sel ast.SelectionSet, v float64) graphql.Marshaler {
+	res := graphql.MarshalFloat(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+	}
+	return res
 }
 
 func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
@@ -7248,6 +15561,62 @@ func (ec *executionContext) marshalNServer2ᚖgithubᚗcomᚋtribalwarshelpᚋsh
 	return ec._Server(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNServerConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfig(ctx context.Context, sel ast.SelectionSet, v models.ServerConfig) graphql.Marshaler {
+	return ec._ServerConfig(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigAlly2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigAlly(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigAlly) graphql.Marshaler {
+	return ec._ServerConfigAlly(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigBuild2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuild(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigBuild) graphql.Marshaler {
+	return ec._ServerConfigBuild(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigBuildings2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuildings(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigBuildings) graphql.Marshaler {
+	return ec._ServerConfigBuildings(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigCommands2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCommands(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigCommands) graphql.Marshaler {
+	return ec._ServerConfigCommands(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigCoord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCoord(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigCoord) graphql.Marshaler {
+	return ec._ServerConfigCoord(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigGame2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigGame(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigGame) graphql.Marshaler {
+	return ec._ServerConfigGame(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigMisc2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigMisc(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigMisc) graphql.Marshaler {
+	return ec._ServerConfigMisc(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigNewbie2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNewbie(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigNewbie) graphql.Marshaler {
+	return ec._ServerConfigNewbie(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigNight2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNight(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigNight) graphql.Marshaler {
+	return ec._ServerConfigNight(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigSitter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSitter(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigSitter) graphql.Marshaler {
+	return ec._ServerConfigSitter(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigSleep2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSleep(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigSleep) graphql.Marshaler {
+	return ec._ServerConfigSleep(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigSnob2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSnob(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigSnob) graphql.Marshaler {
+	return ec._ServerConfigSnob(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerConfigWin2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigWin(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigWin) graphql.Marshaler {
+	return ec._ServerConfigWin(ctx, sel, &v)
+}
+
 func (ec *executionContext) unmarshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx context.Context, v interface{}) (models.ServerStatus, error) {
 	var res models.ServerStatus
 	return res, res.UnmarshalGQL(v)
@@ -7299,6 +15668,24 @@ func (ec *executionContext) marshalNTime2timeᚐTime(ctx context.Context, sel as
 	return res
 }
 
+func (ec *executionContext) unmarshalNTime2ᚖtimeᚐTime(ctx context.Context, v interface{}) (*time.Time, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalNTime2ᚖtimeᚐTime(ctx context.Context, sel ast.SelectionSet, v *time.Time) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec.marshalNTime2timeᚐTime(ctx, sel, *v)
+}
+
 func (ec *executionContext) marshalNTribe2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx context.Context, sel ast.SelectionSet, v models.Tribe) graphql.Marshaler {
 	return ec._Tribe(ctx, sel, &v)
 }
@@ -7325,6 +15712,14 @@ func (ec *executionContext) marshalNTribesList2ᚖgithubᚗcomᚋtribalwarshelp�
 		return graphql.Null
 	}
 	return ec._TribesList(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx context.Context, sel ast.SelectionSet, v models.Unit) graphql.Marshaler {
+	return ec._Unit(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUnitConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnitConfig(ctx context.Context, sel ast.SelectionSet, v models.UnitConfig) graphql.Marshaler {
+	return ec._UnitConfig(ctx, sel, &v)
 }
 
 func (ec *executionContext) marshalNVillage2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx context.Context, sel ast.SelectionSet, v models.Village) graphql.Marshaler {
