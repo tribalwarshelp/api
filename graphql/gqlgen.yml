@@ -22,6 +22,42 @@ models:
     model: github.com/tribalwarshelp/shared/models.LangVersionFilter
   Server:
     model: github.com/tribalwarshelp/shared/models.Server
+  ServerConfig:
+    model: github.com/tribalwarshelp/shared/models.ServerConfig
+  ServerConfigBuild:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigBuild
+  ServerConfigMisc:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigMisc
+  ServerConfigCommands:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigCommands
+  ServerConfigNewbie:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigNewbie
+  ServerConfigGame:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigGame
+  ServerConfigBuildings:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigBuildings
+  ServerConfigSnob:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigSnob
+  ServerConfigAlly:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigAlly
+  ServerConfigCoord:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigCoord
+  ServerConfigSitter:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigSitter
+  ServerConfigSleep:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigSleep
+  ServerConfigNight:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigNight
+  ServerConfigWin:
+    model: github.com/tribalwarshelp/shared/models.ServerConfigWin
+  Unit:
+    model: github.com/tribalwarshelp/shared/models.Unit
+  UnitConfig:
+    model: github.com/tribalwarshelp/shared/models.UnitConfig
+  Building:
+    model: github.com/tribalwarshelp/shared/models.Building
+  BuildingConfig:
+    model: github.com/tribalwarshelp/shared/models.BuildingConfig
   ServerFilter:
     model: github.com/tribalwarshelp/shared/models.ServerFilter
   Player:

@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/tribalwarshelp/api/utils"
+
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/models"
 )
@@ -14,13 +16,10 @@ type lineParser struct {
 }
 
 func newLineParser(timezone string) (*lineParser, error) {
-	loc, err := time.LoadLocation(timezone)
-	if err != nil {
-		return nil, fmt.Errorf("Invalid timezone: %s", timezone)
-	}
 	return &lineParser{
-		location: loc,
-	}, nil
+			location: utils.GetLocation(timezone),
+		},
+		nil
 }
 
 func (parser *lineParser) parse(line []string) (*models.Ennoblement, error) {
