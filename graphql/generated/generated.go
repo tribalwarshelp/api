@@ -2333,6 +2333,7 @@ input PlayerFilter {
   scoreTotalLTE: Int
 
   tribeID: [Int!]
+  tribeFilter: TribeFilter
 
   offset: Int
   limit: Int
@@ -2730,6 +2731,7 @@ input VillageFilter {
   bonusLTE: Int
 
   playerID: [Int!]
+  playerFilter: PlayerFilter
 
   offset: Int
   limit: Int
@@ -12488,6 +12490,12 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 			if err != nil {
 				return it, err
 			}
+		case "tribeFilter":
+			var err error
+			it.TribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "offset":
 			var err error
 			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
@@ -13181,6 +13189,12 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 		case "playerID":
 			var err error
 			it.PlayerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "playerFilter":
+			var err error
+			it.PlayerFilter, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
