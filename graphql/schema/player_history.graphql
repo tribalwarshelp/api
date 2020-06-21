@@ -1,0 +1,40 @@
+type PlayerHistoryRecord {
+  player: Player @goField(forceResolver: true)
+  totalVillages: Int!
+  points: Int!
+  rank: Int!
+  rankAtt: Int!
+  scoreAtt: Int!
+  rankDef: Int!
+  scoreDef: Int!
+  rankSup: Int!
+  scoreSup: Int!
+  rankTotal: Int!
+  scoreTotal: Int!
+  tribe: Tribe @goField(forceResolver: true)
+  createdAt: Time! @goField(forceResolver: true)
+}
+
+type PlayerHistory {
+  total: Int!
+  items: [PlayerHistoryRecord!]
+}
+
+input PlayerHistoryFilter {
+  playerID: [Int!]
+  playerIDNEQ: [Int!]
+
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  playerHistory(server: String!, filter: PlayerHistoryFilter): PlayerHistory!
+}

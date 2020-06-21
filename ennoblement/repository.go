@@ -7,5 +7,5 @@ import (
 )
 
 type Repository interface {
-	Fetch(ctx context.Context, server string) ([]*models.Ennoblement, error)
+	Fetch(ctx context.Context, server string, filter *models.EnnoblementFilter) ([]*models.Ennoblement, int, error)
 }

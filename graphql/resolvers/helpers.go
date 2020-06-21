@@ -1,8 +1,17 @@
 package resolvers
 
-import "github.com/99designs/gqlgen/graphql"
+import (
+	"context"
+	"time"
 
-func getServer(rctx *graphql.FieldContext) (string, bool) {
+	"github.com/99designs/gqlgen/graphql"
+	"github.com/tribalwarshelp/api/middleware"
+	"github.com/tribalwarshelp/api/utils"
+	"github.com/tribalwarshelp/shared/models"
+)
+
+func getServer(ctx context.Context) (string, bool) {
+	rctx := graphql.GetFieldContext(ctx)
 	server := ""
 	ok := false
 	for rctx != nil {
@@ -13,4 +22,60 @@ func getServer(rctx *graphql.FieldContext) (string, bool) {
 		rctx = rctx.Parent
 	}
 	return server, ok
+}
+
+func getPlayer(ctx context.Context, id int) *models.Player {
+	if server, ok := getServer(ctx); ok {
+		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
+		if dataloaders != nil {
+			if dataloader, ok := dataloaders[server]; ok {
+				player, _ := dataloader.PlayerByID.Load(id)
+				if player != nil {
+					return player
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func getVillage(ctx context.Context, id int) *models.Village {
+	if server, ok := getServer(ctx); ok {
+		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
+		if dataloaders != nil {
+			if dataloader, ok := dataloaders[server]; ok {
+				player, _ := dataloader.VillageByID.Load(id)
+				if player != nil {
+					return player
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func getTribe(ctx context.Context, id int) *models.Tribe {
+	if server, ok := getServer(ctx); ok {
+		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
+		if dataloaders != nil {
+			if dataloader, ok := dataloaders[server]; ok {
+				player, _ := dataloader.TribeByID.Load(id)
+				if player != nil {
+					return player
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func formatDate(ctx context.Context, langTag models.LanguageTag, t time.Time) time.Time {
+	loaders := middleware.DataLoadersFromContext(ctx)
+	if loaders != nil {
+		lv, err := loaders.LangVersionByTag.Load(langTag.String())
+		if err == nil {
+			return t.In(utils.GetLocation(lv.Timezone))
+		}
+	}
+	return t
 }

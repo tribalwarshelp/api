@@ -1,4 +1,4 @@
-package ennoblement
+package tribehistory
 
 const (
 	PaginationLimit = 100

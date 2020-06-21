@@ -7,11 +7,19 @@ type Server {
   id: Int!
   key: String!
   status: ServerStatus!
+  numberOfPlayers: Int!
+  numberOfTribes: Int!
+  numberOfVillages: Int!
+
   langVersion: LangVersion @goField(forceResolver: true)
+
   config: ServerConfig!
   unitConfig: UnitConfig!
   buildingConfig: BuildingConfig!
+
   dataUpdatedAt: Time! @goField(forceResolver: true)
+  historyUpdatedAt: Time! @goField(forceResolver: true)
+  statsUpdatedAt: Time! @goField(forceResolver: true)
 }
 
 type ServersList {

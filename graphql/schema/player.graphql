@@ -99,6 +99,7 @@ input PlayerFilter {
   scoreTotalLTE: Int
 
   tribeID: [Int!]
+  tribeFilter: TribeFilter
 
   offset: Int
   limit: Int

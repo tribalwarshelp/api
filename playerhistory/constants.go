@@ -1,4 +1,4 @@
-package ennoblement
+package playerhistory
 
 const (
 	PaginationLimit = 100

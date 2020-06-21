@@ -72,5 +72,21 @@ models:
     model: github.com/tribalwarshelp/shared/models.Village
   VillageFilter:
     model: github.com/tribalwarshelp/shared/models.VillageFilter
+  LiveEnnoblement:
+    model: github.com/tribalwarshelp/shared/models.LiveEnnoblement
   Ennoblement:
     model: github.com/tribalwarshelp/shared/models.Ennoblement
+  EnnoblementFilter:
+    model: github.com/tribalwarshelp/shared/models.EnnoblementFilter
+  PlayerHistoryRecord:
+    model: github.com/tribalwarshelp/shared/models.PlayerHistory
+  PlayerHistoryFilter:
+    model: github.com/tribalwarshelp/shared/models.PlayerHistoryFilter
+  TribeHistoryRecord:
+    model: github.com/tribalwarshelp/shared/models.TribeHistory
+  TribeHistoryFilter:
+    model: github.com/tribalwarshelp/shared/models.TribeHistoryFilter
+  ServerStatsRecord:
+    model: github.com/tribalwarshelp/shared/models.ServerStats
+  ServerStatsFilter:
+    model: github.com/tribalwarshelp/shared/models.ServerStatsFilter

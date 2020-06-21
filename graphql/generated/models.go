@@ -6,9 +6,19 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
+type EnnoblementsList struct {
+	Items []*models.Ennoblement `json:"items"`
+	Total int                   `json:"total"`
+}
+
 type LangVersionsList struct {
 	Items []*models.LangVersion `json:"items"`
 	Total int                   `json:"total"`
+}
+
+type PlayerHistory struct {
+	Total int                     `json:"total"`
+	Items []*models.PlayerHistory `json:"items"`
 }
 
 type PlayersList struct {
@@ -16,9 +26,19 @@ type PlayersList struct {
 	Total int              `json:"total"`
 }
 
+type ServerStats struct {
+	Items []*models.ServerStats `json:"items"`
+	Total int                   `json:"total"`
+}
+
 type ServersList struct {
 	Items []*models.Server `json:"items"`
 	Total int              `json:"total"`
+}
+
+type TribeHistory struct {
+	Total int                    `json:"total"`
+	Items []*models.TribeHistory `json:"items"`
 }
 
 type TribesList struct {

@@ -37,6 +37,10 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.Pl
 		if f.Exist != nil {
 			query = query.Where("exist = ?", *f.Exist)
 		}
+
+		if f.TribeFilter != nil {
+			query = query.Relation("Tribe._").WhereStruct(f.TribeFilter)
+		}
 	}
 
 	total, err := query.SelectAndCount()

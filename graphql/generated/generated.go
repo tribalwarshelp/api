@@ -37,9 +37,13 @@ type Config struct {
 
 type ResolverRoot interface {
 	Ennoblement() EnnoblementResolver
+	LiveEnnoblement() LiveEnnoblementResolver
 	Player() PlayerResolver
+	PlayerHistoryRecord() PlayerHistoryRecordResolver
 	Query() QueryResolver
 	Server() ServerResolver
+	ServerStatsRecord() ServerStatsRecordResolver
+	TribeHistoryRecord() TribeHistoryRecordResolver
 	Village() VillageResolver
 }
 
@@ -83,10 +87,17 @@ type ComplexityRoot struct {
 	}
 
 	Ennoblement struct {
-		EnnobledAt func(childComplexity int) int
-		NewOwner   func(childComplexity int) int
-		OldOwner   func(childComplexity int) int
-		Village    func(childComplexity int) int
+		EnnobledAt    func(childComplexity int) int
+		NewOwner      func(childComplexity int) int
+		NewOwnerTribe func(childComplexity int) int
+		OldOwner      func(childComplexity int) int
+		OldOwnerTribe func(childComplexity int) int
+		Village       func(childComplexity int) int
+	}
+
+	EnnoblementsList struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
 	}
 
 	LangVersion struct {
@@ -99,6 +110,13 @@ type ComplexityRoot struct {
 	LangVersionsList struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
+	}
+
+	LiveEnnoblement struct {
+		EnnobledAt func(childComplexity int) int
+		NewOwner   func(childComplexity int) int
+		OldOwner   func(childComplexity int) int
+		Village    func(childComplexity int) int
 	}
 
 	Player struct {
@@ -119,34 +137,65 @@ type ComplexityRoot struct {
 		Tribe         func(childComplexity int) int
 	}
 
+	PlayerHistory struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
+	PlayerHistoryRecord struct {
+		CreatedAt     func(childComplexity int) int
+		Player        func(childComplexity int) int
+		Points        func(childComplexity int) int
+		Rank          func(childComplexity int) int
+		RankAtt       func(childComplexity int) int
+		RankDef       func(childComplexity int) int
+		RankSup       func(childComplexity int) int
+		RankTotal     func(childComplexity int) int
+		ScoreAtt      func(childComplexity int) int
+		ScoreDef      func(childComplexity int) int
+		ScoreSup      func(childComplexity int) int
+		ScoreTotal    func(childComplexity int) int
+		TotalVillages func(childComplexity int) int
+		Tribe         func(childComplexity int) int
+	}
+
 	PlayersList struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
 	}
 
 	Query struct {
-		Ennoblements func(childComplexity int, server string) int
-		LangVersion  func(childComplexity int, tag models.LanguageTag) int
-		LangVersions func(childComplexity int, filter *models.LangVersionFilter) int
-		Player       func(childComplexity int, server string, id int) int
-		Players      func(childComplexity int, server string, filter *models.PlayerFilter) int
-		Server       func(childComplexity int, key string) int
-		Servers      func(childComplexity int, filter *models.ServerFilter) int
-		Tribe        func(childComplexity int, server string, id int) int
-		Tribes       func(childComplexity int, server string, filter *models.TribeFilter) int
-		Village      func(childComplexity int, server string, id int) int
-		Villages     func(childComplexity int, server string, filter *models.VillageFilter) int
+		Ennoblements     func(childComplexity int, server string, filter *models.EnnoblementFilter) int
+		LangVersion      func(childComplexity int, tag models.LanguageTag) int
+		LangVersions     func(childComplexity int, filter *models.LangVersionFilter) int
+		LiveEnnoblements func(childComplexity int, server string) int
+		Player           func(childComplexity int, server string, id int) int
+		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter) int
+		Players          func(childComplexity int, server string, filter *models.PlayerFilter) int
+		Server           func(childComplexity int, key string) int
+		ServerStats      func(childComplexity int, server string, filter *models.ServerStatsFilter) int
+		Servers          func(childComplexity int, filter *models.ServerFilter) int
+		Tribe            func(childComplexity int, server string, id int) int
+		TribeHistory     func(childComplexity int, server string, filter *models.TribeHistoryFilter) int
+		Tribes           func(childComplexity int, server string, filter *models.TribeFilter) int
+		Village          func(childComplexity int, server string, id int) int
+		Villages         func(childComplexity int, server string, filter *models.VillageFilter) int
 	}
 
 	Server struct {
-		BuildingConfig func(childComplexity int) int
-		Config         func(childComplexity int) int
-		DataUpdatedAt  func(childComplexity int) int
-		ID             func(childComplexity int) int
-		Key            func(childComplexity int) int
-		LangVersion    func(childComplexity int) int
-		Status         func(childComplexity int) int
-		UnitConfig     func(childComplexity int) int
+		BuildingConfig   func(childComplexity int) int
+		Config           func(childComplexity int) int
+		DataUpdatedAt    func(childComplexity int) int
+		HistoryUpdatedAt func(childComplexity int) int
+		ID               func(childComplexity int) int
+		Key              func(childComplexity int) int
+		LangVersion      func(childComplexity int) int
+		NumberOfPlayers  func(childComplexity int) int
+		NumberOfTribes   func(childComplexity int) int
+		NumberOfVillages func(childComplexity int) int
+		StatsUpdatedAt   func(childComplexity int) int
+		Status           func(childComplexity int) int
+		UnitConfig       func(childComplexity int) int
 	}
 
 	ServerConfig struct {
@@ -299,6 +348,25 @@ type ComplexityRoot struct {
 		Check func(childComplexity int) int
 	}
 
+	ServerStats struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
+	ServerStatsRecord struct {
+		ActivePlayers     func(childComplexity int) int
+		ActiveTribes      func(childComplexity int) int
+		BarbarianVillages func(childComplexity int) int
+		BonusVillages     func(childComplexity int) int
+		CreatedAt         func(childComplexity int) int
+		InactivePlayers   func(childComplexity int) int
+		InactiveTribes    func(childComplexity int) int
+		PlayerVillages    func(childComplexity int) int
+		Players           func(childComplexity int) int
+		Tribes            func(childComplexity int) int
+		Villages          func(childComplexity int) int
+	}
+
 	ServersList struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
@@ -306,6 +374,7 @@ type ComplexityRoot struct {
 
 	Tribe struct {
 		AllPoints     func(childComplexity int) int
+		Dominance     func(childComplexity int) int
 		Exist         func(childComplexity int) int
 		ID            func(childComplexity int) int
 		Name          func(childComplexity int) int
@@ -320,6 +389,28 @@ type ComplexityRoot struct {
 		Tag           func(childComplexity int) int
 		TotalMembers  func(childComplexity int) int
 		TotalVillages func(childComplexity int) int
+	}
+
+	TribeHistory struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
+	TribeHistoryRecord struct {
+		AllPoints     func(childComplexity int) int
+		CreatedAt     func(childComplexity int) int
+		Dominance     func(childComplexity int) int
+		Points        func(childComplexity int) int
+		Rank          func(childComplexity int) int
+		RankAtt       func(childComplexity int) int
+		RankDef       func(childComplexity int) int
+		RankTotal     func(childComplexity int) int
+		ScoreAtt      func(childComplexity int) int
+		ScoreDef      func(childComplexity int) int
+		ScoreTotal    func(childComplexity int) int
+		TotalMembers  func(childComplexity int) int
+		TotalVillages func(childComplexity int) int
+		Tribe         func(childComplexity int) int
 	}
 
 	TribesList struct {
@@ -373,21 +464,39 @@ type ComplexityRoot struct {
 type EnnoblementResolver interface {
 	Village(ctx context.Context, obj *models.Ennoblement) (*models.Village, error)
 	NewOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error)
+	NewOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error)
 	OldOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error)
+	OldOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error)
+	EnnobledAt(ctx context.Context, obj *models.Ennoblement) (*time.Time, error)
+}
+type LiveEnnoblementResolver interface {
+	Village(ctx context.Context, obj *models.LiveEnnoblement) (*models.Village, error)
+	NewOwner(ctx context.Context, obj *models.LiveEnnoblement) (*models.Player, error)
+	OldOwner(ctx context.Context, obj *models.LiveEnnoblement) (*models.Player, error)
 }
 type PlayerResolver interface {
 	Tribe(ctx context.Context, obj *models.Player) (*models.Tribe, error)
 }
+type PlayerHistoryRecordResolver interface {
+	Player(ctx context.Context, obj *models.PlayerHistory) (*models.Player, error)
+
+	Tribe(ctx context.Context, obj *models.PlayerHistory) (*models.Tribe, error)
+	CreatedAt(ctx context.Context, obj *models.PlayerHistory) (*time.Time, error)
+}
 type QueryResolver interface {
-	Ennoblements(ctx context.Context, server string) ([]*models.Ennoblement, error)
+	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter) (*EnnoblementsList, error)
 	LangVersions(ctx context.Context, filter *models.LangVersionFilter) (*LangVersionsList, error)
 	LangVersion(ctx context.Context, tag models.LanguageTag) (*models.LangVersion, error)
+	LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error)
 	Players(ctx context.Context, server string, filter *models.PlayerFilter) (*PlayersList, error)
 	Player(ctx context.Context, server string, id int) (*models.Player, error)
+	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter) (*PlayerHistory, error)
 	Servers(ctx context.Context, filter *models.ServerFilter) (*ServersList, error)
 	Server(ctx context.Context, key string) (*models.Server, error)
+	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*ServerStats, error)
 	Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*TribesList, error)
 	Tribe(ctx context.Context, server string, id int) (*models.Tribe, error)
+	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter) (*TribeHistory, error)
 	Villages(ctx context.Context, server string, filter *models.VillageFilter) (*VillagesList, error)
 	Village(ctx context.Context, server string, id int) (*models.Village, error)
 }
@@ -395,6 +504,16 @@ type ServerResolver interface {
 	LangVersion(ctx context.Context, obj *models.Server) (*models.LangVersion, error)
 
 	DataUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error)
+	HistoryUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error)
+	StatsUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error)
+}
+type ServerStatsRecordResolver interface {
+	CreatedAt(ctx context.Context, obj *models.ServerStats) (*time.Time, error)
+}
+type TribeHistoryRecordResolver interface {
+	Tribe(ctx context.Context, obj *models.TribeHistory) (*models.Tribe, error)
+
+	CreatedAt(ctx context.Context, obj *models.TribeHistory) (*time.Time, error)
 }
 type VillageResolver interface {
 	Player(ctx context.Context, obj *models.Village) (*models.Player, error)
@@ -632,6 +751,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Ennoblement.NewOwner(childComplexity), true
 
+	case "Ennoblement.newOwnerTribe":
+		if e.complexity.Ennoblement.NewOwnerTribe == nil {
+			break
+		}
+
+		return e.complexity.Ennoblement.NewOwnerTribe(childComplexity), true
+
 	case "Ennoblement.oldOwner":
 		if e.complexity.Ennoblement.OldOwner == nil {
 			break
@@ -639,12 +765,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Ennoblement.OldOwner(childComplexity), true
 
+	case "Ennoblement.oldOwnerTribe":
+		if e.complexity.Ennoblement.OldOwnerTribe == nil {
+			break
+		}
+
+		return e.complexity.Ennoblement.OldOwnerTribe(childComplexity), true
+
 	case "Ennoblement.village":
 		if e.complexity.Ennoblement.Village == nil {
 			break
 		}
 
 		return e.complexity.Ennoblement.Village(childComplexity), true
+
+	case "EnnoblementsList.items":
+		if e.complexity.EnnoblementsList.Items == nil {
+			break
+		}
+
+		return e.complexity.EnnoblementsList.Items(childComplexity), true
+
+	case "EnnoblementsList.total":
+		if e.complexity.EnnoblementsList.Total == nil {
+			break
+		}
+
+		return e.complexity.EnnoblementsList.Total(childComplexity), true
 
 	case "LangVersion.host":
 		if e.complexity.LangVersion.Host == nil {
@@ -687,6 +834,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.LangVersionsList.Total(childComplexity), true
+
+	case "LiveEnnoblement.ennobledAt":
+		if e.complexity.LiveEnnoblement.EnnobledAt == nil {
+			break
+		}
+
+		return e.complexity.LiveEnnoblement.EnnobledAt(childComplexity), true
+
+	case "LiveEnnoblement.newOwner":
+		if e.complexity.LiveEnnoblement.NewOwner == nil {
+			break
+		}
+
+		return e.complexity.LiveEnnoblement.NewOwner(childComplexity), true
+
+	case "LiveEnnoblement.oldOwner":
+		if e.complexity.LiveEnnoblement.OldOwner == nil {
+			break
+		}
+
+		return e.complexity.LiveEnnoblement.OldOwner(childComplexity), true
+
+	case "LiveEnnoblement.village":
+		if e.complexity.LiveEnnoblement.Village == nil {
+			break
+		}
+
+		return e.complexity.LiveEnnoblement.Village(childComplexity), true
 
 	case "Player.exist":
 		if e.complexity.Player.Exist == nil {
@@ -793,6 +968,118 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Player.Tribe(childComplexity), true
 
+	case "PlayerHistory.items":
+		if e.complexity.PlayerHistory.Items == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistory.Items(childComplexity), true
+
+	case "PlayerHistory.total":
+		if e.complexity.PlayerHistory.Total == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistory.Total(childComplexity), true
+
+	case "PlayerHistoryRecord.createdAt":
+		if e.complexity.PlayerHistoryRecord.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.CreatedAt(childComplexity), true
+
+	case "PlayerHistoryRecord.player":
+		if e.complexity.PlayerHistoryRecord.Player == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.Player(childComplexity), true
+
+	case "PlayerHistoryRecord.points":
+		if e.complexity.PlayerHistoryRecord.Points == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.Points(childComplexity), true
+
+	case "PlayerHistoryRecord.rank":
+		if e.complexity.PlayerHistoryRecord.Rank == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.Rank(childComplexity), true
+
+	case "PlayerHistoryRecord.rankAtt":
+		if e.complexity.PlayerHistoryRecord.RankAtt == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.RankAtt(childComplexity), true
+
+	case "PlayerHistoryRecord.rankDef":
+		if e.complexity.PlayerHistoryRecord.RankDef == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.RankDef(childComplexity), true
+
+	case "PlayerHistoryRecord.rankSup":
+		if e.complexity.PlayerHistoryRecord.RankSup == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.RankSup(childComplexity), true
+
+	case "PlayerHistoryRecord.rankTotal":
+		if e.complexity.PlayerHistoryRecord.RankTotal == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.RankTotal(childComplexity), true
+
+	case "PlayerHistoryRecord.scoreAtt":
+		if e.complexity.PlayerHistoryRecord.ScoreAtt == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.ScoreAtt(childComplexity), true
+
+	case "PlayerHistoryRecord.scoreDef":
+		if e.complexity.PlayerHistoryRecord.ScoreDef == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.ScoreDef(childComplexity), true
+
+	case "PlayerHistoryRecord.scoreSup":
+		if e.complexity.PlayerHistoryRecord.ScoreSup == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.ScoreSup(childComplexity), true
+
+	case "PlayerHistoryRecord.scoreTotal":
+		if e.complexity.PlayerHistoryRecord.ScoreTotal == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.ScoreTotal(childComplexity), true
+
+	case "PlayerHistoryRecord.totalVillages":
+		if e.complexity.PlayerHistoryRecord.TotalVillages == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.TotalVillages(childComplexity), true
+
+	case "PlayerHistoryRecord.tribe":
+		if e.complexity.PlayerHistoryRecord.Tribe == nil {
+			break
+		}
+
+		return e.complexity.PlayerHistoryRecord.Tribe(childComplexity), true
+
 	case "PlayersList.items":
 		if e.complexity.PlayersList.Items == nil {
 			break
@@ -817,7 +1104,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Ennoblements(childComplexity, args["server"].(string)), true
+		return e.complexity.Query.Ennoblements(childComplexity, args["server"].(string), args["filter"].(*models.EnnoblementFilter)), true
 
 	case "Query.langVersion":
 		if e.complexity.Query.LangVersion == nil {
@@ -843,6 +1130,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.LangVersions(childComplexity, args["filter"].(*models.LangVersionFilter)), true
 
+	case "Query.liveEnnoblements":
+		if e.complexity.Query.LiveEnnoblements == nil {
+			break
+		}
+
+		args, err := ec.field_Query_liveEnnoblements_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.LiveEnnoblements(childComplexity, args["server"].(string)), true
+
 	case "Query.player":
 		if e.complexity.Query.Player == nil {
 			break
@@ -854,6 +1153,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Player(childComplexity, args["server"].(string), args["id"].(int)), true
+
+	case "Query.playerHistory":
+		if e.complexity.Query.PlayerHistory == nil {
+			break
+		}
+
+		args, err := ec.field_Query_playerHistory_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.PlayerHistory(childComplexity, args["server"].(string), args["filter"].(*models.PlayerHistoryFilter)), true
 
 	case "Query.players":
 		if e.complexity.Query.Players == nil {
@@ -879,6 +1190,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Server(childComplexity, args["key"].(string)), true
 
+	case "Query.serverStats":
+		if e.complexity.Query.ServerStats == nil {
+			break
+		}
+
+		args, err := ec.field_Query_serverStats_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.ServerStats(childComplexity, args["server"].(string), args["filter"].(*models.ServerStatsFilter)), true
+
 	case "Query.servers":
 		if e.complexity.Query.Servers == nil {
 			break
@@ -902,6 +1225,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Tribe(childComplexity, args["server"].(string), args["id"].(int)), true
+
+	case "Query.tribeHistory":
+		if e.complexity.Query.TribeHistory == nil {
+			break
+		}
+
+		args, err := ec.field_Query_tribeHistory_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.TribeHistory(childComplexity, args["server"].(string), args["filter"].(*models.TribeHistoryFilter)), true
 
 	case "Query.tribes":
 		if e.complexity.Query.Tribes == nil {
@@ -960,6 +1295,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Server.DataUpdatedAt(childComplexity), true
 
+	case "Server.historyUpdatedAt":
+		if e.complexity.Server.HistoryUpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Server.HistoryUpdatedAt(childComplexity), true
+
 	case "Server.id":
 		if e.complexity.Server.ID == nil {
 			break
@@ -980,6 +1322,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Server.LangVersion(childComplexity), true
+
+	case "Server.numberOfPlayers":
+		if e.complexity.Server.NumberOfPlayers == nil {
+			break
+		}
+
+		return e.complexity.Server.NumberOfPlayers(childComplexity), true
+
+	case "Server.numberOfTribes":
+		if e.complexity.Server.NumberOfTribes == nil {
+			break
+		}
+
+		return e.complexity.Server.NumberOfTribes(childComplexity), true
+
+	case "Server.numberOfVillages":
+		if e.complexity.Server.NumberOfVillages == nil {
+			break
+		}
+
+		return e.complexity.Server.NumberOfVillages(childComplexity), true
+
+	case "Server.statsUpdatedAt":
+		if e.complexity.Server.StatsUpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Server.StatsUpdatedAt(childComplexity), true
 
 	case "Server.status":
 		if e.complexity.Server.Status == nil {
@@ -1751,6 +2121,97 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ServerConfigWin.Check(childComplexity), true
 
+	case "ServerStats.items":
+		if e.complexity.ServerStats.Items == nil {
+			break
+		}
+
+		return e.complexity.ServerStats.Items(childComplexity), true
+
+	case "ServerStats.total":
+		if e.complexity.ServerStats.Total == nil {
+			break
+		}
+
+		return e.complexity.ServerStats.Total(childComplexity), true
+
+	case "ServerStatsRecord.activePlayers":
+		if e.complexity.ServerStatsRecord.ActivePlayers == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.ActivePlayers(childComplexity), true
+
+	case "ServerStatsRecord.activeTribes":
+		if e.complexity.ServerStatsRecord.ActiveTribes == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.ActiveTribes(childComplexity), true
+
+	case "ServerStatsRecord.barbarianVillages":
+		if e.complexity.ServerStatsRecord.BarbarianVillages == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.BarbarianVillages(childComplexity), true
+
+	case "ServerStatsRecord.bonusVillages":
+		if e.complexity.ServerStatsRecord.BonusVillages == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.BonusVillages(childComplexity), true
+
+	case "ServerStatsRecord.createdAt":
+		if e.complexity.ServerStatsRecord.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.CreatedAt(childComplexity), true
+
+	case "ServerStatsRecord.inactivePlayers":
+		if e.complexity.ServerStatsRecord.InactivePlayers == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.InactivePlayers(childComplexity), true
+
+	case "ServerStatsRecord.inactiveTribes":
+		if e.complexity.ServerStatsRecord.InactiveTribes == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.InactiveTribes(childComplexity), true
+
+	case "ServerStatsRecord.playerVillages":
+		if e.complexity.ServerStatsRecord.PlayerVillages == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.PlayerVillages(childComplexity), true
+
+	case "ServerStatsRecord.players":
+		if e.complexity.ServerStatsRecord.Players == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.Players(childComplexity), true
+
+	case "ServerStatsRecord.tribes":
+		if e.complexity.ServerStatsRecord.Tribes == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.Tribes(childComplexity), true
+
+	case "ServerStatsRecord.villages":
+		if e.complexity.ServerStatsRecord.Villages == nil {
+			break
+		}
+
+		return e.complexity.ServerStatsRecord.Villages(childComplexity), true
+
 	case "ServersList.items":
 		if e.complexity.ServersList.Items == nil {
 			break
@@ -1771,6 +2232,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tribe.AllPoints(childComplexity), true
+
+	case "Tribe.dominance":
+		if e.complexity.Tribe.Dominance == nil {
+			break
+		}
+
+		return e.complexity.Tribe.Dominance(childComplexity), true
 
 	case "Tribe.exist":
 		if e.complexity.Tribe.Exist == nil {
@@ -1869,6 +2337,118 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tribe.TotalVillages(childComplexity), true
+
+	case "TribeHistory.items":
+		if e.complexity.TribeHistory.Items == nil {
+			break
+		}
+
+		return e.complexity.TribeHistory.Items(childComplexity), true
+
+	case "TribeHistory.total":
+		if e.complexity.TribeHistory.Total == nil {
+			break
+		}
+
+		return e.complexity.TribeHistory.Total(childComplexity), true
+
+	case "TribeHistoryRecord.allPoints":
+		if e.complexity.TribeHistoryRecord.AllPoints == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.AllPoints(childComplexity), true
+
+	case "TribeHistoryRecord.createdAt":
+		if e.complexity.TribeHistoryRecord.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.CreatedAt(childComplexity), true
+
+	case "TribeHistoryRecord.dominance":
+		if e.complexity.TribeHistoryRecord.Dominance == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.Dominance(childComplexity), true
+
+	case "TribeHistoryRecord.points":
+		if e.complexity.TribeHistoryRecord.Points == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.Points(childComplexity), true
+
+	case "TribeHistoryRecord.rank":
+		if e.complexity.TribeHistoryRecord.Rank == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.Rank(childComplexity), true
+
+	case "TribeHistoryRecord.rankAtt":
+		if e.complexity.TribeHistoryRecord.RankAtt == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.RankAtt(childComplexity), true
+
+	case "TribeHistoryRecord.rankDef":
+		if e.complexity.TribeHistoryRecord.RankDef == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.RankDef(childComplexity), true
+
+	case "TribeHistoryRecord.rankTotal":
+		if e.complexity.TribeHistoryRecord.RankTotal == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.RankTotal(childComplexity), true
+
+	case "TribeHistoryRecord.scoreAtt":
+		if e.complexity.TribeHistoryRecord.ScoreAtt == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.ScoreAtt(childComplexity), true
+
+	case "TribeHistoryRecord.scoreDef":
+		if e.complexity.TribeHistoryRecord.ScoreDef == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.ScoreDef(childComplexity), true
+
+	case "TribeHistoryRecord.scoreTotal":
+		if e.complexity.TribeHistoryRecord.ScoreTotal == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.ScoreTotal(childComplexity), true
+
+	case "TribeHistoryRecord.totalMembers":
+		if e.complexity.TribeHistoryRecord.TotalMembers == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.TotalMembers(childComplexity), true
+
+	case "TribeHistoryRecord.totalVillages":
+		if e.complexity.TribeHistoryRecord.TotalVillages == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.TotalVillages(childComplexity), true
+
+	case "TribeHistoryRecord.tribe":
+		if e.complexity.TribeHistoryRecord.Tribe == nil {
+			break
+		}
+
+		return e.complexity.TribeHistoryRecord.Tribe(childComplexity), true
 
 	case "TribesList.items":
 		if e.complexity.TribesList.Items == nil {
@@ -2184,15 +2764,47 @@ type BuildingConfig {
   name: String
 ) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 `, BuiltIn: false},
-	&ast.Source{Name: "schema/ennoblement.graphql", Input: `type Ennoblement {
+	&ast.Source{Name: "schema/ennoblements.graphql", Input: `type Ennoblement {
   village: Village @goField(forceResolver: true)
   newOwner: Player @goField(forceResolver: true)
+  newOwnerTribe: Tribe @goField(forceResolver: true)
   oldOwner: Player @goField(forceResolver: true)
-  ennobledAt: Time!
+  oldOwnerTribe: Tribe @goField(forceResolver: true)
+  ennobledAt: Time! @goField(forceResolver: true)
+}
+
+type EnnoblementsList {
+  items: [Ennoblement!]
+  total: Int!
+}
+
+input EnnoblementFilter {
+  villageID: [Int!]
+  villageIDNEQ: [Int!]
+
+  newOwnerID: [Int!]
+  newOwnerIDNEQ: [Int!]
+  newOwnerTribeID: [Int!]
+  newOwnerTribeIDNEQ: [Int!]
+
+  oldOwnerID: [Int!]
+  oldOwnerIDNEQ: [Int!]
+  oldOwnerTribeID: [Int!]
+  oldOwnerTribeIDNEQ: [Int!]
+
+  ennobledAt: Time
+  ennobledAtGT: Time
+  ennobledAtGTE: Time
+  ennobledAtLT: Time
+  ennobledAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
 }
 
 extend type Query {
-  ennoblements(server: String!): [Ennoblement!]
+  ennoblements(server: String!, filter: EnnoblementFilter): EnnoblementsList!
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "schema/lang_version.graphql", Input: `enum LanguageTag {
@@ -2230,6 +2842,17 @@ type LangVersionsList {
 extend type Query {
   langVersions(filter: LangVersionFilter): LangVersionsList!
   langVersion(tag: LanguageTag!): LangVersion
+}
+`, BuiltIn: false},
+	&ast.Source{Name: "schema/live_ennoblement.graphql", Input: `type LiveEnnoblement {
+  village: Village @goField(forceResolver: true)
+  newOwner: Player @goField(forceResolver: true)
+  oldOwner: Player @goField(forceResolver: true)
+  ennobledAt: Time!
+}
+
+extend type Query {
+  liveEnnoblements(server: String!): [LiveEnnoblement!]
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "schema/player.graphql", Input: `type Player {
@@ -2333,6 +2956,7 @@ input PlayerFilter {
   scoreTotalLTE: Int
 
   tribeID: [Int!]
+  tribeFilter: TribeFilter
 
   offset: Int
   limit: Int
@@ -2342,6 +2966,47 @@ input PlayerFilter {
 extend type Query {
   players(server: String!, filter: PlayerFilter): PlayersList!
   player(server: String!, id: Int!): Player
+}
+`, BuiltIn: false},
+	&ast.Source{Name: "schema/player_history.graphql", Input: `type PlayerHistoryRecord {
+  player: Player @goField(forceResolver: true)
+  totalVillages: Int!
+  points: Int!
+  rank: Int!
+  rankAtt: Int!
+  scoreAtt: Int!
+  rankDef: Int!
+  scoreDef: Int!
+  rankSup: Int!
+  scoreSup: Int!
+  rankTotal: Int!
+  scoreTotal: Int!
+  tribe: Tribe @goField(forceResolver: true)
+  createdAt: Time! @goField(forceResolver: true)
+}
+
+type PlayerHistory {
+  total: Int!
+  items: [PlayerHistoryRecord!]
+}
+
+input PlayerHistoryFilter {
+  playerID: [Int!]
+  playerIDNEQ: [Int!]
+
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  playerHistory(server: String!, filter: PlayerHistoryFilter): PlayerHistory!
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "schema/scalars.graphql", Input: `scalar Time
@@ -2355,11 +3020,19 @@ type Server {
   id: Int!
   key: String!
   status: ServerStatus!
+  numberOfPlayers: Int!
+  numberOfTribes: Int!
+  numberOfVillages: Int!
+
   langVersion: LangVersion @goField(forceResolver: true)
+
   config: ServerConfig!
   unitConfig: UnitConfig!
   buildingConfig: BuildingConfig!
+
   dataUpdatedAt: Time! @goField(forceResolver: true)
+  historyUpdatedAt: Time! @goField(forceResolver: true)
+  statsUpdatedAt: Time! @goField(forceResolver: true)
 }
 
 type ServersList {
@@ -2542,6 +3215,41 @@ type ServerConfig {
   win: ServerConfigWin!
 }
 `, BuiltIn: false},
+	&ast.Source{Name: "schema/server_stats.graphql", Input: `type ServerStatsRecord {
+  activePlayers: Int!
+  inactivePlayers: Int!
+  players: Int!
+  activeTribes: Int!
+  inactiveTribes: Int!
+  tribes: Int!
+  bonusVillages: Int!
+  barbarianVillages: Int!
+  playerVillages: Int!
+  villages: Int!
+  createdAt: Time! @goField(forceResolver: true)
+}
+
+type ServerStats {
+  items: [ServerStatsRecord!]
+  total: Int!
+}
+
+input ServerStatsFilter {
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  serverStats(server: String!, filter: ServerStatsFilter): ServerStats!
+}
+`, BuiltIn: false},
 	&ast.Source{Name: "schema/tribe.graphql", Input: `type Tribe {
   id: Int!
   name: String!
@@ -2557,6 +3265,7 @@ type ServerConfig {
   rankDef: Int!
   scoreDef: Int!
   rankTotal: Int!
+  dominance: Float!
   scoreTotal: Int!
 }
 
@@ -2657,6 +3366,47 @@ extend type Query {
   tribe(server: String!, id: Int!): Tribe
 }
 `, BuiltIn: false},
+	&ast.Source{Name: "schema/tribe_history.graphql", Input: `type TribeHistoryRecord {
+  tribe: Tribe @goField(forceResolver: true)
+  totalVillages: Int!
+  totalMembers: Int!
+  points: Int!
+  allPoints: Int!
+  rank: Int!
+  dominance: Float!
+  rankAtt: Int!
+  scoreAtt: Int!
+  rankDef: Int!
+  scoreDef: Int!
+  rankTotal: Int!
+  scoreTotal: Int!
+  createdAt: Time! @goField(forceResolver: true)
+}
+
+type TribeHistory {
+  total: Int!
+  items: [TribeHistoryRecord!]
+}
+
+input TribeHistoryFilter {
+  tribeID: [Int!]
+  tribeIDNEQ: [Int!]
+
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  tribeHistory(server: String!, filter: TribeHistoryFilter): TribeHistory!
+}
+`, BuiltIn: false},
 	&ast.Source{Name: "schema/unit_config.graphql", Input: `type Unit {
   buildTime: Float!
   pop: Int!
@@ -2730,6 +3480,7 @@ input VillageFilter {
   bonusLTE: Int
 
   playerID: [Int!]
+  playerFilter: PlayerFilter
 
   offset: Int
   limit: Int
@@ -2773,6 +3524,14 @@ func (ec *executionContext) field_Query_ennoblements_args(ctx context.Context, r
 		}
 	}
 	args["server"] = arg0
+	var arg1 *models.EnnoblementFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg1, err = ec.unmarshalOEnnoblementFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg1
 	return args, nil
 }
 
@@ -2801,6 +3560,42 @@ func (ec *executionContext) field_Query_langVersions_args(ctx context.Context, r
 		}
 	}
 	args["filter"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_liveEnnoblements_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["server"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["server"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_playerHistory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["server"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["server"] = arg0
+	var arg1 *models.PlayerHistoryFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg1, err = ec.unmarshalOPlayerHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg1
 	return args, nil
 }
 
@@ -2848,6 +3643,28 @@ func (ec *executionContext) field_Query_players_args(ctx context.Context, rawArg
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_serverStats_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["server"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["server"] = arg0
+	var arg1 *models.ServerStatsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg1, err = ec.unmarshalOServerStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg1
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_server_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -2873,6 +3690,28 @@ func (ec *executionContext) field_Query_servers_args(ctx context.Context, rawArg
 		}
 	}
 	args["filter"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_tribeHistory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["server"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["server"] = arg0
+	var arg1 *models.TribeHistoryFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg1, err = ec.unmarshalOTribeHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg1
 	return args, nil
 }
 
@@ -4048,6 +4887,37 @@ func (ec *executionContext) _Ennoblement_newOwner(ctx context.Context, field gra
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Ennoblement_newOwnerTribe(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Ennoblement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Ennoblement().NewOwnerTribe(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Tribe)
+	fc.Result = res
+	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Ennoblement_oldOwner(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -4079,6 +4949,37 @@ func (ec *executionContext) _Ennoblement_oldOwner(ctx context.Context, field gra
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Ennoblement_oldOwnerTribe(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Ennoblement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Ennoblement().OldOwnerTribe(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Tribe)
+	fc.Result = res
+	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Ennoblement_ennobledAt(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -4090,13 +4991,13 @@ func (ec *executionContext) _Ennoblement_ennobledAt(ctx context.Context, field g
 		Object:   "Ennoblement",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.EnnobledAt, nil
+		return ec.resolvers.Ennoblement().EnnobledAt(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4108,9 +5009,74 @@ func (ec *executionContext) _Ennoblement_ennobledAt(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(time.Time)
+	res := resTmp.(*time.Time)
 	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _EnnoblementsList_items(ctx context.Context, field graphql.CollectedField, obj *EnnoblementsList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "EnnoblementsList",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Ennoblement)
+	fc.Result = res
+	return ec.marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _EnnoblementsList_total(ctx context.Context, field graphql.CollectedField, obj *EnnoblementsList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "EnnoblementsList",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _LangVersion_tag(ctx context.Context, field graphql.CollectedField, obj *models.LangVersion) (ret graphql.Marshaler) {
@@ -4312,6 +5278,133 @@ func (ec *executionContext) _LangVersionsList_total(ctx context.Context, field g
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _LiveEnnoblement_village(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "LiveEnnoblement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.LiveEnnoblement().Village(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Village)
+	fc.Result = res
+	return ec.marshalOVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _LiveEnnoblement_newOwner(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "LiveEnnoblement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.LiveEnnoblement().NewOwner(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Player)
+	fc.Result = res
+	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _LiveEnnoblement_oldOwner(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "LiveEnnoblement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.LiveEnnoblement().OldOwner(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Player)
+	fc.Result = res
+	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _LiveEnnoblement_ennobledAt(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "LiveEnnoblement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.EnnobledAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Player_id(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
@@ -4821,6 +5914,541 @@ func (ec *executionContext) _Player_tribe(ctx context.Context, field graphql.Col
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _PlayerHistory_total(ctx context.Context, field graphql.CollectedField, obj *PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistory",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistory_items(ctx context.Context, field graphql.CollectedField, obj *PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistory",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.PlayerHistory)
+	fc.Result = res
+	return ec.marshalOPlayerHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_player(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.PlayerHistoryRecord().Player(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Player)
+	fc.Result = res
+	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_totalVillages(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_points(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Points, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_rank(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Rank, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RankAtt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScoreAtt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RankDef, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScoreDef, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_rankSup(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RankSup, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_scoreSup(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScoreSup, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RankTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScoreTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_tribe(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.PlayerHistoryRecord().Tribe(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Tribe)
+	fc.Result = res
+	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerHistoryRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.PlayerHistoryRecord().CreatedAt(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _PlayersList_items(ctx context.Context, field graphql.CollectedField, obj *PlayersList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -4910,18 +6538,21 @@ func (ec *executionContext) _Query_ennoblements(ctx context.Context, field graph
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Ennoblements(rctx, args["server"].(string))
+		return ec.resolvers.Query().Ennoblements(rctx, args["server"].(string), args["filter"].(*models.EnnoblementFilter))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.([]*models.Ennoblement)
+	res := resTmp.(*EnnoblementsList)
 	fc.Result = res
-	return ec.marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementᚄ(ctx, field.Selections, res)
+	return ec.marshalNEnnoblementsList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementsList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_langVersions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -5003,6 +6634,44 @@ func (ec *executionContext) _Query_langVersion(ctx context.Context, field graphq
 	return ec.marshalOLangVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLangVersion(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_liveEnnoblements(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_liveEnnoblements_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().LiveEnnoblements(rctx, args["server"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.LiveEnnoblement)
+	fc.Result = res
+	return ec.marshalOLiveEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblementᚄ(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_players(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -5080,6 +6749,47 @@ func (ec *executionContext) _Query_player(ctx context.Context, field graphql.Col
 	res := resTmp.(*models.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_playerHistory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_playerHistory_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().PlayerHistory(rctx, args["server"].(string), args["filter"].(*models.PlayerHistoryFilter))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*PlayerHistory)
+	fc.Result = res
+	return ec.marshalNPlayerHistory2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayerHistory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_servers(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -5161,6 +6871,47 @@ func (ec *executionContext) _Query_server(ctx context.Context, field graphql.Col
 	return ec.marshalOServer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServer(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_serverStats(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_serverStats_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().ServerStats(rctx, args["server"].(string), args["filter"].(*models.ServerStatsFilter))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*ServerStats)
+	fc.Result = res
+	return ec.marshalNServerStats2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStats(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_tribes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -5238,6 +6989,47 @@ func (ec *executionContext) _Query_tribe(ctx context.Context, field graphql.Coll
 	res := resTmp.(*models.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_tribeHistory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_tribeHistory_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().TribeHistory(rctx, args["server"].(string), args["filter"].(*models.TribeHistoryFilter))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*TribeHistory)
+	fc.Result = res
+	return ec.marshalNTribeHistory2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeHistory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_villages(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -5490,6 +7282,108 @@ func (ec *executionContext) _Server_status(ctx context.Context, field graphql.Co
 	return ec.marshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Server_numberOfPlayers(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberOfPlayers, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Server_numberOfTribes(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberOfTribes, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Server_numberOfVillages(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberOfVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Server_langVersion(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -5641,6 +7535,74 @@ func (ec *executionContext) _Server_dataUpdatedAt(ctx context.Context, field gra
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return ec.resolvers.Server().DataUpdatedAt(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Server_historyUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Server().HistoryUpdatedAt(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Server_statsUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Server",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Server().StatsUpdatedAt(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9329,6 +11291,445 @@ func (ec *executionContext) _ServerConfigWin_check(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _ServerStats_items(ctx context.Context, field graphql.CollectedField, obj *ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStats",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.ServerStats)
+	fc.Result = res
+	return ec.marshalOServerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStats_total(ctx context.Context, field graphql.CollectedField, obj *ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStats",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_activePlayers(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ActivePlayers, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_inactivePlayers(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.InactivePlayers, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_players(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Players, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_activeTribes(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ActiveTribes, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_inactiveTribes(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.InactiveTribes, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_tribes(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tribes, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_bonusVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BonusVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_barbarianVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BarbarianVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_playerVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PlayerVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_villages(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Villages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerStatsRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerStatsRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.ServerStatsRecord().CreatedAt(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _ServersList_items(ctx context.Context, field graphql.CollectedField, obj *ServersList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -9870,6 +12271,40 @@ func (ec *executionContext) _Tribe_rankTotal(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Tribe_dominance(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Tribe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Dominance, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Tribe_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -9902,6 +12337,544 @@ func (ec *executionContext) _Tribe_scoreTotal(ctx context.Context, field graphql
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistory_total(ctx context.Context, field graphql.CollectedField, obj *TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistory",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistory_items(ctx context.Context, field graphql.CollectedField, obj *TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistory",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.TribeHistory)
+	fc.Result = res
+	return ec.marshalOTribeHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_tribe(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.TribeHistoryRecord().Tribe(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Tribe)
+	fc.Result = res
+	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_totalVillages(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_totalMembers(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalMembers, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_points(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Points, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_allPoints(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.AllPoints, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_rank(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Rank, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_dominance(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Dominance, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RankAtt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScoreAtt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RankDef, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScoreDef, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.RankTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScoreTotal, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeHistoryRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeHistoryRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.TribeHistoryRecord().CreatedAt(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _TribesList_items(ctx context.Context, field graphql.CollectedField, obj *TribesList) (ret graphql.Marshaler) {
@@ -12038,6 +15011,126 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context, obj interface{}) (models.EnnoblementFilter, error) {
+	var it models.EnnoblementFilter
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "villageID":
+			var err error
+			it.VillageID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "villageIDNEQ":
+			var err error
+			it.VillageIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newOwnerID":
+			var err error
+			it.NewOwnerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newOwnerIDNEQ":
+			var err error
+			it.NewOwnerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newOwnerTribeID":
+			var err error
+			it.NewOwnerTribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newOwnerTribeIDNEQ":
+			var err error
+			it.NewOwnerTribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldOwnerID":
+			var err error
+			it.OldOwnerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldOwnerIDNEQ":
+			var err error
+			it.OldOwnerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldOwnerTribeID":
+			var err error
+			it.OldOwnerTribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldOwnerTribeIDNEQ":
+			var err error
+			it.OldOwnerTribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "ennobledAt":
+			var err error
+			it.EnnobledAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "ennobledAtGT":
+			var err error
+			it.EnnobledAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "ennobledAtGTE":
+			var err error
+			it.EnnobledAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "ennobledAtLT":
+			var err error
+			it.EnnobledAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "ennobledAtLTE":
+			var err error
+			it.EnnobledAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "offset":
+			var err error
+			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "limit":
+			var err error
+			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "sort":
+			var err error
+			it.Sort, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputLangVersionFilter(ctx context.Context, obj interface{}) (models.LangVersionFilter, error) {
 	var it models.LangVersionFilter
 	var asMap = obj.(map[string]interface{})
@@ -12488,6 +15581,84 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 			if err != nil {
 				return it, err
 			}
+		case "tribeFilter":
+			var err error
+			it.TribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "offset":
+			var err error
+			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "limit":
+			var err error
+			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "sort":
+			var err error
+			it.Sort, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Context, obj interface{}) (models.PlayerHistoryFilter, error) {
+	var it models.PlayerHistoryFilter
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "playerID":
+			var err error
+			it.PlayerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "playerIDNEQ":
+			var err error
+			it.PlayerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAt":
+			var err error
+			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtGT":
+			var err error
+			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtGTE":
+			var err error
+			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtLT":
+			var err error
+			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtLTE":
+			var err error
+			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "offset":
 			var err error
 			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
@@ -12575,6 +15746,66 @@ func (ec *executionContext) unmarshalInputServerFilter(ctx context.Context, obj 
 		case "langVersionTagNEQ":
 			var err error
 			it.LangVersionTagNEQ, err = ec.unmarshalOLanguageTag2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLanguageTagᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "offset":
+			var err error
+			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "limit":
+			var err error
+			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "sort":
+			var err error
+			it.Sort, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context, obj interface{}) (models.ServerStatsFilter, error) {
+	var it models.ServerStatsFilter
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "createdAt":
+			var err error
+			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtGT":
+			var err error
+			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtGTE":
+			var err error
+			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtLT":
+			var err error
+			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtLTE":
+			var err error
+			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -13028,6 +16259,78 @@ func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj i
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context, obj interface{}) (models.TribeHistoryFilter, error) {
+	var it models.TribeHistoryFilter
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "tribeID":
+			var err error
+			it.TribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "tribeIDNEQ":
+			var err error
+			it.TribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAt":
+			var err error
+			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtGT":
+			var err error
+			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtGTE":
+			var err error
+			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtLT":
+			var err error
+			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtLTE":
+			var err error
+			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "offset":
+			var err error
+			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "limit":
+			var err error
+			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "sort":
+			var err error
+			it.Sort, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj interface{}) (models.VillageFilter, error) {
 	var it models.VillageFilter
 	var asMap = obj.(map[string]interface{})
@@ -13181,6 +16484,12 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 		case "playerID":
 			var err error
 			it.PlayerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "playerFilter":
+			var err error
+			it.PlayerFilter, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -13438,6 +16747,17 @@ func (ec *executionContext) _Ennoblement(ctx context.Context, sel ast.SelectionS
 				res = ec._Ennoblement_newOwner(ctx, field, obj)
 				return res
 			})
+		case "newOwnerTribe":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Ennoblement_newOwnerTribe(ctx, field, obj)
+				return res
+			})
 		case "oldOwner":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -13449,10 +16769,59 @@ func (ec *executionContext) _Ennoblement(ctx context.Context, sel ast.SelectionS
 				res = ec._Ennoblement_oldOwner(ctx, field, obj)
 				return res
 			})
+		case "oldOwnerTribe":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Ennoblement_oldOwnerTribe(ctx, field, obj)
+				return res
+			})
 		case "ennobledAt":
-			out.Values[i] = ec._Ennoblement_ennobledAt(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Ennoblement_ennobledAt(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var ennoblementsListImplementors = []string{"EnnoblementsList"}
+
+func (ec *executionContext) _EnnoblementsList(ctx context.Context, sel ast.SelectionSet, obj *EnnoblementsList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, ennoblementsListImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("EnnoblementsList")
+		case "items":
+			out.Values[i] = ec._EnnoblementsList_items(ctx, field, obj)
+		case "total":
+			out.Values[i] = ec._EnnoblementsList_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -13524,6 +16893,66 @@ func (ec *executionContext) _LangVersionsList(ctx context.Context, sel ast.Selec
 			out.Values[i] = ec._LangVersionsList_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var liveEnnoblementImplementors = []string{"LiveEnnoblement"}
+
+func (ec *executionContext) _LiveEnnoblement(ctx context.Context, sel ast.SelectionSet, obj *models.LiveEnnoblement) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, liveEnnoblementImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("LiveEnnoblement")
+		case "village":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._LiveEnnoblement_village(ctx, field, obj)
+				return res
+			})
+		case "newOwner":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._LiveEnnoblement_newOwner(ctx, field, obj)
+				return res
+			})
+		case "oldOwner":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._LiveEnnoblement_oldOwner(ctx, field, obj)
+				return res
+			})
+		case "ennobledAt":
+			out.Values[i] = ec._LiveEnnoblement_ennobledAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -13639,6 +17068,148 @@ func (ec *executionContext) _Player(ctx context.Context, sel ast.SelectionSet, o
 	return out
 }
 
+var playerHistoryImplementors = []string{"PlayerHistory"}
+
+func (ec *executionContext) _PlayerHistory(ctx context.Context, sel ast.SelectionSet, obj *PlayerHistory) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, playerHistoryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("PlayerHistory")
+		case "total":
+			out.Values[i] = ec._PlayerHistory_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "items":
+			out.Values[i] = ec._PlayerHistory_items(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var playerHistoryRecordImplementors = []string{"PlayerHistoryRecord"}
+
+func (ec *executionContext) _PlayerHistoryRecord(ctx context.Context, sel ast.SelectionSet, obj *models.PlayerHistory) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, playerHistoryRecordImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("PlayerHistoryRecord")
+		case "player":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._PlayerHistoryRecord_player(ctx, field, obj)
+				return res
+			})
+		case "totalVillages":
+			out.Values[i] = ec._PlayerHistoryRecord_totalVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "points":
+			out.Values[i] = ec._PlayerHistoryRecord_points(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rank":
+			out.Values[i] = ec._PlayerHistoryRecord_rank(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rankAtt":
+			out.Values[i] = ec._PlayerHistoryRecord_rankAtt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "scoreAtt":
+			out.Values[i] = ec._PlayerHistoryRecord_scoreAtt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rankDef":
+			out.Values[i] = ec._PlayerHistoryRecord_rankDef(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "scoreDef":
+			out.Values[i] = ec._PlayerHistoryRecord_scoreDef(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rankSup":
+			out.Values[i] = ec._PlayerHistoryRecord_rankSup(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "scoreSup":
+			out.Values[i] = ec._PlayerHistoryRecord_scoreSup(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rankTotal":
+			out.Values[i] = ec._PlayerHistoryRecord_rankTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "scoreTotal":
+			out.Values[i] = ec._PlayerHistoryRecord_scoreTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "tribe":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._PlayerHistoryRecord_tribe(ctx, field, obj)
+				return res
+			})
+		case "createdAt":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._PlayerHistoryRecord_createdAt(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var playersListImplementors = []string{"PlayersList"}
 
 func (ec *executionContext) _PlayersList(ctx context.Context, sel ast.SelectionSet, obj *PlayersList) graphql.Marshaler {
@@ -13692,6 +17263,9 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_ennoblements(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
 		case "langVersions":
@@ -13719,6 +17293,17 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				res = ec._Query_langVersion(ctx, field)
 				return res
 			})
+		case "liveEnnoblements":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_liveEnnoblements(ctx, field)
+				return res
+			})
 		case "players":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -13742,6 +17327,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_player(ctx, field)
+				return res
+			})
+		case "playerHistory":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_playerHistory(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
 		case "servers":
@@ -13769,6 +17368,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				res = ec._Query_server(ctx, field)
 				return res
 			})
+		case "serverStats":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_serverStats(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "tribes":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -13792,6 +17405,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_tribe(ctx, field)
+				return res
+			})
+		case "tribeHistory":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_tribeHistory(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
 		case "villages":
@@ -13860,6 +17487,21 @@ func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
+		case "numberOfPlayers":
+			out.Values[i] = ec._Server_numberOfPlayers(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "numberOfTribes":
+			out.Values[i] = ec._Server_numberOfTribes(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "numberOfVillages":
+			out.Values[i] = ec._Server_numberOfVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "langVersion":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -13895,6 +17537,34 @@ func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, o
 					}
 				}()
 				res = ec._Server_dataUpdatedAt(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "historyUpdatedAt":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Server_historyUpdatedAt(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "statsUpdatedAt":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Server_statsUpdatedAt(ctx, field, obj)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -14759,6 +18429,121 @@ func (ec *executionContext) _ServerConfigWin(ctx context.Context, sel ast.Select
 	return out
 }
 
+var serverStatsImplementors = []string{"ServerStats"}
+
+func (ec *executionContext) _ServerStats(ctx context.Context, sel ast.SelectionSet, obj *ServerStats) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverStatsImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerStats")
+		case "items":
+			out.Values[i] = ec._ServerStats_items(ctx, field, obj)
+		case "total":
+			out.Values[i] = ec._ServerStats_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var serverStatsRecordImplementors = []string{"ServerStatsRecord"}
+
+func (ec *executionContext) _ServerStatsRecord(ctx context.Context, sel ast.SelectionSet, obj *models.ServerStats) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverStatsRecordImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerStatsRecord")
+		case "activePlayers":
+			out.Values[i] = ec._ServerStatsRecord_activePlayers(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "inactivePlayers":
+			out.Values[i] = ec._ServerStatsRecord_inactivePlayers(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "players":
+			out.Values[i] = ec._ServerStatsRecord_players(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "activeTribes":
+			out.Values[i] = ec._ServerStatsRecord_activeTribes(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "inactiveTribes":
+			out.Values[i] = ec._ServerStatsRecord_inactiveTribes(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "tribes":
+			out.Values[i] = ec._ServerStatsRecord_tribes(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "bonusVillages":
+			out.Values[i] = ec._ServerStatsRecord_bonusVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "barbarianVillages":
+			out.Values[i] = ec._ServerStatsRecord_barbarianVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "playerVillages":
+			out.Values[i] = ec._ServerStatsRecord_playerVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "villages":
+			out.Values[i] = ec._ServerStatsRecord_villages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "createdAt":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._ServerStatsRecord_createdAt(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var serversListImplementors = []string{"ServersList"}
 
 func (ec *executionContext) _ServersList(ctx context.Context, sel ast.SelectionSet, obj *ServersList) graphql.Marshaler {
@@ -14869,11 +18654,152 @@ func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "dominance":
+			out.Values[i] = ec._Tribe_dominance(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "scoreTotal":
 			out.Values[i] = ec._Tribe_scoreTotal(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var tribeHistoryImplementors = []string{"TribeHistory"}
+
+func (ec *executionContext) _TribeHistory(ctx context.Context, sel ast.SelectionSet, obj *TribeHistory) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tribeHistoryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TribeHistory")
+		case "total":
+			out.Values[i] = ec._TribeHistory_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "items":
+			out.Values[i] = ec._TribeHistory_items(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var tribeHistoryRecordImplementors = []string{"TribeHistoryRecord"}
+
+func (ec *executionContext) _TribeHistoryRecord(ctx context.Context, sel ast.SelectionSet, obj *models.TribeHistory) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tribeHistoryRecordImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TribeHistoryRecord")
+		case "tribe":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TribeHistoryRecord_tribe(ctx, field, obj)
+				return res
+			})
+		case "totalVillages":
+			out.Values[i] = ec._TribeHistoryRecord_totalVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "totalMembers":
+			out.Values[i] = ec._TribeHistoryRecord_totalMembers(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "points":
+			out.Values[i] = ec._TribeHistoryRecord_points(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "allPoints":
+			out.Values[i] = ec._TribeHistoryRecord_allPoints(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rank":
+			out.Values[i] = ec._TribeHistoryRecord_rank(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "dominance":
+			out.Values[i] = ec._TribeHistoryRecord_dominance(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rankAtt":
+			out.Values[i] = ec._TribeHistoryRecord_rankAtt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "scoreAtt":
+			out.Values[i] = ec._TribeHistoryRecord_scoreAtt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rankDef":
+			out.Values[i] = ec._TribeHistoryRecord_rankDef(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "scoreDef":
+			out.Values[i] = ec._TribeHistoryRecord_scoreDef(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "rankTotal":
+			out.Values[i] = ec._TribeHistoryRecord_rankTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "scoreTotal":
+			out.Values[i] = ec._TribeHistoryRecord_scoreTotal(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "createdAt":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TribeHistoryRecord_createdAt(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -15454,6 +19380,20 @@ func (ec *executionContext) marshalNEnnoblement2ᚖgithubᚗcomᚋtribalwarshelp
 	return ec._Ennoblement(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNEnnoblementsList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementsList(ctx context.Context, sel ast.SelectionSet, v EnnoblementsList) graphql.Marshaler {
+	return ec._EnnoblementsList(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNEnnoblementsList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementsList(ctx context.Context, sel ast.SelectionSet, v *EnnoblementsList) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._EnnoblementsList(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNFloat2float64(ctx context.Context, v interface{}) (float64, error) {
 	return graphql.UnmarshalFloat(v)
 }
@@ -15519,6 +19459,20 @@ func (ec *executionContext) marshalNLanguageTag2githubᚗcomᚋtribalwarshelpᚋ
 	return v
 }
 
+func (ec *executionContext) marshalNLiveEnnoblement2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblement(ctx context.Context, sel ast.SelectionSet, v models.LiveEnnoblement) graphql.Marshaler {
+	return ec._LiveEnnoblement(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNLiveEnnoblement2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblement(ctx context.Context, sel ast.SelectionSet, v *models.LiveEnnoblement) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._LiveEnnoblement(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNPlayer2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx context.Context, sel ast.SelectionSet, v models.Player) graphql.Marshaler {
 	return ec._Player(ctx, sel, &v)
 }
@@ -15531,6 +19485,34 @@ func (ec *executionContext) marshalNPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsh
 		return graphql.Null
 	}
 	return ec._Player(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNPlayerHistory2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayerHistory(ctx context.Context, sel ast.SelectionSet, v PlayerHistory) graphql.Marshaler {
+	return ec._PlayerHistory(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNPlayerHistory2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayerHistory(ctx context.Context, sel ast.SelectionSet, v *PlayerHistory) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._PlayerHistory(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNPlayerHistoryRecord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistory(ctx context.Context, sel ast.SelectionSet, v models.PlayerHistory) graphql.Marshaler {
+	return ec._PlayerHistoryRecord(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNPlayerHistoryRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistory(ctx context.Context, sel ast.SelectionSet, v *models.PlayerHistory) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._PlayerHistoryRecord(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNPlayersList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayersList(ctx context.Context, sel ast.SelectionSet, v PlayersList) graphql.Marshaler {
@@ -15617,6 +19599,34 @@ func (ec *executionContext) marshalNServerConfigWin2githubᚗcomᚋtribalwarshel
 	return ec._ServerConfigWin(ctx, sel, &v)
 }
 
+func (ec *executionContext) marshalNServerStats2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStats(ctx context.Context, sel ast.SelectionSet, v ServerStats) graphql.Marshaler {
+	return ec._ServerStats(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerStats2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStats(ctx context.Context, sel ast.SelectionSet, v *ServerStats) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._ServerStats(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNServerStatsRecord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStats(ctx context.Context, sel ast.SelectionSet, v models.ServerStats) graphql.Marshaler {
+	return ec._ServerStatsRecord(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerStatsRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStats(ctx context.Context, sel ast.SelectionSet, v *models.ServerStats) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._ServerStatsRecord(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx context.Context, v interface{}) (models.ServerStatus, error) {
 	var res models.ServerStatus
 	return res, res.UnmarshalGQL(v)
@@ -15698,6 +19708,34 @@ func (ec *executionContext) marshalNTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsha
 		return graphql.Null
 	}
 	return ec._Tribe(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNTribeHistory2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeHistory(ctx context.Context, sel ast.SelectionSet, v TribeHistory) graphql.Marshaler {
+	return ec._TribeHistory(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNTribeHistory2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeHistory(ctx context.Context, sel ast.SelectionSet, v *TribeHistory) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._TribeHistory(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNTribeHistoryRecord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistory(ctx context.Context, sel ast.SelectionSet, v models.TribeHistory) graphql.Marshaler {
+	return ec._TribeHistoryRecord(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNTribeHistoryRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistory(ctx context.Context, sel ast.SelectionSet, v *models.TribeHistory) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._TribeHistoryRecord(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNTribesList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribesList(ctx context.Context, sel ast.SelectionSet, v TribesList) graphql.Marshaler {
@@ -16039,6 +20077,18 @@ func (ec *executionContext) marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarsh
 	return ret
 }
 
+func (ec *executionContext) unmarshalOEnnoblementFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilter(ctx context.Context, v interface{}) (models.EnnoblementFilter, error) {
+	return ec.unmarshalInputEnnoblementFilter(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOEnnoblementFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilter(ctx context.Context, v interface{}) (*models.EnnoblementFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOEnnoblementFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilter(ctx, v)
+	return &res, err
+}
+
 func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
 	return graphql.UnmarshalInt(v)
 }
@@ -16202,6 +20252,46 @@ func (ec *executionContext) marshalOLanguageTag2ᚕgithubᚗcomᚋtribalwarshelp
 	return ret
 }
 
+func (ec *executionContext) marshalOLiveEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblementᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.LiveEnnoblement) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNLiveEnnoblement2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblement(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
 func (ec *executionContext) marshalOPlayer2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx context.Context, sel ast.SelectionSet, v models.Player) graphql.Marshaler {
 	return ec._Player(ctx, sel, &v)
 }
@@ -16265,6 +20355,58 @@ func (ec *executionContext) unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarsh
 	return &res, err
 }
 
+func (ec *executionContext) unmarshalOPlayerHistoryFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryFilter(ctx context.Context, v interface{}) (models.PlayerHistoryFilter, error) {
+	return ec.unmarshalInputPlayerHistoryFilter(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOPlayerHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryFilter(ctx context.Context, v interface{}) (*models.PlayerHistoryFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOPlayerHistoryFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryFilter(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalOPlayerHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.PlayerHistory) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNPlayerHistoryRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistory(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
 func (ec *executionContext) marshalOServer2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServer(ctx context.Context, sel ast.SelectionSet, v models.Server) graphql.Marshaler {
 	return ec._Server(ctx, sel, &v)
 }
@@ -16326,6 +20468,58 @@ func (ec *executionContext) unmarshalOServerFilter2ᚖgithubᚗcomᚋtribalwarsh
 	}
 	res, err := ec.unmarshalOServerFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerFilter(ctx, v)
 	return &res, err
+}
+
+func (ec *executionContext) unmarshalOServerStatsFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsFilter(ctx context.Context, v interface{}) (models.ServerStatsFilter, error) {
+	return ec.unmarshalInputServerStatsFilter(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOServerStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsFilter(ctx context.Context, v interface{}) (*models.ServerStatsFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOServerStatsFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsFilter(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalOServerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.ServerStats) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNServerStatsRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStats(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
 }
 
 func (ec *executionContext) unmarshalOServerStatus2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatusᚄ(ctx context.Context, v interface{}) ([]models.ServerStatus, error) {
@@ -16443,6 +20637,14 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return ec.marshalOString2string(ctx, sel, *v)
 }
 
+func (ec *executionContext) unmarshalOTime2timeᚐTime(ctx context.Context, v interface{}) (time.Time, error) {
+	return graphql.UnmarshalTime(v)
+}
+
+func (ec *executionContext) marshalOTime2timeᚐTime(ctx context.Context, sel ast.SelectionSet, v time.Time) graphql.Marshaler {
+	return graphql.MarshalTime(v)
+}
+
 func (ec *executionContext) marshalOTribe2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx context.Context, sel ast.SelectionSet, v models.Tribe) graphql.Marshaler {
 	return ec._Tribe(ctx, sel, &v)
 }
@@ -16504,6 +20706,58 @@ func (ec *executionContext) unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshe
 	}
 	res, err := ec.unmarshalOTribeFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
 	return &res, err
+}
+
+func (ec *executionContext) unmarshalOTribeHistoryFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryFilter(ctx context.Context, v interface{}) (models.TribeHistoryFilter, error) {
+	return ec.unmarshalInputTribeHistoryFilter(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOTribeHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryFilter(ctx context.Context, v interface{}) (*models.TribeHistoryFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOTribeHistoryFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryFilter(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalOTribeHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.TribeHistory) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNTribeHistoryRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistory(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
 }
 
 func (ec *executionContext) marshalOVillage2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx context.Context, sel ast.SelectionSet, v models.Village) graphql.Marshaler {

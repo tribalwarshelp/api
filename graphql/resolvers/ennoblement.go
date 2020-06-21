@@ -2,9 +2,11 @@ package resolvers
 
 import (
 	"context"
+	"time"
 
-	"github.com/99designs/gqlgen/graphql"
-	"github.com/tribalwarshelp/api/middleware"
+	"github.com/tribalwarshelp/api/utils"
+
+	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -13,19 +15,15 @@ func (r *ennoblementResolver) NewOwner(ctx context.Context, obj *models.Ennoblem
 		return obj.NewOwner, nil
 	}
 
-	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
-		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
-		if dataloaders != nil {
-			if dataloader, ok := dataloaders[server]; ok {
-				player, _ := dataloader.PlayerByID.Load(obj.NewOwnerID)
-				if player != nil {
-					return player, nil
-				}
-			}
-		}
+	return getPlayer(ctx, obj.NewOwnerID), nil
+}
+
+func (r *ennoblementResolver) NewOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error) {
+	if obj.NewOwnerTribe != nil {
+		return obj.NewOwnerTribe, nil
 	}
 
-	return nil, nil
+	return getTribe(ctx, obj.NewOwnerTribeID), nil
 }
 
 func (r *ennoblementResolver) OldOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error) {
@@ -33,19 +31,15 @@ func (r *ennoblementResolver) OldOwner(ctx context.Context, obj *models.Ennoblem
 		return obj.OldOwner, nil
 	}
 
-	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
-		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
-		if dataloaders != nil {
-			if dataloader, ok := dataloaders[server]; ok {
-				player, _ := dataloader.PlayerByID.Load(obj.OldOwnerID)
-				if player != nil {
-					return player, nil
-				}
-			}
-		}
+	return getPlayer(ctx, obj.OldOwnerID), nil
+}
+
+func (r *ennoblementResolver) OldOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error) {
+	if obj.OldOwnerTribe != nil {
+		return obj.OldOwnerTribe, nil
 	}
 
-	return nil, nil
+	return getTribe(ctx, obj.OldOwnerTribeID), nil
 }
 
 func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennoblement) (*models.Village, error) {
@@ -53,21 +47,18 @@ func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennobleme
 		return obj.Village, nil
 	}
 
-	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
-		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
-		if dataloaders != nil {
-			if dataloader, ok := dataloaders[server]; ok {
-				village, _ := dataloader.VillageByID.Load(obj.VillageID)
-				if village != nil {
-					return village, nil
-				}
-			}
-		}
-	}
-
-	return nil, nil
+	return getVillage(ctx, obj.VillageID), nil
 }
 
-func (r *queryResolver) Ennoblements(ctx context.Context, server string) ([]*models.Ennoblement, error) {
-	return r.EnnoblementUcase.Fetch(ctx, server)
+func (r *ennoblementResolver) EnnobledAt(ctx context.Context, obj *models.Ennoblement) (*time.Time, error) {
+	server, _ := getServer(ctx)
+	t := formatDate(ctx, utils.LanguageTagFromServerKey(server), obj.EnnobledAt)
+	return &t, nil
+}
+
+func (r *queryResolver) Ennoblements(ctx context.Context, server string, f *models.EnnoblementFilter) (*generated.EnnoblementsList, error) {
+	var err error
+	list := &generated.EnnoblementsList{}
+	list.Items, list.Total, err = r.EnnoblementUcase.Fetch(ctx, server, f)
+	return list, err
 }

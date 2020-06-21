@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
-	"github.com/tribalwarshelp/api/ennoblement"
+	"github.com/tribalwarshelp/api/playerhistory"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -15,13 +15,13 @@ type pgRepository struct {
 	*pg.DB
 }
 
-func NewPGRepository(db *pg.DB) ennoblement.Repository {
+func NewPGRepository(db *pg.DB) playerhistory.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.EnnoblementFilter) ([]*models.Ennoblement, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.PlayerHistoryFilter) ([]*models.PlayerHistory, int, error) {
 	var err error
-	data := []*models.Ennoblement{}
+	data := []*models.PlayerHistory{}
 	query := repo.WithParam("SERVER", pg.Safe(server)).Model(&data).Context(ctx)
 
 	if f != nil {

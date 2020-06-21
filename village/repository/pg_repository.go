@@ -55,6 +55,15 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.Vi
 		if f.Sort != "" {
 			query = query.Order(f.Sort)
 		}
+
+		if f.PlayerFilter != nil {
+			query = query.Relation("Player._").WhereStruct(f.PlayerFilter)
+			if f.PlayerFilter.TribeFilter != nil {
+				query = query.
+					Join("LEFT JOIN ?SERVER.tribes AS tribe ON tribe.id = player.tribe_id", server).
+					WhereStruct(f.PlayerFilter.TribeFilter)
+			}
+		}
 	}
 
 	total, err := query.SelectAndCount()
