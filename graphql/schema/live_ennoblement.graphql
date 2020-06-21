@@ -1,4 +1,4 @@
-type Ennoblement {
+type LiveEnnoblement {
   village: Village @goField(forceResolver: true)
   newOwner: Player @goField(forceResolver: true)
   oldOwner: Player @goField(forceResolver: true)
@@ -6,5 +6,5 @@ type Ennoblement {
 }
 
 extend type Query {
-  ennoblements(server: String!): [Ennoblement!]
+  liveEnnoblements(server: String!): [LiveEnnoblement!]
 }

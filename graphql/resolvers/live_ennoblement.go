@@ -8,7 +8,7 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *ennoblementResolver) NewOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error) {
+func (r *liveEnnoblementResolver) NewOwner(ctx context.Context, obj *models.LiveEnnoblement) (*models.Player, error) {
 	if obj.NewOwner != nil {
 		return obj.NewOwner, nil
 	}
@@ -28,7 +28,7 @@ func (r *ennoblementResolver) NewOwner(ctx context.Context, obj *models.Ennoblem
 	return nil, nil
 }
 
-func (r *ennoblementResolver) OldOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error) {
+func (r *liveEnnoblementResolver) OldOwner(ctx context.Context, obj *models.LiveEnnoblement) (*models.Player, error) {
 	if obj.OldOwner != nil {
 		return obj.OldOwner, nil
 	}
@@ -48,7 +48,7 @@ func (r *ennoblementResolver) OldOwner(ctx context.Context, obj *models.Ennoblem
 	return nil, nil
 }
 
-func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennoblement) (*models.Village, error) {
+func (r *liveEnnoblementResolver) Village(ctx context.Context, obj *models.LiveEnnoblement) (*models.Village, error) {
 	if obj.Village != nil {
 		return obj.Village, nil
 	}
@@ -68,6 +68,6 @@ func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennobleme
 	return nil, nil
 }
 
-func (r *queryResolver) Ennoblements(ctx context.Context, server string) ([]*models.Ennoblement, error) {
-	return r.EnnoblementUcase.Fetch(ctx, server)
+func (r *queryResolver) LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error) {
+	return r.LiveEnnoblementUcase.Fetch(ctx, server)
 }
