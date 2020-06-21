@@ -348,7 +348,7 @@ type ComplexityRoot struct {
 		Check func(childComplexity int) int
 	}
 
-	ServerStatsList struct {
+	ServerStats struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
 	}
@@ -493,7 +493,7 @@ type QueryResolver interface {
 	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter) (*PlayerHistory, error)
 	Servers(ctx context.Context, filter *models.ServerFilter) (*ServersList, error)
 	Server(ctx context.Context, key string) (*models.Server, error)
-	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*ServerStatsList, error)
+	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*ServerStats, error)
 	Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*TribesList, error)
 	Tribe(ctx context.Context, server string, id int) (*models.Tribe, error)
 	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter) (*TribeHistory, error)
@@ -2121,19 +2121,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ServerConfigWin.Check(childComplexity), true
 
-	case "ServerStatsList.items":
-		if e.complexity.ServerStatsList.Items == nil {
+	case "ServerStats.items":
+		if e.complexity.ServerStats.Items == nil {
 			break
 		}
 
-		return e.complexity.ServerStatsList.Items(childComplexity), true
+		return e.complexity.ServerStats.Items(childComplexity), true
 
-	case "ServerStatsList.total":
-		if e.complexity.ServerStatsList.Total == nil {
+	case "ServerStats.total":
+		if e.complexity.ServerStats.Total == nil {
 			break
 		}
 
-		return e.complexity.ServerStatsList.Total(childComplexity), true
+		return e.complexity.ServerStats.Total(childComplexity), true
 
 	case "ServerStatsRecord.activePlayers":
 		if e.complexity.ServerStatsRecord.ActivePlayers == nil {
@@ -3229,7 +3229,7 @@ type ServerConfig {
   createdAt: Time! @goField(forceResolver: true)
 }
 
-type ServerStatsList {
+type ServerStats {
   items: [ServerStatsRecord!]
   total: Int!
 }
@@ -3247,7 +3247,7 @@ input ServerStatsFilter {
 }
 
 extend type Query {
-  serverStats(server: String!, filter: ServerStatsFilter): ServerStatsList!
+  serverStats(server: String!, filter: ServerStatsFilter): ServerStats!
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "schema/tribe.graphql", Input: `type Tribe {
@@ -6907,9 +6907,9 @@ func (ec *executionContext) _Query_serverStats(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ServerStatsList)
+	res := resTmp.(*ServerStats)
 	fc.Result = res
-	return ec.marshalNServerStatsList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStatsList(ctx, field.Selections, res)
+	return ec.marshalNServerStats2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStats(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_tribes(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -11291,7 +11291,7 @@ func (ec *executionContext) _ServerConfigWin_check(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsList_items(ctx context.Context, field graphql.CollectedField, obj *ServerStatsList) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStats_items(ctx context.Context, field graphql.CollectedField, obj *ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11299,7 +11299,7 @@ func (ec *executionContext) _ServerStatsList_items(ctx context.Context, field gr
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "ServerStatsList",
+		Object:   "ServerStats",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -11322,7 +11322,7 @@ func (ec *executionContext) _ServerStatsList_items(ctx context.Context, field gr
 	return ec.marshalOServerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsList_total(ctx context.Context, field graphql.CollectedField, obj *ServerStatsList) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStats_total(ctx context.Context, field graphql.CollectedField, obj *ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11330,7 +11330,7 @@ func (ec *executionContext) _ServerStatsList_total(ctx context.Context, field gr
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "ServerStatsList",
+		Object:   "ServerStats",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -18429,21 +18429,21 @@ func (ec *executionContext) _ServerConfigWin(ctx context.Context, sel ast.Select
 	return out
 }
 
-var serverStatsListImplementors = []string{"ServerStatsList"}
+var serverStatsImplementors = []string{"ServerStats"}
 
-func (ec *executionContext) _ServerStatsList(ctx context.Context, sel ast.SelectionSet, obj *ServerStatsList) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, serverStatsListImplementors)
+func (ec *executionContext) _ServerStats(ctx context.Context, sel ast.SelectionSet, obj *ServerStats) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverStatsImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	var invalids uint32
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("ServerStatsList")
+			out.Values[i] = graphql.MarshalString("ServerStats")
 		case "items":
-			out.Values[i] = ec._ServerStatsList_items(ctx, field, obj)
+			out.Values[i] = ec._ServerStats_items(ctx, field, obj)
 		case "total":
-			out.Values[i] = ec._ServerStatsList_total(ctx, field, obj)
+			out.Values[i] = ec._ServerStats_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -19599,18 +19599,18 @@ func (ec *executionContext) marshalNServerConfigWin2githubᚗcomᚋtribalwarshel
 	return ec._ServerConfigWin(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerStatsList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStatsList(ctx context.Context, sel ast.SelectionSet, v ServerStatsList) graphql.Marshaler {
-	return ec._ServerStatsList(ctx, sel, &v)
+func (ec *executionContext) marshalNServerStats2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStats(ctx context.Context, sel ast.SelectionSet, v ServerStats) graphql.Marshaler {
+	return ec._ServerStats(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerStatsList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStatsList(ctx context.Context, sel ast.SelectionSet, v *ServerStatsList) graphql.Marshaler {
+func (ec *executionContext) marshalNServerStats2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStats(ctx context.Context, sel ast.SelectionSet, v *ServerStats) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
 		}
 		return graphql.Null
 	}
-	return ec._ServerStatsList(ctx, sel, v)
+	return ec._ServerStats(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNServerStatsRecord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStats(ctx context.Context, sel ast.SelectionSet, v models.ServerStats) graphql.Marshaler {

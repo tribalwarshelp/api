@@ -15,9 +15,9 @@ func (r *serverStatsRecordResolver) CreatedAt(ctx context.Context, obj *models.S
 	return &t, nil
 }
 
-func (r *Resolver) ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*generated.ServerStatsList, error) {
+func (r *Resolver) ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*generated.ServerStats, error) {
 	var err error
-	list := &generated.ServerStatsList{}
+	list := &generated.ServerStats{}
 	list.Items, list.Total, err = r.ServerStatsUcase.Fetch(ctx, server, filter)
 	return list, err
 }

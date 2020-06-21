@@ -12,7 +12,7 @@ type ServerStatsRecord {
   createdAt: Time! @goField(forceResolver: true)
 }
 
-type ServerStatsList {
+type ServerStats {
   items: [ServerStatsRecord!]
   total: Int!
 }
@@ -30,5 +30,5 @@ input ServerStatsFilter {
 }
 
 extend type Query {
-  serverStats(server: String!, filter: ServerStatsFilter): ServerStatsList!
+  serverStats(server: String!, filter: ServerStatsFilter): ServerStats!
 }
