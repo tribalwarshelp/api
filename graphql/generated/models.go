@@ -6,6 +6,11 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
+type EnnoblementsList struct {
+	Items []*models.Ennoblement `json:"items"`
+	Total int                   `json:"total"`
+}
+
 type LangVersionsList struct {
 	Items []*models.LangVersion `json:"items"`
 	Total int                   `json:"total"`

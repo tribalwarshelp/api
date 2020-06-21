@@ -3,9 +3,7 @@ package resolvers
 import (
 	"context"
 
-	"github.com/99designs/gqlgen/graphql"
 	"github.com/tribalwarshelp/api/graphql/generated"
-	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -14,19 +12,7 @@ func (r *villageResolver) Player(ctx context.Context, obj *models.Village) (*mod
 		return obj.Player, nil
 	}
 
-	if server, ok := getServer(graphql.GetFieldContext(ctx)); ok {
-		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
-		if dataloaders != nil {
-			if dataloader, ok := dataloaders[server]; ok {
-				tribe, _ := dataloader.PlayerByID.Load(obj.PlayerID)
-				if tribe != nil {
-					return tribe, nil
-				}
-			}
-		}
-	}
-
-	return nil, nil
+	return getPlayer(ctx, obj.PlayerID), nil
 }
 
 func (r *queryResolver) Villages(ctx context.Context, server string, filter *models.VillageFilter) (*generated.VillagesList, error) {

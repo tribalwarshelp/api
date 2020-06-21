@@ -4,8 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/tribalwarshelp/api/utils"
-
 	"github.com/tribalwarshelp/api/middleware"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
@@ -22,15 +20,18 @@ func (r *serverResolver) LangVersion(ctx context.Context, obj *models.Server) (*
 }
 
 func (r *serverResolver) DataUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
-	loaders := middleware.DataLoadersFromContext(ctx)
-	if loaders != nil {
-		lv, err := loaders.LangVersionByTag.Load(obj.LangVersionTag.String())
-		if err == nil {
-			dataUpdatedAt := obj.DataUpdatedAt.In(utils.GetLocation(lv.Timezone))
-			return &dataUpdatedAt, nil
-		}
-	}
-	return &obj.DataUpdatedAt, nil
+	t := formatDate(context.Background(), obj.LangVersionTag, obj.DataUpdatedAt)
+	return &t, nil
+}
+
+func (r *serverResolver) HistoryUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
+	t := formatDate(context.Background(), obj.LangVersionTag, obj.HistoryUpdatedAt)
+	return &t, nil
+}
+
+func (r *serverResolver) StatsUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
+	t := formatDate(context.Background(), obj.LangVersionTag, obj.StatsUpdatedAt)
+	return &t, nil
 }
 
 func (r *queryResolver) Servers(ctx context.Context, filter *models.ServerFilter) (*generated.ServersList, error) {

@@ -1,0 +1,42 @@
+type Ennoblement {
+  village: Village @goField(forceResolver: true)
+  newOwner: Player @goField(forceResolver: true)
+  newOwnerTribe: Tribe @goField(forceResolver: true)
+  oldOwner: Player @goField(forceResolver: true)
+  oldOwnerTribe: Tribe @goField(forceResolver: true)
+  ennobledAt: Time! @goField(forceResolver: true)
+}
+
+type EnnoblementsList {
+  items: [Ennoblement!]
+  total: Int!
+}
+
+input EnnoblementFilter {
+  villageID: [Int!]
+  villageIDNEQ: [Int!]
+
+  newOwnerID: [Int!]
+  newOwnerIDNEQ: [Int!]
+  newOwnerTribeID: [Int!]
+  newOwnerTribeIDNEQ: [Int!]
+
+  oldOwnerID: [Int!]
+  oldOwnerIDNEQ: [Int!]
+  oldOwnerTribeID: [Int!]
+  oldOwnerTribeIDNEQ: [Int!]
+
+  ennobledAt: Time
+  ennobledAtGT: Time
+  ennobledAtGTE: Time
+  ennobledAtLT: Time
+  ennobledAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  ennoblements(server: String!, filter: EnnoblementFilter): EnnoblementsList!
+}
