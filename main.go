@@ -26,10 +26,14 @@ import (
 	"github.com/tribalwarshelp/api/middleware"
 	playerrepo "github.com/tribalwarshelp/api/player/repository"
 	playerucase "github.com/tribalwarshelp/api/player/usecase"
+	playerhistoryrepo "github.com/tribalwarshelp/api/playerhistory/repository"
+	playerhistoryucase "github.com/tribalwarshelp/api/playerhistory/usecase"
 	serverrepo "github.com/tribalwarshelp/api/server/repository"
 	serverucase "github.com/tribalwarshelp/api/server/usecase"
 	triberepo "github.com/tribalwarshelp/api/tribe/repository"
 	tribeucase "github.com/tribalwarshelp/api/tribe/usecase"
+	tribehistoryrepo "github.com/tribalwarshelp/api/tribehistory/repository"
+	tribehistoryucase "github.com/tribalwarshelp/api/tribehistory/usecase"
 	villagerepo "github.com/tribalwarshelp/api/village/repository"
 	villageucase "github.com/tribalwarshelp/api/village/usecase"
 
@@ -86,6 +90,8 @@ func main() {
 	playerRepo := playerrepo.NewPGRepository(db)
 	villageRepo := villagerepo.NewPGRepository(db)
 	ennoblementRepo := ennoblementrepo.NewPGRepository(db)
+	tribehistoryRepo := tribehistoryrepo.NewPGRepository(db)
+	playerhistoryRepo := playerhistoryrepo.NewPGRepository(db)
 	liveennoblementRepo := liveennoblementrepo.NewPGRepository(db, redisClient)
 
 	router := gin.Default()
@@ -106,6 +112,8 @@ func main() {
 			VillageUcase:         villageucase.New(villageRepo),
 			EnnoblementUcase:     ennoblementucase.New(ennoblementRepo),
 			LiveEnnoblementUcase: liveennoblementucase.New(liveennoblementRepo),
+			TribeHistoryUcase:    tribehistoryucase.New(tribehistoryRepo),
+			PlayerHistoryUcase:   playerhistoryucase.New(playerhistoryRepo),
 		},
 	})
 

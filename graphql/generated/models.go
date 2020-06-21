@@ -16,6 +16,11 @@ type LangVersionsList struct {
 	Total int                   `json:"total"`
 }
 
+type PlayerHistory struct {
+	Total int                     `json:"total"`
+	Items []*models.PlayerHistory `json:"items"`
+}
+
 type PlayersList struct {
 	Items []*models.Player `json:"items"`
 	Total int              `json:"total"`
@@ -24,6 +29,11 @@ type PlayersList struct {
 type ServersList struct {
 	Items []*models.Server `json:"items"`
 	Total int              `json:"total"`
+}
+
+type TribeHistory struct {
+	Total int                    `json:"total"`
+	Items []*models.TribeHistory `json:"items"`
 }
 
 type TribesList struct {

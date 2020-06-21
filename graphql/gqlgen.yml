@@ -78,3 +78,11 @@ models:
     model: github.com/tribalwarshelp/shared/models.Ennoblement
   EnnoblementFilter:
     model: github.com/tribalwarshelp/shared/models.EnnoblementFilter
+  PlayerHistoryRecord:
+    model: github.com/tribalwarshelp/shared/models.PlayerHistory
+  PlayerHistoryFilter:
+    model: github.com/tribalwarshelp/shared/models.PlayerHistoryFilter
+  TribeHistoryRecord:
+    model: github.com/tribalwarshelp/shared/models.TribeHistory
+  TribeHistoryFilter:
+    model: github.com/tribalwarshelp/shared/models.TribeHistoryFilter

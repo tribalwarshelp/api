@@ -13,6 +13,7 @@ type Tribe {
   rankDef: Int!
   scoreDef: Int!
   rankTotal: Int!
+  dominance: Float!
   scoreTotal: Int!
 }
 

@@ -1,0 +1,40 @@
+type TribeHistoryRecord {
+  tribe: Tribe @goField(forceResolver: true)
+  totalVillages: Int!
+  totalMembers: Int!
+  points: Int!
+  allPoints: Int!
+  rank: Int!
+  dominance: Float!
+  rankAtt: Int!
+  scoreAtt: Int!
+  rankDef: Int!
+  scoreDef: Int!
+  rankTotal: Int!
+  scoreTotal: Int!
+  createdAt: Time! @goField(forceResolver: true)
+}
+
+type TribeHistory {
+  total: Int!
+  items: [TribeHistoryRecord!]
+}
+
+input TribeHistoryFilter {
+  tribeID: [Int!]
+  tribeIDNEQ: [Int!]
+
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  tribeHistory(server: String!, filter: TribeHistoryFilter): TribeHistory!
+}
