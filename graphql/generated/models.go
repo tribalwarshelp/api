@@ -26,6 +26,11 @@ type PlayersList struct {
 	Total int              `json:"total"`
 }
 
+type ServerStatsList struct {
+	Items []*models.ServerStats `json:"items"`
+	Total int                   `json:"total"`
+}
+
 type ServersList struct {
 	Items []*models.Server `json:"items"`
 	Total int              `json:"total"`

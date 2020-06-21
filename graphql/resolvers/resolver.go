@@ -8,6 +8,7 @@ import (
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/api/playerhistory"
 	"github.com/tribalwarshelp/api/server"
+	"github.com/tribalwarshelp/api/serverstats"
 	"github.com/tribalwarshelp/api/tribe"
 	"github.com/tribalwarshelp/api/tribehistory"
 	"github.com/tribalwarshelp/api/village"
@@ -23,6 +24,7 @@ type Resolver struct {
 	EnnoblementUcase     ennoblement.Usecase
 	PlayerHistoryUcase   playerhistory.Usecase
 	TribeHistoryUcase    tribehistory.Usecase
+	ServerStatsUcase     serverstats.Usecase
 }
 
 // Query returns generated.QueryResolver implementation.
@@ -34,6 +36,9 @@ func (r *Resolver) LiveEnnoblement() generated.LiveEnnoblementResolver {
 }
 func (r *Resolver) Ennoblement() generated.EnnoblementResolver { return &ennoblementResolver{r} }
 func (r *Resolver) Server() generated.ServerResolver           { return &serverResolver{r} }
+func (r *Resolver) ServerStatsRecord() generated.ServerStatsRecordResolver {
+	return &serverStatsRecordResolver{r}
+}
 func (r *Resolver) PlayerHistoryRecord() generated.PlayerHistoryRecordResolver {
 	return &playerHistoryRecordResolver{r}
 }
@@ -49,3 +54,4 @@ type ennoblementResolver struct{ *Resolver }
 type serverResolver struct{ *Resolver }
 type playerHistoryRecordResolver struct{ *Resolver }
 type tribeHistoryRecordResolver struct{ *Resolver }
+type serverStatsRecordResolver struct{ *Resolver }

@@ -1,0 +1,34 @@
+type ServerStatsRecord {
+  activePlayers: Int!
+  inactivePlayers: Int!
+  players: Int!
+  activeTribes: Int!
+  inactiveTribes: Int!
+  tribes: Int!
+  bonusVillages: Int!
+  barbarianVillages: Int!
+  playerVillages: Int!
+  villages: Int!
+  createdAt: Time! @goField(forceResolver: true)
+}
+
+type ServerStatsList {
+  items: [ServerStatsRecord!]
+  total: Int!
+}
+
+input ServerStatsFilter {
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  serverStats(server: String!, filter: ServerStatsFilter): ServerStatsList!
+}
