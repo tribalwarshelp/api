@@ -13,7 +13,8 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/segmentio/encoding v0.1.14 // indirect
-	github.com/tribalwarshelp/shared v0.0.0-20200621115742-5ae0d5ec33f2
+	github.com/tribalwarshelp/map-generator v0.0.0-20200622153051-b5421f3c7009
+	github.com/tribalwarshelp/shared v0.0.0-20200622084436-3a768c8bf574
 	github.com/vektah/gqlparser/v2 v2.0.1
 	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
