@@ -4,7 +4,6 @@ enum ServerStatus {
 }
 
 type Server {
-  id: Int!
   key: String!
   status: ServerStatus!
   numberOfPlayers: Int!
@@ -28,9 +27,6 @@ type ServersList {
 }
 
 input ServerFilter {
-  id: [Int!]
-  idNEQ: [Int!]
-
   key: [String!]
   keyNEQ: [String!]
   keyMATCH: String

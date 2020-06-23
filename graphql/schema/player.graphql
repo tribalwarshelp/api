@@ -13,7 +13,10 @@ type Player {
   scoreSup: Int!
   rankTotal: Int!
   scoreTotal: Int!
+  dailyGrowth: Int!
+  joinedAt: Time! @goField(forceResolver: true)
   tribe: Tribe @goField(forceResolver: true)
+  servers: [String!]! @goField(forceResolver: true)
 }
 
 type PlayersList {
@@ -97,6 +100,18 @@ input PlayerFilter {
   scoreTotalGTE: Int
   scoreTotalLT: Int
   scoreTotalLTE: Int
+
+  dailyGrowth: Int
+  dailyGrowthGT: Int
+  dailyGrowthGTE: Int
+  dailyGrowthLT: Int
+  dailyGrowthLTE: Int
+
+  joinedAt: Time
+  joinedAtGT: Time
+  joinedAtGTE: Time
+  joinedAtLT: Time
+  joinedAtLTE: Time
 
   tribeID: [Int!]
   tribeFilter: TribeFilter

@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -67,8 +68,12 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(ids []int) ([]*models.Village, []error) {
-				villages, _, err := cfg.VillageRepo.Fetch(context.Background(), server, &models.VillageFilter{
-					ID: ids,
+				villages, _, err := cfg.VillageRepo.Fetch(context.Background(), village.FetchConfig{
+					Server: server,
+					Count:  false,
+					Filter: &models.VillageFilter{
+						ID: ids,
+					},
 				})
 				if err != nil {
 					return nil, []error{err}

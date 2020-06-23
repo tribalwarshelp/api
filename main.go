@@ -8,6 +8,8 @@ import (
 	"os/signal"
 	"time"
 
+	servermaphttpdelivery "github.com/tribalwarshelp/api/servermap/delivery/http"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/mode"
@@ -30,6 +32,7 @@ import (
 	playerhistoryucase "github.com/tribalwarshelp/api/playerhistory/usecase"
 	serverrepo "github.com/tribalwarshelp/api/server/repository"
 	serverucase "github.com/tribalwarshelp/api/server/usecase"
+	servermapucase "github.com/tribalwarshelp/api/servermap/usecase"
 	serverstatsrepo "github.com/tribalwarshelp/api/serverstats/repository"
 	serverstatsucase "github.com/tribalwarshelp/api/serverstats/usecase"
 	triberepo "github.com/tribalwarshelp/api/tribe/repository"
@@ -97,19 +100,27 @@ func main() {
 	serverstatsRepo := serverstatsrepo.NewPGRepository(db)
 	liveennoblementRepo := liveennoblementrepo.NewPGRepository(db, redisClient)
 
+	serverUcase := serverucase.New(serverRepo)
+
 	router := gin.Default()
-	v1 := router.Group("")
-	v1.Use(middleware.DataLoadersToContext(serverRepo, dataloaders.Config{
+	rest := router.Group("")
+	servermaphttpdelivery.Attach(servermaphttpdelivery.Config{
+		RouterGroup:   rest,
+		MapUsecase:    servermapucase.New(villageRepo),
+		ServerUsecase: serverUcase,
+	})
+	graphql := router.Group("")
+	graphql.Use(middleware.DataLoadersToContext(serverRepo, dataloaders.Config{
 		PlayerRepo:      playerRepo,
 		TribeRepo:       tribeRepo,
 		VillageRepo:     villageRepo,
 		LangVersionRepo: langversionRepo,
 	}))
 	httpdelivery.Attach(httpdelivery.Config{
-		RouterGroup: v1,
+		RouterGroup: graphql,
 		Resolver: &resolvers.Resolver{
 			LangVersionUcase:     langversionucase.New(langversionRepo),
-			ServerUcase:          serverucase.New(serverRepo),
+			ServerUcase:          serverUcase,
 			TribeUcase:           tribeucase.New(tribeRepo),
 			PlayerUcase:          playerucase.New(playerRepo),
 			VillageUcase:         villageucase.New(villageRepo),

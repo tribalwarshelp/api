@@ -25,18 +25,25 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.V
 		filter.Limit = village.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
-	return ucase.repo.Fetch(ctx, server, filter)
+	return ucase.repo.Fetch(ctx, village.FetchConfig{
+		Server: server,
+		Count:  true,
+		Filter: filter,
+	})
 }
 
 func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*models.Village, error) {
-	villages, total, err := ucase.repo.Fetch(ctx, server, &models.VillageFilter{
-		ID:    []int{id},
-		Limit: 1,
+	villages, _, err := ucase.repo.Fetch(ctx, village.FetchConfig{
+		Filter: &models.VillageFilter{
+			ID:    []int{id},
+			Limit: 1,
+		},
+		Server: server,
 	})
 	if err != nil {
 		return nil, err
 	}
-	if total == 0 {
+	if len(villages) == 0 {
 		return nil, fmt.Errorf("Village (ID: %d) not found.", id)
 	}
 	return villages[0], nil

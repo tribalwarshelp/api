@@ -2,8 +2,11 @@ package resolvers
 
 import (
 	"context"
+	"time"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
+	"github.com/tribalwarshelp/api/middleware"
+	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -13,6 +16,23 @@ func (r *playerResolver) Tribe(ctx context.Context, obj *models.Player) (*models
 	}
 
 	return getTribe(ctx, obj.TribeID), nil
+}
+
+func (r *playerResolver) Servers(ctx context.Context, obj *models.Player) ([]string, error) {
+	loaders := middleware.DataLoadersFromContext(ctx)
+	if loaders != nil {
+		servers, err := loaders.PlayerServersByID.Load(obj.ID)
+		if err == nil {
+			return servers, nil
+		}
+	}
+	return []string{}, nil
+}
+
+func (r *playerResolver) JoinedAt(ctx context.Context, obj *models.Player) (*time.Time, error) {
+	server, _ := getServer(ctx)
+	t := formatDate(ctx, utils.LanguageTagFromServerKey(server), obj.JoinedAt)
+	return &t, nil
 }
 
 func (r *queryResolver) Players(ctx context.Context, server string, filter *models.PlayerFilter) (*generated.PlayersList, error) {

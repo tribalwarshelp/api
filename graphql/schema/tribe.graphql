@@ -14,6 +14,7 @@ type Tribe {
   scoreDef: Int!
   rankTotal: Int!
   dominance: Float!
+  createdAt: Time! @goField(forceResolver: true)
   scoreTotal: Int!
 }
 
@@ -103,6 +104,18 @@ input TribeFilter {
   scoreTotalGTE: Int
   scoreTotalLT: Int
   scoreTotalLTE: Int
+
+  dominance: Int
+  dominanceGT: Int
+  dominanceGTE: Int
+  dominanceLT: Int
+  dominanceLTE: Int
+
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
 
   offset: Int
   limit: Int

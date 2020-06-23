@@ -20,17 +20,17 @@ func (r *serverResolver) LangVersion(ctx context.Context, obj *models.Server) (*
 }
 
 func (r *serverResolver) DataUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
-	t := formatDate(context.Background(), obj.LangVersionTag, obj.DataUpdatedAt)
+	t := formatDate(ctx, obj.LangVersionTag, obj.DataUpdatedAt)
 	return &t, nil
 }
 
 func (r *serverResolver) HistoryUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
-	t := formatDate(context.Background(), obj.LangVersionTag, obj.HistoryUpdatedAt)
+	t := formatDate(ctx, obj.LangVersionTag, obj.HistoryUpdatedAt)
 	return &t, nil
 }
 
 func (r *serverResolver) StatsUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
-	t := formatDate(context.Background(), obj.LangVersionTag, obj.StatsUpdatedAt)
+	t := formatDate(ctx, obj.LangVersionTag, obj.StatsUpdatedAt)
 	return &t, nil
 }
 
