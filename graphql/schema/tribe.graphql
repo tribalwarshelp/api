@@ -105,6 +105,12 @@ input TribeFilter {
   scoreTotalLT: Int
   scoreTotalLTE: Int
 
+  dominance: Int
+  dominanceGT: Int
+  dominanceGTE: Int
+  dominanceLT: Int
+  dominanceLTE: Int
+
   createdAt: Time
   createdAtGT: Time
   createdAtGTE: Time

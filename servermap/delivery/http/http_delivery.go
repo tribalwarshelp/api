@@ -3,6 +3,7 @@ package httpdelivery
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/tribalwarshelp/map-generator/generator"
@@ -15,6 +16,7 @@ import (
 
 const (
 	imageTTL = 2 * time.Hour / time.Second
+	maxScale = 5
 )
 
 type Config struct {
@@ -62,6 +64,12 @@ func (h *handler) mapHandler(c *gin.Context) {
 		return
 	}
 
+	centerX, _ := strconv.Atoi(c.Query("centerX"))
+	centerY, _ := strconv.Atoi(c.Query("centerY"))
+	scale, _ := strconv.ParseFloat((c.Query("scale")), 32)
+	if scale > maxScale {
+		scale = maxScale
+	}
 	if err := generator.Generate(generator.Config{
 		Markers:              markers,
 		Destination:          c.Writer,
@@ -71,6 +79,9 @@ func (h *handler) mapHandler(c *gin.Context) {
 		GridLineColor:        c.Query("gridLineColor"),
 		ContinentNumberColor: c.Query("continentNumberColor"),
 		MapSize:              server.Config.Coord.MapSize,
+		CenterX:              centerX,
+		CenterY:              centerY,
+		Scale:                float32(scale),
 	}); err != nil {
 		c.JSON(http.StatusBadRequest, &gqlerror.Error{
 			Message: err.Error(),

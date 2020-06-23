@@ -2988,6 +2988,12 @@ input PlayerFilter {
   scoreTotalLT: Int
   scoreTotalLTE: Int
 
+  dailyGrowth: Int
+  dailyGrowthGT: Int
+  dailyGrowthGTE: Int
+  dailyGrowthLT: Int
+  dailyGrowthLTE: Int
+
   joinedAt: Time
   joinedAtGT: Time
   joinedAtGTE: Time
@@ -3391,6 +3397,12 @@ input TribeFilter {
   scoreTotalGTE: Int
   scoreTotalLT: Int
   scoreTotalLTE: Int
+
+  dominance: Int
+  dominanceGT: Int
+  dominanceGTE: Int
+  dominanceLT: Int
+  dominanceLTE: Int
 
   createdAt: Time
   createdAtGT: Time
@@ -15719,6 +15731,36 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 			if err != nil {
 				return it, err
 			}
+		case "dailyGrowth":
+			var err error
+			it.DailyGrowth, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dailyGrowthGT":
+			var err error
+			it.DailyGrowthGT, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dailyGrowthGTE":
+			var err error
+			it.DailyGrowthGTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dailyGrowthLT":
+			var err error
+			it.DailyGrowthLT, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dailyGrowthLTE":
+			var err error
+			it.DailyGrowthLTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "joinedAt":
 			var err error
 			it.JoinedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
@@ -16394,6 +16436,36 @@ func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj i
 		case "scoreTotalLTE":
 			var err error
 			it.ScoreTotalLTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dominance":
+			var err error
+			it.Dominance, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dominanceGT":
+			var err error
+			it.DominanceGT, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dominanceGTE":
+			var err error
+			it.DominanceGTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dominanceLT":
+			var err error
+			it.DominanceLT, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "dominanceLTE":
+			var err error
+			it.DominanceLTE, err = ec.unmarshalOInt2int(ctx, v)
 			if err != nil {
 				return it, err
 			}

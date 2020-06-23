@@ -101,6 +101,12 @@ input PlayerFilter {
   scoreTotalLT: Int
   scoreTotalLTE: Int
 
+  dailyGrowth: Int
+  dailyGrowthGT: Int
+  dailyGrowthGTE: Int
+  dailyGrowthLT: Int
+  dailyGrowthLTE: Int
+
   joinedAt: Time
   joinedAtGT: Time
   joinedAtGTE: Time
