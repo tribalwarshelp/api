@@ -31,6 +31,7 @@ type Resolver struct {
 func (r *Resolver) Query() generated.QueryResolver     { return &queryResolver{r} }
 func (r *Resolver) Player() generated.PlayerResolver   { return &playerResolver{r} }
 func (r *Resolver) Village() generated.VillageResolver { return &villageResolver{r} }
+func (r *Resolver) Tribe() generated.TribeResolver     { return &tribeResolver{r} }
 func (r *Resolver) LiveEnnoblement() generated.LiveEnnoblementResolver {
 	return &liveEnnoblementResolver{r}
 }
@@ -49,6 +50,7 @@ func (r *Resolver) TribeHistoryRecord() generated.TribeHistoryRecordResolver {
 type queryResolver struct{ *Resolver }
 type playerResolver struct{ *Resolver }
 type villageResolver struct{ *Resolver }
+type tribeResolver struct{ *Resolver }
 type liveEnnoblementResolver struct{ *Resolver }
 type ennoblementResolver struct{ *Resolver }
 type serverResolver struct{ *Resolver }

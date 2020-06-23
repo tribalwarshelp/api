@@ -14,8 +14,9 @@ type Player {
   rankTotal: Int!
   scoreTotal: Int!
   dailyGrowth: Int!
-  joinedAt: Time!
+  joinedAt: Time! @goField(forceResolver: true)
   tribe: Tribe @goField(forceResolver: true)
+  servers: [String!]! @goField(forceResolver: true)
 }
 
 type PlayersList {

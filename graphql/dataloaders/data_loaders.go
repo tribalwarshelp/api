@@ -12,7 +12,8 @@ import (
 )
 
 type DataLoaders struct {
-	LangVersionByTag LangVersionLoader
+	LangVersionByTag  LangVersionLoader
+	PlayerServersByID PlayerServersLoader
 }
 
 type Config struct {
@@ -27,9 +28,9 @@ func New(cfg Config) *DataLoaders {
 		LangVersionByTag: LangVersionLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
-			fetch: func(tagsS []string) ([]*models.LangVersion, []error) {
+			fetch: func(keys []string) ([]*models.LangVersion, []error) {
 				tags := []models.LanguageTag{}
-				for _, tag := range tagsS {
+				for _, tag := range keys {
 					tags = append(tags, models.LanguageTag(tag))
 				}
 				langVersions, _, err := cfg.LangVersionRepo.Fetch(context.Background(), &models.LangVersionFilter{
@@ -44,11 +45,26 @@ func New(cfg Config) *DataLoaders {
 					langVersionByTag[langVersion.Tag] = langVersion
 				}
 
-				inOrder := make([]*models.LangVersion, len(tagsS))
+				inOrder := make([]*models.LangVersion, len(keys))
 				for i, tag := range tags {
 					inOrder[i] = langVersionByTag[tag]
 				}
 
+				return inOrder, nil
+			},
+		},
+		PlayerServersByID: PlayerServersLoader{
+			wait:     2 * time.Millisecond,
+			maxBatch: 0,
+			fetch: func(keys []int) ([][]string, []error) {
+				playerServersByID, err := cfg.PlayerRepo.FetchPlayerServers(context.Background(), keys...)
+				if err != nil {
+					return nil, []error{err}
+				}
+				inOrder := make([][]string, len(keys))
+				for i, id := range keys {
+					inOrder[i] = playerServersByID[id]
+				}
 				return inOrder, nil
 			},
 		},

@@ -53,3 +53,27 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.Pl
 
 	return data, total, nil
 }
+
+type fetchPlayerServersQueryResult struct {
+	PlayerID int
+	Servers  []string `pg:",array"`
+}
+
+func (repo *pgRepository) FetchPlayerServers(ctx context.Context, playerID ...int) (map[int][]string, error) {
+	data := []*fetchPlayerServersQueryResult{}
+	if err := repo.Model(&models.PlayerToServer{}).
+		Context(ctx).
+		Column("player_id").
+		ColumnExpr("array_agg(server_key) as servers").
+		Where("player_id IN (?)", pg.In(playerID)).
+		Group("player_id").
+		Select(&data); err != nil && err != pg.ErrNoRows {
+		return nil, errors.Wrap(err, "Internal server error")
+	}
+
+	m := make(map[int][]string)
+	for _, res := range data {
+		m[res.PlayerID] = res.Servers
+	}
+	return m, nil
+}

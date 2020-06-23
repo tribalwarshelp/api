@@ -14,7 +14,7 @@ type Tribe {
   scoreDef: Int!
   rankTotal: Int!
   dominance: Float!
-  createdAt: Time!
+  createdAt: Time! @goField(forceResolver: true)
   scoreTotal: Int!
 }
 
