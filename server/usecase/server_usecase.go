@@ -25,18 +25,23 @@ func (ucase *usecase) Fetch(ctx context.Context, filter *models.ServerFilter) ([
 		filter.Limit = server.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
-	return ucase.repo.Fetch(ctx, filter)
+	return ucase.repo.Fetch(ctx, server.FetchConfig{
+		Count:  true,
+		Filter: filter,
+	})
 }
 
 func (ucase *usecase) GetByKey(ctx context.Context, key string) (*models.Server, error) {
-	servers, total, err := ucase.repo.Fetch(ctx, &models.ServerFilter{
-		Key:   []string{key},
-		Limit: 1,
+	servers, _, err := ucase.repo.Fetch(ctx, server.FetchConfig{
+		Filter: &models.ServerFilter{
+			Key:   []string{key},
+			Limit: 1,
+		},
 	})
 	if err != nil {
 		return nil, err
 	}
-	if total == 0 {
+	if len(servers) == 0 {
 		return nil, fmt.Errorf("Server (key: %s) not found.", key)
 	}
 	return servers[0], nil

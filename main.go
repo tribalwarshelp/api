@@ -68,14 +68,14 @@ func main() {
 			log.Fatal("Database disconnecting:", err)
 		}
 	}()
-	//single server redis
+
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("REDIS_HOST") + ":" + os.Getenv("REDIS_PORT"),
 		Password: os.Getenv("REDIS_PASSWORD"),
 	})
 	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
 	if err := redisClient.Ping(ctx).Err(); err != nil {
-		log.Fatal(errors.Wrap(err, "cannot establish a connection with Redis"))
+		log.Fatal(errors.Wrap(err, "cannot connect to redis"))
 	}
 	defer func() {
 		if err := redisClient.Close(); err != nil {

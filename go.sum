@@ -175,8 +175,6 @@ github.com/tribalwarshelp/map-generator v0.0.0-20200623143352-cc037d744be2 h1:jk
 github.com/tribalwarshelp/map-generator v0.0.0-20200623143352-cc037d744be2/go.mod h1:h3INS/arc4MelQjePKvXdrqWjHVVm2s4PKSrsMmkZx8=
 github.com/tribalwarshelp/shared v0.0.0-20200622084436-3a768c8bf574 h1:y2EoH6zRK9Uc0AeswnJRYUUIQYcSLZB5VDFuxPCKxNM=
 github.com/tribalwarshelp/shared v0.0.0-20200622084436-3a768c8bf574/go.mod h1:tf+2yTHasV6jAF3V2deZ9slNoCyBzC0fMdTjI7clf6Y=
-github.com/tribalwarshelp/shared v0.0.0-20200623082627-128bf01a6570 h1:W2cBKRRvr1QLG2GzuJFuvtVe0dblHkkb+E2SlbdJBHo=
-github.com/tribalwarshelp/shared v0.0.0-20200623082627-128bf01a6570/go.mod h1:tf+2yTHasV6jAF3V2deZ9slNoCyBzC0fMdTjI7clf6Y=
 github.com/tribalwarshelp/shared v0.0.0-20200623144748-aa834a01dce6 h1:WZ1oxHysFtiPjHa2ADUqiGrzwcN3j0YpiVg/V2e/74o=
 github.com/tribalwarshelp/shared v0.0.0-20200623144748-aa834a01dce6/go.mod h1:tf+2yTHasV6jAF3V2deZ9slNoCyBzC0fMdTjI7clf6Y=
 github.com/ugorji/go v1.1.7 h1:/68gy2h+1mWMrwZFeD1kQialdSzAb432dtpeJ42ovdo=

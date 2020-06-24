@@ -5,8 +5,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/tribalwarshelp/api/utils"
-
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/models"
 )
@@ -15,11 +13,8 @@ type lineParser struct {
 	location *time.Location
 }
 
-func newLineParser(timezone string) (*lineParser, error) {
-	return &lineParser{
-			location: utils.GetLocation(timezone),
-		},
-		nil
+func newLineParser() *lineParser {
+	return &lineParser{}
 }
 
 func (parser *lineParser) parse(line []string) (*models.LiveEnnoblement, error) {
@@ -36,7 +31,7 @@ func (parser *lineParser) parse(line []string) (*models.LiveEnnoblement, error) 
 	if err != nil {
 		return nil, errors.Wrap(err, "timestamp")
 	}
-	e.EnnobledAt = time.Unix(int64(timestamp), 0).In(parser.location)
+	e.EnnobledAt = time.Unix(int64(timestamp), 0)
 	e.NewOwnerID, err = strconv.Atoi(line[2])
 	if err != nil {
 		return nil, errors.Wrap(err, "*models.LiveEnnoblement.NewOwnerID")

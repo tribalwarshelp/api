@@ -24,5 +24,9 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.P
 		filter.Limit = playerhistory.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
-	return ucase.repo.Fetch(ctx, server, filter)
+	return ucase.repo.Fetch(ctx, playerhistory.FetchConfig{
+		Server: server,
+		Filter: filter,
+		Count:  true,
+	})
 }

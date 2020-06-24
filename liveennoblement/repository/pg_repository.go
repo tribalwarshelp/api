@@ -55,10 +55,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string) ([]*models.L
 	}
 
 	e := []*models.LiveEnnoblement{}
-	lineParser, err := newLineParser(s.LangVersion.Timezone)
-	if err != nil {
-		return nil, err
-	}
+	lineParser := newLineParser()
 	for _, line := range lines {
 		ennoblement, err := lineParser.parse(line)
 		if err != nil {

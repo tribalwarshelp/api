@@ -16,9 +16,9 @@ type Server {
   unitConfig: UnitConfig!
   buildingConfig: BuildingConfig!
 
-  dataUpdatedAt: Time! @goField(forceResolver: true)
-  historyUpdatedAt: Time! @goField(forceResolver: true)
-  statsUpdatedAt: Time! @goField(forceResolver: true)
+  dataUpdatedAt: Time!
+  historyUpdatedAt: Time!
+  statsUpdatedAt: Time!
 }
 
 type ServersList {

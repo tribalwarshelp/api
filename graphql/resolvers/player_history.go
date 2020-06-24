@@ -2,10 +2,8 @@ package resolvers
 
 import (
 	"context"
-	"time"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -23,12 +21,6 @@ func (r *playerHistoryRecordResolver) Tribe(ctx context.Context, obj *models.Pla
 	}
 
 	return getTribe(ctx, obj.TribeID), nil
-}
-
-func (r *playerHistoryRecordResolver) CreatedAt(ctx context.Context, obj *models.PlayerHistory) (*time.Time, error) {
-	server, _ := getServer(ctx)
-	t := formatDate(ctx, utils.LanguageTagFromServerKey(server), obj.CreatedAt)
-	return &t, nil
 }
 
 func (r *Resolver) PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter) (*generated.PlayerHistory, error) {

@@ -4,7 +4,7 @@ type Ennoblement {
   newOwnerTribe: Tribe @goField(forceResolver: true)
   oldOwner: Player @goField(forceResolver: true)
   oldOwnerTribe: Tribe @goField(forceResolver: true)
-  ennobledAt: Time! @goField(forceResolver: true)
+  ennobledAt: Time!
 }
 
 type EnnoblementsList {

@@ -23,23 +23,28 @@ func NewPGRepository(db *pg.DB) (server.Repository, error) {
 	return &pgRepository{db}, nil
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, f *models.ServerFilter) ([]*models.Server, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg server.FetchConfig) ([]*models.Server, int, error) {
 	var err error
+	total := 0
 	data := []*models.Server{}
 	query := repo.Model(&data).Context(ctx)
 
-	if f != nil {
+	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(f).
-			Limit(f.Limit).
-			Offset(f.Offset)
+			WhereStruct(cfg.Filter).
+			Limit(cfg.Filter.Limit).
+			Offset(cfg.Filter.Offset)
 
-		if f.Sort != "" {
-			query = query.Order(f.Sort)
+		if cfg.Filter.Sort != "" {
+			query = query.Order(cfg.Filter.Sort)
 		}
 	}
 
-	total, err := query.SelectAndCount()
+	if cfg.Count {
+		total, err = query.SelectAndCount()
+	} else {
+		err = query.Select()
+	}
 	if err != nil && err != pg.ErrNoRows {
 		return nil, 0, errors.Wrap(err, "Internal server error")
 	}

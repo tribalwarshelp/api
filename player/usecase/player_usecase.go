@@ -25,18 +25,25 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.P
 		filter.Limit = player.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
-	return ucase.repo.Fetch(ctx, server, filter)
+	return ucase.repo.Fetch(ctx, player.FetchConfig{
+		Server: server,
+		Filter: filter,
+		Count:  true,
+	})
 }
 
 func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*models.Player, error) {
-	players, total, err := ucase.repo.Fetch(ctx, server, &models.PlayerFilter{
-		ID:    []int{id},
-		Limit: 1,
+	players, _, err := ucase.repo.Fetch(ctx, player.FetchConfig{
+		Server: server,
+		Filter: &models.PlayerFilter{
+			ID:    []int{id},
+			Limit: 1,
+		},
 	})
 	if err != nil {
 		return nil, err
 	}
-	if total == 0 {
+	if len(players) == 0 {
 		return nil, fmt.Errorf("Player (ID: %d) not found.", id)
 	}
 	return players[0], nil

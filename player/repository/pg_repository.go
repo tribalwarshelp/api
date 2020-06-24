@@ -19,33 +19,38 @@ func NewPGRepository(db *pg.DB) player.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.PlayerFilter) ([]*models.Player, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*models.Player, int, error) {
 	var err error
 	data := []*models.Player{}
-	query := repo.WithParam("SERVER", pg.Safe(server)).Model(&data).Context(ctx)
+	total := 0
+	query := repo.WithParam("SERVER", pg.Safe(cfg.Server)).Model(&data).Context(ctx)
 
-	if f != nil {
+	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(f).
-			Limit(f.Limit).
-			Offset(f.Offset)
+			WhereStruct(cfg.Filter).
+			Limit(cfg.Filter.Limit).
+			Offset(cfg.Filter.Offset)
 
-		if f.Sort != "" {
-			query = query.Order(f.Sort)
+		if cfg.Filter.Sort != "" {
+			query = query.Order(cfg.Filter.Sort)
 		}
 
-		if f.Exist != nil {
-			query = query.Where("exist = ?", *f.Exist)
+		if cfg.Filter.Exist != nil {
+			query = query.Where("exist = ?", *cfg.Filter.Exist)
 		}
 
-		if f.TribeFilter != nil {
-			query = query.Relation("Tribe._").WhereStruct(f.TribeFilter)
+		if cfg.Filter.TribeFilter != nil {
+			query = query.Relation("Tribe._").WhereStruct(cfg.Filter.TribeFilter)
 		}
 	}
 
-	total, err := query.SelectAndCount()
+	if cfg.Count {
+		total, err = query.SelectAndCount()
+	} else {
+		err = query.Select()
+	}
 	if err != nil && err != pg.ErrNoRows {
-		if strings.Contains(err.Error(), `relation "`+server) {
+		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
 			return nil, 0, fmt.Errorf("Server not found")
 		}
 		return nil, 0, errors.Wrap(err, "Internal server error")
@@ -59,12 +64,14 @@ type fetchPlayerServersQueryResult struct {
 	Servers  []string `pg:",array"`
 }
 
-func (repo *pgRepository) FetchPlayerServers(ctx context.Context, playerID ...int) (map[int][]string, error) {
+func (repo *pgRepository) FetchPlayerServers(ctx context.Context, langTag models.LanguageTag, playerID ...int) (map[int][]string, error) {
 	data := []*fetchPlayerServersQueryResult{}
 	if err := repo.Model(&models.PlayerToServer{}).
 		Context(ctx).
 		Column("player_id").
 		ColumnExpr("array_agg(server_key) as servers").
+		Relation("Server._").
+		Where("lang_version_tag = ?", langTag).
 		Where("player_id IN (?)", pg.In(playerID)).
 		Group("player_id").
 		Select(&data); err != nil && err != pg.ErrNoRows {

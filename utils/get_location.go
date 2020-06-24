@@ -1,6 +1,8 @@
 package utils
 
-import "time"
+import (
+	"time"
+)
 
 func GetLocation(timezone string) *time.Location {
 	loc, err := time.LoadLocation(timezone)

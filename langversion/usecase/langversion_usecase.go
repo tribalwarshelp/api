@@ -28,18 +28,23 @@ func (ucase *usecase) Fetch(ctx context.Context, filter *models.LangVersionFilte
 		filter.Limit = langversion.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
-	return ucase.repo.Fetch(ctx, filter)
+	return ucase.repo.Fetch(ctx, langversion.FetchConfig{
+		Filter: filter,
+		Count:  true,
+	})
 }
 
 func (ucase *usecase) GetByTag(ctx context.Context, tag models.LanguageTag) (*models.LangVersion, error) {
-	langversions, total, err := ucase.repo.Fetch(ctx, &models.LangVersionFilter{
-		Tag:   []models.LanguageTag{tag},
-		Limit: 1,
+	langversions, _, err := ucase.repo.Fetch(ctx, langversion.FetchConfig{
+		Filter: &models.LangVersionFilter{
+			Tag:   []models.LanguageTag{tag},
+			Limit: 1,
+		},
 	})
 	if err != nil {
 		return nil, err
 	}
-	if total == 0 {
+	if len(langversions) == 0 {
 		return nil, fmt.Errorf("There is no lang version with tag: %s.", tag)
 	}
 	return langversions[0], nil

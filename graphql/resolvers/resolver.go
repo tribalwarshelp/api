@@ -31,15 +31,11 @@ type Resolver struct {
 func (r *Resolver) Query() generated.QueryResolver     { return &queryResolver{r} }
 func (r *Resolver) Player() generated.PlayerResolver   { return &playerResolver{r} }
 func (r *Resolver) Village() generated.VillageResolver { return &villageResolver{r} }
-func (r *Resolver) Tribe() generated.TribeResolver     { return &tribeResolver{r} }
 func (r *Resolver) LiveEnnoblement() generated.LiveEnnoblementResolver {
 	return &liveEnnoblementResolver{r}
 }
 func (r *Resolver) Ennoblement() generated.EnnoblementResolver { return &ennoblementResolver{r} }
 func (r *Resolver) Server() generated.ServerResolver           { return &serverResolver{r} }
-func (r *Resolver) ServerStatsRecord() generated.ServerStatsRecordResolver {
-	return &serverStatsRecordResolver{r}
-}
 func (r *Resolver) PlayerHistoryRecord() generated.PlayerHistoryRecordResolver {
 	return &playerHistoryRecordResolver{r}
 }

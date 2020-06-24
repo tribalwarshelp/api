@@ -6,6 +6,12 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
+type FetchConfig struct {
+	Server string
+	Filter *models.ServerStatsFilter
+	Count  bool
+}
+
 type Repository interface {
-	Fetch(ctx context.Context, server string, filter *models.ServerStatsFilter) ([]*models.ServerStats, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.ServerStats, int, error)
 }

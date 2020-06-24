@@ -42,8 +42,6 @@ type ResolverRoot interface {
 	PlayerHistoryRecord() PlayerHistoryRecordResolver
 	Query() QueryResolver
 	Server() ServerResolver
-	ServerStatsRecord() ServerStatsRecordResolver
-	Tribe() TribeResolver
 	TribeHistoryRecord() TribeHistoryRecordResolver
 	Village() VillageResolver
 }
@@ -471,7 +469,6 @@ type EnnoblementResolver interface {
 	NewOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error)
 	OldOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error)
 	OldOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error)
-	EnnobledAt(ctx context.Context, obj *models.Ennoblement) (*time.Time, error)
 }
 type LiveEnnoblementResolver interface {
 	Village(ctx context.Context, obj *models.LiveEnnoblement) (*models.Village, error)
@@ -479,7 +476,6 @@ type LiveEnnoblementResolver interface {
 	OldOwner(ctx context.Context, obj *models.LiveEnnoblement) (*models.Player, error)
 }
 type PlayerResolver interface {
-	JoinedAt(ctx context.Context, obj *models.Player) (*time.Time, error)
 	Tribe(ctx context.Context, obj *models.Player) (*models.Tribe, error)
 	Servers(ctx context.Context, obj *models.Player) ([]string, error)
 }
@@ -487,7 +483,6 @@ type PlayerHistoryRecordResolver interface {
 	Player(ctx context.Context, obj *models.PlayerHistory) (*models.Player, error)
 
 	Tribe(ctx context.Context, obj *models.PlayerHistory) (*models.Tribe, error)
-	CreatedAt(ctx context.Context, obj *models.PlayerHistory) (*time.Time, error)
 }
 type QueryResolver interface {
 	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter) (*EnnoblementsList, error)
@@ -508,21 +503,9 @@ type QueryResolver interface {
 }
 type ServerResolver interface {
 	LangVersion(ctx context.Context, obj *models.Server) (*models.LangVersion, error)
-
-	DataUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error)
-	HistoryUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error)
-	StatsUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error)
-}
-type ServerStatsRecordResolver interface {
-	CreatedAt(ctx context.Context, obj *models.ServerStats) (*time.Time, error)
-}
-type TribeResolver interface {
-	CreatedAt(ctx context.Context, obj *models.Tribe) (*time.Time, error)
 }
 type TribeHistoryRecordResolver interface {
 	Tribe(ctx context.Context, obj *models.TribeHistory) (*models.Tribe, error)
-
-	CreatedAt(ctx context.Context, obj *models.TribeHistory) (*time.Time, error)
 }
 type VillageResolver interface {
 	Player(ctx context.Context, obj *models.Village) (*models.Player, error)
@@ -2800,7 +2783,7 @@ type BuildingConfig {
   newOwnerTribe: Tribe @goField(forceResolver: true)
   oldOwner: Player @goField(forceResolver: true)
   oldOwnerTribe: Tribe @goField(forceResolver: true)
-  ennobledAt: Time! @goField(forceResolver: true)
+  ennobledAt: Time!
 }
 
 type EnnoblementsList {
@@ -2901,7 +2884,7 @@ extend type Query {
   rankTotal: Int!
   scoreTotal: Int!
   dailyGrowth: Int!
-  joinedAt: Time! @goField(forceResolver: true)
+  joinedAt: Time!
   tribe: Tribe @goField(forceResolver: true)
   servers: [String!]! @goField(forceResolver: true)
 }
@@ -3027,7 +3010,7 @@ extend type Query {
   rankTotal: Int!
   scoreTotal: Int!
   tribe: Tribe @goField(forceResolver: true)
-  createdAt: Time! @goField(forceResolver: true)
+  createdAt: Time!
 }
 
 type PlayerHistory {
@@ -3074,9 +3057,9 @@ type Server {
   unitConfig: UnitConfig!
   buildingConfig: BuildingConfig!
 
-  dataUpdatedAt: Time! @goField(forceResolver: true)
-  historyUpdatedAt: Time! @goField(forceResolver: true)
-  statsUpdatedAt: Time! @goField(forceResolver: true)
+  dataUpdatedAt: Time!
+  historyUpdatedAt: Time!
+  statsUpdatedAt: Time!
 }
 
 type ServersList {
@@ -3267,7 +3250,7 @@ type ServerConfig {
   barbarianVillages: Int!
   playerVillages: Int!
   villages: Int!
-  createdAt: Time! @goField(forceResolver: true)
+  createdAt: Time!
 }
 
 type ServerStats {
@@ -3307,7 +3290,7 @@ extend type Query {
   scoreDef: Int!
   rankTotal: Int!
   dominance: Float!
-  createdAt: Time! @goField(forceResolver: true)
+  createdAt: Time!
   scoreTotal: Int!
 }
 
@@ -3434,7 +3417,7 @@ extend type Query {
   scoreDef: Int!
   rankTotal: Int!
   scoreTotal: Int!
-  createdAt: Time! @goField(forceResolver: true)
+  createdAt: Time!
 }
 
 type TribeHistory {
@@ -5045,13 +5028,13 @@ func (ec *executionContext) _Ennoblement_ennobledAt(ctx context.Context, field g
 		Object:   "Ennoblement",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Ennoblement().EnnobledAt(rctx, obj)
+		return obj.EnnobledAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5063,9 +5046,9 @@ func (ec *executionContext) _Ennoblement_ennobledAt(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _EnnoblementsList_items(ctx context.Context, field graphql.CollectedField, obj *EnnoblementsList) (ret graphql.Marshaler) {
@@ -5982,13 +5965,13 @@ func (ec *executionContext) _Player_joinedAt(ctx context.Context, field graphql.
 		Object:   "Player",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Player().JoinedAt(rctx, obj)
+		return obj.JoinedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -6000,9 +5983,9 @@ func (ec *executionContext) _Player_joinedAt(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Player_tribe(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
@@ -6582,13 +6565,13 @@ func (ec *executionContext) _PlayerHistoryRecord_createdAt(ctx context.Context, 
 		Object:   "PlayerHistoryRecord",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.PlayerHistoryRecord().CreatedAt(rctx, obj)
+		return obj.CreatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -6600,9 +6583,9 @@ func (ec *executionContext) _PlayerHistoryRecord_createdAt(ctx context.Context, 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _PlayersList_items(ctx context.Context, field graphql.CollectedField, obj *PlayersList) (ret graphql.Marshaler) {
@@ -7650,13 +7633,13 @@ func (ec *executionContext) _Server_dataUpdatedAt(ctx context.Context, field gra
 		Object:   "Server",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Server().DataUpdatedAt(rctx, obj)
+		return obj.DataUpdatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -7668,9 +7651,9 @@ func (ec *executionContext) _Server_dataUpdatedAt(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Server_historyUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
@@ -7684,13 +7667,13 @@ func (ec *executionContext) _Server_historyUpdatedAt(ctx context.Context, field 
 		Object:   "Server",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Server().HistoryUpdatedAt(rctx, obj)
+		return obj.HistoryUpdatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -7702,9 +7685,9 @@ func (ec *executionContext) _Server_historyUpdatedAt(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Server_statsUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
@@ -7718,13 +7701,13 @@ func (ec *executionContext) _Server_statsUpdatedAt(ctx context.Context, field gr
 		Object:   "Server",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Server().StatsUpdatedAt(rctx, obj)
+		return obj.StatsUpdatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -7736,9 +7719,9 @@ func (ec *executionContext) _Server_statsUpdatedAt(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _ServerConfig_speed(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
@@ -11829,13 +11812,13 @@ func (ec *executionContext) _ServerStatsRecord_createdAt(ctx context.Context, fi
 		Object:   "ServerStatsRecord",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.ServerStatsRecord().CreatedAt(rctx, obj)
+		return obj.CreatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -11847,9 +11830,9 @@ func (ec *executionContext) _ServerStatsRecord_createdAt(ctx context.Context, fi
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _ServersList_items(ctx context.Context, field graphql.CollectedField, obj *ServersList) (ret graphql.Marshaler) {
@@ -12438,13 +12421,13 @@ func (ec *executionContext) _Tribe_createdAt(ctx context.Context, field graphql.
 		Object:   "Tribe",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Tribe().CreatedAt(rctx, obj)
+		return obj.CreatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -12456,9 +12439,9 @@ func (ec *executionContext) _Tribe_createdAt(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Tribe_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
@@ -13010,13 +12993,13 @@ func (ec *executionContext) _TribeHistoryRecord_createdAt(ctx context.Context, f
 		Object:   "TribeHistoryRecord",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.TribeHistoryRecord().CreatedAt(rctx, obj)
+		return obj.CreatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -13028,9 +13011,9 @@ func (ec *executionContext) _TribeHistoryRecord_createdAt(ctx context.Context, f
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _TribesList_items(ctx context.Context, field graphql.CollectedField, obj *TribesList) (ret graphql.Marshaler) {
@@ -17045,19 +17028,10 @@ func (ec *executionContext) _Ennoblement(ctx context.Context, sel ast.SelectionS
 				return res
 			})
 		case "ennobledAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Ennoblement_ennobledAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Ennoblement_ennobledAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -17316,19 +17290,10 @@ func (ec *executionContext) _Player(ctx context.Context, sel ast.SelectionSet, o
 				atomic.AddUint32(&invalids, 1)
 			}
 		case "joinedAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Player_joinedAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Player_joinedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "tribe":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -17483,19 +17448,10 @@ func (ec *executionContext) _PlayerHistoryRecord(ctx context.Context, sel ast.Se
 				return res
 			})
 		case "createdAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._PlayerHistoryRecord_createdAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._PlayerHistoryRecord_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -17821,47 +17777,20 @@ func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, o
 				atomic.AddUint32(&invalids, 1)
 			}
 		case "dataUpdatedAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Server_dataUpdatedAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Server_dataUpdatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "historyUpdatedAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Server_historyUpdatedAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Server_historyUpdatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		case "statsUpdatedAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Server_statsUpdatedAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Server_statsUpdatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -18764,67 +18693,58 @@ func (ec *executionContext) _ServerStatsRecord(ctx context.Context, sel ast.Sele
 		case "activePlayers":
 			out.Values[i] = ec._ServerStatsRecord_activePlayers(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "inactivePlayers":
 			out.Values[i] = ec._ServerStatsRecord_inactivePlayers(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "players":
 			out.Values[i] = ec._ServerStatsRecord_players(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "activeTribes":
 			out.Values[i] = ec._ServerStatsRecord_activeTribes(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "inactiveTribes":
 			out.Values[i] = ec._ServerStatsRecord_inactiveTribes(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "tribes":
 			out.Values[i] = ec._ServerStatsRecord_tribes(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "bonusVillages":
 			out.Values[i] = ec._ServerStatsRecord_bonusVillages(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "barbarianVillages":
 			out.Values[i] = ec._ServerStatsRecord_barbarianVillages(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "playerVillages":
 			out.Values[i] = ec._ServerStatsRecord_playerVillages(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "villages":
 			out.Values[i] = ec._ServerStatsRecord_villages(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "createdAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._ServerStatsRecord_createdAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._ServerStatsRecord_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -18879,96 +18799,87 @@ func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, ob
 		case "id":
 			out.Values[i] = ec._Tribe_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "name":
 			out.Values[i] = ec._Tribe_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "tag":
 			out.Values[i] = ec._Tribe_tag(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "totalMembers":
 			out.Values[i] = ec._Tribe_totalMembers(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "totalVillages":
 			out.Values[i] = ec._Tribe_totalVillages(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "points":
 			out.Values[i] = ec._Tribe_points(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "allPoints":
 			out.Values[i] = ec._Tribe_allPoints(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "rank":
 			out.Values[i] = ec._Tribe_rank(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "exist":
 			out.Values[i] = ec._Tribe_exist(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "rankAtt":
 			out.Values[i] = ec._Tribe_rankAtt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "scoreAtt":
 			out.Values[i] = ec._Tribe_scoreAtt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "rankDef":
 			out.Values[i] = ec._Tribe_rankDef(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "scoreDef":
 			out.Values[i] = ec._Tribe_scoreDef(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "rankTotal":
 			out.Values[i] = ec._Tribe_rankTotal(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "dominance":
 			out.Values[i] = ec._Tribe_dominance(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "createdAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Tribe_createdAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Tribe_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "scoreTotal":
 			out.Values[i] = ec._Tribe_scoreTotal(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -19093,19 +19004,10 @@ func (ec *executionContext) _TribeHistoryRecord(ctx context.Context, sel ast.Sel
 				atomic.AddUint32(&invalids, 1)
 			}
 		case "createdAt":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._TribeHistoryRecord_createdAt(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._TribeHistoryRecord_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -20011,24 +19913,6 @@ func (ec *executionContext) marshalNTime2timeᚐTime(ctx context.Context, sel as
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) unmarshalNTime2ᚖtimeᚐTime(ctx context.Context, v interface{}) (*time.Time, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
-	return &res, err
-}
-
-func (ec *executionContext) marshalNTime2ᚖtimeᚐTime(ctx context.Context, sel ast.SelectionSet, v *time.Time) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec.marshalNTime2timeᚐTime(ctx, sel, *v)
 }
 
 func (ec *executionContext) marshalNTribe2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx context.Context, sel ast.SelectionSet, v models.Tribe) graphql.Marshaler {
