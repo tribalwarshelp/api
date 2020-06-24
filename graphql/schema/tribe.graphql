@@ -13,9 +13,10 @@ type Tribe {
   rankDef: Int!
   scoreDef: Int!
   rankTotal: Int!
+  scoreTotal: Int!
   dominance: Float!
   createdAt: Time!
-  scoreTotal: Int!
+  deletedAt: Time!
 }
 
 type TribesList {
@@ -116,6 +117,12 @@ input TribeFilter {
   createdAtGTE: Time
   createdAtLT: Time
   createdAtLTE: Time
+
+  deletedAt: Time
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
 
   offset: Int
   limit: Int

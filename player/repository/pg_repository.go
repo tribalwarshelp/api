@@ -64,6 +64,23 @@ type fetchPlayerServersQueryResult struct {
 	Servers  []string `pg:",array"`
 }
 
+func (repo *pgRepository) FetchNameChanges(ctx context.Context, langTag models.LanguageTag, playerID ...int) (map[int][]*models.PlayerNameChange, error) {
+	data := []*models.PlayerNameChange{}
+	if err := repo.Model(&data).
+		Context(ctx).
+		Where("lang_version_tag = ?", langTag).
+		Where("player_id IN (?)", pg.In(playerID)).
+		Select(); err != nil && err != pg.ErrNoRows {
+		return nil, errors.Wrap(err, "Internal server error")
+	}
+
+	m := make(map[int][]*models.PlayerNameChange)
+	for _, res := range data {
+		m[res.PlayerID] = append(m[res.PlayerID], res)
+	}
+	return m, nil
+}
+
 func (repo *pgRepository) FetchPlayerServers(ctx context.Context, langTag models.LanguageTag, playerID ...int) (map[int][]string, error) {
 	data := []*fetchPlayerServersQueryResult{}
 	if err := repo.Model(&models.PlayerToServer{}).

@@ -94,3 +94,5 @@ models:
     model: github.com/tribalwarshelp/shared/models.TribeChange
   TribeChangeFilter:
     model: github.com/tribalwarshelp/shared/models.TribeChangeFilter
+  PlayerNameChange:
+    model: github.com/tribalwarshelp/shared/models.PlayerNameChange
