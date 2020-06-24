@@ -42,6 +42,7 @@ type ResolverRoot interface {
 	PlayerHistoryRecord() PlayerHistoryRecordResolver
 	Query() QueryResolver
 	Server() ServerResolver
+	TribeChangeRecord() TribeChangeRecordResolver
 	TribeHistoryRecord() TribeHistoryRecordResolver
 	Village() VillageResolver
 }
@@ -178,6 +179,7 @@ type ComplexityRoot struct {
 		ServerStats      func(childComplexity int, server string, filter *models.ServerStatsFilter) int
 		Servers          func(childComplexity int, filter *models.ServerFilter) int
 		Tribe            func(childComplexity int, server string, id int) int
+		TribeChanges     func(childComplexity int, server string, filter *models.TribeChangeFilter) int
 		TribeHistory     func(childComplexity int, server string, filter *models.TribeHistoryFilter) int
 		Tribes           func(childComplexity int, server string, filter *models.TribeFilter) int
 		Village          func(childComplexity int, server string, id int) int
@@ -393,6 +395,18 @@ type ComplexityRoot struct {
 		TotalVillages func(childComplexity int) int
 	}
 
+	TribeChangeRecord struct {
+		CreatedAt func(childComplexity int) int
+		NewTribe  func(childComplexity int) int
+		OldTribe  func(childComplexity int) int
+		Player    func(childComplexity int) int
+	}
+
+	TribeChanges struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
 	TribeHistory struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
@@ -497,12 +511,18 @@ type QueryResolver interface {
 	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*ServerStats, error)
 	Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*TribesList, error)
 	Tribe(ctx context.Context, server string, id int) (*models.Tribe, error)
+	TribeChanges(ctx context.Context, server string, filter *models.TribeChangeFilter) (*TribeChanges, error)
 	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter) (*TribeHistory, error)
 	Villages(ctx context.Context, server string, filter *models.VillageFilter) (*VillagesList, error)
 	Village(ctx context.Context, server string, id int) (*models.Village, error)
 }
 type ServerResolver interface {
 	LangVersion(ctx context.Context, obj *models.Server) (*models.LangVersion, error)
+}
+type TribeChangeRecordResolver interface {
+	Player(ctx context.Context, obj *models.TribeChange) (*models.Player, error)
+	OldTribe(ctx context.Context, obj *models.TribeChange) (*models.Tribe, error)
+	NewTribe(ctx context.Context, obj *models.TribeChange) (*models.Tribe, error)
 }
 type TribeHistoryRecordResolver interface {
 	Tribe(ctx context.Context, obj *models.TribeHistory) (*models.Tribe, error)
@@ -1238,6 +1258,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Tribe(childComplexity, args["server"].(string), args["id"].(int)), true
+
+	case "Query.tribeChanges":
+		if e.complexity.Query.TribeChanges == nil {
+			break
+		}
+
+		args, err := ec.field_Query_tribeChanges_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.TribeChanges(childComplexity, args["server"].(string), args["filter"].(*models.TribeChangeFilter)), true
 
 	case "Query.tribeHistory":
 		if e.complexity.Query.TribeHistory == nil {
@@ -2351,6 +2383,48 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tribe.TotalVillages(childComplexity), true
 
+	case "TribeChangeRecord.createdAt":
+		if e.complexity.TribeChangeRecord.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.TribeChangeRecord.CreatedAt(childComplexity), true
+
+	case "TribeChangeRecord.newTribe":
+		if e.complexity.TribeChangeRecord.NewTribe == nil {
+			break
+		}
+
+		return e.complexity.TribeChangeRecord.NewTribe(childComplexity), true
+
+	case "TribeChangeRecord.oldTribe":
+		if e.complexity.TribeChangeRecord.OldTribe == nil {
+			break
+		}
+
+		return e.complexity.TribeChangeRecord.OldTribe(childComplexity), true
+
+	case "TribeChangeRecord.player":
+		if e.complexity.TribeChangeRecord.Player == nil {
+			break
+		}
+
+		return e.complexity.TribeChangeRecord.Player(childComplexity), true
+
+	case "TribeChanges.items":
+		if e.complexity.TribeChanges.Items == nil {
+			break
+		}
+
+		return e.complexity.TribeChanges.Items(childComplexity), true
+
+	case "TribeChanges.total":
+		if e.complexity.TribeChanges.Total == nil {
+			break
+		}
+
+		return e.complexity.TribeChanges.Total(childComplexity), true
+
 	case "TribeHistory.items":
 		if e.complexity.TribeHistory.Items == nil {
 			break
@@ -3403,6 +3477,43 @@ extend type Query {
   tribe(server: String!, id: Int!): Tribe
 }
 `, BuiltIn: false},
+	&ast.Source{Name: "schema/tribe_change.graphql", Input: `type TribeChangeRecord {
+  player: Player @goField(forceResolver: true)
+  oldTribe: Tribe @goField(forceResolver: true)
+  newTribe: Tribe @goField(forceResolver: true)
+  createdAt: Time!
+}
+
+type TribeChanges {
+  total: Int!
+  items: [TribeChangeRecord!]
+}
+
+input TribeChangeFilter {
+  playerID: [Int!]
+  playerIDNEQ: [Int!]
+
+  oldTribeID: [Int!]
+  oldTribeIDNEQ: [Int!]
+
+  newTribeID: [Int!]
+  newTribeIDNEQ: [Int!]
+
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  tribeChanges(server: String!, filter: TribeChangeFilter): TribeChanges!
+}
+`, BuiltIn: false},
 	&ast.Source{Name: "schema/tribe_history.graphql", Input: `type TribeHistoryRecord {
   tribe: Tribe @goField(forceResolver: true)
   totalVillages: Int!
@@ -3727,6 +3838,28 @@ func (ec *executionContext) field_Query_servers_args(ctx context.Context, rawArg
 		}
 	}
 	args["filter"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_tribeChanges_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["server"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["server"] = arg0
+	var arg1 *models.TribeChangeFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg1, err = ec.unmarshalOTribeChangeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg1
 	return args, nil
 }
 
@@ -7128,6 +7261,47 @@ func (ec *executionContext) _Query_tribe(ctx context.Context, field graphql.Coll
 	res := resTmp.(*models.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_tribeChanges(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_tribeChanges_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().TribeChanges(rctx, args["server"].(string), args["filter"].(*models.TribeChangeFilter))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*TribeChanges)
+	fc.Result = res
+	return ec.marshalNTribeChanges2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeChanges(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_tribeHistory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -12478,6 +12652,198 @@ func (ec *executionContext) _Tribe_scoreTotal(ctx context.Context, field graphql
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _TribeChangeRecord_player(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeChangeRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.TribeChangeRecord().Player(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Player)
+	fc.Result = res
+	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeChangeRecord_oldTribe(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeChangeRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.TribeChangeRecord().OldTribe(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Tribe)
+	fc.Result = res
+	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeChangeRecord_newTribe(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeChangeRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.TribeChangeRecord().NewTribe(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Tribe)
+	fc.Result = res
+	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeChangeRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeChangeRecord",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeChanges_total(ctx context.Context, field graphql.CollectedField, obj *TribeChanges) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeChanges",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TribeChanges_items(ctx context.Context, field graphql.CollectedField, obj *TribeChanges) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "TribeChanges",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.TribeChange)
+	fc.Result = res
+	return ec.marshalOTribeChangeRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeᚄ(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _TribeHistory_total(ctx context.Context, field graphql.CollectedField, obj *TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -16020,6 +16386,102 @@ func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context,
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context, obj interface{}) (models.TribeChangeFilter, error) {
+	var it models.TribeChangeFilter
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "playerID":
+			var err error
+			it.PlayerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "playerIDNEQ":
+			var err error
+			it.PlayerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldTribeID":
+			var err error
+			it.OldTribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldTribeIDNEQ":
+			var err error
+			it.OldTribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newTribeID":
+			var err error
+			it.NewTribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newTribeIDNEQ":
+			var err error
+			it.NewTribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAt":
+			var err error
+			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtGT":
+			var err error
+			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtGTE":
+			var err error
+			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtLT":
+			var err error
+			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAtLTE":
+			var err error
+			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "offset":
+			var err error
+			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "limit":
+			var err error
+			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "sort":
+			var err error
+			it.Sort, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj interface{}) (models.TribeFilter, error) {
 	var it models.TribeFilter
 	var asMap = obj.(map[string]interface{})
@@ -17660,6 +18122,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				res = ec._Query_tribe(ctx, field)
 				return res
 			})
+		case "tribeChanges":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_tribeChanges(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "tribeHistory":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -18892,6 +19368,95 @@ func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, ob
 	return out
 }
 
+var tribeChangeRecordImplementors = []string{"TribeChangeRecord"}
+
+func (ec *executionContext) _TribeChangeRecord(ctx context.Context, sel ast.SelectionSet, obj *models.TribeChange) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tribeChangeRecordImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TribeChangeRecord")
+		case "player":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TribeChangeRecord_player(ctx, field, obj)
+				return res
+			})
+		case "oldTribe":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TribeChangeRecord_oldTribe(ctx, field, obj)
+				return res
+			})
+		case "newTribe":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._TribeChangeRecord_newTribe(ctx, field, obj)
+				return res
+			})
+		case "createdAt":
+			out.Values[i] = ec._TribeChangeRecord_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var tribeChangesImplementors = []string{"TribeChanges"}
+
+func (ec *executionContext) _TribeChanges(ctx context.Context, sel ast.SelectionSet, obj *TribeChanges) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tribeChangesImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TribeChanges")
+		case "total":
+			out.Values[i] = ec._TribeChanges_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "items":
+			out.Values[i] = ec._TribeChanges_items(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var tribeHistoryImplementors = []string{"TribeHistory"}
 
 func (ec *executionContext) _TribeHistory(ctx context.Context, sel ast.SelectionSet, obj *TribeHistory) graphql.Marshaler {
@@ -19929,6 +20494,34 @@ func (ec *executionContext) marshalNTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsha
 	return ec._Tribe(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNTribeChangeRecord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChange(ctx context.Context, sel ast.SelectionSet, v models.TribeChange) graphql.Marshaler {
+	return ec._TribeChangeRecord(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNTribeChangeRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChange(ctx context.Context, sel ast.SelectionSet, v *models.TribeChange) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._TribeChangeRecord(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNTribeChanges2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeChanges(ctx context.Context, sel ast.SelectionSet, v TribeChanges) graphql.Marshaler {
+	return ec._TribeChanges(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNTribeChanges2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeChanges(ctx context.Context, sel ast.SelectionSet, v *TribeChanges) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._TribeChanges(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNTribeHistory2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeHistory(ctx context.Context, sel ast.SelectionSet, v TribeHistory) graphql.Marshaler {
 	return ec._TribeHistory(ctx, sel, &v)
 }
@@ -20913,6 +21506,58 @@ func (ec *executionContext) marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsha
 		return graphql.Null
 	}
 	return ec._Tribe(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOTribeChangeFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilter(ctx context.Context, v interface{}) (models.TribeChangeFilter, error) {
+	return ec.unmarshalInputTribeChangeFilter(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOTribeChangeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilter(ctx context.Context, v interface{}) (*models.TribeChangeFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOTribeChangeFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilter(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalOTribeChangeRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.TribeChange) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNTribeChangeRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChange(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
 }
 
 func (ec *executionContext) unmarshalOTribeFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx context.Context, v interface{}) (models.TribeFilter, error) {

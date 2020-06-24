@@ -36,6 +36,11 @@ type ServersList struct {
 	Total int              `json:"total"`
 }
 
+type TribeChanges struct {
+	Total int                   `json:"total"`
+	Items []*models.TribeChange `json:"items"`
+}
+
 type TribeHistory struct {
 	Total int                    `json:"total"`
 	Items []*models.TribeHistory `json:"items"`

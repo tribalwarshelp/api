@@ -10,6 +10,7 @@ import (
 	"github.com/tribalwarshelp/api/server"
 	"github.com/tribalwarshelp/api/serverstats"
 	"github.com/tribalwarshelp/api/tribe"
+	"github.com/tribalwarshelp/api/tribechange"
 	"github.com/tribalwarshelp/api/tribehistory"
 	"github.com/tribalwarshelp/api/village"
 )
@@ -25,6 +26,7 @@ type Resolver struct {
 	PlayerHistoryUcase   playerhistory.Usecase
 	TribeHistoryUcase    tribehistory.Usecase
 	ServerStatsUcase     serverstats.Usecase
+	TribeChangeUcase     tribechange.Usecase
 }
 
 // Query returns generated.QueryResolver implementation.
@@ -42,6 +44,9 @@ func (r *Resolver) PlayerHistoryRecord() generated.PlayerHistoryRecordResolver {
 func (r *Resolver) TribeHistoryRecord() generated.TribeHistoryRecordResolver {
 	return &tribeHistoryRecordResolver{r}
 }
+func (r *Resolver) TribeChangeRecord() generated.TribeChangeRecordResolver {
+	return &tribeChangeRecordResolver{r}
+}
 
 type queryResolver struct{ *Resolver }
 type playerResolver struct{ *Resolver }
@@ -53,3 +58,4 @@ type serverResolver struct{ *Resolver }
 type playerHistoryRecordResolver struct{ *Resolver }
 type tribeHistoryRecordResolver struct{ *Resolver }
 type serverStatsRecordResolver struct{ *Resolver }
+type tribeChangeRecordResolver struct{ *Resolver }
