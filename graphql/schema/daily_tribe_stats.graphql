@@ -1,0 +1,43 @@
+type DailyTribeStatsRecord {
+  tribe: Tribe @goField(forceResolver: true)
+  members: Int!
+  villages: Int!
+  points: Int!
+  allPoints: Int!
+  rank: Int!
+  rankAtt: Int!
+  scoreAtt: Int!
+  rankDef: Int!
+  scoreDef: Int!
+  rankTotal: Int!
+  scoreTotal: Int!
+  dominance: Float!
+  createdAt: Time!
+}
+
+type DailyTribeStats {
+  total: Int!
+  items: [DailyTribeStatsRecord!]
+}
+
+input DailyTribeStatsFilter {
+  tribeID: [Int!]
+  tribeIDNEQ: [Int!]
+
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  dailyTribeStats(
+    server: String!
+    filter: DailyTribeStatsFilter
+  ): DailyTribeStats!
+}

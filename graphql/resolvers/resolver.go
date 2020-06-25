@@ -1,6 +1,8 @@
 package resolvers
 
 import (
+	"github.com/tribalwarshelp/api/dailyplayerstats"
+	"github.com/tribalwarshelp/api/dailytribestats"
 	"github.com/tribalwarshelp/api/ennoblement"
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/langversion"
@@ -16,17 +18,19 @@ import (
 )
 
 type Resolver struct {
-	LangVersionUcase     langversion.Usecase
-	ServerUcase          server.Usecase
-	PlayerUcase          player.Usecase
-	TribeUcase           tribe.Usecase
-	VillageUcase         village.Usecase
-	LiveEnnoblementUcase liveennoblement.Usecase
-	EnnoblementUcase     ennoblement.Usecase
-	PlayerHistoryUcase   playerhistory.Usecase
-	TribeHistoryUcase    tribehistory.Usecase
-	ServerStatsUcase     serverstats.Usecase
-	TribeChangeUcase     tribechange.Usecase
+	LangVersionUcase      langversion.Usecase
+	ServerUcase           server.Usecase
+	PlayerUcase           player.Usecase
+	TribeUcase            tribe.Usecase
+	VillageUcase          village.Usecase
+	LiveEnnoblementUcase  liveennoblement.Usecase
+	EnnoblementUcase      ennoblement.Usecase
+	PlayerHistoryUcase    playerhistory.Usecase
+	TribeHistoryUcase     tribehistory.Usecase
+	ServerStatsUcase      serverstats.Usecase
+	TribeChangeUcase      tribechange.Usecase
+	DailyTribeStatsUcase  dailytribestats.Usecase
+	DailyPlayerStatsUcase dailyplayerstats.Usecase
 }
 
 // Query returns generated.QueryResolver implementation.
@@ -47,6 +51,12 @@ func (r *Resolver) TribeHistoryRecord() generated.TribeHistoryRecordResolver {
 func (r *Resolver) TribeChangeRecord() generated.TribeChangeRecordResolver {
 	return &tribeChangeRecordResolver{r}
 }
+func (r *Resolver) DailyPlayerStatsRecord() generated.DailyPlayerStatsRecordResolver {
+	return &dailyPlayerStatsRecordResolver{r}
+}
+func (r *Resolver) DailyTribeStatsRecord() generated.DailyTribeStatsRecordResolver {
+	return &dailyTribeStatsRecordResolver{r}
+}
 
 type queryResolver struct{ *Resolver }
 type playerResolver struct{ *Resolver }
@@ -59,3 +69,5 @@ type playerHistoryRecordResolver struct{ *Resolver }
 type tribeHistoryRecordResolver struct{ *Resolver }
 type serverStatsRecordResolver struct{ *Resolver }
 type tribeChangeRecordResolver struct{ *Resolver }
+type dailyPlayerStatsRecordResolver struct{ *Resolver }
+type dailyTribeStatsRecordResolver struct{ *Resolver }

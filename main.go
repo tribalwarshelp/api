@@ -19,6 +19,10 @@ import (
 
 	"github.com/tribalwarshelp/api/graphql/dataloaders"
 
+	dailyplayerstatsrepo "github.com/tribalwarshelp/api/dailyplayerstats/repository"
+	dailyplayerstatsucase "github.com/tribalwarshelp/api/dailyplayerstats/usecase"
+	dailytribestatsrepo "github.com/tribalwarshelp/api/dailytribestats/repository"
+	dailytribestatsucase "github.com/tribalwarshelp/api/dailytribestats/usecase"
 	ennoblementrepo "github.com/tribalwarshelp/api/ennoblement/repository"
 	ennoblementucase "github.com/tribalwarshelp/api/ennoblement/usecase"
 	langversionrepo "github.com/tribalwarshelp/api/langversion/repository"
@@ -102,6 +106,8 @@ func main() {
 	playerhistoryRepo := playerhistoryrepo.NewPGRepository(db)
 	serverstatsRepo := serverstatsrepo.NewPGRepository(db)
 	tribeChangeRepo := tribechangerepo.NewPGRepository(db)
+	dailyPlayerStatsRepo := dailyplayerstatsrepo.NewPGRepository(db)
+	dailyTribeStatsRepo := dailytribestatsrepo.NewPGRepository(db)
 	liveennoblementRepo := liveennoblementrepo.NewPGRepository(db, redisClient)
 
 	serverUcase := serverucase.New(serverRepo)
@@ -123,17 +129,19 @@ func main() {
 	httpdelivery.Attach(httpdelivery.Config{
 		RouterGroup: graphql,
 		Resolver: &resolvers.Resolver{
-			LangVersionUcase:     langversionucase.New(langversionRepo),
-			ServerUcase:          serverUcase,
-			TribeUcase:           tribeucase.New(tribeRepo),
-			PlayerUcase:          playerucase.New(playerRepo),
-			VillageUcase:         villageucase.New(villageRepo),
-			EnnoblementUcase:     ennoblementucase.New(ennoblementRepo),
-			LiveEnnoblementUcase: liveennoblementucase.New(liveennoblementRepo),
-			TribeHistoryUcase:    tribehistoryucase.New(tribehistoryRepo),
-			PlayerHistoryUcase:   playerhistoryucase.New(playerhistoryRepo),
-			ServerStatsUcase:     serverstatsucase.New(serverstatsRepo),
-			TribeChangeUcase:     tribechangeucase.New(tribeChangeRepo),
+			LangVersionUcase:      langversionucase.New(langversionRepo),
+			ServerUcase:           serverUcase,
+			TribeUcase:            tribeucase.New(tribeRepo),
+			PlayerUcase:           playerucase.New(playerRepo),
+			VillageUcase:          villageucase.New(villageRepo),
+			EnnoblementUcase:      ennoblementucase.New(ennoblementRepo),
+			LiveEnnoblementUcase:  liveennoblementucase.New(liveennoblementRepo),
+			TribeHistoryUcase:     tribehistoryucase.New(tribehistoryRepo),
+			PlayerHistoryUcase:    playerhistoryucase.New(playerhistoryRepo),
+			ServerStatsUcase:      serverstatsucase.New(serverstatsRepo),
+			TribeChangeUcase:      tribechangeucase.New(tribeChangeRepo),
+			DailyPlayerStatsUcase: dailyplayerstatsucase.New(dailyPlayerStatsRepo),
+			DailyTribeStatsUcase:  dailytribestatsucase.New(dailyTribeStatsRepo),
 		},
 	})
 
