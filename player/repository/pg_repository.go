@@ -35,8 +35,8 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]
 			query = query.Order(cfg.Filter.Sort)
 		}
 
-		if cfg.Filter.Exist != nil {
-			query = query.Where("exist = ?", *cfg.Filter.Exist)
+		if cfg.Filter.Exists != nil {
+			query = query.Where("exists = ?", *cfg.Filter.Exists)
 		}
 
 		if cfg.Filter.TribeFilter != nil {

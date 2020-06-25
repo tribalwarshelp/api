@@ -14,7 +14,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/segmentio/encoding v0.1.14 // indirect
 	github.com/tribalwarshelp/map-generator v0.0.0-20200623143352-cc037d744be2
-	github.com/tribalwarshelp/shared v0.0.0-20200624134544-636239c5fd17
+	github.com/tribalwarshelp/shared v0.0.0-20200625131045-74c5a9b3b4f0
 	github.com/vektah/gqlparser/v2 v2.0.1
 	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect

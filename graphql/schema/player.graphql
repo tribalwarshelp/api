@@ -10,7 +10,7 @@ type Player {
   totalVillages: Int!
   points: Int!
   rank: Int!
-  exist: Boolean!
+  exists: Boolean!
   rankAtt: Int!
   scoreAtt: Int!
   rankDef: Int!
@@ -20,6 +20,12 @@ type Player {
   rankTotal: Int!
   scoreTotal: Int!
   dailyGrowth: Int!
+  bestRank: Int!
+  bestRankAt: Time!
+  mostPoints: Int!
+  mostPointsAt: Time!
+  mostVillages: Int!
+  mostVillagesAt: Time!
   joinedAt: Time!
   deletedAt: Time
   tribe: Tribe @goField(forceResolver: true)
@@ -36,7 +42,7 @@ input PlayerFilter {
   id: [Int!]
   idNEQ: [Int!]
 
-  exist: Boolean
+  exists: Boolean
 
   name: [String!]
   nameNEQ: [String!]

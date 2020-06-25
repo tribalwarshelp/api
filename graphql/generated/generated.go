@@ -120,26 +120,32 @@ type ComplexityRoot struct {
 	}
 
 	Player struct {
-		DailyGrowth   func(childComplexity int) int
-		DeletedAt     func(childComplexity int) int
-		Exist         func(childComplexity int) int
-		ID            func(childComplexity int) int
-		JoinedAt      func(childComplexity int) int
-		Name          func(childComplexity int) int
-		NameChanges   func(childComplexity int) int
-		Points        func(childComplexity int) int
-		Rank          func(childComplexity int) int
-		RankAtt       func(childComplexity int) int
-		RankDef       func(childComplexity int) int
-		RankSup       func(childComplexity int) int
-		RankTotal     func(childComplexity int) int
-		ScoreAtt      func(childComplexity int) int
-		ScoreDef      func(childComplexity int) int
-		ScoreSup      func(childComplexity int) int
-		ScoreTotal    func(childComplexity int) int
-		Servers       func(childComplexity int) int
-		TotalVillages func(childComplexity int) int
-		Tribe         func(childComplexity int) int
+		BestRank       func(childComplexity int) int
+		BestRankAt     func(childComplexity int) int
+		DailyGrowth    func(childComplexity int) int
+		DeletedAt      func(childComplexity int) int
+		Exists         func(childComplexity int) int
+		ID             func(childComplexity int) int
+		JoinedAt       func(childComplexity int) int
+		MostPoints     func(childComplexity int) int
+		MostPointsAt   func(childComplexity int) int
+		MostVillages   func(childComplexity int) int
+		MostVillagesAt func(childComplexity int) int
+		Name           func(childComplexity int) int
+		NameChanges    func(childComplexity int) int
+		Points         func(childComplexity int) int
+		Rank           func(childComplexity int) int
+		RankAtt        func(childComplexity int) int
+		RankDef        func(childComplexity int) int
+		RankSup        func(childComplexity int) int
+		RankTotal      func(childComplexity int) int
+		ScoreAtt       func(childComplexity int) int
+		ScoreDef       func(childComplexity int) int
+		ScoreSup       func(childComplexity int) int
+		ScoreTotal     func(childComplexity int) int
+		Servers        func(childComplexity int) int
+		TotalVillages  func(childComplexity int) int
+		Tribe          func(childComplexity int) int
 	}
 
 	PlayerHistory struct {
@@ -384,24 +390,30 @@ type ComplexityRoot struct {
 	}
 
 	Tribe struct {
-		AllPoints     func(childComplexity int) int
-		CreatedAt     func(childComplexity int) int
-		DeletedAt     func(childComplexity int) int
-		Dominance     func(childComplexity int) int
-		Exist         func(childComplexity int) int
-		ID            func(childComplexity int) int
-		Name          func(childComplexity int) int
-		Points        func(childComplexity int) int
-		Rank          func(childComplexity int) int
-		RankAtt       func(childComplexity int) int
-		RankDef       func(childComplexity int) int
-		RankTotal     func(childComplexity int) int
-		ScoreAtt      func(childComplexity int) int
-		ScoreDef      func(childComplexity int) int
-		ScoreTotal    func(childComplexity int) int
-		Tag           func(childComplexity int) int
-		TotalMembers  func(childComplexity int) int
-		TotalVillages func(childComplexity int) int
+		AllPoints      func(childComplexity int) int
+		BestRank       func(childComplexity int) int
+		BestRankAt     func(childComplexity int) int
+		CreatedAt      func(childComplexity int) int
+		DeletedAt      func(childComplexity int) int
+		Dominance      func(childComplexity int) int
+		Exists         func(childComplexity int) int
+		ID             func(childComplexity int) int
+		MostPoints     func(childComplexity int) int
+		MostPointsAt   func(childComplexity int) int
+		MostVillages   func(childComplexity int) int
+		MostVillagesAt func(childComplexity int) int
+		Name           func(childComplexity int) int
+		Points         func(childComplexity int) int
+		Rank           func(childComplexity int) int
+		RankAtt        func(childComplexity int) int
+		RankDef        func(childComplexity int) int
+		RankTotal      func(childComplexity int) int
+		ScoreAtt       func(childComplexity int) int
+		ScoreDef       func(childComplexity int) int
+		ScoreTotal     func(childComplexity int) int
+		Tag            func(childComplexity int) int
+		TotalMembers   func(childComplexity int) int
+		TotalVillages  func(childComplexity int) int
 	}
 
 	TribeChangeRecord struct {
@@ -885,6 +897,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.LiveEnnoblement.Village(childComplexity), true
 
+	case "Player.bestRank":
+		if e.complexity.Player.BestRank == nil {
+			break
+		}
+
+		return e.complexity.Player.BestRank(childComplexity), true
+
+	case "Player.bestRankAt":
+		if e.complexity.Player.BestRankAt == nil {
+			break
+		}
+
+		return e.complexity.Player.BestRankAt(childComplexity), true
+
 	case "Player.dailyGrowth":
 		if e.complexity.Player.DailyGrowth == nil {
 			break
@@ -899,12 +925,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Player.DeletedAt(childComplexity), true
 
-	case "Player.exist":
-		if e.complexity.Player.Exist == nil {
+	case "Player.exists":
+		if e.complexity.Player.Exists == nil {
 			break
 		}
 
-		return e.complexity.Player.Exist(childComplexity), true
+		return e.complexity.Player.Exists(childComplexity), true
 
 	case "Player.id":
 		if e.complexity.Player.ID == nil {
@@ -919,6 +945,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Player.JoinedAt(childComplexity), true
+
+	case "Player.mostPoints":
+		if e.complexity.Player.MostPoints == nil {
+			break
+		}
+
+		return e.complexity.Player.MostPoints(childComplexity), true
+
+	case "Player.mostPointsAt":
+		if e.complexity.Player.MostPointsAt == nil {
+			break
+		}
+
+		return e.complexity.Player.MostPointsAt(childComplexity), true
+
+	case "Player.mostVillages":
+		if e.complexity.Player.MostVillages == nil {
+			break
+		}
+
+		return e.complexity.Player.MostVillages(childComplexity), true
+
+	case "Player.mostVillagesAt":
+		if e.complexity.Player.MostVillagesAt == nil {
+			break
+		}
+
+		return e.complexity.Player.MostVillagesAt(childComplexity), true
 
 	case "Player.name":
 		if e.complexity.Player.Name == nil {
@@ -2316,6 +2370,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tribe.AllPoints(childComplexity), true
 
+	case "Tribe.bestRank":
+		if e.complexity.Tribe.BestRank == nil {
+			break
+		}
+
+		return e.complexity.Tribe.BestRank(childComplexity), true
+
+	case "Tribe.bestRankAt":
+		if e.complexity.Tribe.BestRankAt == nil {
+			break
+		}
+
+		return e.complexity.Tribe.BestRankAt(childComplexity), true
+
 	case "Tribe.createdAt":
 		if e.complexity.Tribe.CreatedAt == nil {
 			break
@@ -2337,12 +2405,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Tribe.Dominance(childComplexity), true
 
-	case "Tribe.exist":
-		if e.complexity.Tribe.Exist == nil {
+	case "Tribe.exists":
+		if e.complexity.Tribe.Exists == nil {
 			break
 		}
 
-		return e.complexity.Tribe.Exist(childComplexity), true
+		return e.complexity.Tribe.Exists(childComplexity), true
 
 	case "Tribe.id":
 		if e.complexity.Tribe.ID == nil {
@@ -2350,6 +2418,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Tribe.ID(childComplexity), true
+
+	case "Tribe.mostPoints":
+		if e.complexity.Tribe.MostPoints == nil {
+			break
+		}
+
+		return e.complexity.Tribe.MostPoints(childComplexity), true
+
+	case "Tribe.mostPointsAt":
+		if e.complexity.Tribe.MostPointsAt == nil {
+			break
+		}
+
+		return e.complexity.Tribe.MostPointsAt(childComplexity), true
+
+	case "Tribe.mostVillages":
+		if e.complexity.Tribe.MostVillages == nil {
+			break
+		}
+
+		return e.complexity.Tribe.MostVillages(childComplexity), true
+
+	case "Tribe.mostVillagesAt":
+		if e.complexity.Tribe.MostVillagesAt == nil {
+			break
+		}
+
+		return e.complexity.Tribe.MostVillagesAt(childComplexity), true
 
 	case "Tribe.name":
 		if e.complexity.Tribe.Name == nil {
@@ -3006,7 +3102,7 @@ type Player {
   totalVillages: Int!
   points: Int!
   rank: Int!
-  exist: Boolean!
+  exists: Boolean!
   rankAtt: Int!
   scoreAtt: Int!
   rankDef: Int!
@@ -3016,6 +3112,12 @@ type Player {
   rankTotal: Int!
   scoreTotal: Int!
   dailyGrowth: Int!
+  bestRank: Int!
+  bestRankAt: Time!
+  mostPoints: Int!
+  mostPointsAt: Time!
+  mostVillages: Int!
+  mostVillagesAt: Time!
   joinedAt: Time!
   deletedAt: Time
   tribe: Tribe @goField(forceResolver: true)
@@ -3032,7 +3134,7 @@ input PlayerFilter {
   id: [Int!]
   idNEQ: [Int!]
 
-  exist: Boolean
+  exists: Boolean
 
   name: [String!]
   nameNEQ: [String!]
@@ -3423,7 +3525,7 @@ extend type Query {
   points: Int!
   allPoints: Int!
   rank: Int!
-  exist: Boolean!
+  exists: Boolean!
   rankAtt: Int!
   scoreAtt: Int!
   rankDef: Int!
@@ -3431,8 +3533,14 @@ extend type Query {
   rankTotal: Int!
   scoreTotal: Int!
   dominance: Float!
+  bestRank: Int!
+  bestRankAt: Time!
+  mostPoints: Int!
+  mostPointsAt: Time!
+  mostVillages: Int!
+  mostVillagesAt: Time!
   createdAt: Time!
-  deletedAt: Time!
+  deletedAt: Time
 }
 
 type TribesList {
@@ -3444,7 +3552,7 @@ input TribeFilter {
   id: [Int!]
   idNEQ: [Int!]
 
-  exist: Boolean
+  exists: Boolean
 
   tag: [String!]
   tagNEQ: [String!]
@@ -5820,7 +5928,7 @@ func (ec *executionContext) _Player_rank(ctx context.Context, field graphql.Coll
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_exist(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_exists(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5837,7 +5945,7 @@ func (ec *executionContext) _Player_exist(ctx context.Context, field graphql.Col
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Exist, nil
+		return obj.Exists, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -6158,6 +6266,210 @@ func (ec *executionContext) _Player_dailyGrowth(ctx context.Context, field graph
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Player_bestRank(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Player",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BestRank, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Player_bestRankAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Player",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BestRankAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Player_mostPoints(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Player",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostPoints, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Player_mostPointsAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Player",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostPointsAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Player_mostVillages(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Player",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Player_mostVillagesAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Player",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostVillagesAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Player_joinedAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
@@ -12586,7 +12898,7 @@ func (ec *executionContext) _Tribe_rank(ctx context.Context, field graphql.Colle
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_exist(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_exists(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12603,7 +12915,7 @@ func (ec *executionContext) _Tribe_exist(ctx context.Context, field graphql.Coll
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Exist, nil
+		return obj.Exists, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -12858,6 +13170,210 @@ func (ec *executionContext) _Tribe_dominance(ctx context.Context, field graphql.
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Tribe_bestRank(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Tribe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BestRank, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Tribe_bestRankAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Tribe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BestRankAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Tribe_mostPoints(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Tribe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostPoints, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Tribe_mostPointsAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Tribe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostPointsAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Tribe_mostVillages(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Tribe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Tribe_mostVillagesAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Tribe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostVillagesAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Tribe_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -12916,14 +13432,11 @@ func (ec *executionContext) _Tribe_deletedAt(ctx context.Context, field graphql.
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(time.Time)
 	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOTime2timeᚐTime(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _TribeChangeRecord_player(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
@@ -15994,9 +16507,9 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 			if err != nil {
 				return it, err
 			}
-		case "exist":
+		case "exists":
 			var err error
-			it.Exist, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			it.Exists, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -16804,9 +17317,9 @@ func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj i
 			if err != nil {
 				return it, err
 			}
-		case "exist":
+		case "exists":
 			var err error
-			it.Exist, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			it.Exists, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -18035,8 +18548,8 @@ func (ec *executionContext) _Player(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
-		case "exist":
-			out.Values[i] = ec._Player_exist(ctx, field, obj)
+		case "exists":
+			out.Values[i] = ec._Player_exists(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
@@ -18082,6 +18595,36 @@ func (ec *executionContext) _Player(ctx context.Context, sel ast.SelectionSet, o
 			}
 		case "dailyGrowth":
 			out.Values[i] = ec._Player_dailyGrowth(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "bestRank":
+			out.Values[i] = ec._Player_bestRank(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "bestRankAt":
+			out.Values[i] = ec._Player_bestRankAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "mostPoints":
+			out.Values[i] = ec._Player_mostPoints(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "mostPointsAt":
+			out.Values[i] = ec._Player_mostPointsAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "mostVillages":
+			out.Values[i] = ec._Player_mostVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "mostVillagesAt":
+			out.Values[i] = ec._Player_mostVillagesAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
@@ -19699,8 +20242,8 @@ func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "exist":
-			out.Values[i] = ec._Tribe_exist(ctx, field, obj)
+		case "exists":
+			out.Values[i] = ec._Tribe_exists(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -19739,6 +20282,36 @@ func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, ob
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "bestRank":
+			out.Values[i] = ec._Tribe_bestRank(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "bestRankAt":
+			out.Values[i] = ec._Tribe_bestRankAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "mostPoints":
+			out.Values[i] = ec._Tribe_mostPoints(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "mostPointsAt":
+			out.Values[i] = ec._Tribe_mostPointsAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "mostVillages":
+			out.Values[i] = ec._Tribe_mostVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "mostVillagesAt":
+			out.Values[i] = ec._Tribe_mostVillagesAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "createdAt":
 			out.Values[i] = ec._Tribe_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -19746,9 +20319,6 @@ func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, ob
 			}
 		case "deletedAt":
 			out.Values[i] = ec._Tribe_deletedAt(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
