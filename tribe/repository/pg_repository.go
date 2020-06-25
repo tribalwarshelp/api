@@ -19,29 +19,34 @@ func NewPGRepository(db *pg.DB) tribe.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.TribeFilter) ([]*models.Tribe, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*models.Tribe, int, error) {
 	var err error
 	data := []*models.Tribe{}
-	query := repo.WithParam("SERVER", pg.Safe(server)).Model(&data).Context(ctx)
+	total := 0
+	query := repo.WithParam("SERVER", pg.Safe(cfg.Server)).Model(&data).Context(ctx)
 
-	if f != nil {
+	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(f).
-			Limit(f.Limit).
-			Offset(f.Offset)
+			WhereStruct(cfg.Filter).
+			Limit(cfg.Filter.Limit).
+			Offset(cfg.Filter.Offset)
 
-		if f.Sort != "" {
-			query = query.Order(f.Sort)
+		if cfg.Filter.Sort != "" {
+			query = query.Order(cfg.Filter.Sort)
 		}
 
-		if f.Exist != nil {
-			query = query.Where("exist = ?", *f.Exist)
+		if cfg.Filter.Exists != nil {
+			query = query.Where("exist = ?", *cfg.Filter.Exists)
 		}
 	}
 
-	total, err := query.SelectAndCount()
+	if cfg.Count {
+		total, err = query.SelectAndCount()
+	} else {
+		err = query.Select()
+	}
 	if err != nil && err != pg.ErrNoRows {
-		if strings.Contains(err.Error(), `relation "`+server) {
+		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
 			return nil, 0, fmt.Errorf("Server not found")
 		}
 		return nil, 0, errors.Wrap(err, "Internal server error")

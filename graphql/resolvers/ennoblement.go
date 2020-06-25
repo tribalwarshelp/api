@@ -2,9 +2,6 @@ package resolvers
 
 import (
 	"context"
-	"time"
-
-	"github.com/tribalwarshelp/api/utils"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/shared/models"
@@ -48,12 +45,6 @@ func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennobleme
 	}
 
 	return getVillage(ctx, obj.VillageID), nil
-}
-
-func (r *ennoblementResolver) EnnobledAt(ctx context.Context, obj *models.Ennoblement) (*time.Time, error) {
-	server, _ := getServer(ctx)
-	t := formatDate(ctx, utils.LanguageTagFromServerKey(server), obj.EnnobledAt)
-	return &t, nil
 }
 
 func (r *queryResolver) Ennoblements(ctx context.Context, server string, f *models.EnnoblementFilter) (*generated.EnnoblementsList, error) {

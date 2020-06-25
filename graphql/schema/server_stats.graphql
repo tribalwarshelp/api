@@ -9,7 +9,7 @@ type ServerStatsRecord {
   barbarianVillages: Int!
   playerVillages: Int!
   villages: Int!
-  createdAt: Time! @goField(forceResolver: true)
+  createdAt: Time!
 }
 
 type ServerStats {

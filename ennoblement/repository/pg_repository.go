@@ -19,25 +19,30 @@ func NewPGRepository(db *pg.DB) ennoblement.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, server string, f *models.EnnoblementFilter) ([]*models.Ennoblement, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg ennoblement.FetchConfig) ([]*models.Ennoblement, int, error) {
 	var err error
+	total := 0
 	data := []*models.Ennoblement{}
-	query := repo.WithParam("SERVER", pg.Safe(server)).Model(&data).Context(ctx)
+	query := repo.WithParam("SERVER", pg.Safe(cfg.Server)).Model(&data).Context(ctx)
 
-	if f != nil {
+	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(f).
-			Limit(f.Limit).
-			Offset(f.Offset)
+			WhereStruct(cfg.Filter).
+			Limit(cfg.Filter.Limit).
+			Offset(cfg.Filter.Offset)
 
-		if f.Sort != "" {
-			query = query.Order(f.Sort)
+		if cfg.Filter.Sort != "" {
+			query = query.Order(cfg.Filter.Sort)
 		}
 	}
 
-	total, err := query.SelectAndCount()
+	if cfg.Count {
+		total, err = query.SelectAndCount()
+	} else {
+		err = query.Select()
+	}
 	if err != nil && err != pg.ErrNoRows {
-		if strings.Contains(err.Error(), `relation "`+server) {
+		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
 			return nil, 0, fmt.Errorf("Server not found")
 		}
 		return nil, 0, errors.Wrap(err, "Internal server error")

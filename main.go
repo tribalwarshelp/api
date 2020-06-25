@@ -19,6 +19,10 @@ import (
 
 	"github.com/tribalwarshelp/api/graphql/dataloaders"
 
+	dailyplayerstatsrepo "github.com/tribalwarshelp/api/dailyplayerstats/repository"
+	dailyplayerstatsucase "github.com/tribalwarshelp/api/dailyplayerstats/usecase"
+	dailytribestatsrepo "github.com/tribalwarshelp/api/dailytribestats/repository"
+	dailytribestatsucase "github.com/tribalwarshelp/api/dailytribestats/usecase"
 	ennoblementrepo "github.com/tribalwarshelp/api/ennoblement/repository"
 	ennoblementucase "github.com/tribalwarshelp/api/ennoblement/usecase"
 	langversionrepo "github.com/tribalwarshelp/api/langversion/repository"
@@ -37,6 +41,8 @@ import (
 	serverstatsucase "github.com/tribalwarshelp/api/serverstats/usecase"
 	triberepo "github.com/tribalwarshelp/api/tribe/repository"
 	tribeucase "github.com/tribalwarshelp/api/tribe/usecase"
+	tribechangerepo "github.com/tribalwarshelp/api/tribechange/repository"
+	tribechangeucase "github.com/tribalwarshelp/api/tribechange/usecase"
 	tribehistoryrepo "github.com/tribalwarshelp/api/tribehistory/repository"
 	tribehistoryucase "github.com/tribalwarshelp/api/tribehistory/usecase"
 	villagerepo "github.com/tribalwarshelp/api/village/repository"
@@ -68,15 +74,16 @@ func main() {
 			log.Fatal("Database disconnecting:", err)
 		}
 	}()
-	//single server redis
+
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("REDIS_HOST") + ":" + os.Getenv("REDIS_PORT"),
 		Password: os.Getenv("REDIS_PASSWORD"),
 	})
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	if err := redisClient.Ping(ctx).Err(); err != nil {
-		log.Fatal(errors.Wrap(err, "cannot establish a connection with Redis"))
+		log.Fatal(errors.Wrap(err, "cannot connect to redis"))
 	}
+	cancel()
 	defer func() {
 		if err := redisClient.Close(); err != nil {
 			log.Fatal(err)
@@ -98,6 +105,9 @@ func main() {
 	tribehistoryRepo := tribehistoryrepo.NewPGRepository(db)
 	playerhistoryRepo := playerhistoryrepo.NewPGRepository(db)
 	serverstatsRepo := serverstatsrepo.NewPGRepository(db)
+	tribeChangeRepo := tribechangerepo.NewPGRepository(db)
+	dailyPlayerStatsRepo := dailyplayerstatsrepo.NewPGRepository(db)
+	dailyTribeStatsRepo := dailytribestatsrepo.NewPGRepository(db)
 	liveennoblementRepo := liveennoblementrepo.NewPGRepository(db, redisClient)
 
 	serverUcase := serverucase.New(serverRepo)
@@ -119,16 +129,19 @@ func main() {
 	httpdelivery.Attach(httpdelivery.Config{
 		RouterGroup: graphql,
 		Resolver: &resolvers.Resolver{
-			LangVersionUcase:     langversionucase.New(langversionRepo),
-			ServerUcase:          serverUcase,
-			TribeUcase:           tribeucase.New(tribeRepo),
-			PlayerUcase:          playerucase.New(playerRepo),
-			VillageUcase:         villageucase.New(villageRepo),
-			EnnoblementUcase:     ennoblementucase.New(ennoblementRepo),
-			LiveEnnoblementUcase: liveennoblementucase.New(liveennoblementRepo),
-			TribeHistoryUcase:    tribehistoryucase.New(tribehistoryRepo),
-			PlayerHistoryUcase:   playerhistoryucase.New(playerhistoryRepo),
-			ServerStatsUcase:     serverstatsucase.New(serverstatsRepo),
+			LangVersionUcase:      langversionucase.New(langversionRepo),
+			ServerUcase:           serverUcase,
+			TribeUcase:            tribeucase.New(tribeRepo),
+			PlayerUcase:           playerucase.New(playerRepo),
+			VillageUcase:          villageucase.New(villageRepo),
+			EnnoblementUcase:      ennoblementucase.New(ennoblementRepo),
+			LiveEnnoblementUcase:  liveennoblementucase.New(liveennoblementRepo),
+			TribeHistoryUcase:     tribehistoryucase.New(tribehistoryRepo),
+			PlayerHistoryUcase:    playerhistoryucase.New(playerhistoryRepo),
+			ServerStatsUcase:      serverstatsucase.New(serverstatsRepo),
+			TribeChangeUcase:      tribechangeucase.New(tribeChangeRepo),
+			DailyPlayerStatsUcase: dailyplayerstatsucase.New(dailyPlayerStatsRepo),
+			DailyTribeStatsUcase:  dailytribestatsucase.New(dailyTribeStatsRepo),
 		},
 	})
 
@@ -149,7 +162,7 @@ func main() {
 	<-quit
 	log.Println("Shutdown Server ...")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatal("Server Shutdown:", err)

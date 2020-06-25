@@ -7,15 +7,22 @@ type Tribe {
   points: Int!
   allPoints: Int!
   rank: Int!
-  exist: Boolean!
+  exists: Boolean!
   rankAtt: Int!
   scoreAtt: Int!
   rankDef: Int!
   scoreDef: Int!
   rankTotal: Int!
-  dominance: Float!
-  createdAt: Time! @goField(forceResolver: true)
   scoreTotal: Int!
+  dominance: Float!
+  bestRank: Int!
+  bestRankAt: Time!
+  mostPoints: Int!
+  mostPointsAt: Time!
+  mostVillages: Int!
+  mostVillagesAt: Time!
+  createdAt: Time!
+  deletedAt: Time
 }
 
 type TribesList {
@@ -27,7 +34,7 @@ input TribeFilter {
   id: [Int!]
   idNEQ: [Int!]
 
-  exist: Boolean
+  exists: Boolean
 
   tag: [String!]
   tagNEQ: [String!]
@@ -116,6 +123,12 @@ input TribeFilter {
   createdAtGTE: Time
   createdAtLT: Time
   createdAtLTE: Time
+
+  deletedAt: Time
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
 
   offset: Int
   limit: Int

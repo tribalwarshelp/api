@@ -6,6 +6,16 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
+type DailyPlayerStats struct {
+	Total int                        `json:"total"`
+	Items []*models.DailyPlayerStats `json:"items"`
+}
+
+type DailyTribeStats struct {
+	Total int                       `json:"total"`
+	Items []*models.DailyTribeStats `json:"items"`
+}
+
 type EnnoblementsList struct {
 	Items []*models.Ennoblement `json:"items"`
 	Total int                   `json:"total"`
@@ -34,6 +44,11 @@ type ServerStats struct {
 type ServersList struct {
 	Items []*models.Server `json:"items"`
 	Total int              `json:"total"`
+}
+
+type TribeChanges struct {
+	Total int                   `json:"total"`
+	Items []*models.TribeChange `json:"items"`
 }
 
 type TribeHistory struct {

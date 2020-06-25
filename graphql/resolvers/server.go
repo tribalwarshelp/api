@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"context"
-	"time"
 
 	"github.com/tribalwarshelp/api/middleware"
 
@@ -17,21 +16,6 @@ func (r *serverResolver) LangVersion(ctx context.Context, obj *models.Server) (*
 		return lv, nil
 	}
 	return nil, nil
-}
-
-func (r *serverResolver) DataUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
-	t := formatDate(ctx, obj.LangVersionTag, obj.DataUpdatedAt)
-	return &t, nil
-}
-
-func (r *serverResolver) HistoryUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
-	t := formatDate(ctx, obj.LangVersionTag, obj.HistoryUpdatedAt)
-	return &t, nil
-}
-
-func (r *serverResolver) StatsUpdatedAt(ctx context.Context, obj *models.Server) (*time.Time, error) {
-	t := formatDate(ctx, obj.LangVersionTag, obj.StatsUpdatedAt)
-	return &t, nil
 }
 
 func (r *queryResolver) Servers(ctx context.Context, filter *models.ServerFilter) (*generated.ServersList, error) {

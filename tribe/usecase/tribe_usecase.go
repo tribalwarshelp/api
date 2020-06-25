@@ -25,18 +25,25 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.T
 		filter.Limit = tribe.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
-	return ucase.repo.Fetch(ctx, server, filter)
+	return ucase.repo.Fetch(ctx, tribe.FetchConfig{
+		Filter: filter,
+		Server: server,
+		Count:  true,
+	})
 }
 
 func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*models.Tribe, error) {
-	tribes, total, err := ucase.repo.Fetch(ctx, server, &models.TribeFilter{
-		ID:    []int{id},
-		Limit: 1,
+	tribes, _, err := ucase.repo.Fetch(ctx, tribe.FetchConfig{
+		Filter: &models.TribeFilter{
+			ID:    []int{id},
+			Limit: 1,
+		},
+		Server: server,
 	})
 	if err != nil {
 		return nil, err
 	}
-	if total == 0 {
+	if len(tribes) == 0 {
 		return nil, fmt.Errorf("Tribe (ID: %s) not found.", id)
 	}
 	return tribes[0], nil

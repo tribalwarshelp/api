@@ -2,11 +2,9 @@ package resolvers
 
 import (
 	"context"
-	"time"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/tribalwarshelp/api/middleware"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -67,15 +65,4 @@ func getTribe(ctx context.Context, id int) *models.Tribe {
 		}
 	}
 	return nil
-}
-
-func formatDate(ctx context.Context, langTag models.LanguageTag, t time.Time) time.Time {
-	loaders := middleware.DataLoadersFromContext(ctx)
-	if loaders != nil {
-		lv, err := loaders.LangVersionByTag.Load(langTag.String())
-		if err == nil {
-			return t.In(utils.GetLocation(lv.Timezone))
-		}
-	}
-	return t
 }

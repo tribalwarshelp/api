@@ -90,3 +90,17 @@ models:
     model: github.com/tribalwarshelp/shared/models.ServerStats
   ServerStatsFilter:
     model: github.com/tribalwarshelp/shared/models.ServerStatsFilter
+  TribeChangeRecord:
+    model: github.com/tribalwarshelp/shared/models.TribeChange
+  TribeChangeFilter:
+    model: github.com/tribalwarshelp/shared/models.TribeChangeFilter
+  DailyPlayerStatsRecord:
+    model: github.com/tribalwarshelp/shared/models.DailyPlayerStats
+  DailyPlayerStatsFilter:
+    model: github.com/tribalwarshelp/shared/models.DailyPlayerStatsFilter
+  DailyTribeStatsRecord:
+    model: github.com/tribalwarshelp/shared/models.DailyTribeStats
+  DailyTribeStatsFilter:
+    model: github.com/tribalwarshelp/shared/models.DailyTribeStatsFilter
+  PlayerNameChange:
+    model: github.com/tribalwarshelp/shared/models.PlayerNameChange

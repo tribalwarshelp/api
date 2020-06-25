@@ -24,5 +24,9 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.E
 		filter.Limit = ennoblement.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
-	return ucase.repo.Fetch(ctx, server, filter)
+	return ucase.repo.Fetch(ctx, ennoblement.FetchConfig{
+		Server: server,
+		Filter: filter,
+		Count:  true,
+	})
 }

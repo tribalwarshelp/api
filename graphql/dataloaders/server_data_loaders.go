@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/tribalwarshelp/api/player"
+	"github.com/tribalwarshelp/api/tribe"
 	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/shared/models"
 )
@@ -20,8 +22,11 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(ids []int) ([]*models.Player, []error) {
-				players, _, err := cfg.PlayerRepo.Fetch(context.Background(), server, &models.PlayerFilter{
-					ID: ids,
+				players, _, err := cfg.PlayerRepo.Fetch(context.Background(), player.FetchConfig{
+					Filter: &models.PlayerFilter{
+						ID: ids,
+					},
+					Server: server,
 				})
 				if err != nil {
 					return nil, []error{err}
@@ -44,8 +49,11 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(ids []int) ([]*models.Tribe, []error) {
-				tribes, _, err := cfg.TribeRepo.Fetch(context.Background(), server, &models.TribeFilter{
-					ID: ids,
+				tribes, _, err := cfg.TribeRepo.Fetch(context.Background(), tribe.FetchConfig{
+					Server: server,
+					Filter: &models.TribeFilter{
+						ID: ids,
+					},
 				})
 				if err != nil {
 					return nil, []error{err}

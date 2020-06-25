@@ -1,10 +1,16 @@
+type PlayerNameChange {
+  oldName: String!
+  newName: String!
+  changedOn: Time!
+}
+
 type Player {
   id: Int!
   name: String!
   totalVillages: Int!
   points: Int!
   rank: Int!
-  exist: Boolean!
+  exists: Boolean!
   rankAtt: Int!
   scoreAtt: Int!
   rankDef: Int!
@@ -14,9 +20,17 @@ type Player {
   rankTotal: Int!
   scoreTotal: Int!
   dailyGrowth: Int!
-  joinedAt: Time! @goField(forceResolver: true)
+  bestRank: Int!
+  bestRankAt: Time!
+  mostPoints: Int!
+  mostPointsAt: Time!
+  mostVillages: Int!
+  mostVillagesAt: Time!
+  joinedAt: Time!
+  deletedAt: Time
   tribe: Tribe @goField(forceResolver: true)
   servers: [String!]! @goField(forceResolver: true)
+  nameChanges: [PlayerNameChange!]! @goField(forceResolver: true)
 }
 
 type PlayersList {
@@ -28,7 +42,7 @@ input PlayerFilter {
   id: [Int!]
   idNEQ: [Int!]
 
-  exist: Boolean
+  exists: Boolean
 
   name: [String!]
   nameNEQ: [String!]
@@ -112,6 +126,12 @@ input PlayerFilter {
   joinedAtGTE: Time
   joinedAtLT: Time
   joinedAtLTE: Time
+
+  deletedAt: Time
+  deletedAtGT: Time
+  deletedAtGTE: Time
+  deletedAtLT: Time
+  deletedAtLTE: Time
 
   tribeID: [Int!]
   tribeFilter: TribeFilter

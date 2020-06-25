@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"context"
-	"time"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/middleware"
@@ -19,20 +18,31 @@ func (r *playerResolver) Tribe(ctx context.Context, obj *models.Player) (*models
 }
 
 func (r *playerResolver) Servers(ctx context.Context, obj *models.Player) ([]string, error) {
-	loaders := middleware.DataLoadersFromContext(ctx)
-	if loaders != nil {
-		servers, err := loaders.PlayerServersByID.Load(obj.ID)
-		if err == nil {
-			return servers, nil
+	langVersionDataLoaders := middleware.LangVersionDataLoadersFromContext(ctx)
+	if langVersionDataLoaders != nil {
+		serverKey, _ := getServer(ctx)
+		if loaders, ok := langVersionDataLoaders[utils.LanguageTagFromServerKey(serverKey)]; ok {
+			servers, err := loaders.PlayerServersByID.Load(obj.ID)
+			if err == nil {
+				return servers, nil
+			}
 		}
 	}
 	return []string{}, nil
 }
 
-func (r *playerResolver) JoinedAt(ctx context.Context, obj *models.Player) (*time.Time, error) {
-	server, _ := getServer(ctx)
-	t := formatDate(ctx, utils.LanguageTagFromServerKey(server), obj.JoinedAt)
-	return &t, nil
+func (r *playerResolver) NameChanges(ctx context.Context, obj *models.Player) ([]*models.PlayerNameChange, error) {
+	langVersionDataLoaders := middleware.LangVersionDataLoadersFromContext(ctx)
+	if langVersionDataLoaders != nil {
+		serverKey, _ := getServer(ctx)
+		if loaders, ok := langVersionDataLoaders[utils.LanguageTagFromServerKey(serverKey)]; ok {
+			servers, err := loaders.PlayerNameChangesByID.Load(obj.ID)
+			if err == nil {
+				return servers, nil
+			}
+		}
+	}
+	return []*models.PlayerNameChange{}, nil
 }
 
 func (r *queryResolver) Players(ctx context.Context, server string, filter *models.PlayerFilter) (*generated.PlayersList, error) {

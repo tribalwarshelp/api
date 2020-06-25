@@ -12,7 +12,7 @@ type PlayerHistoryRecord {
   rankTotal: Int!
   scoreTotal: Int!
   tribe: Tribe @goField(forceResolver: true)
-  createdAt: Time! @goField(forceResolver: true)
+  createdAt: Time!
 }
 
 type PlayerHistory {

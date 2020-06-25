@@ -12,7 +12,7 @@ type TribeHistoryRecord {
   scoreDef: Int!
   rankTotal: Int!
   scoreTotal: Int!
-  createdAt: Time! @goField(forceResolver: true)
+  createdAt: Time!
 }
 
 type TribeHistory {

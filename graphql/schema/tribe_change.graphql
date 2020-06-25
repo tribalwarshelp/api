@@ -1,0 +1,36 @@
+type TribeChangeRecord {
+  player: Player @goField(forceResolver: true)
+  oldTribe: Tribe @goField(forceResolver: true)
+  newTribe: Tribe @goField(forceResolver: true)
+  createdAt: Time!
+}
+
+type TribeChanges {
+  total: Int!
+  items: [TribeChangeRecord!]
+}
+
+input TribeChangeFilter {
+  playerID: [Int!]
+  playerIDNEQ: [Int!]
+
+  oldTribeID: [Int!]
+  oldTribeIDNEQ: [Int!]
+
+  newTribeID: [Int!]
+  newTribeIDNEQ: [Int!]
+
+  createdAt: Time
+  createdAtGT: Time
+  createdAtGTE: Time
+  createdAtLT: Time
+  createdAtLTE: Time
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+extend type Query {
+  tribeChanges(server: String!, filter: TribeChangeFilter): TribeChanges!
+}
