@@ -25,7 +25,7 @@ type Tribe {
   deletedAt: Time
 }
 
-type TribesList {
+type TribeList {
   items: [Tribe!]
   total: Int!
 }
@@ -136,6 +136,6 @@ input TribeFilter {
 }
 
 extend type Query {
-  tribes(server: String!, filter: TribeFilter): TribesList!
+  tribes(server: String!, filter: TribeFilter): TribeList!
   tribe(server: String!, id: Int!): Tribe
 }

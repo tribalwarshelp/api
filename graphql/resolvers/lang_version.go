@@ -7,9 +7,9 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *queryResolver) LangVersions(ctx context.Context, filter *models.LangVersionFilter) (*generated.LangVersionsList, error) {
+func (r *queryResolver) LangVersions(ctx context.Context, filter *models.LangVersionFilter) (*generated.LangVersionList, error) {
 	var err error
-	list := &generated.LangVersionsList{}
+	list := &generated.LangVersionList{}
 	list.Items, list.Total, err = r.LangVersionUcase.Fetch(ctx, filter)
 	return list, err
 }

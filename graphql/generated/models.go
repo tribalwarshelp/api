@@ -16,12 +16,12 @@ type DailyTribeStats struct {
 	Items []*models.DailyTribeStats `json:"items"`
 }
 
-type EnnoblementsList struct {
+type EnnoblementList struct {
 	Items []*models.Ennoblement `json:"items"`
 	Total int                   `json:"total"`
 }
 
-type LangVersionsList struct {
+type LangVersionList struct {
 	Items []*models.LangVersion `json:"items"`
 	Total int                   `json:"total"`
 }
@@ -31,19 +31,19 @@ type PlayerHistory struct {
 	Items []*models.PlayerHistory `json:"items"`
 }
 
-type PlayersList struct {
+type PlayerList struct {
 	Items []*models.Player `json:"items"`
+	Total int              `json:"total"`
+}
+
+type ServerList struct {
+	Items []*models.Server `json:"items"`
 	Total int              `json:"total"`
 }
 
 type ServerStats struct {
 	Items []*models.ServerStats `json:"items"`
 	Total int                   `json:"total"`
-}
-
-type ServersList struct {
-	Items []*models.Server `json:"items"`
-	Total int              `json:"total"`
 }
 
 type TribeChanges struct {
@@ -56,12 +56,12 @@ type TribeHistory struct {
 	Items []*models.TribeHistory `json:"items"`
 }
 
-type TribesList struct {
+type TribeList struct {
 	Items []*models.Tribe `json:"items"`
 	Total int             `json:"total"`
 }
 
-type VillagesList struct {
+type VillageList struct {
 	Items []*models.Village `json:"items"`
 	Total int               `json:"total"`
 }

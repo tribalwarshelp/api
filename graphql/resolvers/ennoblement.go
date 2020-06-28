@@ -47,9 +47,9 @@ func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennobleme
 	return getVillage(ctx, obj.VillageID), nil
 }
 
-func (r *queryResolver) Ennoblements(ctx context.Context, server string, f *models.EnnoblementFilter) (*generated.EnnoblementsList, error) {
+func (r *queryResolver) Ennoblements(ctx context.Context, server string, f *models.EnnoblementFilter) (*generated.EnnoblementList, error) {
 	var err error
-	list := &generated.EnnoblementsList{}
+	list := &generated.EnnoblementList{}
 	list.Items, list.Total, err = r.EnnoblementUcase.Fetch(ctx, server, f)
 	return list, err
 }

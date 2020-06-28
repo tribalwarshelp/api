@@ -21,7 +21,7 @@ type Server {
   statsUpdatedAt: Time!
 }
 
-type ServersList {
+type ServerList {
   items: [Server!]
   total: Int!
 }
@@ -44,6 +44,6 @@ input ServerFilter {
 }
 
 extend type Query {
-  servers(filter: ServerFilter): ServersList!
+  servers(filter: ServerFilter): ServerList!
   server(key: String!): Server
 }

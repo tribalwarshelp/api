@@ -7,9 +7,9 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *queryResolver) Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*generated.TribesList, error) {
+func (r *queryResolver) Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*generated.TribeList, error) {
 	var err error
-	list := &generated.TribesList{}
+	list := &generated.TribeList{}
 	list.Items, list.Total, err = r.TribeUcase.Fetch(ctx, server, filter)
 	return list, err
 }

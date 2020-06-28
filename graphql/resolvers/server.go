@@ -18,9 +18,9 @@ func (r *serverResolver) LangVersion(ctx context.Context, obj *models.Server) (*
 	return nil, nil
 }
 
-func (r *queryResolver) Servers(ctx context.Context, filter *models.ServerFilter) (*generated.ServersList, error) {
+func (r *queryResolver) Servers(ctx context.Context, filter *models.ServerFilter) (*generated.ServerList, error) {
 	var err error
-	list := &generated.ServersList{}
+	list := &generated.ServerList{}
 	list.Items, list.Total, err = r.ServerUcase.Fetch(ctx, filter)
 	return list, err
 }

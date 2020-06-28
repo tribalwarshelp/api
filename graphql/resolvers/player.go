@@ -45,9 +45,9 @@ func (r *playerResolver) NameChanges(ctx context.Context, obj *models.Player) ([
 	return []*models.PlayerNameChange{}, nil
 }
 
-func (r *queryResolver) Players(ctx context.Context, server string, filter *models.PlayerFilter) (*generated.PlayersList, error) {
+func (r *queryResolver) Players(ctx context.Context, server string, filter *models.PlayerFilter) (*generated.PlayerList, error) {
 	var err error
-	list := &generated.PlayersList{}
+	list := &generated.PlayerList{}
 	list.Items, list.Total, err = r.PlayerUcase.Fetch(ctx, server, filter)
 	return list, err
 }

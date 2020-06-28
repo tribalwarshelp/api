@@ -7,7 +7,7 @@ type Ennoblement {
   ennobledAt: Time!
 }
 
-type EnnoblementsList {
+type EnnoblementList {
   items: [Ennoblement!]
   total: Int!
 }
@@ -38,5 +38,5 @@ input EnnoblementFilter {
 }
 
 extend type Query {
-  ennoblements(server: String!, filter: EnnoblementFilter): EnnoblementsList!
+  ennoblements(server: String!, filter: EnnoblementFilter): EnnoblementList!
 }

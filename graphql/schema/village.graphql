@@ -8,7 +8,7 @@ type Village {
   player: Player @goField(forceResolver: true)
 }
 
-type VillagesList {
+type VillageList {
   items: [Village!]
   total: Int!
 }
@@ -52,6 +52,6 @@ input VillageFilter {
 }
 
 extend type Query {
-  villages(server: String!, filter: VillageFilter): VillagesList!
+  villages(server: String!, filter: VillageFilter): VillageList!
   village(server: String!, id: Int!): Village
 }

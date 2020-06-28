@@ -140,7 +140,7 @@ type ComplexityRoot struct {
 		Village       func(childComplexity int) int
 	}
 
-	EnnoblementsList struct {
+	EnnoblementList struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
 	}
@@ -152,7 +152,7 @@ type ComplexityRoot struct {
 		Timezone func(childComplexity int) int
 	}
 
-	LangVersionsList struct {
+	LangVersionList struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
 	}
@@ -215,15 +215,15 @@ type ComplexityRoot struct {
 		Tribe         func(childComplexity int) int
 	}
 
+	PlayerList struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
 	PlayerNameChange struct {
 		ChangedOn func(childComplexity int) int
 		NewName   func(childComplexity int) int
 		OldName   func(childComplexity int) int
-	}
-
-	PlayersList struct {
-		Items func(childComplexity int) int
-		Total func(childComplexity int) int
 	}
 
 	Query struct {
@@ -412,6 +412,11 @@ type ComplexityRoot struct {
 		Check func(childComplexity int) int
 	}
 
+	ServerList struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
 	ServerStats struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
@@ -429,11 +434,6 @@ type ComplexityRoot struct {
 		Players           func(childComplexity int) int
 		Tribes            func(childComplexity int) int
 		Villages          func(childComplexity int) int
-	}
-
-	ServersList struct {
-		Items func(childComplexity int) int
-		Total func(childComplexity int) int
 	}
 
 	Tribe struct {
@@ -497,7 +497,7 @@ type ComplexityRoot struct {
 		Tribe         func(childComplexity int) int
 	}
 
-	TribesList struct {
+	TribeList struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
 	}
@@ -539,7 +539,7 @@ type ComplexityRoot struct {
 		Y      func(childComplexity int) int
 	}
 
-	VillagesList struct {
+	VillageList struct {
 		Items func(childComplexity int) int
 		Total func(childComplexity int) int
 	}
@@ -576,21 +576,21 @@ type PlayerHistoryRecordResolver interface {
 type QueryResolver interface {
 	DailyPlayerStats(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter) (*DailyPlayerStats, error)
 	DailyTribeStats(ctx context.Context, server string, filter *models.DailyTribeStatsFilter) (*DailyTribeStats, error)
-	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter) (*EnnoblementsList, error)
-	LangVersions(ctx context.Context, filter *models.LangVersionFilter) (*LangVersionsList, error)
+	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter) (*EnnoblementList, error)
+	LangVersions(ctx context.Context, filter *models.LangVersionFilter) (*LangVersionList, error)
 	LangVersion(ctx context.Context, tag models.LanguageTag) (*models.LangVersion, error)
 	LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error)
-	Players(ctx context.Context, server string, filter *models.PlayerFilter) (*PlayersList, error)
+	Players(ctx context.Context, server string, filter *models.PlayerFilter) (*PlayerList, error)
 	Player(ctx context.Context, server string, id int) (*models.Player, error)
 	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter) (*PlayerHistory, error)
-	Servers(ctx context.Context, filter *models.ServerFilter) (*ServersList, error)
+	Servers(ctx context.Context, filter *models.ServerFilter) (*ServerList, error)
 	Server(ctx context.Context, key string) (*models.Server, error)
 	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*ServerStats, error)
-	Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*TribesList, error)
+	Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*TribeList, error)
 	Tribe(ctx context.Context, server string, id int) (*models.Tribe, error)
 	TribeChanges(ctx context.Context, server string, filter *models.TribeChangeFilter) (*TribeChanges, error)
 	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter) (*TribeHistory, error)
-	Villages(ctx context.Context, server string, filter *models.VillageFilter) (*VillagesList, error)
+	Villages(ctx context.Context, server string, filter *models.VillageFilter) (*VillageList, error)
 	Village(ctx context.Context, server string, id int) (*models.Village, error)
 }
 type ServerResolver interface {
@@ -1085,19 +1085,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Ennoblement.Village(childComplexity), true
 
-	case "EnnoblementsList.items":
-		if e.complexity.EnnoblementsList.Items == nil {
+	case "EnnoblementList.items":
+		if e.complexity.EnnoblementList.Items == nil {
 			break
 		}
 
-		return e.complexity.EnnoblementsList.Items(childComplexity), true
+		return e.complexity.EnnoblementList.Items(childComplexity), true
 
-	case "EnnoblementsList.total":
-		if e.complexity.EnnoblementsList.Total == nil {
+	case "EnnoblementList.total":
+		if e.complexity.EnnoblementList.Total == nil {
 			break
 		}
 
-		return e.complexity.EnnoblementsList.Total(childComplexity), true
+		return e.complexity.EnnoblementList.Total(childComplexity), true
 
 	case "LangVersion.host":
 		if e.complexity.LangVersion.Host == nil {
@@ -1127,19 +1127,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.LangVersion.Timezone(childComplexity), true
 
-	case "LangVersionsList.items":
-		if e.complexity.LangVersionsList.Items == nil {
+	case "LangVersionList.items":
+		if e.complexity.LangVersionList.Items == nil {
 			break
 		}
 
-		return e.complexity.LangVersionsList.Items(childComplexity), true
+		return e.complexity.LangVersionList.Items(childComplexity), true
 
-	case "LangVersionsList.total":
-		if e.complexity.LangVersionsList.Total == nil {
+	case "LangVersionList.total":
+		if e.complexity.LangVersionList.Total == nil {
 			break
 		}
 
-		return e.complexity.LangVersionsList.Total(childComplexity), true
+		return e.complexity.LangVersionList.Total(childComplexity), true
 
 	case "LiveEnnoblement.ennobledAt":
 		if e.complexity.LiveEnnoblement.EnnobledAt == nil {
@@ -1463,6 +1463,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PlayerHistoryRecord.Tribe(childComplexity), true
 
+	case "PlayerList.items":
+		if e.complexity.PlayerList.Items == nil {
+			break
+		}
+
+		return e.complexity.PlayerList.Items(childComplexity), true
+
+	case "PlayerList.total":
+		if e.complexity.PlayerList.Total == nil {
+			break
+		}
+
+		return e.complexity.PlayerList.Total(childComplexity), true
+
 	case "PlayerNameChange.changedOn":
 		if e.complexity.PlayerNameChange.ChangedOn == nil {
 			break
@@ -1483,20 +1497,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.PlayerNameChange.OldName(childComplexity), true
-
-	case "PlayersList.items":
-		if e.complexity.PlayersList.Items == nil {
-			break
-		}
-
-		return e.complexity.PlayersList.Items(childComplexity), true
-
-	case "PlayersList.total":
-		if e.complexity.PlayersList.Total == nil {
-			break
-		}
-
-		return e.complexity.PlayersList.Total(childComplexity), true
 
 	case "Query.dailyPlayerStats":
 		if e.complexity.Query.DailyPlayerStats == nil {
@@ -2554,6 +2554,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ServerConfigWin.Check(childComplexity), true
 
+	case "ServerList.items":
+		if e.complexity.ServerList.Items == nil {
+			break
+		}
+
+		return e.complexity.ServerList.Items(childComplexity), true
+
+	case "ServerList.total":
+		if e.complexity.ServerList.Total == nil {
+			break
+		}
+
+		return e.complexity.ServerList.Total(childComplexity), true
+
 	case "ServerStats.items":
 		if e.complexity.ServerStats.Items == nil {
 			break
@@ -2644,20 +2658,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.ServerStatsRecord.Villages(childComplexity), true
-
-	case "ServersList.items":
-		if e.complexity.ServersList.Items == nil {
-			break
-		}
-
-		return e.complexity.ServersList.Items(childComplexity), true
-
-	case "ServersList.total":
-		if e.complexity.ServersList.Total == nil {
-			break
-		}
-
-		return e.complexity.ServersList.Total(childComplexity), true
 
 	case "Tribe.allPoints":
 		if e.complexity.Tribe.AllPoints == nil {
@@ -2981,19 +2981,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TribeHistoryRecord.Tribe(childComplexity), true
 
-	case "TribesList.items":
-		if e.complexity.TribesList.Items == nil {
+	case "TribeList.items":
+		if e.complexity.TribeList.Items == nil {
 			break
 		}
 
-		return e.complexity.TribesList.Items(childComplexity), true
+		return e.complexity.TribeList.Items(childComplexity), true
 
-	case "TribesList.total":
-		if e.complexity.TribesList.Total == nil {
+	case "TribeList.total":
+		if e.complexity.TribeList.Total == nil {
 			break
 		}
 
-		return e.complexity.TribesList.Total(childComplexity), true
+		return e.complexity.TribeList.Total(childComplexity), true
 
 	case "Unit.attack":
 		if e.complexity.Unit.Attack == nil {
@@ -3191,19 +3191,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Village.Y(childComplexity), true
 
-	case "VillagesList.items":
-		if e.complexity.VillagesList.Items == nil {
+	case "VillageList.items":
+		if e.complexity.VillageList.Items == nil {
 			break
 		}
 
-		return e.complexity.VillagesList.Items(childComplexity), true
+		return e.complexity.VillageList.Items(childComplexity), true
 
-	case "VillagesList.total":
-		if e.complexity.VillagesList.Total == nil {
+	case "VillageList.total":
+		if e.complexity.VillageList.Total == nil {
 			break
 		}
 
-		return e.complexity.VillagesList.Total(childComplexity), true
+		return e.complexity.VillageList.Total(childComplexity), true
 
 	}
 	return 0, false
@@ -3391,7 +3391,7 @@ extend type Query {
   ennobledAt: Time!
 }
 
-type EnnoblementsList {
+type EnnoblementList {
   items: [Ennoblement!]
   total: Int!
 }
@@ -3422,7 +3422,7 @@ input EnnoblementFilter {
 }
 
 extend type Query {
-  ennoblements(server: String!, filter: EnnoblementFilter): EnnoblementsList!
+  ennoblements(server: String!, filter: EnnoblementFilter): EnnoblementList!
 }
 `, BuiltIn: false},
 	&ast.Source{Name: "schema/lang_version.graphql", Input: `enum LanguageTag {
@@ -3452,13 +3452,13 @@ input LangVersionFilter {
   sort: String
 }
 
-type LangVersionsList {
+type LangVersionList {
   items: [LangVersion!]
   total: Int!
 }
 
 extend type Query {
-  langVersions(filter: LangVersionFilter): LangVersionsList!
+  langVersions(filter: LangVersionFilter): LangVersionList!
   langVersion(tag: LanguageTag!): LangVersion
 }
 `, BuiltIn: false},
@@ -3508,7 +3508,7 @@ type Player {
   nameChanges: [PlayerNameChange!]! @goField(forceResolver: true)
 }
 
-type PlayersList {
+type PlayerList {
   items: [Player!]
   total: Int!
 }
@@ -3617,7 +3617,7 @@ input PlayerFilter {
 }
 
 extend type Query {
-  players(server: String!, filter: PlayerFilter): PlayersList!
+  players(server: String!, filter: PlayerFilter): PlayerList!
   player(server: String!, id: Int!): Player
 }
 `, BuiltIn: false},
@@ -3687,7 +3687,7 @@ type Server {
   statsUpdatedAt: Time!
 }
 
-type ServersList {
+type ServerList {
   items: [Server!]
   total: Int!
 }
@@ -3710,7 +3710,7 @@ input ServerFilter {
 }
 
 extend type Query {
-  servers(filter: ServerFilter): ServersList!
+  servers(filter: ServerFilter): ServerList!
   server(key: String!): Server
 }
 `, BuiltIn: false},
@@ -3926,7 +3926,7 @@ extend type Query {
   deletedAt: Time
 }
 
-type TribesList {
+type TribeList {
   items: [Tribe!]
   total: Int!
 }
@@ -4037,7 +4037,7 @@ input TribeFilter {
 }
 
 extend type Query {
-  tribes(server: String!, filter: TribeFilter): TribesList!
+  tribes(server: String!, filter: TribeFilter): TribeList!
   tribe(server: String!, id: Int!): Tribe
 }
 `, BuiltIn: false},
@@ -4156,7 +4156,7 @@ type UnitConfig {
   player: Player @goField(forceResolver: true)
 }
 
-type VillagesList {
+type VillageList {
   items: [Village!]
   total: Int!
 }
@@ -4200,7 +4200,7 @@ input VillageFilter {
 }
 
 extend type Query {
-  villages(server: String!, filter: VillageFilter): VillagesList!
+  villages(server: String!, filter: VillageFilter): VillageList!
   village(server: String!, id: Int!): Village
 }
 `, BuiltIn: false},
@@ -6834,7 +6834,7 @@ func (ec *executionContext) _Ennoblement_ennobledAt(ctx context.Context, field g
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _EnnoblementsList_items(ctx context.Context, field graphql.CollectedField, obj *EnnoblementsList) (ret graphql.Marshaler) {
+func (ec *executionContext) _EnnoblementList_items(ctx context.Context, field graphql.CollectedField, obj *EnnoblementList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6842,7 +6842,7 @@ func (ec *executionContext) _EnnoblementsList_items(ctx context.Context, field g
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "EnnoblementsList",
+		Object:   "EnnoblementList",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -6865,7 +6865,7 @@ func (ec *executionContext) _EnnoblementsList_items(ctx context.Context, field g
 	return ec.marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _EnnoblementsList_total(ctx context.Context, field graphql.CollectedField, obj *EnnoblementsList) (ret graphql.Marshaler) {
+func (ec *executionContext) _EnnoblementList_total(ctx context.Context, field graphql.CollectedField, obj *EnnoblementList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6873,7 +6873,7 @@ func (ec *executionContext) _EnnoblementsList_total(ctx context.Context, field g
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "EnnoblementsList",
+		Object:   "EnnoblementList",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -7035,7 +7035,7 @@ func (ec *executionContext) _LangVersion_timezone(ctx context.Context, field gra
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _LangVersionsList_items(ctx context.Context, field graphql.CollectedField, obj *LangVersionsList) (ret graphql.Marshaler) {
+func (ec *executionContext) _LangVersionList_items(ctx context.Context, field graphql.CollectedField, obj *LangVersionList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7043,7 +7043,7 @@ func (ec *executionContext) _LangVersionsList_items(ctx context.Context, field g
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "LangVersionsList",
+		Object:   "LangVersionList",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -7066,7 +7066,7 @@ func (ec *executionContext) _LangVersionsList_items(ctx context.Context, field g
 	return ec.marshalOLangVersion2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLangVersionᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _LangVersionsList_total(ctx context.Context, field graphql.CollectedField, obj *LangVersionsList) (ret graphql.Marshaler) {
+func (ec *executionContext) _LangVersionList_total(ctx context.Context, field graphql.CollectedField, obj *LangVersionList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7074,7 +7074,7 @@ func (ec *executionContext) _LangVersionsList_total(ctx context.Context, field g
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "LangVersionsList",
+		Object:   "LangVersionList",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -8640,6 +8640,71 @@ func (ec *executionContext) _PlayerHistoryRecord_createdAt(ctx context.Context, 
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _PlayerList_items(ctx context.Context, field graphql.CollectedField, obj *PlayerList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerList",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Player)
+	fc.Result = res
+	return ec.marshalOPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _PlayerList_total(ctx context.Context, field graphql.CollectedField, obj *PlayerList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "PlayerList",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _PlayerNameChange_oldName(ctx context.Context, field graphql.CollectedField, obj *models.PlayerNameChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -8740,71 +8805,6 @@ func (ec *executionContext) _PlayerNameChange_changedOn(ctx context.Context, fie
 	res := resTmp.(time.Time)
 	fc.Result = res
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _PlayersList_items(ctx context.Context, field graphql.CollectedField, obj *PlayersList) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "PlayersList",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Items, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*models.Player)
-	fc.Result = res
-	return ec.marshalOPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _PlayersList_total(ctx context.Context, field graphql.CollectedField, obj *PlayersList) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "PlayersList",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Total, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_dailyPlayerStats(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -8925,9 +8925,9 @@ func (ec *executionContext) _Query_ennoblements(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*EnnoblementsList)
+	res := resTmp.(*EnnoblementList)
 	fc.Result = res
-	return ec.marshalNEnnoblementsList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementsList(ctx, field.Selections, res)
+	return ec.marshalNEnnoblementList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_langVersions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -8966,9 +8966,9 @@ func (ec *executionContext) _Query_langVersions(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*LangVersionsList)
+	res := resTmp.(*LangVersionList)
 	fc.Result = res
-	return ec.marshalNLangVersionsList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐLangVersionsList(ctx, field.Selections, res)
+	return ec.marshalNLangVersionList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐLangVersionList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_langVersion(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -9083,9 +9083,9 @@ func (ec *executionContext) _Query_players(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*PlayersList)
+	res := resTmp.(*PlayerList)
 	fc.Result = res
-	return ec.marshalNPlayersList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayersList(ctx, field.Selections, res)
+	return ec.marshalNPlayerList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayerList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_player(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -9203,9 +9203,9 @@ func (ec *executionContext) _Query_servers(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*ServersList)
+	res := resTmp.(*ServerList)
 	fc.Result = res
-	return ec.marshalNServersList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServersList(ctx, field.Selections, res)
+	return ec.marshalNServerList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_server(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -9323,9 +9323,9 @@ func (ec *executionContext) _Query_tribes(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*TribesList)
+	res := resTmp.(*TribeList)
 	fc.Result = res
-	return ec.marshalNTribesList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribesList(ctx, field.Selections, res)
+	return ec.marshalNTribeList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_tribe(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -9484,9 +9484,9 @@ func (ec *executionContext) _Query_villages(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*VillagesList)
+	res := resTmp.(*VillageList)
 	fc.Result = res
-	return ec.marshalNVillagesList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐVillagesList(ctx, field.Selections, res)
+	return ec.marshalNVillageList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐVillageList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_village(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -13673,6 +13673,71 @@ func (ec *executionContext) _ServerConfigWin_check(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _ServerList_items(ctx context.Context, field graphql.CollectedField, obj *ServerList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerList",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.Server)
+	fc.Result = res
+	return ec.marshalOServer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ServerList_total(ctx context.Context, field graphql.CollectedField, obj *ServerList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "ServerList",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _ServerStats_items(ctx context.Context, field graphql.CollectedField, obj *ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -14110,71 +14175,6 @@ func (ec *executionContext) _ServerStatsRecord_createdAt(ctx context.Context, fi
 	res := resTmp.(time.Time)
 	fc.Result = res
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ServersList_items(ctx context.Context, field graphql.CollectedField, obj *ServersList) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ServersList",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Items, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*models.Server)
-	fc.Result = res
-	return ec.marshalOServer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _ServersList_total(ctx context.Context, field graphql.CollectedField, obj *ServersList) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:   "ServersList",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Total, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Tribe_id(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
@@ -15720,7 +15720,7 @@ func (ec *executionContext) _TribeHistoryRecord_createdAt(ctx context.Context, f
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribesList_items(ctx context.Context, field graphql.CollectedField, obj *TribesList) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeList_items(ctx context.Context, field graphql.CollectedField, obj *TribeList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15728,7 +15728,7 @@ func (ec *executionContext) _TribesList_items(ctx context.Context, field graphql
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "TribesList",
+		Object:   "TribeList",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -15751,7 +15751,7 @@ func (ec *executionContext) _TribesList_items(ctx context.Context, field graphql
 	return ec.marshalOTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribesList_total(ctx context.Context, field graphql.CollectedField, obj *TribesList) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeList_total(ctx context.Context, field graphql.CollectedField, obj *TribeList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15759,7 +15759,7 @@ func (ec *executionContext) _TribesList_total(ctx context.Context, field graphql
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "TribesList",
+		Object:   "TribeList",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -16734,7 +16734,7 @@ func (ec *executionContext) _Village_player(ctx context.Context, field graphql.C
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _VillagesList_items(ctx context.Context, field graphql.CollectedField, obj *VillagesList) (ret graphql.Marshaler) {
+func (ec *executionContext) _VillageList_items(ctx context.Context, field graphql.CollectedField, obj *VillageList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16742,7 +16742,7 @@ func (ec *executionContext) _VillagesList_items(ctx context.Context, field graph
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "VillagesList",
+		Object:   "VillageList",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -16765,7 +16765,7 @@ func (ec *executionContext) _VillagesList_items(ctx context.Context, field graph
 	return ec.marshalOVillage2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillageᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _VillagesList_total(ctx context.Context, field graphql.CollectedField, obj *VillagesList) (ret graphql.Marshaler) {
+func (ec *executionContext) _VillageList_total(ctx context.Context, field graphql.CollectedField, obj *VillageList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16773,7 +16773,7 @@ func (ec *executionContext) _VillagesList_total(ctx context.Context, field graph
 		}
 	}()
 	fc := &graphql.FieldContext{
-		Object:   "VillagesList",
+		Object:   "VillageList",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -20296,21 +20296,21 @@ func (ec *executionContext) _Ennoblement(ctx context.Context, sel ast.SelectionS
 	return out
 }
 
-var ennoblementsListImplementors = []string{"EnnoblementsList"}
+var ennoblementListImplementors = []string{"EnnoblementList"}
 
-func (ec *executionContext) _EnnoblementsList(ctx context.Context, sel ast.SelectionSet, obj *EnnoblementsList) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, ennoblementsListImplementors)
+func (ec *executionContext) _EnnoblementList(ctx context.Context, sel ast.SelectionSet, obj *EnnoblementList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, ennoblementListImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	var invalids uint32
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("EnnoblementsList")
+			out.Values[i] = graphql.MarshalString("EnnoblementList")
 		case "items":
-			out.Values[i] = ec._EnnoblementsList_items(ctx, field, obj)
+			out.Values[i] = ec._EnnoblementList_items(ctx, field, obj)
 		case "total":
-			out.Values[i] = ec._EnnoblementsList_total(ctx, field, obj)
+			out.Values[i] = ec._EnnoblementList_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -20367,21 +20367,21 @@ func (ec *executionContext) _LangVersion(ctx context.Context, sel ast.SelectionS
 	return out
 }
 
-var langVersionsListImplementors = []string{"LangVersionsList"}
+var langVersionListImplementors = []string{"LangVersionList"}
 
-func (ec *executionContext) _LangVersionsList(ctx context.Context, sel ast.SelectionSet, obj *LangVersionsList) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, langVersionsListImplementors)
+func (ec *executionContext) _LangVersionList(ctx context.Context, sel ast.SelectionSet, obj *LangVersionList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, langVersionListImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	var invalids uint32
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("LangVersionsList")
+			out.Values[i] = graphql.MarshalString("LangVersionList")
 		case "items":
-			out.Values[i] = ec._LangVersionsList_items(ctx, field, obj)
+			out.Values[i] = ec._LangVersionList_items(ctx, field, obj)
 		case "total":
-			out.Values[i] = ec._LangVersionsList_total(ctx, field, obj)
+			out.Values[i] = ec._LangVersionList_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -20762,6 +20762,35 @@ func (ec *executionContext) _PlayerHistoryRecord(ctx context.Context, sel ast.Se
 	return out
 }
 
+var playerListImplementors = []string{"PlayerList"}
+
+func (ec *executionContext) _PlayerList(ctx context.Context, sel ast.SelectionSet, obj *PlayerList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, playerListImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("PlayerList")
+		case "items":
+			out.Values[i] = ec._PlayerList_items(ctx, field, obj)
+		case "total":
+			out.Values[i] = ec._PlayerList_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var playerNameChangeImplementors = []string{"PlayerNameChange"}
 
 func (ec *executionContext) _PlayerNameChange(ctx context.Context, sel ast.SelectionSet, obj *models.PlayerNameChange) graphql.Marshaler {
@@ -20785,35 +20814,6 @@ func (ec *executionContext) _PlayerNameChange(ctx context.Context, sel ast.Selec
 			}
 		case "changedOn":
 			out.Values[i] = ec._PlayerNameChange_changedOn(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalids > 0 {
-		return graphql.Null
-	}
-	return out
-}
-
-var playersListImplementors = []string{"PlayersList"}
-
-func (ec *executionContext) _PlayersList(ctx context.Context, sel ast.SelectionSet, obj *PlayersList) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, playersListImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	var invalids uint32
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("PlayersList")
-		case "items":
-			out.Values[i] = ec._PlayersList_items(ctx, field, obj)
-		case "total":
-			out.Values[i] = ec._PlayersList_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -22028,6 +22028,35 @@ func (ec *executionContext) _ServerConfigWin(ctx context.Context, sel ast.Select
 	return out
 }
 
+var serverListImplementors = []string{"ServerList"}
+
+func (ec *executionContext) _ServerList(ctx context.Context, sel ast.SelectionSet, obj *ServerList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, serverListImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ServerList")
+		case "items":
+			out.Values[i] = ec._ServerList_items(ctx, field, obj)
+		case "total":
+			out.Values[i] = ec._ServerList_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var serverStatsImplementors = []string{"ServerStats"}
 
 func (ec *executionContext) _ServerStats(ctx context.Context, sel ast.SelectionSet, obj *ServerStats) graphql.Marshaler {
@@ -22120,35 +22149,6 @@ func (ec *executionContext) _ServerStatsRecord(ctx context.Context, sel ast.Sele
 			}
 		case "createdAt":
 			out.Values[i] = ec._ServerStatsRecord_createdAt(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalids > 0 {
-		return graphql.Null
-	}
-	return out
-}
-
-var serversListImplementors = []string{"ServersList"}
-
-func (ec *executionContext) _ServersList(ctx context.Context, sel ast.SelectionSet, obj *ServersList) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, serversListImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	var invalids uint32
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("ServersList")
-		case "items":
-			out.Values[i] = ec._ServersList_items(ctx, field, obj)
-		case "total":
-			out.Values[i] = ec._ServersList_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -22518,21 +22518,21 @@ func (ec *executionContext) _TribeHistoryRecord(ctx context.Context, sel ast.Sel
 	return out
 }
 
-var tribesListImplementors = []string{"TribesList"}
+var tribeListImplementors = []string{"TribeList"}
 
-func (ec *executionContext) _TribesList(ctx context.Context, sel ast.SelectionSet, obj *TribesList) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, tribesListImplementors)
+func (ec *executionContext) _TribeList(ctx context.Context, sel ast.SelectionSet, obj *TribeList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tribeListImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	var invalids uint32
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("TribesList")
+			out.Values[i] = graphql.MarshalString("TribeList")
 		case "items":
-			out.Values[i] = ec._TribesList_items(ctx, field, obj)
+			out.Values[i] = ec._TribeList_items(ctx, field, obj)
 		case "total":
-			out.Values[i] = ec._TribesList_total(ctx, field, obj)
+			out.Values[i] = ec._TribeList_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -22759,21 +22759,21 @@ func (ec *executionContext) _Village(ctx context.Context, sel ast.SelectionSet, 
 	return out
 }
 
-var villagesListImplementors = []string{"VillagesList"}
+var villageListImplementors = []string{"VillageList"}
 
-func (ec *executionContext) _VillagesList(ctx context.Context, sel ast.SelectionSet, obj *VillagesList) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, villagesListImplementors)
+func (ec *executionContext) _VillageList(ctx context.Context, sel ast.SelectionSet, obj *VillageList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, villageListImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	var invalids uint32
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("VillagesList")
+			out.Values[i] = graphql.MarshalString("VillageList")
 		case "items":
-			out.Values[i] = ec._VillagesList_items(ctx, field, obj)
+			out.Values[i] = ec._VillageList_items(ctx, field, obj)
 		case "total":
-			out.Values[i] = ec._VillagesList_total(ctx, field, obj)
+			out.Values[i] = ec._VillageList_total(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -23143,18 +23143,18 @@ func (ec *executionContext) marshalNEnnoblement2ᚖgithubᚗcomᚋtribalwarshelp
 	return ec._Ennoblement(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNEnnoblementsList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementsList(ctx context.Context, sel ast.SelectionSet, v EnnoblementsList) graphql.Marshaler {
-	return ec._EnnoblementsList(ctx, sel, &v)
+func (ec *executionContext) marshalNEnnoblementList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementList(ctx context.Context, sel ast.SelectionSet, v EnnoblementList) graphql.Marshaler {
+	return ec._EnnoblementList(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNEnnoblementsList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementsList(ctx context.Context, sel ast.SelectionSet, v *EnnoblementsList) graphql.Marshaler {
+func (ec *executionContext) marshalNEnnoblementList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementList(ctx context.Context, sel ast.SelectionSet, v *EnnoblementList) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
 		}
 		return graphql.Null
 	}
-	return ec._EnnoblementsList(ctx, sel, v)
+	return ec._EnnoblementList(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNFloat2float64(ctx context.Context, v interface{}) (float64, error) {
@@ -23199,18 +23199,18 @@ func (ec *executionContext) marshalNLangVersion2ᚖgithubᚗcomᚋtribalwarshelp
 	return ec._LangVersion(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNLangVersionsList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐLangVersionsList(ctx context.Context, sel ast.SelectionSet, v LangVersionsList) graphql.Marshaler {
-	return ec._LangVersionsList(ctx, sel, &v)
+func (ec *executionContext) marshalNLangVersionList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐLangVersionList(ctx context.Context, sel ast.SelectionSet, v LangVersionList) graphql.Marshaler {
+	return ec._LangVersionList(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNLangVersionsList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐLangVersionsList(ctx context.Context, sel ast.SelectionSet, v *LangVersionsList) graphql.Marshaler {
+func (ec *executionContext) marshalNLangVersionList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐLangVersionList(ctx context.Context, sel ast.SelectionSet, v *LangVersionList) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
 		}
 		return graphql.Null
 	}
-	return ec._LangVersionsList(ctx, sel, v)
+	return ec._LangVersionList(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNLanguageTag2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLanguageTag(ctx context.Context, v interface{}) (models.LanguageTag, error) {
@@ -23278,6 +23278,20 @@ func (ec *executionContext) marshalNPlayerHistoryRecord2ᚖgithubᚗcomᚋtribal
 	return ec._PlayerHistoryRecord(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNPlayerList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayerList(ctx context.Context, sel ast.SelectionSet, v PlayerList) graphql.Marshaler {
+	return ec._PlayerList(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNPlayerList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayerList(ctx context.Context, sel ast.SelectionSet, v *PlayerList) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._PlayerList(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNPlayerNameChange2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerNameChange(ctx context.Context, sel ast.SelectionSet, v models.PlayerNameChange) graphql.Marshaler {
 	return ec._PlayerNameChange(ctx, sel, &v)
 }
@@ -23327,20 +23341,6 @@ func (ec *executionContext) marshalNPlayerNameChange2ᚖgithubᚗcomᚋtribalwar
 		return graphql.Null
 	}
 	return ec._PlayerNameChange(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNPlayersList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayersList(ctx context.Context, sel ast.SelectionSet, v PlayersList) graphql.Marshaler {
-	return ec._PlayersList(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNPlayersList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐPlayersList(ctx context.Context, sel ast.SelectionSet, v *PlayersList) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._PlayersList(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNServer2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServer(ctx context.Context, sel ast.SelectionSet, v models.Server) graphql.Marshaler {
@@ -23413,6 +23413,20 @@ func (ec *executionContext) marshalNServerConfigWin2githubᚗcomᚋtribalwarshel
 	return ec._ServerConfigWin(ctx, sel, &v)
 }
 
+func (ec *executionContext) marshalNServerList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerList(ctx context.Context, sel ast.SelectionSet, v ServerList) graphql.Marshaler {
+	return ec._ServerList(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNServerList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerList(ctx context.Context, sel ast.SelectionSet, v *ServerList) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._ServerList(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNServerStats2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServerStats(ctx context.Context, sel ast.SelectionSet, v ServerStats) graphql.Marshaler {
 	return ec._ServerStats(ctx, sel, &v)
 }
@@ -23448,20 +23462,6 @@ func (ec *executionContext) unmarshalNServerStatus2githubᚗcomᚋtribalwarshelp
 
 func (ec *executionContext) marshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx context.Context, sel ast.SelectionSet, v models.ServerStatus) graphql.Marshaler {
 	return v
-}
-
-func (ec *executionContext) marshalNServersList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServersList(ctx context.Context, sel ast.SelectionSet, v ServersList) graphql.Marshaler {
-	return ec._ServersList(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNServersList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐServersList(ctx context.Context, sel ast.SelectionSet, v *ServersList) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._ServersList(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
@@ -23591,18 +23591,18 @@ func (ec *executionContext) marshalNTribeHistoryRecord2ᚖgithubᚗcomᚋtribalw
 	return ec._TribeHistoryRecord(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNTribesList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribesList(ctx context.Context, sel ast.SelectionSet, v TribesList) graphql.Marshaler {
-	return ec._TribesList(ctx, sel, &v)
+func (ec *executionContext) marshalNTribeList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeList(ctx context.Context, sel ast.SelectionSet, v TribeList) graphql.Marshaler {
+	return ec._TribeList(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNTribesList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribesList(ctx context.Context, sel ast.SelectionSet, v *TribesList) graphql.Marshaler {
+func (ec *executionContext) marshalNTribeList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeList(ctx context.Context, sel ast.SelectionSet, v *TribeList) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
 		}
 		return graphql.Null
 	}
-	return ec._TribesList(ctx, sel, v)
+	return ec._TribeList(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx context.Context, sel ast.SelectionSet, v models.Unit) graphql.Marshaler {
@@ -23627,18 +23627,18 @@ func (ec *executionContext) marshalNVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋs
 	return ec._Village(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNVillagesList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐVillagesList(ctx context.Context, sel ast.SelectionSet, v VillagesList) graphql.Marshaler {
-	return ec._VillagesList(ctx, sel, &v)
+func (ec *executionContext) marshalNVillageList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐVillageList(ctx context.Context, sel ast.SelectionSet, v VillageList) graphql.Marshaler {
+	return ec._VillageList(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNVillagesList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐVillagesList(ctx context.Context, sel ast.SelectionSet, v *VillagesList) graphql.Marshaler {
+func (ec *executionContext) marshalNVillageList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐVillageList(ctx context.Context, sel ast.SelectionSet, v *VillageList) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
 		}
 		return graphql.Null
 	}
-	return ec._VillagesList(ctx, sel, v)
+	return ec._VillageList(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {

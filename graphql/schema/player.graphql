@@ -33,7 +33,7 @@ type Player {
   nameChanges: [PlayerNameChange!]! @goField(forceResolver: true)
 }
 
-type PlayersList {
+type PlayerList {
   items: [Player!]
   total: Int!
 }
@@ -142,6 +142,6 @@ input PlayerFilter {
 }
 
 extend type Query {
-  players(server: String!, filter: PlayerFilter): PlayersList!
+  players(server: String!, filter: PlayerFilter): PlayerList!
   player(server: String!, id: Int!): Player
 }
