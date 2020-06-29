@@ -9,7 +9,7 @@ type ServerStatsRecord {
   barbarianVillages: Int!
   playerVillages: Int!
   villages: Int!
-  createdAt: Time!
+  createDate: Time!
 }
 
 type ServerStats {
@@ -18,11 +18,11 @@ type ServerStats {
 }
 
 input ServerStatsFilter {
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int

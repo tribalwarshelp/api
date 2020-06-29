@@ -1,7 +1,7 @@
 type PlayerNameChange {
   oldName: String!
   newName: String!
-  changedOn: Time!
+  changeDate: Time!
 }
 
 type Player {

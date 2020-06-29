@@ -11,7 +11,7 @@ type DailyPlayerStatsRecord {
   scoreSup: Int!
   rankTotal: Int!
   scoreTotal: Int!
-  createdAt: Time!
+  createDate: Time!
 }
 
 type DailyPlayerStats {
@@ -23,11 +23,11 @@ input DailyPlayerStatsFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
 
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int

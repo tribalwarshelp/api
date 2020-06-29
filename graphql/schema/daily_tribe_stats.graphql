@@ -12,7 +12,7 @@ type DailyTribeStatsRecord {
   rankTotal: Int!
   scoreTotal: Int!
   dominance: Float!
-  createdAt: Time!
+  createDate: Time!
 }
 
 type DailyTribeStats {
@@ -24,11 +24,11 @@ input DailyTribeStatsFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
 
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int

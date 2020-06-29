@@ -94,7 +94,7 @@ type ComplexityRoot struct {
 	}
 
 	DailyPlayerStatsRecord struct {
-		CreatedAt  func(childComplexity int) int
+		CreateDate func(childComplexity int) int
 		Player     func(childComplexity int) int
 		Points     func(childComplexity int) int
 		Rank       func(childComplexity int) int
@@ -116,7 +116,7 @@ type ComplexityRoot struct {
 
 	DailyTribeStatsRecord struct {
 		AllPoints  func(childComplexity int) int
-		CreatedAt  func(childComplexity int) int
+		CreateDate func(childComplexity int) int
 		Dominance  func(childComplexity int) int
 		Members    func(childComplexity int) int
 		Points     func(childComplexity int) int
@@ -199,7 +199,7 @@ type ComplexityRoot struct {
 	}
 
 	PlayerHistoryRecord struct {
-		CreatedAt     func(childComplexity int) int
+		CreateDate    func(childComplexity int) int
 		Player        func(childComplexity int) int
 		Points        func(childComplexity int) int
 		Rank          func(childComplexity int) int
@@ -221,9 +221,9 @@ type ComplexityRoot struct {
 	}
 
 	PlayerNameChange struct {
-		ChangedOn func(childComplexity int) int
-		NewName   func(childComplexity int) int
-		OldName   func(childComplexity int) int
+		ChangeDate func(childComplexity int) int
+		NewName    func(childComplexity int) int
+		OldName    func(childComplexity int) int
 	}
 
 	Query struct {
@@ -427,7 +427,7 @@ type ComplexityRoot struct {
 		ActiveTribes      func(childComplexity int) int
 		BarbarianVillages func(childComplexity int) int
 		BonusVillages     func(childComplexity int) int
-		CreatedAt         func(childComplexity int) int
+		CreateDate        func(childComplexity int) int
 		InactivePlayers   func(childComplexity int) int
 		InactiveTribes    func(childComplexity int) int
 		PlayerVillages    func(childComplexity int) int
@@ -482,7 +482,7 @@ type ComplexityRoot struct {
 
 	TribeHistoryRecord struct {
 		AllPoints     func(childComplexity int) int
-		CreatedAt     func(childComplexity int) int
+		CreateDate    func(childComplexity int) int
 		Dominance     func(childComplexity int) int
 		Points        func(childComplexity int) int
 		Rank          func(childComplexity int) int
@@ -840,12 +840,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DailyPlayerStats.Total(childComplexity), true
 
-	case "DailyPlayerStatsRecord.createdAt":
-		if e.complexity.DailyPlayerStatsRecord.CreatedAt == nil {
+	case "DailyPlayerStatsRecord.createDate":
+		if e.complexity.DailyPlayerStatsRecord.CreateDate == nil {
 			break
 		}
 
-		return e.complexity.DailyPlayerStatsRecord.CreatedAt(childComplexity), true
+		return e.complexity.DailyPlayerStatsRecord.CreateDate(childComplexity), true
 
 	case "DailyPlayerStatsRecord.player":
 		if e.complexity.DailyPlayerStatsRecord.Player == nil {
@@ -952,12 +952,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DailyTribeStatsRecord.AllPoints(childComplexity), true
 
-	case "DailyTribeStatsRecord.createdAt":
-		if e.complexity.DailyTribeStatsRecord.CreatedAt == nil {
+	case "DailyTribeStatsRecord.createDate":
+		if e.complexity.DailyTribeStatsRecord.CreateDate == nil {
 			break
 		}
 
-		return e.complexity.DailyTribeStatsRecord.CreatedAt(childComplexity), true
+		return e.complexity.DailyTribeStatsRecord.CreateDate(childComplexity), true
 
 	case "DailyTribeStatsRecord.dominance":
 		if e.complexity.DailyTribeStatsRecord.Dominance == nil {
@@ -1365,12 +1365,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PlayerHistory.Total(childComplexity), true
 
-	case "PlayerHistoryRecord.createdAt":
-		if e.complexity.PlayerHistoryRecord.CreatedAt == nil {
+	case "PlayerHistoryRecord.createDate":
+		if e.complexity.PlayerHistoryRecord.CreateDate == nil {
 			break
 		}
 
-		return e.complexity.PlayerHistoryRecord.CreatedAt(childComplexity), true
+		return e.complexity.PlayerHistoryRecord.CreateDate(childComplexity), true
 
 	case "PlayerHistoryRecord.player":
 		if e.complexity.PlayerHistoryRecord.Player == nil {
@@ -1477,12 +1477,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PlayerList.Total(childComplexity), true
 
-	case "PlayerNameChange.changedOn":
-		if e.complexity.PlayerNameChange.ChangedOn == nil {
+	case "PlayerNameChange.changeDate":
+		if e.complexity.PlayerNameChange.ChangeDate == nil {
 			break
 		}
 
-		return e.complexity.PlayerNameChange.ChangedOn(childComplexity), true
+		return e.complexity.PlayerNameChange.ChangeDate(childComplexity), true
 
 	case "PlayerNameChange.newName":
 		if e.complexity.PlayerNameChange.NewName == nil {
@@ -2610,12 +2610,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ServerStatsRecord.BonusVillages(childComplexity), true
 
-	case "ServerStatsRecord.createdAt":
-		if e.complexity.ServerStatsRecord.CreatedAt == nil {
+	case "ServerStatsRecord.createDate":
+		if e.complexity.ServerStatsRecord.CreateDate == nil {
 			break
 		}
 
-		return e.complexity.ServerStatsRecord.CreatedAt(childComplexity), true
+		return e.complexity.ServerStatsRecord.CreateDate(childComplexity), true
 
 	case "ServerStatsRecord.inactivePlayers":
 		if e.complexity.ServerStatsRecord.InactivePlayers == nil {
@@ -2890,12 +2890,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TribeHistoryRecord.AllPoints(childComplexity), true
 
-	case "TribeHistoryRecord.createdAt":
-		if e.complexity.TribeHistoryRecord.CreatedAt == nil {
+	case "TribeHistoryRecord.createDate":
+		if e.complexity.TribeHistoryRecord.CreateDate == nil {
 			break
 		}
 
-		return e.complexity.TribeHistoryRecord.CreatedAt(childComplexity), true
+		return e.complexity.TribeHistoryRecord.CreateDate(childComplexity), true
 
 	case "TribeHistoryRecord.dominance":
 		if e.complexity.TribeHistoryRecord.Dominance == nil {
@@ -3303,7 +3303,7 @@ type BuildingConfig {
   scoreSup: Int!
   rankTotal: Int!
   scoreTotal: Int!
-  createdAt: Time!
+  createDate: Time!
 }
 
 type DailyPlayerStats {
@@ -3315,11 +3315,11 @@ input DailyPlayerStatsFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
 
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int
@@ -3347,7 +3347,7 @@ extend type Query {
   rankTotal: Int!
   scoreTotal: Int!
   dominance: Float!
-  createdAt: Time!
+  createDate: Time!
 }
 
 type DailyTribeStats {
@@ -3359,11 +3359,11 @@ input DailyTribeStatsFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
 
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int
@@ -3476,7 +3476,7 @@ extend type Query {
 	&ast.Source{Name: "schema/player.graphql", Input: `type PlayerNameChange {
   oldName: String!
   newName: String!
-  changedOn: Time!
+  changeDate: Time!
 }
 
 type Player {
@@ -3635,7 +3635,7 @@ extend type Query {
   rankTotal: Int!
   scoreTotal: Int!
   tribe: Tribe @goField(forceResolver: true)
-  createdAt: Time!
+  createDate: Time!
 }
 
 type PlayerHistory {
@@ -3647,11 +3647,11 @@ input PlayerHistoryFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
 
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int
@@ -3875,7 +3875,7 @@ type ServerConfig {
   barbarianVillages: Int!
   playerVillages: Int!
   villages: Int!
-  createdAt: Time!
+  createDate: Time!
 }
 
 type ServerStats {
@@ -3884,11 +3884,11 @@ type ServerStats {
 }
 
 input ServerStatsFilter {
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int
@@ -4092,7 +4092,7 @@ extend type Query {
   scoreDef: Int!
   rankTotal: Int!
   scoreTotal: Int!
-  createdAt: Time!
+  createDate: Time!
 }
 
 type TribeHistory {
@@ -4104,11 +4104,11 @@ input TribeHistoryFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
 
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int
@@ -6073,7 +6073,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_scoreTotal(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6090,7 +6090,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_createdAt(ctx context.Contex
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
+		return obj.CreateDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -6611,7 +6611,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_dominance(ctx context.Context
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6628,7 +6628,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_createdAt(ctx context.Context
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
+		return obj.CreateDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8606,7 +8606,7 @@ func (ec *executionContext) _PlayerHistoryRecord_tribe(ctx context.Context, fiel
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8623,7 +8623,7 @@ func (ec *executionContext) _PlayerHistoryRecord_createdAt(ctx context.Context, 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
+		return obj.CreateDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8773,7 +8773,7 @@ func (ec *executionContext) _PlayerNameChange_newName(ctx context.Context, field
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerNameChange_changedOn(ctx context.Context, field graphql.CollectedField, obj *models.PlayerNameChange) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerNameChange_changeDate(ctx context.Context, field graphql.CollectedField, obj *models.PlayerNameChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8790,7 +8790,7 @@ func (ec *executionContext) _PlayerNameChange_changedOn(ctx context.Context, fie
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.ChangedOn, nil
+		return obj.ChangeDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -14143,7 +14143,7 @@ func (ec *executionContext) _ServerStatsRecord_villages(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14160,7 +14160,7 @@ func (ec *executionContext) _ServerStatsRecord_createdAt(ctx context.Context, fi
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
+		return obj.CreateDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -15686,7 +15686,7 @@ func (ec *executionContext) _TribeHistoryRecord_scoreTotal(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15703,7 +15703,7 @@ func (ec *executionContext) _TribeHistoryRecord_createdAt(ctx context.Context, f
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedAt, nil
+		return obj.CreateDate, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -17872,33 +17872,33 @@ func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Con
 			if err != nil {
 				return it, err
 			}
-		case "createdAt":
+		case "createDate":
 			var err error
-			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDate, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGT":
+		case "createDateGT":
 			var err error
-			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGTE":
+		case "createDateGTE":
 			var err error
-			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLT":
+		case "createDateLT":
 			var err error
-			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLTE":
+		case "createDateLTE":
 			var err error
-			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -17944,33 +17944,33 @@ func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Cont
 			if err != nil {
 				return it, err
 			}
-		case "createdAt":
+		case "createDate":
 			var err error
-			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDate, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGT":
+		case "createDateGT":
 			var err error
-			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGTE":
+		case "createDateGTE":
 			var err error
-			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLT":
+		case "createDateLT":
 			var err error
-			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLTE":
+		case "createDateLTE":
 			var err error
-			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -18706,33 +18706,33 @@ func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Contex
 			if err != nil {
 				return it, err
 			}
-		case "createdAt":
+		case "createDate":
 			var err error
-			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDate, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGT":
+		case "createDateGT":
 			var err error
-			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGTE":
+		case "createDateGTE":
 			var err error
-			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLT":
+		case "createDateLT":
 			var err error
-			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLTE":
+		case "createDateLTE":
 			var err error
-			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -18844,33 +18844,33 @@ func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context,
 
 	for k, v := range asMap {
 		switch k {
-		case "createdAt":
+		case "createDate":
 			var err error
-			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDate, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGT":
+		case "createDateGT":
 			var err error
-			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGTE":
+		case "createDateGTE":
 			var err error
-			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLT":
+		case "createDateLT":
 			var err error
-			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLTE":
+		case "createDateLTE":
 			var err error
-			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -19528,33 +19528,33 @@ func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context
 			if err != nil {
 				return it, err
 			}
-		case "createdAt":
+		case "createDate":
 			var err error
-			it.CreatedAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDate, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGT":
+		case "createDateGT":
 			var err error
-			it.CreatedAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtGTE":
+		case "createDateGTE":
 			var err error
-			it.CreatedAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLT":
+		case "createDateLT":
 			var err error
-			it.CreatedAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "createdAtLTE":
+		case "createDateLTE":
 			var err error
-			it.CreatedAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			it.CreateDateLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20071,8 +20071,8 @@ func (ec *executionContext) _DailyPlayerStatsRecord(ctx context.Context, sel ast
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
-		case "createdAt":
-			out.Values[i] = ec._DailyPlayerStatsRecord_createdAt(ctx, field, obj)
+		case "createDate":
+			out.Values[i] = ec._DailyPlayerStatsRecord_createDate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
@@ -20198,8 +20198,8 @@ func (ec *executionContext) _DailyTribeStatsRecord(ctx context.Context, sel ast.
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
-		case "createdAt":
-			out.Values[i] = ec._DailyTribeStatsRecord_createdAt(ctx, field, obj)
+		case "createDate":
+			out.Values[i] = ec._DailyTribeStatsRecord_createDate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
@@ -20746,8 +20746,8 @@ func (ec *executionContext) _PlayerHistoryRecord(ctx context.Context, sel ast.Se
 				res = ec._PlayerHistoryRecord_tribe(ctx, field, obj)
 				return res
 			})
-		case "createdAt":
-			out.Values[i] = ec._PlayerHistoryRecord_createdAt(ctx, field, obj)
+		case "createDate":
+			out.Values[i] = ec._PlayerHistoryRecord_createDate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
@@ -20812,8 +20812,8 @@ func (ec *executionContext) _PlayerNameChange(ctx context.Context, sel ast.Selec
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "changedOn":
-			out.Values[i] = ec._PlayerNameChange_changedOn(ctx, field, obj)
+		case "changeDate":
+			out.Values[i] = ec._PlayerNameChange_changeDate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -22147,8 +22147,8 @@ func (ec *executionContext) _ServerStatsRecord(ctx context.Context, sel ast.Sele
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "createdAt":
-			out.Values[i] = ec._ServerStatsRecord_createdAt(ctx, field, obj)
+		case "createDate":
+			out.Values[i] = ec._ServerStatsRecord_createDate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -22502,8 +22502,8 @@ func (ec *executionContext) _TribeHistoryRecord(ctx context.Context, sel ast.Sel
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
-		case "createdAt":
-			out.Values[i] = ec._TribeHistoryRecord_createdAt(ctx, field, obj)
+		case "createDate":
+			out.Values[i] = ec._TribeHistoryRecord_createDate(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}

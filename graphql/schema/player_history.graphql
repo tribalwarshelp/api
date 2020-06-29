@@ -12,7 +12,7 @@ type PlayerHistoryRecord {
   rankTotal: Int!
   scoreTotal: Int!
   tribe: Tribe @goField(forceResolver: true)
-  createdAt: Time!
+  createDate: Time!
 }
 
 type PlayerHistory {
@@ -24,11 +24,11 @@ input PlayerHistoryFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
 
-  createdAt: Time
-  createdAtGT: Time
-  createdAtGTE: Time
-  createdAtLT: Time
-  createdAtLTE: Time
+  createDate: Time
+  createDateGT: Time
+  createDateGTE: Time
+  createDateLT: Time
+  createDateLTE: Time
 
   offset: Int
   limit: Int
