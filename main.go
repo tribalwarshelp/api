@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	servermaphttpdelivery "github.com/tribalwarshelp/api/servermap/delivery/http"
 
 	"github.com/go-redis/redis/v8"
@@ -113,6 +114,18 @@ func main() {
 	serverUcase := serverucase.New(serverRepo)
 
 	router := gin.Default()
+	if mode.Get() == mode.DevelopmentMode {
+		router.Use(cors.New(cors.Config{
+			AllowOriginFunc: func(string) bool {
+				return true
+			},
+			AllowCredentials: true,
+			ExposeHeaders:    []string{"X-Access-Token", "X-Refresh-Token"},
+			AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"},
+			AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+			AllowWebSockets:  true,
+		}))
+	}
 	rest := router.Group("")
 	servermaphttpdelivery.Attach(servermaphttpdelivery.Config{
 		RouterGroup:   rest,

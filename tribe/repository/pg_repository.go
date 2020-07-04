@@ -36,7 +36,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*
 		}
 
 		if cfg.Filter.Exists != nil {
-			query = query.Where("exist = ?", *cfg.Filter.Exists)
+			query = query.Where("exists = ?", *cfg.Filter.Exists)
 		}
 	}
 
