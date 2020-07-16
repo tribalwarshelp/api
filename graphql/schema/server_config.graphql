@@ -122,7 +122,7 @@ type ServerConfigNight {
   active: Int!
   startHour: Int!
   endHour: Int!
-  defFactor: Int!
+  defFactor: Float!
 }
 
 type ServerConfigWin {

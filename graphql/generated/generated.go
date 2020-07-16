@@ -3838,7 +3838,7 @@ type ServerConfigNight {
   active: Int!
   startHour: Int!
   endHour: Int!
-  defFactor: Int!
+  defFactor: Float!
 }
 
 type ServerConfigWin {
@@ -13056,9 +13056,9 @@ func (ec *executionContext) _ServerConfigNight_defFactor(ctx context.Context, fi
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(float64)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _ServerConfigSitter_allow(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSitter) (ret graphql.Marshaler) {
