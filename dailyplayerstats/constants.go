@@ -1,5 +1,5 @@
 package dailyplayerstats
 
 const (
-	PaginationLimit = 500
+	PaginationLimit = 1000
 )
