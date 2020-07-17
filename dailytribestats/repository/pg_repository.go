@@ -34,6 +34,10 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg dailytribestats.FetchCo
 		if cfg.Filter.Sort != "" {
 			query = query.Order(cfg.Filter.Sort)
 		}
+
+		if cfg.Filter.TribeFilter != nil {
+			query = query.Relation("Tribe._").WhereStruct(cfg.Filter.TribeFilter)
+		}
 	}
 
 	if cfg.Count {

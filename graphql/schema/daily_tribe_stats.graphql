@@ -23,6 +23,7 @@ type DailyTribeStats {
 input DailyTribeStatsFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
+  tribeFilter: TribeFilter
 
   createDate: Time
   createDateGT: Time

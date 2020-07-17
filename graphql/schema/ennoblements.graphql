@@ -12,6 +12,13 @@ type EnnoblementList {
   total: Int!
 }
 
+input EnnoblementFilterOr {
+  newOwnerID: [Int!]
+  newOwnerTribeID: [Int!]
+  oldOwnerID: [Int!]
+  oldOwnerTribeID: [Int!]
+}
+
 input EnnoblementFilter {
   villageID: [Int!]
   villageIDNEQ: [Int!]
@@ -31,6 +38,8 @@ input EnnoblementFilter {
   ennobledAtGTE: Time
   ennobledAtLT: Time
   ennobledAtLTE: Time
+
+  or: EnnoblementFilterOr
 
   offset: Int
   limit: Int

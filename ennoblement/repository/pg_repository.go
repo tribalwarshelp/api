@@ -34,6 +34,8 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg ennoblement.FetchConfig
 		if cfg.Filter.Sort != "" {
 			query = query.Order(cfg.Filter.Sort)
 		}
+
+		query = query.WhereGroup(appendWhereClauseForEnnoblementFilterOr(cfg.Filter.Or))
 	}
 
 	if cfg.Count {

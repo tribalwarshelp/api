@@ -3314,6 +3314,7 @@ type DailyPlayerStats {
 input DailyPlayerStatsFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
+  playerFilter: PlayerFilter
 
   createDate: Time
   createDateGT: Time
@@ -3358,6 +3359,7 @@ type DailyTribeStats {
 input DailyTribeStatsFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
+  tribeFilter: TribeFilter
 
   createDate: Time
   createDateGT: Time
@@ -3396,6 +3398,13 @@ type EnnoblementList {
   total: Int!
 }
 
+input EnnoblementFilterOr {
+  newOwnerID: [Int!]
+  newOwnerTribeID: [Int!]
+  oldOwnerID: [Int!]
+  oldOwnerTribeID: [Int!]
+}
+
 input EnnoblementFilter {
   villageID: [Int!]
   villageIDNEQ: [Int!]
@@ -3415,6 +3424,8 @@ input EnnoblementFilter {
   ennobledAtGTE: Time
   ennobledAtLT: Time
   ennobledAtLTE: Time
+
+  or: EnnoblementFilterOr
 
   offset: Int
   limit: Int
@@ -17872,6 +17883,12 @@ func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Con
 			if err != nil {
 				return it, err
 			}
+		case "playerFilter":
+			var err error
+			it.PlayerFilter, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "createDate":
 			var err error
 			it.CreateDate, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
@@ -17941,6 +17958,12 @@ func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Cont
 		case "tribeIDNEQ":
 			var err error
 			it.TribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "tribeFilter":
+			var err error
+			it.TribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -18094,6 +18117,12 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 			if err != nil {
 				return it, err
 			}
+		case "or":
+			var err error
+			it.Or, err = ec.unmarshalOEnnoblementFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilterOr(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "offset":
 			var err error
 			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
@@ -18109,6 +18138,42 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 		case "sort":
 			var err error
 			it.Sort, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputEnnoblementFilterOr(ctx context.Context, obj interface{}) (models.EnnoblementFilterOr, error) {
+	var it models.EnnoblementFilterOr
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "newOwnerID":
+			var err error
+			it.NewOwnerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newOwnerTribeID":
+			var err error
+			it.NewOwnerTribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldOwnerID":
+			var err error
+			it.OldOwnerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldOwnerTribeID":
+			var err error
+			it.OldOwnerTribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -24043,6 +24108,18 @@ func (ec *executionContext) unmarshalOEnnoblementFilter2ᚖgithubᚗcomᚋtribal
 		return nil, nil
 	}
 	res, err := ec.unmarshalOEnnoblementFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilter(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) unmarshalOEnnoblementFilterOr2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilterOr(ctx context.Context, v interface{}) (models.EnnoblementFilterOr, error) {
+	return ec.unmarshalInputEnnoblementFilterOr(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOEnnoblementFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilterOr(ctx context.Context, v interface{}) (*models.EnnoblementFilterOr, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOEnnoblementFilterOr2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilterOr(ctx, v)
 	return &res, err
 }
 

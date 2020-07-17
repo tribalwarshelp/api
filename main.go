@@ -75,6 +75,7 @@ func main() {
 			log.Fatal("Database disconnecting:", err)
 		}
 	}()
+	// db.AddQueryHook(pgext.DebugHook{})
 
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("REDIS_HOST") + ":" + os.Getenv("REDIS_PORT"),

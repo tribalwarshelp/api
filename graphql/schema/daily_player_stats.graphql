@@ -22,6 +22,7 @@ type DailyPlayerStats {
 input DailyPlayerStatsFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
+  playerFilter: PlayerFilter
 
   createDate: Time
   createDateGT: Time
