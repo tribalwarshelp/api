@@ -25,6 +25,9 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.P
 		filter.Limit = player.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
+	if filter.TribeFilter != nil {
+		filter.TribeFilter.Sort = utils.SanitizeSort(filter.TribeFilter.Sort)
+	}
 	return ucase.repo.Fetch(ctx, player.FetchConfig{
 		Server: server,
 		Filter: filter,

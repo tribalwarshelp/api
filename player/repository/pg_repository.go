@@ -31,17 +31,25 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]
 			Limit(cfg.Filter.Limit).
 			Offset(cfg.Filter.Offset)
 
-		if cfg.Filter.Sort != "" {
-			query = query.Order(cfg.Filter.Sort)
-		}
-
 		if cfg.Filter.Exists != nil {
 			query = query.Where("exists = ?", *cfg.Filter.Exists)
 		}
 
+		order := []string{}
+
+		if cfg.Filter.Sort != "" {
+			order = append(order, cfg.Filter.Sort)
+		}
+
 		if cfg.Filter.TribeFilter != nil {
 			query = query.Relation("Tribe._").WhereStruct(cfg.Filter.TribeFilter)
+
+			if cfg.Filter.TribeFilter.Sort != "" {
+				order = append(order, fmt.Sprintf("tribe.%s", cfg.Filter.TribeFilter.Sort))
+			}
 		}
+
+		query = query.Order(order...)
 	}
 
 	if cfg.Count {

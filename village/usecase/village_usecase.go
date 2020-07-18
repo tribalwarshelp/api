@@ -25,6 +25,12 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.V
 		filter.Limit = village.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
+	if filter.PlayerFilter != nil {
+		filter.PlayerFilter.Sort = utils.SanitizeSort(filter.PlayerFilter.Sort)
+		if filter.PlayerFilter.TribeFilter != nil {
+			filter.PlayerFilter.TribeFilter.Sort = utils.SanitizeSort(filter.PlayerFilter.TribeFilter.Sort)
+		}
+	}
 	return ucase.repo.Fetch(ctx, village.FetchConfig{
 		Server: server,
 		Count:  true,

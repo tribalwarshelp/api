@@ -52,18 +52,31 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([
 			query = query.Where("y < ?", cfg.Filter.YLT)
 		}
 
+		order := []string{}
+
 		if cfg.Filter.Sort != "" {
-			query = query.Order(cfg.Filter.Sort)
+			order = append(order, cfg.Filter.Sort)
 		}
 
 		if cfg.Filter.PlayerFilter != nil {
 			query = query.Relation("Player._").WhereStruct(cfg.Filter.PlayerFilter)
+
+			if cfg.Filter.PlayerFilter.Sort != "" {
+				order = append(order, fmt.Sprintf("player.%s", cfg.Filter.PlayerFilter.Sort))
+			}
+
 			if cfg.Filter.PlayerFilter.TribeFilter != nil {
 				query = query.
 					Join("LEFT JOIN ?SERVER.tribes AS tribe ON tribe.id = player.tribe_id").
 					WhereStruct(cfg.Filter.PlayerFilter.TribeFilter)
+
+				if cfg.Filter.PlayerFilter.TribeFilter.Sort != "" {
+					order = append(order, fmt.Sprintf("tribe.%s", cfg.Filter.PlayerFilter.TribeFilter.Sort))
+				}
 			}
 		}
+
+		query = query.Order(order...)
 	}
 
 	total := 0
