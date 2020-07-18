@@ -7,7 +7,7 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
-func appendWhereClauseForEnnoblementFilterOr(or *models.EnnoblementFilterOr) func(*orm.Query) (*orm.Query, error) {
+func appendEnnoblementFilterOr(or *models.EnnoblementFilterOr) func(*orm.Query) (*orm.Query, error) {
 	return func(q *orm.Query) (*orm.Query, error) {
 		if or != nil {
 			if len(or.NewOwnerID) > 0 {

@@ -10,6 +10,11 @@ type TribeChanges {
   items: [TribeChangeRecord!]
 }
 
+input TribeChangeFilterOr {
+  oldTribeID: [Int!]
+  newTribeID: [Int!]
+}
+
 input TribeChangeFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
@@ -25,6 +30,8 @@ input TribeChangeFilter {
   createdAtGTE: Time
   createdAtLT: Time
   createdAtLTE: Time
+
+  or: TribeChangeFilterOr
 
   offset: Int
   limit: Int

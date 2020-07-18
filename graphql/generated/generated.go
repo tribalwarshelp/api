@@ -4064,6 +4064,11 @@ type TribeChanges {
   items: [TribeChangeRecord!]
 }
 
+input TribeChangeFilterOr {
+  oldTribeID: [Int!]
+  newTribeID: [Int!]
+}
+
 input TribeChangeFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
@@ -4079,6 +4084,8 @@ input TribeChangeFilter {
   createdAtGTE: Time
   createdAtLT: Time
   createdAtLTE: Time
+
+  or: TribeChangeFilterOr
 
   offset: Int
   limit: Int
@@ -19035,6 +19042,12 @@ func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context,
 			if err != nil {
 				return it, err
 			}
+		case "or":
+			var err error
+			it.Or, err = ec.unmarshalOTribeChangeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilterOr(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "offset":
 			var err error
 			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
@@ -19050,6 +19063,30 @@ func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context,
 		case "sort":
 			var err error
 			it.Sort, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputTribeChangeFilterOr(ctx context.Context, obj interface{}) (models.TribeChangeFilterOr, error) {
+	var it models.TribeChangeFilterOr
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "oldTribeID":
+			var err error
+			it.OldTribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newTribeID":
+			var err error
+			it.NewTribeID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -24739,6 +24776,18 @@ func (ec *executionContext) unmarshalOTribeChangeFilter2ᚖgithubᚗcomᚋtribal
 		return nil, nil
 	}
 	res, err := ec.unmarshalOTribeChangeFilter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilter(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) unmarshalOTribeChangeFilterOr2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilterOr(ctx context.Context, v interface{}) (models.TribeChangeFilterOr, error) {
+	return ec.unmarshalInputTribeChangeFilterOr(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOTribeChangeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilterOr(ctx context.Context, v interface{}) (*models.TribeChangeFilterOr, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOTribeChangeFilterOr2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilterOr(ctx, v)
 	return &res, err
 }
 

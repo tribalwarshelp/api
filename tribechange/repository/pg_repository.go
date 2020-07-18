@@ -34,6 +34,10 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg tribechange.FetchConfig
 		if cfg.Filter.Sort != "" {
 			query = query.Order(cfg.Filter.Sort)
 		}
+
+		if cfg.Filter.Or != nil {
+			query = query.WhereGroup(appendTribeChangeFilterOr(cfg.Filter.Or))
+		}
 	}
 
 	if cfg.Count {

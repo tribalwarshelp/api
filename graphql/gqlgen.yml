@@ -96,6 +96,8 @@ models:
     model: github.com/tribalwarshelp/shared/models.TribeChange
   TribeChangeFilter:
     model: github.com/tribalwarshelp/shared/models.TribeChangeFilter
+  TribeChangeFilterOr:
+    model: github.com/tribalwarshelp/shared/models.TribeChangeFilterOr
   DailyPlayerStatsRecord:
     model: github.com/tribalwarshelp/shared/models.DailyPlayerStats
   DailyPlayerStatsFilter:
