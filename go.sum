@@ -189,6 +189,8 @@ github.com/tribalwarshelp/shared v0.0.0-20200622084436-3a768c8bf574 h1:y2EoH6zRK
 github.com/tribalwarshelp/shared v0.0.0-20200622084436-3a768c8bf574/go.mod h1:tf+2yTHasV6jAF3V2deZ9slNoCyBzC0fMdTjI7clf6Y=
 github.com/tribalwarshelp/shared v0.0.0-20200721094728-9ea33a732990 h1:PwMCKm5Wvqq+tP3KvdqxPtxKtKZTaEONCBT5DvpbVrc=
 github.com/tribalwarshelp/shared v0.0.0-20200721094728-9ea33a732990/go.mod h1:tf+2yTHasV6jAF3V2deZ9slNoCyBzC0fMdTjI7clf6Y=
+github.com/tribalwarshelp/shared v0.0.0-20200721124533-776cbb36074b h1:8bgZG6Zi3ROqtvpeUOj3a19mtES88VjeNwkUF0FI+Vs=
+github.com/tribalwarshelp/shared v0.0.0-20200721124533-776cbb36074b/go.mod h1:tf+2yTHasV6jAF3V2deZ9slNoCyBzC0fMdTjI7clf6Y=
 github.com/ugorji/go v1.1.7 h1:/68gy2h+1mWMrwZFeD1kQialdSzAb432dtpeJ42ovdo=
 github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVMw=
 github.com/ugorji/go/codec v1.1.7 h1:2SvQaVZ1ouYrrKKwoSk2pzd4A9evlKJb9oTL+OaLUSs=
