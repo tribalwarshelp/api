@@ -3440,6 +3440,21 @@ extend type Query {
   PL
   EN
   DE
+  UK
+  IT
+  FR
+  US
+  NL
+  ES
+  RO
+  RU
+  GR
+  TR
+  CS
+  CH
+  PT
+  BR
+  HU
 }
 
 type LangVersion {
