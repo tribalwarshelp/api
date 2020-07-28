@@ -8,7 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-pg/pg/v10 v10.0.0-beta.2
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
-	github.com/go-redis/redis/v8 v8.0.0-beta.5
+	github.com/go-redis/redis/v8 v8.0.0-beta.7
 	github.com/joho/godotenv v1.3.0
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -16,7 +16,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/segmentio/encoding v0.1.14 // indirect
 	github.com/tribalwarshelp/map-generator v0.0.0-20200623143352-cc037d744be2
-	github.com/tribalwarshelp/shared v0.0.0-20200721124533-776cbb36074b
+	github.com/tribalwarshelp/shared v0.0.0-20200728103702-87e7e5f1b8fd
 	github.com/vektah/gqlparser/v2 v2.0.1
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
 	google.golang.org/protobuf v1.25.0 // indirect

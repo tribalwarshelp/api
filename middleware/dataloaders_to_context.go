@@ -8,6 +8,7 @@ import (
 
 	"github.com/tribalwarshelp/api/graphql/dataloaders"
 	"github.com/tribalwarshelp/api/server"
+	"github.com/tribalwarshelp/shared/cache/allservers"
 	"github.com/tribalwarshelp/shared/models"
 
 	"github.com/gin-gonic/gin"
@@ -17,18 +18,28 @@ var serverDataLoadersContextKey ContextKey = "serverDataLoaders"
 var langVersionLoadersContextKey ContextKey = "langVersionLoaders"
 var dataloadersContextKey ContextKey = "dataloaders"
 
-func DataLoadersToContext(serverRepo server.Repository, cfg dataloaders.Config) gin.HandlerFunc {
+type DataLoadersToContextConfig struct {
+	ServerRepo      server.Repository
+	AllServersCache allservers.Cache
+}
+
+func DataLoadersToContext(dltcc DataLoadersToContextConfig, cfg dataloaders.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()
 		serverDataLoaders := make(map[string]*dataloaders.ServerDataLoaders)
 		langVersionDataLoaders := make(map[models.LanguageTag]*dataloaders.LangVersionDataLoaders)
-		servers, _, err := serverRepo.Fetch(c.Request.Context(), server.FetchConfig{})
-		if err != nil {
-			c.JSON(http.StatusOK, &gqlerror.Error{
-				Message: err.Error(),
-			})
-			c.Abort()
-			return
+		servers, ok := dltcc.AllServersCache.Get()
+		if !ok {
+			var err error
+			servers, _, err = dltcc.ServerRepo.Fetch(c.Request.Context(), server.FetchConfig{})
+			if err != nil {
+				c.JSON(http.StatusOK, &gqlerror.Error{
+					Message: err.Error(),
+				})
+				c.Abort()
+				return
+			}
+			go dltcc.AllServersCache.Set(servers)
 		}
 		for _, server := range servers {
 			serverDataLoaders[server.Key] = dataloaders.NewServerDataLoaders(server.Key, cfg)
