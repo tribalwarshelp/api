@@ -18,6 +18,7 @@ require (
 	github.com/tribalwarshelp/map-generator v0.0.0-20200623143352-cc037d744be2
 	github.com/tribalwarshelp/shared v0.0.0-20200728103702-87e7e5f1b8fd
 	github.com/vektah/gqlparser/v2 v2.0.1
+	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect

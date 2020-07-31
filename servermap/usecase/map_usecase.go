@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/servermap"
 	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/map-generator/generator"
 	"github.com/tribalwarshelp/shared/models"
+	"golang.org/x/sync/errgroup"
 )
 
 const (
@@ -27,6 +29,9 @@ func New(villageRepo village.Repository) servermap.Usecase {
 }
 
 func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersConfig) ([]*generator.Marker, error) {
+	var mutex sync.Mutex
+	g := new(errgroup.Group)
+
 	tribes := make(map[string][]int)
 	tribeIDs := []int{}
 	cache := make(map[int]bool)
@@ -64,81 +69,102 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	markers := []*generator.Marker{}
 
 	if cfg.ShowOtherPlayerVillages {
-		villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
-			Server: cfg.Server,
-			Filter: &models.VillageFilter{
-				PlayerFilter: &models.PlayerFilter{
-					IdNEQ: append(playerIDs, 0),
-					TribeFilter: &models.TribeFilter{
-						IdNEQ: tribeIDs,
+		g.Go(func() error {
+			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
+				Server: cfg.Server,
+				Filter: &models.VillageFilter{
+					PlayerFilter: &models.PlayerFilter{
+						IdNEQ: append(playerIDs, 0),
+						TribeFilter: &models.TribeFilter{
+							IdNEQ: tribeIDs,
+						},
 					},
 				},
-			},
-			Count: false,
-		})
-		if err != nil {
-			return nil, err
-		}
-		markers = append(markers, &generator.Marker{
-			Villages: villages,
-			Color:    defaultPlayerVillagesColor,
+				Count: false,
+			})
+			if err != nil {
+				return err
+			}
+			mutex.Lock()
+			markers = append(markers, &generator.Marker{
+				Villages: villages,
+				Color:    defaultPlayerVillagesColor,
+			})
+			mutex.Unlock()
+			return nil
 		})
 	}
 
 	if cfg.ShowBarbarianVillages {
-		villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
-			Server: cfg.Server,
-			Filter: &models.VillageFilter{
-				PlayerID: []int{0},
-			},
-			Count: false,
-		})
-		if err != nil {
-			return nil, err
-		}
-		markers = append(markers, &generator.Marker{
-			Villages: villages,
-			Color:    defaultBarbarianVillagesColor,
+		g.Go(func() error {
+			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
+				Server: cfg.Server,
+				Filter: &models.VillageFilter{
+					PlayerID: []int{0},
+				},
+				Count: false,
+			})
+			if err != nil {
+				return err
+			}
+			mutex.Lock()
+			markers = append(markers, &generator.Marker{
+				Villages: villages,
+				Color:    defaultBarbarianVillagesColor,
+			})
+			mutex.Unlock()
+			return nil
 		})
 	}
 
 	for color, tribeIDs := range tribes {
-		villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
-			Server: cfg.Server,
-			Filter: &models.VillageFilter{
-				PlayerFilter: &models.PlayerFilter{
-					TribeID: tribeIDs,
+		g.Go(func() error {
+			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
+				Server: cfg.Server,
+				Filter: &models.VillageFilter{
+					PlayerFilter: &models.PlayerFilter{
+						TribeID: tribeIDs,
+					},
 				},
-			},
-			Count: false,
-		})
-		if err != nil {
-			return nil, err
-		}
-		markers = append(markers, &generator.Marker{
-			Villages: villages,
-			Color:    color,
+				Count: false,
+			})
+			if err != nil {
+				return err
+			}
+			mutex.Lock()
+			markers = append(markers, &generator.Marker{
+				Villages: villages,
+				Color:    color,
+			})
+			mutex.Unlock()
+			return nil
 		})
 	}
 
 	for color, playerIDs := range players {
-		villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
-			Server: cfg.Server,
-			Filter: &models.VillageFilter{
-				PlayerID: playerIDs,
-			},
-			Count: false,
-		})
-		if err != nil {
-			return nil, err
-		}
-		markers = append(markers, &generator.Marker{
-			Villages: villages,
-			Color:    color,
+		g.Go(func() error {
+			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
+				Server: cfg.Server,
+				Filter: &models.VillageFilter{
+					PlayerID: playerIDs,
+				},
+				Count: false,
+			})
+			if err != nil {
+				return err
+			}
+			mutex.Lock()
+			markers = append(markers, &generator.Marker{
+				Villages: villages,
+				Color:    color,
+			})
+			mutex.Unlock()
+			return nil
 		})
 	}
 
-	return markers, nil
+	err := g.Wait()
+	return markers, err
 }
 
 func parseQueryParam(str string) (int, string, error) {
