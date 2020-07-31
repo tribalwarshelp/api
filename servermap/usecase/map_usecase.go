@@ -118,12 +118,14 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	}
 
 	for color, tribeIDs := range tribes {
+		c := color
+		ids := tribeIDs
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
 				Filter: &models.VillageFilter{
 					PlayerFilter: &models.PlayerFilter{
-						TribeID: tribeIDs,
+						TribeID: ids,
 					},
 				},
 				Count: false,
@@ -134,7 +136,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 			mutex.Lock()
 			markers = append(markers, &generator.Marker{
 				Villages: villages,
-				Color:    color,
+				Color:    c,
 			})
 			mutex.Unlock()
 			return nil
@@ -142,11 +144,13 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	}
 
 	for color, playerIDs := range players {
+		c := color
+		ids := playerIDs
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
 				Filter: &models.VillageFilter{
-					PlayerID: playerIDs,
+					PlayerID: ids,
 				},
 				Count: false,
 			})
@@ -156,7 +160,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 			mutex.Lock()
 			markers = append(markers, &generator.Marker{
 				Villages: villages,
-				Color:    color,
+				Color:    c,
 			})
 			mutex.Unlock()
 			return nil
