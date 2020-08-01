@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -140,6 +141,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 			markers = append(markers, &generator.Marker{
 				Villages: villages,
 				Color:    c,
+				Larger:   cfg.LargerMarkers,
 			})
 			mutex.Unlock()
 			return nil
@@ -165,6 +167,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 			markers = append(markers, &generator.Marker{
 				Villages: villages,
 				Color:    c,
+				Larger:   cfg.LargerMarkers,
 			})
 			mutex.Unlock()
 			return nil
@@ -172,6 +175,9 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	}
 
 	err := g.Wait()
+	sort.SliceStable(markers, func(i, j int) bool {
+		return markers[i].Color < markers[j].Color
+	})
 	return markers, err
 }
 

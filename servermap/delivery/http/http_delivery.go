@@ -55,6 +55,7 @@ func (h *handler) mapHandler(c *gin.Context) {
 		Tribes:                  c.Request.URL.Query()["tribe"],
 		Players:                 c.Request.URL.Query()["player"],
 		ShowBarbarianVillages:   c.Query("showBarbarian") == "true",
+		LargerMarkers:           c.Query("largerMarkers") == "true",
 		ShowOtherPlayerVillages: !(c.Query("onlyMarkers") == "true"),
 	})
 	if err != nil {

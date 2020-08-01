@@ -12,6 +12,7 @@ type GetMarkersConfig struct {
 	Players                 []string
 	ShowBarbarianVillages   bool
 	ShowOtherPlayerVillages bool
+	LargerMarkers           bool
 }
 
 type Usecase interface {
