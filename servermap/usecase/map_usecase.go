@@ -80,7 +80,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 						},
 					},
 				},
-				Count: false,
+				Columns: []string{"x", "y"},
+				Count:   false,
 			})
 			if err != nil {
 				return err
@@ -102,7 +103,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 				Filter: &models.VillageFilter{
 					PlayerID: []int{0},
 				},
-				Count: false,
+				Columns: []string{"x", "y"},
+				Count:   false,
 			})
 			if err != nil {
 				return err
@@ -128,7 +130,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 						TribeID: ids,
 					},
 				},
-				Count: false,
+				Columns: []string{"x", "y"},
+				Count:   false,
 			})
 			if err != nil {
 				return err
@@ -152,7 +155,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 				Filter: &models.VillageFilter{
 					PlayerID: ids,
 				},
-				Count: false,
+				Columns: []string{"x", "y"},
+				Count:   false,
 			})
 			if err != nil {
 				return err

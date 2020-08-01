@@ -7,9 +7,10 @@ import (
 )
 
 type FetchConfig struct {
-	Server string
-	Filter *models.VillageFilter
-	Count  bool
+	Server  string
+	Filter  *models.VillageFilter
+	Columns []string
+	Count   bool
 }
 
 type Repository interface {

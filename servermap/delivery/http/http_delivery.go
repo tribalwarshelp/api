@@ -82,6 +82,7 @@ func (h *handler) mapHandler(c *gin.Context) {
 		CenterX:              centerX,
 		CenterY:              centerY,
 		Scale:                float32(scale),
+		Quality:              60,
 	}); err != nil {
 		c.JSON(http.StatusBadRequest, &gqlerror.Error{
 			Message: err.Error(),

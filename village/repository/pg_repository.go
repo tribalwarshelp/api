@@ -79,6 +79,10 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([
 		query = query.Order(order...)
 	}
 
+	if len(cfg.Columns) > 0 {
+		query = query.Column(cfg.Columns...)
+	}
+
 	total := 0
 	if cfg.Count {
 		total, err = query.SelectAndCount()
