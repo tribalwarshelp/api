@@ -13,7 +13,6 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/pkg/errors"
-	"github.com/tribalwarshelp/shared/cache/allservers"
 	"github.com/tribalwarshelp/shared/mode"
 
 	httpdelivery "github.com/tribalwarshelp/api/graphql/delivery/http"
@@ -92,7 +91,6 @@ func main() {
 			log.Fatal(err)
 		}
 	}()
-	allServersCache := allservers.New(redisClient)
 
 	langversionRepo, err := langversionrepo.NewPGRepository(db)
 	if err != nil {
@@ -137,8 +135,7 @@ func main() {
 	})
 	graphql := router.Group("")
 	graphql.Use(middleware.DataLoadersToContext(middleware.DataLoadersToContextConfig{
-		ServerRepo:      serverRepo,
-		AllServersCache: allServersCache,
+		ServerRepo: serverRepo,
 	},
 		dataloaders.Config{
 			PlayerRepo:      playerRepo,

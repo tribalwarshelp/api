@@ -8,6 +8,7 @@ import (
 
 type FetchConfig struct {
 	Filter *models.ServerFilter
+	Columns []string
 	Count  bool
 }
 

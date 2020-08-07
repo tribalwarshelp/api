@@ -40,6 +40,10 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg server.FetchConfig) ([]
 		}
 	}
 
+	if len(cfg.Columns) > 0 {
+		query = query.Column(cfg.Columns...)
+	}
+
 	if cfg.Count {
 		total, err = query.SelectAndCount()
 	} else {
