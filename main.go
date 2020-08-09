@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -143,6 +144,9 @@ func main() {
 			VillageRepo:     villageRepo,
 			LangVersionRepo: langversionRepo,
 		}))
+	graphql.Use(middleware.LimitWhitelist(middleware.LimitWhitelistConfig{
+		IPAddresses: strings.Split(os.Getenv("LIMIT_WHITELIST"), ","),
+	}))
 	httpdelivery.Attach(httpdelivery.Config{
 		RouterGroup: graphql,
 		Resolver: &resolvers.Resolver{

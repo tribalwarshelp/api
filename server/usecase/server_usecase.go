@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/api/server"
 	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
@@ -21,7 +22,7 @@ func (ucase *usecase) Fetch(ctx context.Context, filter *models.ServerFilter) ([
 	if filter == nil {
 		filter = &models.ServerFilter{}
 	}
-	if filter.Limit > server.PaginationLimit || filter.Limit <= 0 {
+	if !middleware.MayExceedLimit(ctx) && (filter.Limit > server.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = server.PaginationLimit
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
