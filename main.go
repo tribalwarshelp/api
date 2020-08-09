@@ -51,6 +51,7 @@ import (
 	villageucase "github.com/tribalwarshelp/api/village/usecase"
 
 	"github.com/go-pg/pg/v10"
+	"github.com/go-pg/pg/v10/pgext"
 	"github.com/joho/godotenv"
 
 	"github.com/gin-gonic/gin"
@@ -76,7 +77,9 @@ func main() {
 			log.Fatal("Database disconnecting:", err)
 		}
 	}()
-	// db.AddQueryHook(pgext.DebugHook{})
+	if strings.ToUpper(os.Getenv("LOG_DB_QUERIES")) == "TRUE" {
+		db.AddQueryHook(pgext.DebugHook{})
+	}
 
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("REDIS_HOST") + ":" + os.Getenv("REDIS_PORT"),

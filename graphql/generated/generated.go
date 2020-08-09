@@ -4217,6 +4217,7 @@ input VillageFilter {
   yGTE: Int
   yLT: Int
   yLTE: Int
+  xy: [String!]
 
   bonus: Int
   bonusGT: Int
@@ -19816,6 +19817,12 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 		case "yLTE":
 			var err error
 			it.YLTE, err = ec.unmarshalOInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "xy":
+			var err error
+			it.XY, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}

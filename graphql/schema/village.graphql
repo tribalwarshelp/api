@@ -36,6 +36,7 @@ input VillageFilter {
   yGTE: Int
   yLT: Int
   yLTE: Int
+  xy: [String!]
 
   bonus: Int
   bonusGT: Int

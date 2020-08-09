@@ -3,9 +3,11 @@ package repository
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/go-pg/pg/v10"
+	"github.com/go-pg/pg/v10/orm"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/shared/models"
@@ -50,6 +52,31 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([
 			query = query.Where("y <= ?", cfg.Filter.YLTE)
 		} else if cfg.Filter.YLT != 0 {
 			query = query.Where("y < ?", cfg.Filter.YLT)
+		}
+
+		if len(cfg.Filter.XY) > 0 {
+			query = query.WhereGroup(func(q *orm.Query) (*orm.Query, error) {
+				for _, xy := range cfg.Filter.XY {
+					splitted := strings.Split(xy, "|")
+					if len(splitted) != 2 {
+						continue
+					}
+					x, err := strconv.Atoi(splitted[0])
+					if err != nil {
+						continue
+					}
+					y, err := strconv.Atoi(splitted[1])
+					if err != nil {
+						continue
+					}
+					q = q.WhereOrGroup(func(q *orm.Query) (*orm.Query, error) {
+						q = q.Where("x = ?", x)
+						q = q.Where("y = ?", y)
+						return q, nil
+					})
+				}
+				return q, nil
+			})
 		}
 
 		order := []string{}
