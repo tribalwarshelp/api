@@ -4,7 +4,7 @@ Graphql API with TribalWars servers data.
 
 ## Development
 
-**Required env variables to run this API** (you can set them directly in your system or create .env.development file):
+**Required env variables to run this API** (you can set them directly on your system or create .env.development file):
 
 ```
 DB_USER=your_pgdb_user
