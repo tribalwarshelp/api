@@ -3,10 +3,6 @@ RUN apk add git
 
 ENV MODE=production
 ENV GIN_MODE=release
-ENV GOPRIVATE=github.com/tribalwarshelp
-
-COPY ./.netrc /root/.netrc
-RUN chmod 600 /root/.netrc
 
 WORKDIR /go/src/app
 COPY . .
