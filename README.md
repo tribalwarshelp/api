@@ -1,6 +1,6 @@
 # TWHelp API
 
-Graphql API with TribalWars servers data.
+Graphql API for TribalWars servers data.
 
 ## Development
 
