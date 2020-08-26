@@ -38,7 +38,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	cache := make(map[int]bool)
 	for _, data := range cfg.Tribes {
 		//id,#color
-		id, color, err := parseQueryParam(data)
+		id, color, err := parseMarker(data)
 		if err != nil {
 			return nil, errors.Wrapf(err, "tribe=%s", data)
 		}
@@ -55,7 +55,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	cache = make(map[int]bool)
 	for _, data := range cfg.Players {
 		//id,#color
-		id, color, err := parseQueryParam(data)
+		id, color, err := parseMarker(data)
 		if err != nil {
 			return nil, errors.Wrapf(err, "player=%s", data)
 		}
@@ -181,17 +181,18 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	return markers, err
 }
 
-func parseQueryParam(str string) (int, string, error) {
+func parseMarker(str string) (int, string, error) {
 	splitted := strings.Split(str, ",")
 	if len(splitted) != 2 {
-		return 0, "", fmt.Errorf("Invalid format (should be id,#hexcolor)")
+		return 0, "", fmt.Errorf("%s: Invalid marker format (should be id,#hexcolor)", str)
 	}
 	id, err := strconv.Atoi(splitted[0])
 	if err != nil {
-		return 0, "", errors.Wrapf(err, "Invalid format (should be id,hexcolor)")
+		return 0, "", errors.Wrapf(err, "%s: Invalid marker format (should be id,#hexcolor)", str)
 	}
 	if id <= 0 {
 		return 0, "", fmt.Errorf("ID should be greater than 0")
 	}
+
 	return id, splitted[1], nil
 }
