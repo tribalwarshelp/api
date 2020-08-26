@@ -1,6 +1,6 @@
 # TWHelp API
 
-The main problem with data published by the TribalWars team is that they give you them in .csv format, and you must parse it to your programming language data structure if you want to use it in your code. Have you ever encountered this problem? Then you should try this GraphQL API written in Go. You don't need to parse world data anymore on your own! Fetch data in JSON format from TWHelp API. All TribalWars versions are available.
+Are you bored of parsing TribalWars world data? Then you should try this GraphQL API written in Go. You don't need to parse world data anymore on your own! Fetch data in JSON format from TWHelp API. All TribalWars versions are available.
 
 ## API Limits
 
@@ -18,7 +18,7 @@ You can fetch in one HTTP request:
 
 ## Sample queries
 
-You can check how to make requests from JavaScript script [here](https://github.com/tribalwarshelp/scripts).
+You can check how to make requests from JavaScript [here](https://github.com/tribalwarshelp/scripts).
 
 1. All barbarian villages with 10% more population
 
@@ -77,7 +77,7 @@ query {
 
 ## Map service
 
-You can generate a server map with this API. The current endpoint is https://api.tribalwarshelp.com/map/server (replace "server" with the world you're interested in, for example, en115).
+You can generate a server map with this API. The current endpoint is https://api.tribalwarshelp.com/map/server (replace "server" with the world you're interested in, for example, pl151).
 
 ### Available query params:
 
