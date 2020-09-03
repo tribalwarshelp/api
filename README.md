@@ -85,7 +85,7 @@ You can generate a server map with this API. The current endpoint is https://api
 | ------------------------------------------------ | ---------------------------------------------------------- |
 | showBarbarians                                   | false                                                      |
 | largerMarkers                                    | false                                                      |
-| onlyMarkers                                      | false                                                      |
+| markersOnly                                      | false                                                      |
 | centerX                                          | 500                                                        |
 | centerY                                          | 500                                                        |
 | scale                                            | 1 (max 5)                                                  |
