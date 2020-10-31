@@ -5,8 +5,8 @@ import (
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/middleware"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw"
 )
 
 func (r *playerResolver) Tribe(ctx context.Context, obj *models.Player) (*models.Tribe, error) {
@@ -21,7 +21,7 @@ func (r *playerResolver) Servers(ctx context.Context, obj *models.Player) ([]str
 	langVersionDataLoaders := middleware.LangVersionDataLoadersFromContext(ctx)
 	if langVersionDataLoaders != nil {
 		serverKey, _ := getServer(ctx)
-		if loaders, ok := langVersionDataLoaders[utils.LanguageTagFromServerKey(serverKey)]; ok {
+		if loaders, ok := langVersionDataLoaders[tw.LanguageTagFromServerKey(serverKey)]; ok {
 			servers, err := loaders.PlayerServersByID.Load(obj.ID)
 			if err == nil {
 				return servers, nil
@@ -35,7 +35,7 @@ func (r *playerResolver) NameChanges(ctx context.Context, obj *models.Player) ([
 	langVersionDataLoaders := middleware.LangVersionDataLoadersFromContext(ctx)
 	if langVersionDataLoaders != nil {
 		serverKey, _ := getServer(ctx)
-		if loaders, ok := langVersionDataLoaders[utils.LanguageTagFromServerKey(serverKey)]; ok {
+		if loaders, ok := langVersionDataLoaders[tw.LanguageTagFromServerKey(serverKey)]; ok {
 			servers, err := loaders.PlayerNameChangesByID.Load(obj.ID)
 			if err == nil {
 				return servers, nil

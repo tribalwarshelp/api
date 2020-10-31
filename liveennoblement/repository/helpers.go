@@ -1,20 +1,18 @@
 package repository
 
 import (
-	"encoding/csv"
-	"net/http"
-	"time"
+	"github.com/tribalwarshelp/shared/models"
 )
 
-var client = &http.Client{
-	Timeout: 20 * time.Second,
-}
-
-func getCSVData(url string) ([][]string, error) {
-	resp, err := client.Get(url)
-	if err != nil {
-		return nil, err
+func convertToLiveEnnoblements(ennoblements []*models.Ennoblement) []*models.LiveEnnoblement {
+	lv := []*models.LiveEnnoblement{}
+	for _, e := range ennoblements {
+		lv = append(lv, &models.LiveEnnoblement{
+			VillageID:  e.VillageID,
+			NewOwnerID: e.NewOwnerID,
+			OldOwnerID: e.OldOwnerID,
+			EnnobledAt: e.EnnobledAt,
+		})
 	}
-	defer resp.Body.Close()
-	return csv.NewReader(resp.Body).ReadAll()
+	return lv
 }

@@ -13,6 +13,7 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/dataloader"
 )
 
 var (
@@ -44,33 +45,29 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string) ([]*models.L
 	}
 
 	if s.Status == models.ServerStatusClosed {
-		return nil, fmt.Errorf("Server is " + models.ServerStatusClosed.String())
+		return []*models.LiveEnnoblement{}, nil
 	}
 
-	url := "https://" + s.Key + "." + s.LangVersion.Host +
-		fmt.Sprintf(liveennoblement.EndpointGetConquer, time.Now().Add(-1*time.Hour).Unix())
-	lines, err := getCSVData(url)
+	dl := dataloader.New(&dataloader.Config{
+		BaseURL: "https://" + s.Key + "." + s.LangVersion.Host,
+	})
+	ennoblements, err := dl.LoadEnnoblements(&dataloader.LoadEnnoblementsConfig{
+		EnnobledAtGTE: time.Now().Add(-1 * time.Hour),
+	})
 	if err != nil {
-		return nil, errors.Wrap(err, "Cannot fetch ennoblements")
+		return nil, err
 	}
 
-	e := []*models.LiveEnnoblement{}
-	lineParser := newLineParser()
-	for _, line := range lines {
-		ennoblement, err := lineParser.parse(line)
-		if err != nil {
-			continue
-		}
-		e = append(e, ennoblement)
-	}
-
-	go repo.cacheLiveEnnoblements(server, e)
-
-	return e, nil
+	liveEnnoblements := convertToLiveEnnoblements(ennoblements)
+	go repo.cacheLiveEnnoblements(server, liveEnnoblements)
+	return liveEnnoblements, nil
 }
 
 func (repo *pgRepository) loadLiveEnnoblementsFromCache(server string) ([]*models.LiveEnnoblement, bool) {
-	ennoblementsJSON, err := repo.cache.Get(context.Background(), fmt.Sprintf(cacheKey, server)).Result()
+	ennoblementsJSON, err := repo.
+		cache.
+		Get(context.Background(), fmt.Sprintf(cacheKey, server)).
+		Result()
 	if err != nil || ennoblementsJSON == "" {
 		return nil, false
 	}
@@ -86,7 +83,10 @@ func (repo *pgRepository) cacheLiveEnnoblements(server string, ennoblements []*m
 	if err != nil {
 		return errors.Wrap(err, "cacheLiveEnnoblements")
 	}
-	if err := repo.cache.Set(context.Background(), fmt.Sprintf(cacheKey, server), ennoblementsJSON, expiration).Err(); err != nil {
+	if err := repo.
+		cache.
+		Set(context.Background(), fmt.Sprintf(cacheKey, server), ennoblementsJSON, expiration).
+		Err(); err != nil {
 		return errors.Wrap(err, "cacheLiveEnnoblements")
 	}
 	return nil
