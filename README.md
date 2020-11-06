@@ -8,7 +8,7 @@ You can fetch in one HTTP request:
 
 1. 1000 daily player/tribe stats
 2. 100 ennoblements
-3. 100 lang versions
+3. 100 versions
 4. 100 players/tribes
 5. 1000 villages
 6. 100 player/tribe history records
