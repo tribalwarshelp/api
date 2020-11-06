@@ -9,10 +9,10 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
-// LangVersionLoaderConfig captures the config to create a new LangVersionLoader
-type LangVersionLoaderConfig struct {
+// VersionLoaderConfig captures the config to create a new VersionLoader
+type VersionLoaderConfig struct {
 	// Fetch is a method that provides the data for the loader
-	Fetch func(keys []string) ([]*models.LangVersion, []error)
+	Fetch func(keys []string) ([]*models.Version, []error)
 
 	// Wait is how long wait before sending a batch
 	Wait time.Duration
@@ -21,19 +21,19 @@ type LangVersionLoaderConfig struct {
 	MaxBatch int
 }
 
-// NewLangVersionLoader creates a new LangVersionLoader given a fetch, wait, and maxBatch
-func NewLangVersionLoader(config LangVersionLoaderConfig) *LangVersionLoader {
-	return &LangVersionLoader{
+// NewVersionLoader creates a new VersionLoader given a fetch, wait, and maxBatch
+func NewVersionLoader(config VersionLoaderConfig) *VersionLoader {
+	return &VersionLoader{
 		fetch:    config.Fetch,
 		wait:     config.Wait,
 		maxBatch: config.MaxBatch,
 	}
 }
 
-// LangVersionLoader batches and caches requests
-type LangVersionLoader struct {
+// VersionLoader batches and caches requests
+type VersionLoader struct {
 	// this method provides the data for the loader
-	fetch func(keys []string) ([]*models.LangVersion, []error)
+	fetch func(keys []string) ([]*models.Version, []error)
 
 	// how long to done before sending a batch
 	wait time.Duration
@@ -44,51 +44,51 @@ type LangVersionLoader struct {
 	// INTERNAL
 
 	// lazily created cache
-	cache map[string]*models.LangVersion
+	cache map[string]*models.Version
 
 	// the current batch. keys will continue to be collected until timeout is hit,
 	// then everything will be sent to the fetch method and out to the listeners
-	batch *langVersionLoaderBatch
+	batch *versionLoaderBatch
 
 	// mutex to prevent races
 	mu sync.Mutex
 }
 
-type langVersionLoaderBatch struct {
+type versionLoaderBatch struct {
 	keys    []string
-	data    []*models.LangVersion
+	data    []*models.Version
 	error   []error
 	closing bool
 	done    chan struct{}
 }
 
-// Load a LangVersion by key, batching and caching will be applied automatically
-func (l *LangVersionLoader) Load(key string) (*models.LangVersion, error) {
+// Load a Version by key, batching and caching will be applied automatically
+func (l *VersionLoader) Load(key string) (*models.Version, error) {
 	return l.LoadThunk(key)()
 }
 
-// LoadThunk returns a function that when called will block waiting for a LangVersion.
+// LoadThunk returns a function that when called will block waiting for a Version.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *LangVersionLoader) LoadThunk(key string) func() (*models.LangVersion, error) {
+func (l *VersionLoader) LoadThunk(key string) func() (*models.Version, error) {
 	l.mu.Lock()
 	if it, ok := l.cache[key]; ok {
 		l.mu.Unlock()
-		return func() (*models.LangVersion, error) {
+		return func() (*models.Version, error) {
 			return it, nil
 		}
 	}
 	if l.batch == nil {
-		l.batch = &langVersionLoaderBatch{done: make(chan struct{})}
+		l.batch = &versionLoaderBatch{done: make(chan struct{})}
 	}
 	batch := l.batch
 	pos := batch.keyIndex(l, key)
 	l.mu.Unlock()
 
-	return func() (*models.LangVersion, error) {
+	return func() (*models.Version, error) {
 		<-batch.done
 
-		var data *models.LangVersion
+		var data *models.Version
 		if pos < len(batch.data) {
 			data = batch.data[pos]
 		}
@@ -113,43 +113,43 @@ func (l *LangVersionLoader) LoadThunk(key string) func() (*models.LangVersion, e
 
 // LoadAll fetches many keys at once. It will be broken into appropriate sized
 // sub batches depending on how the loader is configured
-func (l *LangVersionLoader) LoadAll(keys []string) ([]*models.LangVersion, []error) {
-	results := make([]func() (*models.LangVersion, error), len(keys))
+func (l *VersionLoader) LoadAll(keys []string) ([]*models.Version, []error) {
+	results := make([]func() (*models.Version, error), len(keys))
 
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
 
-	langVersions := make([]*models.LangVersion, len(keys))
+	versions := make([]*models.Version, len(keys))
 	errors := make([]error, len(keys))
 	for i, thunk := range results {
-		langVersions[i], errors[i] = thunk()
+		versions[i], errors[i] = thunk()
 	}
-	return langVersions, errors
+	return versions, errors
 }
 
-// LoadAllThunk returns a function that when called will block waiting for a LangVersions.
+// LoadAllThunk returns a function that when called will block waiting for a Versions.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *LangVersionLoader) LoadAllThunk(keys []string) func() ([]*models.LangVersion, []error) {
-	results := make([]func() (*models.LangVersion, error), len(keys))
+func (l *VersionLoader) LoadAllThunk(keys []string) func() ([]*models.Version, []error) {
+	results := make([]func() (*models.Version, error), len(keys))
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
-	return func() ([]*models.LangVersion, []error) {
-		langVersions := make([]*models.LangVersion, len(keys))
+	return func() ([]*models.Version, []error) {
+		versions := make([]*models.Version, len(keys))
 		errors := make([]error, len(keys))
 		for i, thunk := range results {
-			langVersions[i], errors[i] = thunk()
+			versions[i], errors[i] = thunk()
 		}
-		return langVersions, errors
+		return versions, errors
 	}
 }
 
 // Prime the cache with the provided key and value. If the key already exists, no change is made
 // and false is returned.
 // (To forcefully prime the cache, clear the key first with loader.clear(key).prime(key, value).)
-func (l *LangVersionLoader) Prime(key string, value *models.LangVersion) bool {
+func (l *VersionLoader) Prime(key string, value *models.Version) bool {
 	l.mu.Lock()
 	var found bool
 	if _, found = l.cache[key]; !found {
@@ -163,22 +163,22 @@ func (l *LangVersionLoader) Prime(key string, value *models.LangVersion) bool {
 }
 
 // Clear the value at key from the cache, if it exists
-func (l *LangVersionLoader) Clear(key string) {
+func (l *VersionLoader) Clear(key string) {
 	l.mu.Lock()
 	delete(l.cache, key)
 	l.mu.Unlock()
 }
 
-func (l *LangVersionLoader) unsafeSet(key string, value *models.LangVersion) {
+func (l *VersionLoader) unsafeSet(key string, value *models.Version) {
 	if l.cache == nil {
-		l.cache = map[string]*models.LangVersion{}
+		l.cache = map[string]*models.Version{}
 	}
 	l.cache[key] = value
 }
 
 // keyIndex will return the location of the key in the batch, if its not found
 // it will add the key to the batch
-func (b *langVersionLoaderBatch) keyIndex(l *LangVersionLoader, key string) int {
+func (b *versionLoaderBatch) keyIndex(l *VersionLoader, key string) int {
 	for i, existingKey := range b.keys {
 		if key == existingKey {
 			return i
@@ -202,7 +202,7 @@ func (b *langVersionLoaderBatch) keyIndex(l *LangVersionLoader, key string) int 
 	return pos
 }
 
-func (b *langVersionLoaderBatch) startTimer(l *LangVersionLoader) {
+func (b *versionLoaderBatch) startTimer(l *VersionLoader) {
 	time.Sleep(l.wait)
 	l.mu.Lock()
 
@@ -218,7 +218,7 @@ func (b *langVersionLoaderBatch) startTimer(l *LangVersionLoader) {
 	b.end(l)
 }
 
-func (b *langVersionLoaderBatch) end(l *LangVersionLoader) {
+func (b *versionLoaderBatch) end(l *VersionLoader) {
 	b.data, b.error = l.fetch(b.keys)
 	close(b.done)
 }

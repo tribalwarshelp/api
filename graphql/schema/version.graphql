@@ -1,0 +1,57 @@
+enum VersionCode {
+  PL
+  EN
+  DE
+  UK
+  IT
+  FR
+  US
+  NL
+  ES
+  RO
+  RU
+  GR
+  TR
+  CS
+  CH
+  PT
+  BR
+  HU
+}
+
+type Version {
+  tag: VersionCode! @depreacted @goField(forceResolver: true)
+  code: VersionCode!
+  name: String!
+  host: String!
+  timezone: String!
+}
+
+input VersionFilter {
+  languageTag: [VersionCode!] @depreacted
+  languageTagNEQ: [VersionCode!] @depreacted
+  
+  code: [VersionCode!]
+  codeNEQ: [VersionCode!]
+
+  host: [String!]
+  hostNEQ: [String!]
+  hostMATCH: String
+  hostIEQ: String
+
+  offset: Int
+  limit: Int
+  sort: String
+}
+
+type VersionList {
+  items: [Version!]
+  total: Int!
+}
+
+extend type Query {
+  langVersions(filter: VersionFilter): VersionList! @depreacted @goField(forceResolver: true)
+  langVersion(tag: VersionCode!): Version @depreacted @goField(forceResolver: true)
+  versions(filter: VersionFilter): VersionList!
+  version(code: VersionCode!): Version
+}

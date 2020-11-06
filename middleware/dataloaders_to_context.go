@@ -15,7 +15,7 @@ import (
 )
 
 var serverDataLoadersContextKey ContextKey = "serverDataLoaders"
-var langVersionLoadersContextKey ContextKey = "langVersionLoaders"
+var versionLoadersContextKey ContextKey = "versionLoaders"
 var dataloadersContextKey ContextKey = "dataloaders"
 
 type DataLoadersToContextConfig struct {
@@ -26,9 +26,9 @@ func DataLoadersToContext(dltcc DataLoadersToContextConfig, cfg dataloaders.Conf
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()
 		serverDataLoaders := make(map[string]*dataloaders.ServerDataLoaders)
-		langVersionDataLoaders := make(map[models.LanguageTag]*dataloaders.LangVersionDataLoaders)
+		versionDataLoaders := make(map[models.VersionCode]*dataloaders.VersionDataLoaders)
 		servers, _, err := dltcc.ServerRepo.Fetch(c.Request.Context(), server.FetchConfig{
-			Columns: []string{utils.Underscore("langVersionTag"), "key"},
+			Columns: []string{utils.Underscore("versionCode"), "key"},
 		})
 		if err != nil {
 			c.JSON(http.StatusOK, &gqlerror.Error{
@@ -39,12 +39,12 @@ func DataLoadersToContext(dltcc DataLoadersToContextConfig, cfg dataloaders.Conf
 		}
 		for _, server := range servers {
 			serverDataLoaders[server.Key] = dataloaders.NewServerDataLoaders(server.Key, cfg)
-			if _, ok := langVersionDataLoaders[server.LangVersionTag]; !ok {
-				langVersionDataLoaders[server.LangVersionTag] = dataloaders.NewLangVersionDataLoaders(server.LangVersionTag, cfg)
+			if _, ok := versionDataLoaders[server.VersionCode]; !ok {
+				versionDataLoaders[server.VersionCode] = dataloaders.NewVersionDataLoaders(server.VersionCode, cfg)
 			}
 		}
 		ctx = StoreServerDataLoadersInContext(ctx, serverDataLoaders)
-		ctx = StoreLangVersionDataLoadersInContext(ctx, langVersionDataLoaders)
+		ctx = StoreVersionDataLoadersInContext(ctx, versionDataLoaders)
 		ctx = StoreDataLoadersInContext(ctx, dataloaders.NewDataLoaders(cfg))
 		c.Request = c.Request.WithContext(ctx)
 		c.Next()
@@ -64,17 +64,17 @@ func ServerDataLoadersFromContext(ctx context.Context) map[string]*dataloaders.S
 	return dl.(map[string]*dataloaders.ServerDataLoaders)
 }
 
-func StoreLangVersionDataLoadersInContext(ctx context.Context, loaders map[models.LanguageTag]*dataloaders.LangVersionDataLoaders) context.Context {
-	return context.WithValue(ctx, langVersionLoadersContextKey, loaders)
+func StoreVersionDataLoadersInContext(ctx context.Context, loaders map[models.VersionCode]*dataloaders.VersionDataLoaders) context.Context {
+	return context.WithValue(ctx, versionLoadersContextKey, loaders)
 }
 
-func LangVersionDataLoadersFromContext(ctx context.Context) map[models.LanguageTag]*dataloaders.LangVersionDataLoaders {
-	dl := ctx.Value(langVersionLoadersContextKey)
+func VersionDataLoadersFromContext(ctx context.Context) map[models.VersionCode]*dataloaders.VersionDataLoaders {
+	dl := ctx.Value(versionLoadersContextKey)
 	if dl == nil {
 		return nil
 	}
 
-	return dl.(map[models.LanguageTag]*dataloaders.LangVersionDataLoaders)
+	return dl.(map[models.VersionCode]*dataloaders.VersionDataLoaders)
 }
 
 func StoreDataLoadersInContext(ctx context.Context, loaders *dataloaders.DataLoaders) context.Context {

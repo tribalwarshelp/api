@@ -10,7 +10,8 @@ type Server {
   numberOfTribes: Int!
   numberOfVillages: Int!
 
-  langVersion: LangVersion @goField(forceResolver: true)
+  langVersion: Version @goField(forceResolver: true) @depreacted(reason: "Renamed to version")
+  version: Version @goField(forceResolver: true)
 
   config: ServerConfig!
   unitConfig: UnitConfig!
@@ -35,8 +36,10 @@ input ServerFilter {
   status: [ServerStatus!]
   statusNEQ: [ServerStatus!]
 
-  langVersionTag: [LanguageTag!]
-  langVersionTagNEQ: [LanguageTag!]
+  langVersionTag: [VersionCode!] @depreacted
+  langVersionTagNEQ: [VersionCode!] @depreacted
+  versionCode: [VersionCode!]
+  versionCodeNEQ: [VersionCode!]
 
   offset: Int
   limit: Int

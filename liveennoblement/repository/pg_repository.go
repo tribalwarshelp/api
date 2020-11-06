@@ -36,7 +36,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string) ([]*models.L
 	}
 
 	s := &models.Server{}
-	if err := repo.Model(s).Where("key = ?", server).Relation("LangVersion").Select(); err != nil {
+	if err := repo.Model(s).Where("key = ?", server).Relation("Version").Select(); err != nil {
 		if err == pg.ErrNoRows {
 			return nil, fmt.Errorf("Server not found")
 		}
@@ -49,7 +49,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string) ([]*models.L
 	}
 
 	dl := dataloader.New(&dataloader.Config{
-		BaseURL: "https://" + s.Key + "." + s.LangVersion.Host,
+		BaseURL: "https://" + s.Key + "." + s.Version.Host,
 	})
 	ennoblements, err := dl.LoadEnnoblements(&dataloader.LoadEnnoblementsConfig{
 		EnnobledAtGTE: time.Now().Add(-1 * time.Hour),

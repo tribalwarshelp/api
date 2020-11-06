@@ -1,4 +1,4 @@
-package langversion
+package version
 
 const (
 	PaginationLimit = 100

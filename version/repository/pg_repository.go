@@ -6,7 +6,7 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
 	"github.com/pkg/errors"
-	"github.com/tribalwarshelp/api/langversion"
+	"github.com/tribalwarshelp/api/version"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -14,18 +14,18 @@ type pgRepository struct {
 	*pg.DB
 }
 
-func NewPGRepository(db *pg.DB) (langversion.Repository, error) {
-	if err := db.CreateTable((*models.LangVersion)(nil), &orm.CreateTableOptions{
+func NewPGRepository(db *pg.DB) (version.Repository, error) {
+	if err := db.CreateTable((*models.Version)(nil), &orm.CreateTableOptions{
 		IfNotExists: true,
 	}); err != nil {
-		return nil, errors.Wrap(err, "Cannot create 'lang_versions' table")
+		return nil, errors.Wrap(err, "Cannot create 'versions' table")
 	}
 	return &pgRepository{db}, nil
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, cfg langversion.FetchConfig) ([]*models.LangVersion, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*models.Version, int, error) {
 	var err error
-	data := []*models.LangVersion{}
+	data := []*models.Version{}
 	total := 0
 	query := repo.Model(&data).Context(ctx)
 

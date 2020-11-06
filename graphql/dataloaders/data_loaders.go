@@ -4,51 +4,51 @@ import (
 	"context"
 	"time"
 
-	"github.com/tribalwarshelp/api/langversion"
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/api/tribe"
+	"github.com/tribalwarshelp/api/version"
 	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/shared/models"
 )
 
 type DataLoaders struct {
-	LangVersionByTag LangVersionLoader
+	VersionByTag VersionLoader
 }
 
 type Config struct {
-	PlayerRepo      player.Repository
-	TribeRepo       tribe.Repository
-	VillageRepo     village.Repository
-	LangVersionRepo langversion.Repository
+	PlayerRepo  player.Repository
+	TribeRepo   tribe.Repository
+	VillageRepo village.Repository
+	VersionRepo version.Repository
 }
 
 func NewDataLoaders(cfg Config) *DataLoaders {
 	return &DataLoaders{
-		LangVersionByTag: LangVersionLoader{
+		VersionByTag: VersionLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
-			fetch: func(keys []string) ([]*models.LangVersion, []error) {
-				tags := []models.LanguageTag{}
-				for _, tag := range keys {
-					tags = append(tags, models.LanguageTag(tag))
+			fetch: func(keys []string) ([]*models.Version, []error) {
+				codes := []models.VersionCode{}
+				for _, code := range keys {
+					codes = append(codes, models.VersionCode(code))
 				}
-				langVersions, _, err := cfg.LangVersionRepo.Fetch(context.Background(), langversion.FetchConfig{
-					Filter: &models.LangVersionFilter{
-						Tag: tags,
+				versions, _, err := cfg.VersionRepo.Fetch(context.Background(), version.FetchConfig{
+					Filter: &models.VersionFilter{
+						Code: codes,
 					},
 				})
 				if err != nil {
 					return nil, []error{err}
 				}
 
-				langVersionByTag := make(map[models.LanguageTag]*models.LangVersion)
-				for _, langVersion := range langVersions {
-					langVersionByTag[langVersion.Tag] = langVersion
+				versionByCode := make(map[models.VersionCode]*models.Version)
+				for _, version := range versions {
+					versionByCode[version.Code] = version
 				}
 
-				inOrder := make([]*models.LangVersion, len(keys))
-				for i, tag := range tags {
-					inOrder[i] = langVersionByTag[tag]
+				inOrder := make([]*models.Version, len(keys))
+				for i, code := range codes {
+					inOrder[i] = versionByCode[code]
 				}
 
 				return inOrder, nil

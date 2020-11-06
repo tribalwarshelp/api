@@ -1,4 +1,4 @@
-package langversion
+package version
 
 import (
 	"context"
@@ -7,10 +7,10 @@ import (
 )
 
 type FetchConfig struct {
-	Filter *models.LangVersionFilter
+	Filter *models.VersionFilter
 	Count  bool
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.LangVersion, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Version, int, error)
 }

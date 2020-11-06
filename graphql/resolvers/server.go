@@ -9,13 +9,17 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *serverResolver) LangVersion(ctx context.Context, obj *models.Server) (*models.LangVersion, error) {
+func (r *serverResolver) Version(ctx context.Context, obj *models.Server) (*models.Version, error) {
 	loaders := middleware.DataLoadersFromContext(ctx)
 	if loaders != nil {
-		lv, _ := loaders.LangVersionByTag.Load(obj.LangVersionTag.String())
+		lv, _ := loaders.VersionByTag.Load(obj.VersionCode.String())
 		return lv, nil
 	}
 	return nil, nil
+}
+
+func (r *serverResolver) LangVersion(ctx context.Context, obj *models.Server) (*models.Version, error) {
+	return r.Version(ctx, obj)
 }
 
 func (r *queryResolver) Servers(ctx context.Context, filter *models.ServerFilter) (*generated.ServerList, error) {

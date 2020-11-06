@@ -27,8 +27,6 @@ import (
 	dailytribestatsucase "github.com/tribalwarshelp/api/dailytribestats/usecase"
 	ennoblementrepo "github.com/tribalwarshelp/api/ennoblement/repository"
 	ennoblementucase "github.com/tribalwarshelp/api/ennoblement/usecase"
-	langversionrepo "github.com/tribalwarshelp/api/langversion/repository"
-	langversionucase "github.com/tribalwarshelp/api/langversion/usecase"
 	liveennoblementrepo "github.com/tribalwarshelp/api/liveennoblement/repository"
 	liveennoblementucase "github.com/tribalwarshelp/api/liveennoblement/usecase"
 	"github.com/tribalwarshelp/api/middleware"
@@ -47,6 +45,8 @@ import (
 	tribechangeucase "github.com/tribalwarshelp/api/tribechange/usecase"
 	tribehistoryrepo "github.com/tribalwarshelp/api/tribehistory/repository"
 	tribehistoryucase "github.com/tribalwarshelp/api/tribehistory/usecase"
+	versionrepo "github.com/tribalwarshelp/api/version/repository"
+	versionucase "github.com/tribalwarshelp/api/version/usecase"
 	villagerepo "github.com/tribalwarshelp/api/village/repository"
 	villageucase "github.com/tribalwarshelp/api/village/usecase"
 
@@ -96,7 +96,7 @@ func main() {
 		}
 	}()
 
-	langversionRepo, err := langversionrepo.NewPGRepository(db)
+	versionRepo, err := versionrepo.NewPGRepository(db)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -142,10 +142,10 @@ func main() {
 		ServerRepo: serverRepo,
 	},
 		dataloaders.Config{
-			PlayerRepo:      playerRepo,
-			TribeRepo:       tribeRepo,
-			VillageRepo:     villageRepo,
-			LangVersionRepo: langversionRepo,
+			PlayerRepo:  playerRepo,
+			TribeRepo:   tribeRepo,
+			VillageRepo: villageRepo,
+			VersionRepo: versionRepo,
 		}))
 	graphql.Use(middleware.LimitWhitelist(middleware.LimitWhitelistConfig{
 		IPAddresses: strings.Split(os.Getenv("LIMIT_WHITELIST"), ","),
@@ -153,7 +153,7 @@ func main() {
 	httpdelivery.Attach(httpdelivery.Config{
 		RouterGroup: graphql,
 		Resolver: &resolvers.Resolver{
-			LangVersionUcase:      langversionucase.New(langversionRepo),
+			VersionUcase:          versionucase.New(versionRepo),
 			ServerUcase:           serverUcase,
 			TribeUcase:            tribeucase.New(tribeRepo),
 			PlayerUcase:           playerucase.New(playerRepo),

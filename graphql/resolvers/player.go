@@ -18,10 +18,10 @@ func (r *playerResolver) Tribe(ctx context.Context, obj *models.Player) (*models
 }
 
 func (r *playerResolver) Servers(ctx context.Context, obj *models.Player) ([]string, error) {
-	langVersionDataLoaders := middleware.LangVersionDataLoadersFromContext(ctx)
-	if langVersionDataLoaders != nil {
+	versionDataLoaders := middleware.VersionDataLoadersFromContext(ctx)
+	if versionDataLoaders != nil {
 		serverKey, _ := getServer(ctx)
-		if loaders, ok := langVersionDataLoaders[tw.LanguageTagFromServerKey(serverKey)]; ok {
+		if loaders, ok := versionDataLoaders[tw.VersionCodeFromServerKey(serverKey)]; ok {
 			servers, err := loaders.PlayerServersByID.Load(obj.ID)
 			if err == nil {
 				return servers, nil
@@ -32,10 +32,10 @@ func (r *playerResolver) Servers(ctx context.Context, obj *models.Player) ([]str
 }
 
 func (r *playerResolver) NameChanges(ctx context.Context, obj *models.Player) ([]*models.PlayerNameChange, error) {
-	langVersionDataLoaders := middleware.LangVersionDataLoadersFromContext(ctx)
-	if langVersionDataLoaders != nil {
+	versionDataLoaders := middleware.VersionDataLoadersFromContext(ctx)
+	if versionDataLoaders != nil {
 		serverKey, _ := getServer(ctx)
-		if loaders, ok := langVersionDataLoaders[tw.LanguageTagFromServerKey(serverKey)]; ok {
+		if loaders, ok := versionDataLoaders[tw.VersionCodeFromServerKey(serverKey)]; ok {
 			servers, err := loaders.PlayerNameChangesByID.Load(obj.ID)
 			if err == nil {
 				return servers, nil

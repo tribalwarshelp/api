@@ -7,18 +7,18 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
-type LangVersionDataLoaders struct {
+type VersionDataLoaders struct {
 	PlayerServersByID     PlayerServersLoader
 	PlayerNameChangesByID PlayerNameChangesLoader
 }
 
-func NewLangVersionDataLoaders(langTag models.LanguageTag, cfg Config) *LangVersionDataLoaders {
-	return &LangVersionDataLoaders{
+func NewVersionDataLoaders(versionCode models.VersionCode, cfg Config) *VersionDataLoaders {
+	return &VersionDataLoaders{
 		PlayerServersByID: PlayerServersLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(keys []int) ([][]string, []error) {
-				playerServersByID, err := cfg.PlayerRepo.FetchPlayerServers(context.Background(), langTag, keys...)
+				playerServersByID, err := cfg.PlayerRepo.FetchPlayerServers(context.Background(), versionCode, keys...)
 				if err != nil {
 					return nil, []error{err}
 				}
@@ -33,7 +33,7 @@ func NewLangVersionDataLoaders(langTag models.LanguageTag, cfg Config) *LangVers
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(keys []int) ([][]*models.PlayerNameChange, []error) {
-				playerNameChangesByID, err := cfg.PlayerRepo.FetchNameChanges(context.Background(), langTag, keys...)
+				playerNameChangesByID, err := cfg.PlayerRepo.FetchNameChanges(context.Background(), versionCode, keys...)
 				if err != nil {
 					return nil, []error{err}
 				}

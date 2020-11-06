@@ -11,15 +11,18 @@ resolver:
   package: resolvers
   type: Resolver
 struct_tag: gqlgen
+directives:
+  deprecated:
+    skip_runtime: true
 models:
-  LanguageTag:
-    model: github.com/tribalwarshelp/shared/models.LanguageTag
+  VersionCode:
+    model: github.com/tribalwarshelp/shared/models.VersionCode
   ServerStatus:
     model: github.com/tribalwarshelp/shared/models.ServerStatus
-  LangVersion:
-    model: github.com/tribalwarshelp/shared/models.LangVersion
-  LangVersionFilter:
-    model: github.com/tribalwarshelp/shared/models.LangVersionFilter
+  Version:
+    model: github.com/tribalwarshelp/shared/models.Version
+  VersionFilter:
+    model: github.com/tribalwarshelp/shared/models.VersionFilter
   Server:
     model: github.com/tribalwarshelp/shared/models.Server
   ServerConfig:

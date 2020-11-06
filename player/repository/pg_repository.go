@@ -72,11 +72,11 @@ type fetchPlayerServersQueryResult struct {
 	Servers  []string `pg:",array"`
 }
 
-func (repo *pgRepository) FetchNameChanges(ctx context.Context, langTag models.LanguageTag, playerID ...int) (map[int][]*models.PlayerNameChange, error) {
+func (repo *pgRepository) FetchNameChanges(ctx context.Context, code models.VersionCode, playerID ...int) (map[int][]*models.PlayerNameChange, error) {
 	data := []*models.PlayerNameChange{}
 	if err := repo.Model(&data).
 		Context(ctx).
-		Where("lang_version_tag = ?", langTag).
+		Where("version_code = ?", code).
 		Where("player_id IN (?)", pg.In(playerID)).
 		Select(); err != nil && err != pg.ErrNoRows {
 		return nil, errors.Wrap(err, "Internal server error")
@@ -89,14 +89,14 @@ func (repo *pgRepository) FetchNameChanges(ctx context.Context, langTag models.L
 	return m, nil
 }
 
-func (repo *pgRepository) FetchPlayerServers(ctx context.Context, langTag models.LanguageTag, playerID ...int) (map[int][]string, error) {
+func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code models.VersionCode, playerID ...int) (map[int][]string, error) {
 	data := []*fetchPlayerServersQueryResult{}
 	if err := repo.Model(&models.PlayerToServer{}).
 		Context(ctx).
 		Column("player_id").
 		ColumnExpr("array_agg(server_key) as servers").
 		Relation("Server._").
-		Where("lang_version_tag = ?", langTag).
+		Where("version_code = ?", code).
 		Where("player_id IN (?)", pg.In(playerID)).
 		Group("player_id").
 		Select(&data); err != nil && err != pg.ErrNoRows {

@@ -5,7 +5,6 @@ import (
 	"github.com/tribalwarshelp/api/dailytribestats"
 	"github.com/tribalwarshelp/api/ennoblement"
 	"github.com/tribalwarshelp/api/graphql/generated"
-	"github.com/tribalwarshelp/api/langversion"
 	"github.com/tribalwarshelp/api/liveennoblement"
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/api/playerhistory"
@@ -14,11 +13,12 @@ import (
 	"github.com/tribalwarshelp/api/tribe"
 	"github.com/tribalwarshelp/api/tribechange"
 	"github.com/tribalwarshelp/api/tribehistory"
+	"github.com/tribalwarshelp/api/version"
 	"github.com/tribalwarshelp/api/village"
 )
 
 type Resolver struct {
-	LangVersionUcase      langversion.Usecase
+	VersionUcase          version.Usecase
 	ServerUcase           server.Usecase
 	PlayerUcase           player.Usecase
 	TribeUcase            tribe.Usecase
@@ -57,6 +57,9 @@ func (r *Resolver) DailyPlayerStatsRecord() generated.DailyPlayerStatsRecordReso
 func (r *Resolver) DailyTribeStatsRecord() generated.DailyTribeStatsRecordResolver {
 	return &dailyTribeStatsRecordResolver{r}
 }
+func (r *Resolver) Version() generated.VersionResolver {
+	return &versionResolver{r}
+}
 
 type queryResolver struct{ *Resolver }
 type playerResolver struct{ *Resolver }
@@ -71,3 +74,4 @@ type serverStatsRecordResolver struct{ *Resolver }
 type tribeChangeRecordResolver struct{ *Resolver }
 type dailyPlayerStatsRecordResolver struct{ *Resolver }
 type dailyTribeStatsRecordResolver struct{ *Resolver }
+type versionResolver struct{ *Resolver }

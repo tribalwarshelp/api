@@ -3,7 +3,7 @@ module github.com/tribalwarshelp/api
 go 1.14
 
 require (
-	github.com/99designs/gqlgen v0.11.3
+	github.com/99designs/gqlgen v0.13.0
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-pg/pg/v10 v10.0.0-beta.2
@@ -16,8 +16,8 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/segmentio/encoding v0.1.14 // indirect
 	github.com/tribalwarshelp/map-generator v0.0.0-20200801113621-fb8892ceb243
-	github.com/tribalwarshelp/shared v0.0.0-20201031105753-5d4d8b307747
-	github.com/vektah/gqlparser/v2 v2.0.1
+	github.com/tribalwarshelp/shared v0.0.0-20201106181031-7c5891c02013
+	github.com/vektah/gqlparser/v2 v2.1.0
 	go.opentelemetry.io/otel v0.9.0 // indirect
 	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect

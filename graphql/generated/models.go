@@ -21,11 +21,6 @@ type EnnoblementList struct {
 	Total int                   `json:"total"`
 }
 
-type LangVersionList struct {
-	Items []*models.LangVersion `json:"items"`
-	Total int                   `json:"total"`
-}
-
 type PlayerHistory struct {
 	Total int                     `json:"total"`
 	Items []*models.PlayerHistory `json:"items"`
@@ -59,6 +54,11 @@ type TribeHistory struct {
 type TribeList struct {
 	Items []*models.Tribe `json:"items"`
 	Total int             `json:"total"`
+}
+
+type VersionList struct {
+	Items []*models.Version `json:"items"`
+	Total int               `json:"total"`
 }
 
 type VillageList struct {
