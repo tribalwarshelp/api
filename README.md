@@ -1,6 +1,6 @@
 # TWHelp API
 
-Are you bored of parsing TribalWars world data? Then you should try this GraphQL API written in Go. You don't need to parse world data anymore on your own! Fetch data in JSON format from TWHelp API. All TribalWars versions are available.
+A GraphQL API for Tribal Wars data. All versions are available. 
 
 ## API Limits
 
@@ -77,7 +77,7 @@ query {
 
 ## Map service
 
-You can generate a server map with this API. The current endpoint is https://api.tribalwarshelp.com/map/server (replace "server" with the world you're interested in, for example, pl151).
+You can generate a server map with this API. The current endpoint is http(s)://youraddress/map/server (replace "server" with the server you're interested in, for example, pl151).
 
 ### Available query params:
 
@@ -104,7 +104,7 @@ You can generate a server map with this API. The current endpoint is https://api
 
 ## Development
 
-**Required env variables to run this API** (you can set them directly in your system or create .env.development file):
+**Required env variables to run this API:**
 
 ```
 DB_USER=your_pgdb_user
