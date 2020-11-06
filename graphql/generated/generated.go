@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -52,7 +51,6 @@ type ResolverRoot interface {
 }
 
 type DirectiveRoot struct {
-	Depreacted func(ctx context.Context, obj interface{}, next graphql.Resolver, reason *string) (res interface{}, err error)
 }
 
 type ComplexityRoot struct {
@@ -3433,9 +3431,7 @@ extend type Query {
 	{Name: "schema/directives.graphql", Input: `directive @goField(
   forceResolver: Boolean
   name: String
-) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
-
-directive @depreacted(reason: String = "No longer supported") on FIELD_DEFINITION | ENUM_VALUE`, BuiltIn: false},
+) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION`, BuiltIn: false},
 	{Name: "schema/ennoblements.graphql", Input: `type Ennoblement {
   village: Village @goField(forceResolver: true)
   newOwner: Player @goField(forceResolver: true)
@@ -3702,7 +3698,7 @@ type Server {
   numberOfTribes: Int!
   numberOfVillages: Int!
 
-  langVersion: Version @goField(forceResolver: true) @depreacted(reason: "Renamed to version")
+  langVersion: Version @goField(forceResolver: true)
   version: Version @goField(forceResolver: true)
 
   config: ServerConfig!
@@ -3728,8 +3724,8 @@ input ServerFilter {
   status: [ServerStatus!]
   statusNEQ: [ServerStatus!]
 
-  langVersionTag: [VersionCode!] @depreacted
-  langVersionTagNEQ: [VersionCode!] @depreacted
+  langVersionTag: [VersionCode!]
+  langVersionTagNEQ: [VersionCode!]
   versionCode: [VersionCode!]
   versionCodeNEQ: [VersionCode!]
 
@@ -4204,7 +4200,7 @@ type UnitConfig {
 }
 
 type Version {
-  tag: VersionCode! @depreacted @goField(forceResolver: true)
+  tag: VersionCode! @goField(forceResolver: true)
   code: VersionCode!
   name: String!
   host: String!
@@ -4212,8 +4208,8 @@ type Version {
 }
 
 input VersionFilter {
-  languageTag: [VersionCode!] @depreacted
-  languageTagNEQ: [VersionCode!] @depreacted
+  languageTag: [VersionCode!]
+  languageTagNEQ: [VersionCode!]
   
   code: [VersionCode!]
   codeNEQ: [VersionCode!]
@@ -4234,8 +4230,8 @@ type VersionList {
 }
 
 extend type Query {
-  langVersions(filter: VersionFilter): VersionList! @depreacted @goField(forceResolver: true)
-  langVersion(tag: VersionCode!): Version @depreacted @goField(forceResolver: true)
+  langVersions(filter: VersionFilter): VersionList! @goField(forceResolver: true)
+  langVersion(tag: VersionCode!): Version @goField(forceResolver: true)
   versions(filter: VersionFilter): VersionList!
   version(code: VersionCode!): Version
 }
@@ -4305,21 +4301,6 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
-
-func (ec *executionContext) dir_depreacted_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 *string
-	if tmp, ok := rawArgs["reason"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("reason"))
-		arg0, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["reason"] = arg0
-	return args, nil
-}
 
 func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -9499,32 +9480,8 @@ func (ec *executionContext) _Query_langVersions(ctx context.Context, field graph
 	}
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		directive0 := func(rctx context.Context) (interface{}, error) {
-			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().LangVersions(rctx, args["filter"].(*models.VersionFilter))
-		}
-		directive1 := func(ctx context.Context) (interface{}, error) {
-			reason, err := ec.unmarshalOString2ᚖstring(ctx, "No longer supported")
-			if err != nil {
-				return nil, err
-			}
-			if ec.directives.Depreacted == nil {
-				return nil, errors.New("directive depreacted is not implemented")
-			}
-			return ec.directives.Depreacted(ctx, nil, directive0, reason)
-		}
-
-		tmp, err := directive1(rctx)
-		if err != nil {
-			return nil, graphql.ErrorOnPath(ctx, err)
-		}
-		if tmp == nil {
-			return nil, nil
-		}
-		if data, ok := tmp.(*VersionList); ok {
-			return data, nil
-		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/tribalwarshelp/api/graphql/generated.VersionList`, tmp)
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().LangVersions(rctx, args["filter"].(*models.VersionFilter))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9565,32 +9522,8 @@ func (ec *executionContext) _Query_langVersion(ctx context.Context, field graphq
 	}
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		directive0 := func(rctx context.Context) (interface{}, error) {
-			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().LangVersion(rctx, args["tag"].(models.VersionCode))
-		}
-		directive1 := func(ctx context.Context) (interface{}, error) {
-			reason, err := ec.unmarshalOString2ᚖstring(ctx, "No longer supported")
-			if err != nil {
-				return nil, err
-			}
-			if ec.directives.Depreacted == nil {
-				return nil, errors.New("directive depreacted is not implemented")
-			}
-			return ec.directives.Depreacted(ctx, nil, directive0, reason)
-		}
-
-		tmp, err := directive1(rctx)
-		if err != nil {
-			return nil, graphql.ErrorOnPath(ctx, err)
-		}
-		if tmp == nil {
-			return nil, nil
-		}
-		if data, ok := tmp.(*models.Version); ok {
-			return data, nil
-		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/tribalwarshelp/shared/models.Version`, tmp)
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().LangVersion(rctx, args["tag"].(models.VersionCode))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10029,32 +9962,8 @@ func (ec *executionContext) _Server_langVersion(ctx context.Context, field graph
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		directive0 := func(rctx context.Context) (interface{}, error) {
-			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Server().LangVersion(rctx, obj)
-		}
-		directive1 := func(ctx context.Context) (interface{}, error) {
-			reason, err := ec.unmarshalOString2ᚖstring(ctx, "Renamed to version")
-			if err != nil {
-				return nil, err
-			}
-			if ec.directives.Depreacted == nil {
-				return nil, errors.New("directive depreacted is not implemented")
-			}
-			return ec.directives.Depreacted(ctx, obj, directive0, reason)
-		}
-
-		tmp, err := directive1(rctx)
-		if err != nil {
-			return nil, graphql.ErrorOnPath(ctx, err)
-		}
-		if tmp == nil {
-			return nil, nil
-		}
-		if data, ok := tmp.(*models.Version); ok {
-			return data, nil
-		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/tribalwarshelp/shared/models.Version`, tmp)
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Server().LangVersion(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -17017,32 +16926,8 @@ func (ec *executionContext) _Version_tag(ctx context.Context, field graphql.Coll
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		directive0 := func(rctx context.Context) (interface{}, error) {
-			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Version().Tag(rctx, obj)
-		}
-		directive1 := func(ctx context.Context) (interface{}, error) {
-			reason, err := ec.unmarshalOString2ᚖstring(ctx, "No longer supported")
-			if err != nil {
-				return nil, err
-			}
-			if ec.directives.Depreacted == nil {
-				return nil, errors.New("directive depreacted is not implemented")
-			}
-			return ec.directives.Depreacted(ctx, obj, directive0, reason)
-		}
-
-		tmp, err := directive1(rctx)
-		if err != nil {
-			return nil, graphql.ErrorOnPath(ctx, err)
-		}
-		if tmp == nil {
-			return nil, nil
-		}
-		if data, ok := tmp.(models.VersionCode); ok {
-			return data, nil
-		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be github.com/tribalwarshelp/shared/models.VersionCode`, tmp)
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Version().Tag(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)

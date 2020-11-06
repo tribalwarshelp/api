@@ -20,7 +20,7 @@ enum VersionCode {
 }
 
 type Version {
-  tag: VersionCode! @depreacted @goField(forceResolver: true)
+  tag: VersionCode! @goField(forceResolver: true)
   code: VersionCode!
   name: String!
   host: String!
@@ -28,8 +28,8 @@ type Version {
 }
 
 input VersionFilter {
-  languageTag: [VersionCode!] @depreacted
-  languageTagNEQ: [VersionCode!] @depreacted
+  languageTag: [VersionCode!]
+  languageTagNEQ: [VersionCode!]
   
   code: [VersionCode!]
   codeNEQ: [VersionCode!]
@@ -50,8 +50,8 @@ type VersionList {
 }
 
 extend type Query {
-  langVersions(filter: VersionFilter): VersionList! @depreacted @goField(forceResolver: true)
-  langVersion(tag: VersionCode!): Version @depreacted @goField(forceResolver: true)
+  langVersions(filter: VersionFilter): VersionList! @goField(forceResolver: true)
+  langVersion(tag: VersionCode!): Version @goField(forceResolver: true)
   versions(filter: VersionFilter): VersionList!
   version(code: VersionCode!): Version
 }
