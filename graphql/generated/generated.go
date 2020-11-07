@@ -3698,7 +3698,7 @@ type Server {
   numberOfTribes: Int!
   numberOfVillages: Int!
 
-  langVersion: Version @goField(forceResolver: true)
+  langVersion: Version @goField(forceResolver: true) @deprecated(reason: "Use ` + "`" + `version` + "`" + `.")
   version: Version @goField(forceResolver: true)
 
   config: ServerConfig!
@@ -3724,8 +3724,8 @@ input ServerFilter {
   status: [ServerStatus!]
   statusNEQ: [ServerStatus!]
 
-  langVersionTag: [VersionCode!]
-  langVersionTagNEQ: [VersionCode!]
+  langVersionTag: [VersionCode!] @deprecated(reason: "Use ` + "`" + `versionCode` + "`" + `.")
+  langVersionTagNEQ: [VersionCode!] @deprecated(reason: "Use ` + "`" + `versionCodeNEQ` + "`" + `.")
   versionCode: [VersionCode!]
   versionCodeNEQ: [VersionCode!]
 
@@ -4200,7 +4200,7 @@ type UnitConfig {
 }
 
 type Version {
-  tag: VersionCode! @goField(forceResolver: true)
+  tag: VersionCode! @goField(forceResolver: true) @deprecated(reason: "Use ` + "`" + `code` + "`" + `.")
   code: VersionCode!
   name: String!
   host: String!
@@ -4208,8 +4208,8 @@ type Version {
 }
 
 input VersionFilter {
-  languageTag: [VersionCode!]
-  languageTagNEQ: [VersionCode!]
+  languageTag: [VersionCode!] @deprecated(reason: "Use ` + "`" + `code` + "`" + `.")
+  languageTagNEQ: [VersionCode!] @deprecated(reason: "Use ` + "`" + `codeNEQ` + "`" + `.")
   
   code: [VersionCode!]
   codeNEQ: [VersionCode!]
@@ -4230,8 +4230,8 @@ type VersionList {
 }
 
 extend type Query {
-  langVersions(filter: VersionFilter): VersionList! @goField(forceResolver: true)
-  langVersion(tag: VersionCode!): Version @goField(forceResolver: true)
+  langVersions(filter: VersionFilter): VersionList! @deprecated(reason: "Use ` + "`" + `versions` + "`" + `.")
+  langVersion(tag: VersionCode!): Version @deprecated(reason: "Use ` + "`" + `version` + "`" + `.")
   versions(filter: VersionFilter): VersionList!
   version(code: VersionCode!): Version
 }
