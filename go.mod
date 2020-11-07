@@ -16,7 +16,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/segmentio/encoding v0.1.14 // indirect
 	github.com/tribalwarshelp/map-generator v0.0.0-20200801113621-fb8892ceb243
-	github.com/tribalwarshelp/shared v0.0.0-20201106181031-7c5891c02013
+	github.com/tribalwarshelp/shared v0.0.0-20201107073846-5e8e2d44d75c
 	github.com/vektah/gqlparser/v2 v2.1.0
 	go.opentelemetry.io/otel v0.9.0 // indirect
 	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208

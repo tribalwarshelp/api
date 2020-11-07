@@ -28,9 +28,8 @@ type Version {
 }
 
 input VersionFilter {
-  languageTag: [VersionCode!] @deprecated(reason: "Use `code`.")
-  languageTagNEQ: [VersionCode!] @deprecated(reason: "Use `codeNEQ`.")
-  
+  tag: [VersionCode!] @deprecated(reason: "Use `code`.")
+  tagNEQ: [VersionCode!] @deprecated(reason: "Use `codeNEQ`.")
   code: [VersionCode!]
   codeNEQ: [VersionCode!]
 

@@ -28,11 +28,11 @@ func (ucase *usecase) Fetch(ctx context.Context, filter *models.VersionFilter) (
 	if !middleware.MayExceedLimit(ctx) && (filter.Limit > version.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = version.PaginationLimit
 	}
-	if len(filter.LanguageTag) > 0 {
-		filter.Code = append(filter.Code, filter.LanguageTag...)
+	if len(filter.Tag) > 0 {
+		filter.Code = append(filter.Code, filter.Tag...)
 	}
-	if len(filter.LanguageTagNEQ) > 0 {
-		filter.CodeNEQ = append(filter.Code, filter.LanguageTagNEQ...)
+	if len(filter.TagNEQ) > 0 {
+		filter.CodeNEQ = append(filter.Code, filter.TagNEQ...)
 	}
 	filter.Sort = utils.SanitizeSort(filter.Sort)
 	return ucase.repo.Fetch(ctx, version.FetchConfig{

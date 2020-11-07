@@ -4208,9 +4208,8 @@ type Version {
 }
 
 input VersionFilter {
-  languageTag: [VersionCode!] @deprecated(reason: "Use ` + "`" + `code` + "`" + `.")
-  languageTagNEQ: [VersionCode!] @deprecated(reason: "Use ` + "`" + `codeNEQ` + "`" + `.")
-  
+  tag: [VersionCode!] @deprecated(reason: "Use ` + "`" + `code` + "`" + `.")
+  tagNEQ: [VersionCode!] @deprecated(reason: "Use ` + "`" + `codeNEQ` + "`" + `.")
   code: [VersionCode!]
   codeNEQ: [VersionCode!]
 
@@ -20849,19 +20848,19 @@ func (ec *executionContext) unmarshalInputVersionFilter(ctx context.Context, obj
 
 	for k, v := range asMap {
 		switch k {
-		case "languageTag":
+		case "tag":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languageTag"))
-			it.LanguageTag, err = ec.unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tag"))
+			it.Tag, err = ec.unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "languageTagNEQ":
+		case "tagNEQ":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("languageTagNEQ"))
-			it.LanguageTagNEQ, err = ec.unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tagNEQ"))
+			it.TagNEQ, err = ec.unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
