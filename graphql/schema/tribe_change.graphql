@@ -34,10 +34,25 @@ input TribeChangeFilter {
   or: TribeChangeFilterOr
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribeChanges - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribeChanges - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query tribeChanges - `sort`."
+    )
 }
 
 extend type Query {
-  tribeChanges(server: String!, filter: TribeChangeFilter): TribeChanges!
+  tribeChanges(
+    server: String!
+    filter: TribeChangeFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): TribeChanges!
 }

@@ -31,10 +31,25 @@ input TribeHistoryFilter {
   createDateLTE: Time
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribeHistory - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribeHistory - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query tribeHistory - `sort`."
+    )
 }
 
 extend type Query {
-  tribeHistory(server: String!, filter: TribeHistoryFilter): TribeHistory!
+  tribeHistory(
+    server: String!
+    filter: TribeHistoryFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): TribeHistory!
 }

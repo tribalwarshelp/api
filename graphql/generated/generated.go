@@ -226,12 +226,12 @@ type ComplexityRoot struct {
 		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) int
 		Players          func(childComplexity int, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) int
 		Server           func(childComplexity int, key string) int
-		ServerStats      func(childComplexity int, server string, filter *models.ServerStatsFilter) int
+		ServerStats      func(childComplexity int, server string, filter *models.ServerStatsFilter, limit *int, offset *int, sort []string) int
 		Servers          func(childComplexity int, filter *models.ServerFilter, limit *int, offset *int, sort []string) int
 		Tribe            func(childComplexity int, server string, id int) int
-		TribeChanges     func(childComplexity int, server string, filter *models.TribeChangeFilter) int
-		TribeHistory     func(childComplexity int, server string, filter *models.TribeHistoryFilter) int
-		Tribes           func(childComplexity int, server string, filter *models.TribeFilter) int
+		TribeChanges     func(childComplexity int, server string, filter *models.TribeChangeFilter, limit *int, offset *int, sort []string) int
+		TribeHistory     func(childComplexity int, server string, filter *models.TribeHistoryFilter, limit *int, offset *int, sort []string) int
+		Tribes           func(childComplexity int, server string, filter *models.TribeFilter, limit *int, offset *int, sort []string) int
 		Version          func(childComplexity int, code models.VersionCode) int
 		Versions         func(childComplexity int, filter *models.VersionFilter) int
 		Village          func(childComplexity int, server string, id int) int
@@ -588,11 +588,11 @@ type QueryResolver interface {
 	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) (*PlayerHistory, error)
 	Servers(ctx context.Context, filter *models.ServerFilter, limit *int, offset *int, sort []string) (*ServerList, error)
 	Server(ctx context.Context, key string) (*models.Server, error)
-	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*ServerStats, error)
-	Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*TribeList, error)
+	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter, limit *int, offset *int, sort []string) (*ServerStats, error)
+	Tribes(ctx context.Context, server string, filter *models.TribeFilter, limit *int, offset *int, sort []string) (*TribeList, error)
 	Tribe(ctx context.Context, server string, id int) (*models.Tribe, error)
-	TribeChanges(ctx context.Context, server string, filter *models.TribeChangeFilter) (*TribeChanges, error)
-	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter) (*TribeHistory, error)
+	TribeChanges(ctx context.Context, server string, filter *models.TribeChangeFilter, limit *int, offset *int, sort []string) (*TribeChanges, error)
+	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter, limit *int, offset *int, sort []string) (*TribeHistory, error)
 	LangVersions(ctx context.Context, filter *models.VersionFilter) (*VersionList, error)
 	LangVersion(ctx context.Context, tag models.VersionCode) (*models.Version, error)
 	Versions(ctx context.Context, filter *models.VersionFilter) (*VersionList, error)
@@ -1597,7 +1597,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ServerStats(childComplexity, args["server"].(string), args["filter"].(*models.ServerStatsFilter)), true
+		return e.complexity.Query.ServerStats(childComplexity, args["server"].(string), args["filter"].(*models.ServerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.servers":
 		if e.complexity.Query.Servers == nil {
@@ -1633,7 +1633,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.TribeChanges(childComplexity, args["server"].(string), args["filter"].(*models.TribeChangeFilter)), true
+		return e.complexity.Query.TribeChanges(childComplexity, args["server"].(string), args["filter"].(*models.TribeChangeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.tribeHistory":
 		if e.complexity.Query.TribeHistory == nil {
@@ -1645,7 +1645,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.TribeHistory(childComplexity, args["server"].(string), args["filter"].(*models.TribeHistoryFilter)), true
+		return e.complexity.Query.TribeHistory(childComplexity, args["server"].(string), args["filter"].(*models.TribeHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.tribes":
 		if e.complexity.Query.Tribes == nil {
@@ -1657,7 +1657,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Tribes(childComplexity, args["server"].(string), args["filter"].(*models.TribeFilter)), true
+		return e.complexity.Query.Tribes(childComplexity, args["server"].(string), args["filter"].(*models.TribeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.version":
 		if e.complexity.Query.Version == nil {
@@ -3983,12 +3983,27 @@ input ServerStatsFilter {
   createDateLTE: Time
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query serverStats - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query serverStats - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query serverStats - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  serverStats(server: String!, filter: ServerStatsFilter): ServerStats!
+  serverStats(
+    server: String!
+    filter: ServerStatsFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): ServerStats!
 }
 `, BuiltIn: false},
 	{Name: "schema/tribe.graphql", Input: `type Tribe {
@@ -4124,12 +4139,27 @@ input TribeFilter {
   deletedAtLTE: Time
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribes - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribes - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query tribes - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  tribes(server: String!, filter: TribeFilter): TribeList!
+  tribes(
+    server: String!
+    filter: TribeFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): TribeList!
   tribe(server: String!, id: Int!): Tribe
 }
 `, BuiltIn: false},
@@ -4169,12 +4199,27 @@ input TribeChangeFilter {
   or: TribeChangeFilterOr
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribeChanges - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribeChanges - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query tribeChanges - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  tribeChanges(server: String!, filter: TribeChangeFilter): TribeChanges!
+  tribeChanges(
+    server: String!
+    filter: TribeChangeFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): TribeChanges!
 }
 `, BuiltIn: false},
 	{Name: "schema/tribe_history.graphql", Input: `type TribeHistoryRecord {
@@ -4210,12 +4255,27 @@ input TribeHistoryFilter {
   createDateLTE: Time
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribeHistory - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribeHistory - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query tribeHistory - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  tribeHistory(server: String!, filter: TribeHistoryFilter): TribeHistory!
+  tribeHistory(
+    server: String!
+    filter: TribeHistoryFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): TribeHistory!
 }
 `, BuiltIn: false},
 	{Name: "schema/unit_config.graphql", Input: `type Unit {
@@ -4728,6 +4788,33 @@ func (ec *executionContext) field_Query_serverStats_args(ctx context.Context, ra
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -4809,6 +4896,33 @@ func (ec *executionContext) field_Query_tribeChanges_args(ctx context.Context, r
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -4833,6 +4947,33 @@ func (ec *executionContext) field_Query_tribeHistory_args(ctx context.Context, r
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -4881,6 +5022,33 @@ func (ec *executionContext) field_Query_tribes_args(ctx context.Context, rawArgs
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -9502,7 +9670,7 @@ func (ec *executionContext) _Query_serverStats(ctx context.Context, field graphq
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().ServerStats(rctx, args["server"].(string), args["filter"].(*models.ServerStatsFilter))
+		return ec.resolvers.Query().ServerStats(rctx, args["server"].(string), args["filter"].(*models.ServerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9544,7 +9712,7 @@ func (ec *executionContext) _Query_tribes(ctx context.Context, field graphql.Col
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Tribes(rctx, args["server"].(string), args["filter"].(*models.TribeFilter))
+		return ec.resolvers.Query().Tribes(rctx, args["server"].(string), args["filter"].(*models.TribeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9625,7 +9793,7 @@ func (ec *executionContext) _Query_tribeChanges(ctx context.Context, field graph
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().TribeChanges(rctx, args["server"].(string), args["filter"].(*models.TribeChangeFilter))
+		return ec.resolvers.Query().TribeChanges(rctx, args["server"].(string), args["filter"].(*models.TribeChangeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9667,7 +9835,7 @@ func (ec *executionContext) _Query_tribeHistory(ctx context.Context, field graph
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().TribeHistory(rctx, args["server"].(string), args["filter"].(*models.TribeHistoryFilter))
+		return ec.resolvers.Query().TribeHistory(rctx, args["server"].(string), args["filter"].(*models.TribeHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

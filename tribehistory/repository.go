@@ -10,6 +10,9 @@ type FetchConfig struct {
 	Server string
 	Filter *models.TribeHistoryFilter
 	Count  bool
+	Sort   []string
+	Limit  int
+	Offset int
 }
 
 type Repository interface {

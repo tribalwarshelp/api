@@ -131,11 +131,26 @@ input TribeFilter {
   deletedAtLTE: Time
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribes - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query tribes - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query tribes - `sort`."
+    )
 }
 
 extend type Query {
-  tribes(server: String!, filter: TribeFilter): TribeList!
+  tribes(
+    server: String!
+    filter: TribeFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): TribeList!
   tribe(server: String!, id: Int!): Tribe
 }

@@ -23,17 +23,17 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg serverstats.FetchConfig
 	var err error
 	data := []*models.ServerStats{}
 	total := 0
-	query := repo.WithParam("SERVER", pg.Safe(cfg.Server)).Model(&data).Context(ctx)
+	query := repo.
+		WithParam("SERVER", pg.Safe(cfg.Server)).
+		Model(&data).
+		Context(ctx).
+		Order(cfg.Sort...).
+		Limit(cfg.Limit).
+		Offset(cfg.Offset)
 
 	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(cfg.Filter).
-			Limit(cfg.Filter.Limit).
-			Offset(cfg.Filter.Offset)
-
-		if cfg.Filter.Sort != "" {
-			query = query.Order(cfg.Filter.Sort)
-		}
+			WhereStruct(cfg.Filter)
 	}
 
 	if cfg.Count {

@@ -25,10 +25,25 @@ input ServerStatsFilter {
   createDateLTE: Time
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query serverStats - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query serverStats - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query serverStats - `sort`."
+    )
 }
 
 extend type Query {
-  serverStats(server: String!, filter: ServerStatsFilter): ServerStats!
+  serverStats(
+    server: String!
+    filter: ServerStatsFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): ServerStats!
 }

@@ -24,7 +24,8 @@ func (r *serverResolver) LangVersion(ctx context.Context, obj *models.Server) (*
 }
 
 func (r *queryResolver) Servers(ctx context.Context,
-	f *models.ServerFilter, limit *int,
+	f *models.ServerFilter,
+	limit *int,
 	offset *int,
 	sort []string) (*generated.ServerList, error) {
 	defLimit := 0

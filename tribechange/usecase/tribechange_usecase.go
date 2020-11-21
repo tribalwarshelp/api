@@ -17,17 +17,22 @@ func New(repo tribechange.Repository) tribechange.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.TribeChangeFilter) ([]*models.TribeChange, int, error) {
-	if filter == nil {
-		filter = &models.TribeChangeFilter{}
+func (ucase *usecase) Fetch(ctx context.Context, cfg tribechange.FetchConfig) ([]*models.TribeChange, int, error) {
+	if cfg.Filter == nil {
+		cfg.Filter = &models.TribeChangeFilter{}
 	}
-	if !middleware.CanExceedLimit(ctx) && (filter.Limit > tribechange.PaginationLimit || filter.Limit <= 0) {
-		filter.Limit = tribechange.PaginationLimit
+	if cfg.Filter.Limit > 0 {
+		cfg.Limit = cfg.Filter.Limit
 	}
-	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
-	return ucase.repo.Fetch(ctx, tribechange.FetchConfig{
-		Server: server,
-		Filter: filter,
-		Count:  true,
-	})
+	if cfg.Filter.Offset > 0 {
+		cfg.Offset = cfg.Filter.Offset
+	}
+	if cfg.Filter.Sort != "" {
+		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
+	}
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribechange.PaginationLimit || cfg.Limit <= 0) {
+		cfg.Limit = tribechange.PaginationLimit
+	}
+	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	return ucase.repo.Fetch(ctx, cfg)
 }

@@ -26,7 +26,8 @@ func (r *playerHistoryRecordResolver) Tribe(ctx context.Context, obj *models.Pla
 
 func (r *Resolver) PlayerHistory(ctx context.Context,
 	server string,
-	f *models.PlayerHistoryFilter, limit *int,
+	f *models.PlayerHistoryFilter,
+	limit *int,
 	offset *int,
 	sort []string) (*generated.PlayerHistory, error) {
 	defLimit := 0

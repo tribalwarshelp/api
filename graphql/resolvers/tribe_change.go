@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
+	"github.com/tribalwarshelp/api/tribechange"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -31,9 +32,29 @@ func (r *tribeChangeRecordResolver) OldTribe(ctx context.Context, obj *models.Tr
 	return getTribe(ctx, obj.OldTribeID), nil
 }
 
-func (r *Resolver) TribeChanges(ctx context.Context, server string, filter *models.TribeChangeFilter) (*generated.TribeChanges, error) {
+func (r *Resolver) TribeChanges(ctx context.Context,
+	server string,
+	f *models.TribeChangeFilter,
+	limit *int,
+	offset *int,
+	sort []string) (*generated.TribeChanges, error) {
+	defLimit := 0
+	defOffset := 0
+	if limit == nil {
+		limit = &defLimit
+	}
+	if offset == nil {
+		offset = &defOffset
+	}
+
 	var err error
 	list := &generated.TribeChanges{}
-	list.Items, list.Total, err = r.TribeChangeUcase.Fetch(ctx, server, filter)
+	list.Items, list.Total, err = r.TribeChangeUcase.Fetch(ctx, tribechange.FetchConfig{
+		Filter: f,
+		Sort:   sort,
+		Limit:  *limit,
+		Offset: *offset,
+		Count:  true,
+	})
 	return list, err
 }

@@ -4,13 +4,35 @@ import (
 	"context"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
+	"github.com/tribalwarshelp/api/tribe"
 	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *queryResolver) Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*generated.TribeList, error) {
+func (r *queryResolver) Tribes(ctx context.Context,
+	server string,
+	f *models.TribeFilter,
+	limit *int,
+	offset *int,
+	sort []string) (*generated.TribeList, error) {
+	defLimit := 0
+	defOffset := 0
+	if limit == nil {
+		limit = &defLimit
+	}
+	if offset == nil {
+		offset = &defOffset
+	}
+
 	var err error
 	list := &generated.TribeList{}
-	list.Items, list.Total, err = r.TribeUcase.Fetch(ctx, server, filter)
+	list.Items, list.Total, err = r.TribeUcase.Fetch(ctx, tribe.FetchConfig{
+		Server: server,
+		Filter: f,
+		Sort:   sort,
+		Limit:  *limit,
+		Offset: *offset,
+		Count:  true,
+	})
 	return list, err
 }
 
