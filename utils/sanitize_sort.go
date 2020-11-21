@@ -20,7 +20,7 @@ func SanitizeSortExpression(expr string) string {
 	column := splitted[0]
 	if strings.Contains(splitted[0], ".") {
 		columnAndTable := strings.Split(splitted[0], ".")
-		table = columnAndTable[0] + "."
+		table = Underscore(columnAndTable[0]) + "."
 		column = columnAndTable[1]
 	}
 	keyword := "ASC"

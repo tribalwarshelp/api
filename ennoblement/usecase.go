@@ -7,5 +7,5 @@ import (
 )
 
 type Usecase interface {
-	Fetch(ctx context.Context, server string, filter *models.EnnoblementFilter) ([]*models.Ennoblement, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Ennoblement, int, error)
 }

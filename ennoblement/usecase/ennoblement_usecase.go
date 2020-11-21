@@ -17,17 +17,23 @@ func New(repo ennoblement.Repository) ennoblement.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.EnnoblementFilter) ([]*models.Ennoblement, int, error) {
-	if filter == nil {
-		filter = &models.EnnoblementFilter{}
+func (ucase *usecase) Fetch(ctx context.Context, cfg ennoblement.FetchConfig) ([]*models.Ennoblement, int, error) {
+	if cfg.Filter == nil {
+		cfg.Filter = &models.EnnoblementFilter{}
 	}
-	if !middleware.CanExceedLimit(ctx) && (filter.Limit > ennoblement.PaginationLimit || filter.Limit <= 0) {
-		filter.Limit = ennoblement.PaginationLimit
+	if cfg.Filter.Limit > 0 {
+		cfg.Limit = cfg.Filter.Limit
 	}
-	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
-	return ucase.repo.Fetch(ctx, ennoblement.FetchConfig{
-		Server: server,
-		Filter: filter,
-		Count:  true,
-	})
+	if cfg.Filter.Offset > 0 {
+		cfg.Offset = cfg.Filter.Offset
+	}
+	if cfg.Filter.Sort != "" {
+		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
+	}
+
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > ennoblement.PaginationLimit || cfg.Limit <= 0) {
+		cfg.Limit = ennoblement.PaginationLimit
+	}
+	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	return ucase.repo.Fetch(ctx, cfg)
 }

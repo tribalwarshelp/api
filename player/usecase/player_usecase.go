@@ -18,31 +18,35 @@ func New(repo player.Repository) player.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.PlayerFilter) ([]*models.Player, int, error) {
-	if filter == nil {
-		filter = &models.PlayerFilter{}
+func (ucase *usecase) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*models.Player, int, error) {
+	if cfg.Filter == nil {
+		cfg.Filter = &models.PlayerFilter{}
 	}
-	if !middleware.CanExceedLimit(ctx) && (filter.Limit > player.PaginationLimit || filter.Limit <= 0) {
-		filter.Limit = player.PaginationLimit
+	if cfg.Filter.Limit > 0 {
+		cfg.Limit = cfg.Filter.Limit
 	}
-	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
-	if filter.TribeFilter != nil {
-		filter.TribeFilter.Sort = utils.SanitizeSortExpression(filter.TribeFilter.Sort)
+	if cfg.Filter.Offset > 0 {
+		cfg.Offset = cfg.Filter.Offset
 	}
-	return ucase.repo.Fetch(ctx, player.FetchConfig{
-		Server: server,
-		Filter: filter,
-		Count:  true,
-	})
+	if cfg.Filter.Sort != "" {
+		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
+	}
+
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.PaginationLimit || cfg.Limit <= 0) {
+		cfg.Limit = player.PaginationLimit
+	}
+	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	return ucase.repo.Fetch(ctx, cfg)
 }
 
 func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*models.Player, error) {
 	players, _, err := ucase.repo.Fetch(ctx, player.FetchConfig{
 		Server: server,
 		Filter: &models.PlayerFilter{
-			ID:    []int{id},
-			Limit: 1,
+			ID: []int{id},
 		},
+		Limit: 1,
+		Count: false,
 	})
 	if err != nil {
 		return nil, err

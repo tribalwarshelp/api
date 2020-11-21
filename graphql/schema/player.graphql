@@ -137,11 +137,26 @@ input PlayerFilter {
   tribeFilter: TribeFilter
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query players - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query players - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query players - `sort`."
+    )
 }
 
 extend type Query {
-  players(server: String!, filter: PlayerFilter): PlayerList!
+  players(
+    server: String!
+    filter: PlayerFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): PlayerList!
   player(server: String!, id: Int!): Player
 }

@@ -31,8 +31,8 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg dailyplayerstats.FetchC
 		Order(cfg.Sort...).
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
-	playerRequired := utils.FindStringWithPrefix(cfg.Sort, "player") != ""
-	tribeRequired := utils.FindStringWithPrefix(cfg.Sort, "tribe") != ""
+	playerRequired := utils.FindStringWithPrefix(cfg.Sort, "player.") != ""
+	tribeRequired := utils.FindStringWithPrefix(cfg.Sort, "tribe.") != ""
 
 	if cfg.Filter != nil {
 		query = query.

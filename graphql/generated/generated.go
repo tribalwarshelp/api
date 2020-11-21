@@ -218,13 +218,13 @@ type ComplexityRoot struct {
 	Query struct {
 		DailyPlayerStats func(childComplexity int, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) int
 		DailyTribeStats  func(childComplexity int, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) int
-		Ennoblements     func(childComplexity int, server string, filter *models.EnnoblementFilter) int
+		Ennoblements     func(childComplexity int, server string, filter *models.EnnoblementFilter, limit *int, offset *int, sort []string) int
 		LangVersion      func(childComplexity int, tag models.VersionCode) int
 		LangVersions     func(childComplexity int, filter *models.VersionFilter) int
 		LiveEnnoblements func(childComplexity int, server string) int
 		Player           func(childComplexity int, server string, id int) int
 		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter) int
-		Players          func(childComplexity int, server string, filter *models.PlayerFilter) int
+		Players          func(childComplexity int, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) int
 		Server           func(childComplexity int, key string) int
 		ServerStats      func(childComplexity int, server string, filter *models.ServerStatsFilter) int
 		Servers          func(childComplexity int, filter *models.ServerFilter) int
@@ -581,9 +581,9 @@ type PlayerHistoryRecordResolver interface {
 type QueryResolver interface {
 	DailyPlayerStats(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) (*DailyPlayerStats, error)
 	DailyTribeStats(ctx context.Context, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) (*DailyTribeStats, error)
-	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter) (*EnnoblementList, error)
+	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter, limit *int, offset *int, sort []string) (*EnnoblementList, error)
 	LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error)
-	Players(ctx context.Context, server string, filter *models.PlayerFilter) (*PlayerList, error)
+	Players(ctx context.Context, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) (*PlayerList, error)
 	Player(ctx context.Context, server string, id int) (*models.Player, error)
 	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter) (*PlayerHistory, error)
 	Servers(ctx context.Context, filter *models.ServerFilter) (*ServerList, error)
@@ -1501,7 +1501,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Ennoblements(childComplexity, args["server"].(string), args["filter"].(*models.EnnoblementFilter)), true
+		return e.complexity.Query.Ennoblements(childComplexity, args["server"].(string), args["filter"].(*models.EnnoblementFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.langVersion":
 		if e.complexity.Query.LangVersion == nil {
@@ -1573,7 +1573,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Players(childComplexity, args["server"].(string), args["filter"].(*models.PlayerFilter)), true
+		return e.complexity.Query.Players(childComplexity, args["server"].(string), args["filter"].(*models.PlayerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.server":
 		if e.complexity.Query.Server == nil {
@@ -3482,12 +3482,27 @@ input EnnoblementFilter {
   or: EnnoblementFilterOr
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query ennoblements - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query ennoblements - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query ennoblements - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  ennoblements(server: String!, filter: EnnoblementFilter): EnnoblementList!
+  ennoblements(
+    server: String!
+    filter: EnnoblementFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): EnnoblementList!
 }
 `, BuiltIn: false},
 	{Name: "schema/live_ennoblement.graphql", Input: `type LiveEnnoblement {
@@ -3640,12 +3655,27 @@ input PlayerFilter {
   tribeFilter: TribeFilter
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query players - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query players - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query players - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  players(server: String!, filter: PlayerFilter): PlayerList!
+  players(
+    server: String!
+    filter: PlayerFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): PlayerList!
   player(server: String!, id: Int!): Player
 }
 `, BuiltIn: false},
@@ -4445,6 +4475,33 @@ func (ec *executionContext) field_Query_ennoblements_args(ctx context.Context, r
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -4562,6 +4619,33 @@ func (ec *executionContext) field_Query_players_args(ctx context.Context, rawArg
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -9048,7 +9132,7 @@ func (ec *executionContext) _Query_ennoblements(ctx context.Context, field graph
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Ennoblements(rctx, args["server"].(string), args["filter"].(*models.EnnoblementFilter))
+		return ec.resolvers.Query().Ennoblements(rctx, args["server"].(string), args["filter"].(*models.EnnoblementFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9129,7 +9213,7 @@ func (ec *executionContext) _Query_players(ctx context.Context, field graphql.Co
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Players(rctx, args["server"].(string), args["filter"].(*models.PlayerFilter))
+		return ec.resolvers.Query().Players(rctx, args["server"].(string), args["filter"].(*models.PlayerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

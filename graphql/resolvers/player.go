@@ -5,6 +5,7 @@ import (
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/middleware"
+	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/shared/models"
 	"github.com/tribalwarshelp/shared/tw"
 )
@@ -45,10 +46,31 @@ func (r *playerResolver) NameChanges(ctx context.Context, obj *models.Player) ([
 	return []*models.PlayerNameChange{}, nil
 }
 
-func (r *queryResolver) Players(ctx context.Context, server string, filter *models.PlayerFilter) (*generated.PlayerList, error) {
+func (r *queryResolver) Players(ctx context.Context,
+	server string,
+	f *models.PlayerFilter,
+	limit *int,
+	offset *int,
+	sort []string) (*generated.PlayerList, error) {
+	defLimit := 0
+	defOffset := 0
+	if limit == nil {
+		limit = &defLimit
+	}
+	if offset == nil {
+		offset = &defOffset
+	}
+
 	var err error
 	list := &generated.PlayerList{}
-	list.Items, list.Total, err = r.PlayerUcase.Fetch(ctx, server, filter)
+	list.Items, list.Total, err = r.PlayerUcase.Fetch(ctx, player.FetchConfig{
+		Server: server,
+		Filter: f,
+		Sort:   sort,
+		Limit:  *limit,
+		Offset: *offset,
+		Count:  true,
+	})
 	return list, err
 }
 

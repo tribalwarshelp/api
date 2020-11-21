@@ -42,10 +42,25 @@ input EnnoblementFilter {
   or: EnnoblementFilterOr
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query ennoblements - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query ennoblements - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query ennoblements - `sort`."
+    )
 }
 
 extend type Query {
-  ennoblements(server: String!, filter: EnnoblementFilter): EnnoblementList!
+  ennoblements(
+    server: String!
+    filter: EnnoblementFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): EnnoblementList!
 }

@@ -31,7 +31,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg dailytribestats.FetchCo
 		Order(cfg.Sort...).
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
-	tribeRequired := utils.FindStringWithPrefix(cfg.Sort, "tribe") != ""
+	tribeRequired := utils.FindStringWithPrefix(cfg.Sort, "tribe.") != ""
 
 	if cfg.Filter != nil {
 		query = query.

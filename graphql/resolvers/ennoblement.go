@@ -3,6 +3,7 @@ package resolvers
 import (
 	"context"
 
+	"github.com/tribalwarshelp/api/ennoblement"
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/shared/models"
 )
@@ -47,9 +48,29 @@ func (r *ennoblementResolver) Village(ctx context.Context, obj *models.Ennobleme
 	return getVillage(ctx, obj.VillageID), nil
 }
 
-func (r *queryResolver) Ennoblements(ctx context.Context, server string, f *models.EnnoblementFilter) (*generated.EnnoblementList, error) {
+func (r *queryResolver) Ennoblements(ctx context.Context, server string,
+	f *models.EnnoblementFilter,
+	limit *int,
+	offset *int,
+	sort []string) (*generated.EnnoblementList, error) {
+	defLimit := 0
+	defOffset := 0
+	if limit == nil {
+		limit = &defLimit
+	}
+	if offset == nil {
+		offset = &defOffset
+	}
+
 	var err error
 	list := &generated.EnnoblementList{}
-	list.Items, list.Total, err = r.EnnoblementUcase.Fetch(ctx, server, f)
+	list.Items, list.Total, err = r.EnnoblementUcase.Fetch(ctx, ennoblement.FetchConfig{
+		Server: server,
+		Filter: f,
+		Sort:   sort,
+		Limit:  *limit,
+		Offset: *offset,
+		Count:  true,
+	})
 	return list, err
 }
