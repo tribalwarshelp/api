@@ -48,11 +48,26 @@ input VillageFilter {
   playerFilter: PlayerFilter
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query versions - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query versions - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query versions - `sort`."
+    )
 }
 
 extend type Query {
-  villages(server: String!, filter: VillageFilter): VillageList!
+  villages(
+    server: String!
+    filter: VillageFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): VillageList!
   village(server: String!, id: Int!): Village
 }

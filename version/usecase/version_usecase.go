@@ -21,24 +21,30 @@ func New(repo version.Repository) version.Usecase {
 	}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, filter *models.VersionFilter) ([]*models.Version, int, error) {
-	if filter == nil {
-		filter = &models.VersionFilter{}
+func (ucase *usecase) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*models.Version, int, error) {
+	if cfg.Filter == nil {
+		cfg.Filter = &models.VersionFilter{}
 	}
-	if !middleware.CanExceedLimit(ctx) && (filter.Limit > version.PaginationLimit || filter.Limit <= 0) {
-		filter.Limit = version.PaginationLimit
+	if cfg.Filter.Limit > 0 {
+		cfg.Limit = cfg.Filter.Limit
 	}
-	if len(filter.Tag) > 0 {
-		filter.Code = append(filter.Code, filter.Tag...)
+	if cfg.Filter.Offset > 0 {
+		cfg.Offset = cfg.Filter.Offset
 	}
-	if len(filter.TagNEQ) > 0 {
-		filter.CodeNEQ = append(filter.Code, filter.TagNEQ...)
+	if cfg.Filter.Sort != "" {
+		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
 	}
-	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
-	return ucase.repo.Fetch(ctx, version.FetchConfig{
-		Filter: filter,
-		Count:  true,
-	})
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > version.PaginationLimit || cfg.Limit <= 0) {
+		cfg.Limit = version.PaginationLimit
+	}
+	if len(cfg.Filter.Tag) > 0 {
+		cfg.Filter.Code = append(cfg.Filter.Code, cfg.Filter.Tag...)
+	}
+	if len(cfg.Filter.TagNEQ) > 0 {
+		cfg.Filter.CodeNEQ = append(cfg.Filter.Code, cfg.Filter.TagNEQ...)
+	}
+	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	return ucase.repo.Fetch(ctx, cfg)
 }
 
 func (ucase *usecase) GetByCode(ctx context.Context, code models.VersionCode) (*models.Version, error) {

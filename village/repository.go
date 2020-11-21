@@ -11,6 +11,9 @@ type FetchConfig struct {
 	Filter  *models.VillageFilter
 	Columns []string
 	Count   bool
+	Sort    []string
+	Limit   int
+	Offset  int
 }
 
 type Repository interface {

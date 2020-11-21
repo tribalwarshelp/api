@@ -39,6 +39,7 @@ func (r *Resolver) TribeHistory(ctx context.Context,
 		Limit:  *limit,
 		Offset: *offset,
 		Count:  true,
+		Server: server,
 	})
 	return list, err
 }

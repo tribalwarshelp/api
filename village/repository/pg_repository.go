@@ -9,6 +9,7 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
 	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/shared/models"
 )
@@ -24,13 +25,18 @@ func NewPGRepository(db *pg.DB) village.Repository {
 func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*models.Village, int, error) {
 	var err error
 	data := []*models.Village{}
-	query := repo.WithParam("SERVER", pg.Safe(cfg.Server)).Model(&data).Context(ctx)
-
+	query := repo.
+		WithParam("SERVER", pg.Safe(cfg.Server)).
+		Model(&data).
+		Context(ctx).
+		Order(cfg.Sort...).
+		Limit(cfg.Limit).
+		Offset(cfg.Offset)
+	playerRequired := utils.FindStringWithPrefix(cfg.Sort, "player.") != ""
+	tribeRequired := utils.FindStringWithPrefix(cfg.Sort, "tribe.") != ""
 	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(cfg.Filter).
-			Limit(cfg.Filter.Limit).
-			Offset(cfg.Filter.Offset)
+			WhereStruct(cfg.Filter)
 
 		if cfg.Filter.XGTE != 0 {
 			query = query.Where("x >= ?", cfg.Filter.XGTE)
@@ -78,34 +84,24 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([
 				return q, nil
 			})
 		}
-
-		order := []string{}
-
-		if cfg.Filter.Sort != "" {
-			order = append(order, cfg.Filter.Sort)
-		}
-
 		if cfg.Filter.PlayerFilter != nil {
-			query = query.Relation("Player._").WhereStruct(cfg.Filter.PlayerFilter)
-
-			if cfg.Filter.PlayerFilter.Sort != "" {
-				order = append(order, fmt.Sprintf("player.%s", cfg.Filter.PlayerFilter.Sort))
-			}
+			playerRequired = true
+			query = query.WhereStruct(cfg.Filter.PlayerFilter)
 
 			if cfg.Filter.PlayerFilter.TribeFilter != nil {
+				tribeRequired = true
 				query = query.
-					Join("LEFT JOIN ?SERVER.tribes AS tribe ON tribe.id = player.tribe_id").
 					WhereStruct(cfg.Filter.PlayerFilter.TribeFilter)
-
-				if cfg.Filter.PlayerFilter.TribeFilter.Sort != "" {
-					order = append(order, fmt.Sprintf("tribe.%s", cfg.Filter.PlayerFilter.TribeFilter.Sort))
-				}
 			}
 		}
 
-		query = query.Order(order...)
 	}
-
+	if playerRequired {
+		query = query.Relation("Player._")
+	}
+	if tribeRequired {
+		query = query.Join("LEFT JOIN ?SERVER.tribes AS tribe ON tribe.id = player.tribe_id")
+	}
 	if len(cfg.Columns) > 0 {
 		query = query.Column(cfg.Columns...)
 	}

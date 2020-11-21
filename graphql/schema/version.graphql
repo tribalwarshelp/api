@@ -20,7 +20,9 @@ enum VersionCode {
 }
 
 type Version {
-  tag: VersionCode! @goField(forceResolver: true) @deprecated(reason: "Use `code`.")
+  tag: VersionCode!
+    @goField(forceResolver: true)
+    @deprecated(reason: "Use `code`.")
   code: VersionCode!
   name: String!
   host: String!
@@ -39,8 +41,17 @@ input VersionFilter {
   hostIEQ: String
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query versions - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query versions - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query versions - `sort`."
+    )
 }
 
 type VersionList {
@@ -49,8 +60,14 @@ type VersionList {
 }
 
 extend type Query {
-  langVersions(filter: VersionFilter): VersionList! @deprecated(reason: "Use `versions`.")
+  langVersions(filter: VersionFilter): VersionList!
+    @deprecated(reason: "Use `versions`.")
   langVersion(tag: VersionCode!): Version @deprecated(reason: "Use `version`.")
-  versions(filter: VersionFilter): VersionList!
+  versions(
+    filter: VersionFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): VersionList!
   version(code: VersionCode!): Version
 }

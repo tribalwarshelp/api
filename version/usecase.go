@@ -7,6 +7,6 @@ import (
 )
 
 type Usecase interface {
-	Fetch(ctx context.Context, filter *models.VersionFilter) ([]*models.Version, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Version, int, error)
 	GetByCode(ctx context.Context, code models.VersionCode) (*models.Version, error)
 }

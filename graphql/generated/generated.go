@@ -233,9 +233,9 @@ type ComplexityRoot struct {
 		TribeHistory     func(childComplexity int, server string, filter *models.TribeHistoryFilter, limit *int, offset *int, sort []string) int
 		Tribes           func(childComplexity int, server string, filter *models.TribeFilter, limit *int, offset *int, sort []string) int
 		Version          func(childComplexity int, code models.VersionCode) int
-		Versions         func(childComplexity int, filter *models.VersionFilter) int
+		Versions         func(childComplexity int, filter *models.VersionFilter, limit *int, offset *int, sort []string) int
 		Village          func(childComplexity int, server string, id int) int
-		Villages         func(childComplexity int, server string, filter *models.VillageFilter) int
+		Villages         func(childComplexity int, server string, filter *models.VillageFilter, limit *int, offset *int, sort []string) int
 	}
 
 	Server struct {
@@ -595,9 +595,9 @@ type QueryResolver interface {
 	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter, limit *int, offset *int, sort []string) (*TribeHistory, error)
 	LangVersions(ctx context.Context, filter *models.VersionFilter) (*VersionList, error)
 	LangVersion(ctx context.Context, tag models.VersionCode) (*models.Version, error)
-	Versions(ctx context.Context, filter *models.VersionFilter) (*VersionList, error)
+	Versions(ctx context.Context, filter *models.VersionFilter, limit *int, offset *int, sort []string) (*VersionList, error)
 	Version(ctx context.Context, code models.VersionCode) (*models.Version, error)
-	Villages(ctx context.Context, server string, filter *models.VillageFilter) (*VillageList, error)
+	Villages(ctx context.Context, server string, filter *models.VillageFilter, limit *int, offset *int, sort []string) (*VillageList, error)
 	Village(ctx context.Context, server string, id int) (*models.Village, error)
 }
 type ServerResolver interface {
@@ -1681,7 +1681,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Versions(childComplexity, args["filter"].(*models.VersionFilter)), true
+		return e.complexity.Query.Versions(childComplexity, args["filter"].(*models.VersionFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.village":
 		if e.complexity.Query.Village == nil {
@@ -1705,7 +1705,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Villages(childComplexity, args["server"].(string), args["filter"].(*models.VillageFilter)), true
+		return e.complexity.Query.Villages(childComplexity, args["server"].(string), args["filter"].(*models.VillageFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Server.buildingConfig":
 		if e.complexity.Server.BuildingConfig == nil {
@@ -4327,7 +4327,9 @@ type UnitConfig {
 }
 
 type Version {
-  tag: VersionCode! @goField(forceResolver: true) @deprecated(reason: "Use ` + "`" + `code` + "`" + `.")
+  tag: VersionCode!
+    @goField(forceResolver: true)
+    @deprecated(reason: "Use ` + "`" + `code` + "`" + `.")
   code: VersionCode!
   name: String!
   host: String!
@@ -4346,8 +4348,17 @@ input VersionFilter {
   hostIEQ: String
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query versions - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query versions - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query versions - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 type VersionList {
@@ -4356,9 +4367,15 @@ type VersionList {
 }
 
 extend type Query {
-  langVersions(filter: VersionFilter): VersionList! @deprecated(reason: "Use ` + "`" + `versions` + "`" + `.")
+  langVersions(filter: VersionFilter): VersionList!
+    @deprecated(reason: "Use ` + "`" + `versions` + "`" + `.")
   langVersion(tag: VersionCode!): Version @deprecated(reason: "Use ` + "`" + `version` + "`" + `.")
-  versions(filter: VersionFilter): VersionList!
+  versions(
+    filter: VersionFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): VersionList!
   version(code: VersionCode!): Version
 }
 `, BuiltIn: false},
@@ -4412,12 +4429,27 @@ input VillageFilter {
   playerFilter: PlayerFilter
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query versions - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query versions - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query versions - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  villages(server: String!, filter: VillageFilter): VillageList!
+  villages(
+    server: String!
+    filter: VillageFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): VillageList!
   village(server: String!, id: Int!): Village
 }
 `, BuiltIn: false},
@@ -5079,6 +5111,33 @@ func (ec *executionContext) field_Query_versions_args(ctx context.Context, rawAr
 		}
 	}
 	args["filter"] = arg0
+	var arg1 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg2
+	var arg3 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg3, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg3
 	return args, nil
 }
 
@@ -5127,6 +5186,33 @@ func (ec *executionContext) field_Query_villages_args(ctx context.Context, rawAr
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -9958,7 +10044,7 @@ func (ec *executionContext) _Query_versions(ctx context.Context, field graphql.C
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Versions(rctx, args["filter"].(*models.VersionFilter))
+		return ec.resolvers.Query().Versions(rctx, args["filter"].(*models.VersionFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10039,7 +10125,7 @@ func (ec *executionContext) _Query_villages(ctx context.Context, field graphql.C
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Villages(rctx, args["server"].(string), args["filter"].(*models.VillageFilter))
+		return ec.resolvers.Query().Villages(rctx, args["server"].(string), args["filter"].(*models.VillageFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

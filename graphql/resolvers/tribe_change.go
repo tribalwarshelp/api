@@ -55,6 +55,7 @@ func (r *Resolver) TribeChanges(ctx context.Context,
 		Limit:  *limit,
 		Offset: *offset,
 		Count:  true,
+		Server: server,
 	})
 	return list, err
 }

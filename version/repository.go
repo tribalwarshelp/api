@@ -9,6 +9,9 @@ import (
 type FetchConfig struct {
 	Filter *models.VersionFilter
 	Count  bool
+	Sort   []string
+	Limit  int
+	Offset int
 }
 
 type Repository interface {

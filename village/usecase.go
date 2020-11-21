@@ -7,6 +7,6 @@ import (
 )
 
 type Usecase interface {
-	Fetch(ctx context.Context, server string, filter *models.VillageFilter) ([]*models.Village, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Village, int, error)
 	GetByID(ctx context.Context, server string, id int) (*models.Village, error)
 }

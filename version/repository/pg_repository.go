@@ -27,17 +27,15 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg version.FetchConfig) ([
 	var err error
 	data := []*models.Version{}
 	total := 0
-	query := repo.Model(&data).Context(ctx)
-
+	query := repo.
+		Model(&data).
+		Context(ctx).
+		Order(cfg.Sort...).
+		Limit(cfg.Limit).
+		Offset(cfg.Offset)
 	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(cfg.Filter).
-			Limit(cfg.Filter.Limit).
-			Offset(cfg.Filter.Offset)
-
-		if cfg.Filter.Sort != "" {
-			query = query.Order(cfg.Filter.Sort)
-		}
+			WhereStruct(cfg.Filter)
 	}
 
 	if cfg.Count {

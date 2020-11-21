@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
+	"github.com/tribalwarshelp/api/village"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -15,10 +16,31 @@ func (r *villageResolver) Player(ctx context.Context, obj *models.Village) (*mod
 	return getPlayer(ctx, obj.PlayerID), nil
 }
 
-func (r *queryResolver) Villages(ctx context.Context, server string, filter *models.VillageFilter) (*generated.VillageList, error) {
+func (r *queryResolver) Villages(ctx context.Context,
+	server string,
+	f *models.VillageFilter,
+	limit *int,
+	offset *int,
+	sort []string) (*generated.VillageList, error) {
+	defLimit := 0
+	defOffset := 0
+	if limit == nil {
+		limit = &defLimit
+	}
+	if offset == nil {
+		offset = &defOffset
+	}
+
 	var err error
 	list := &generated.VillageList{}
-	list.Items, list.Total, err = r.VillageUcase.Fetch(ctx, server, filter)
+	list.Items, list.Total, err = r.VillageUcase.Fetch(ctx, village.FetchConfig{
+		Filter: f,
+		Sort:   sort,
+		Limit:  *limit,
+		Offset: *offset,
+		Count:  true,
+		Server: server,
+	})
 	return list, err
 }
 
