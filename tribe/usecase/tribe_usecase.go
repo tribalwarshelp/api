@@ -22,10 +22,10 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.T
 	if filter == nil {
 		filter = &models.TribeFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > tribe.PaginationLimit || filter.Limit <= 0) {
+	if !middleware.CanExceedLimit(ctx) && (filter.Limit > tribe.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = tribe.PaginationLimit
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
+	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
 	return ucase.repo.Fetch(ctx, tribe.FetchConfig{
 		Filter: filter,
 		Server: server,

@@ -21,10 +21,10 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.E
 	if filter == nil {
 		filter = &models.EnnoblementFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > ennoblement.PaginationLimit || filter.Limit <= 0) {
+	if !middleware.CanExceedLimit(ctx) && (filter.Limit > ennoblement.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = ennoblement.PaginationLimit
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
+	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
 	return ucase.repo.Fetch(ctx, ennoblement.FetchConfig{
 		Server: server,
 		Filter: filter,

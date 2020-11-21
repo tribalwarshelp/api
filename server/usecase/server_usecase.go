@@ -6,7 +6,6 @@ import (
 
 	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/api/server"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -22,7 +21,7 @@ func (ucase *usecase) Fetch(ctx context.Context, filter *models.ServerFilter) ([
 	if filter == nil {
 		filter = &models.ServerFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > server.PaginationLimit || filter.Limit <= 0) {
+	if !middleware.CanExceedLimit(ctx) && (filter.Limit > server.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = server.PaginationLimit
 	}
 	if len(filter.LangVersionTag) > 0 {
@@ -31,7 +30,7 @@ func (ucase *usecase) Fetch(ctx context.Context, filter *models.ServerFilter) ([
 	if len(filter.LangVersionTagNEQ) > 0 {
 		filter.VersionCodeNEQ = append(filter.VersionCode, filter.LangVersionTagNEQ...)
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
+	// filter.Sort = utils.SanitizeSortExpression(filter.Sort)
 	return ucase.repo.Fetch(ctx, server.FetchConfig{
 		Count:  true,
 		Filter: filter,

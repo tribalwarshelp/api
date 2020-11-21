@@ -7,5 +7,5 @@ import (
 )
 
 type Usecase interface {
-	Fetch(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter) ([]*models.DailyPlayerStats, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.DailyPlayerStats, int, error)
 }

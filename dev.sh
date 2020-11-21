@@ -1,4 +1,4 @@
 #!/bin/sh
 export MODE=development
 export GIN_MODE=debug
-go run main.go
+go run -race main.go

@@ -17,23 +17,32 @@ func New(repo dailyplayerstats.Repository) dailyplayerstats.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter) ([]*models.DailyPlayerStats, int, error) {
-	if filter == nil {
-		filter = &models.DailyPlayerStatsFilter{}
+func (ucase *usecase) Fetch(ctx context.Context, cfg dailyplayerstats.FetchConfig) ([]*models.DailyPlayerStats, int, error) {
+	if cfg.Filter == nil {
+		cfg.Filter = &models.DailyPlayerStatsFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > dailyplayerstats.PaginationLimit || filter.Limit <= 0) {
-		filter.Limit = dailyplayerstats.PaginationLimit
+
+	if cfg.Filter.Limit > 0 {
+		cfg.Limit = cfg.Filter.Limit
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
-	if filter.PlayerFilter != nil {
-		filter.PlayerFilter.Sort = utils.SanitizeSort(filter.PlayerFilter.Sort)
-		if filter.PlayerFilter.TribeFilter != nil {
-			filter.PlayerFilter.TribeFilter.Sort = utils.SanitizeSort(filter.PlayerFilter.TribeFilter.Sort)
+	if cfg.Filter.Offset > 0 {
+		cfg.Offset = cfg.Filter.Offset
+	}
+	if cfg.Filter.Sort != "" {
+		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
+	}
+	if cfg.Filter.PlayerFilter != nil {
+		if cfg.Filter.PlayerFilter.Sort != "" {
+			cfg.Sort = append(cfg.Sort, "player."+cfg.Filter.PlayerFilter.Sort)
+		}
+		if cfg.Filter.PlayerFilter.TribeFilter != nil && cfg.Filter.PlayerFilter.TribeFilter.Sort != "" {
+			cfg.Sort = append(cfg.Sort, "tribe."+cfg.Filter.PlayerFilter.TribeFilter.Sort)
 		}
 	}
-	return ucase.repo.Fetch(ctx, dailyplayerstats.FetchConfig{
-		Server: server,
-		Filter: filter,
-		Count:  true,
-	})
+
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > dailyplayerstats.PaginationLimit || cfg.Limit <= 0) {
+		cfg.Limit = dailyplayerstats.PaginationLimit
+	}
+	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	return ucase.repo.Fetch(ctx, cfg)
 }

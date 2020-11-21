@@ -10,6 +10,9 @@ type FetchConfig struct {
 	Server string
 	Filter *models.DailyTribeStatsFilter
 	Count  bool
+	Sort   []string
+	Limit  int
+	Offset int
 }
 
 type Repository interface {

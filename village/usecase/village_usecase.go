@@ -22,14 +22,14 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.V
 	if filter == nil {
 		filter = &models.VillageFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > village.PaginationLimit || filter.Limit <= 0) {
+	if !middleware.CanExceedLimit(ctx) && (filter.Limit > village.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = village.PaginationLimit
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
+	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
 	if filter.PlayerFilter != nil {
-		filter.PlayerFilter.Sort = utils.SanitizeSort(filter.PlayerFilter.Sort)
+		filter.PlayerFilter.Sort = utils.SanitizeSortExpression(filter.PlayerFilter.Sort)
 		if filter.PlayerFilter.TribeFilter != nil {
-			filter.PlayerFilter.TribeFilter.Sort = utils.SanitizeSort(filter.PlayerFilter.TribeFilter.Sort)
+			filter.PlayerFilter.TribeFilter.Sort = utils.SanitizeSortExpression(filter.PlayerFilter.TribeFilter.Sort)
 		}
 	}
 	return ucase.repo.Fetch(ctx, village.FetchConfig{

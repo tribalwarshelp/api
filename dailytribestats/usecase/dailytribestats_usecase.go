@@ -17,20 +17,28 @@ func New(repo dailytribestats.Repository) dailytribestats.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.DailyTribeStatsFilter) ([]*models.DailyTribeStats, int, error) {
-	if filter == nil {
-		filter = &models.DailyTribeStatsFilter{}
+func (ucase *usecase) Fetch(ctx context.Context, cfg dailytribestats.FetchConfig) ([]*models.DailyTribeStats, int, error) {
+	if cfg.Filter == nil {
+		cfg.Filter = &models.DailyTribeStatsFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > dailytribestats.PaginationLimit || filter.Limit <= 0) {
-		filter.Limit = dailytribestats.PaginationLimit
+	if cfg.Filter.Limit > 0 {
+		cfg.Limit = cfg.Filter.Limit
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
-	if filter.TribeFilter != nil {
-		filter.TribeFilter.Sort = utils.SanitizeSort(filter.TribeFilter.Sort)
+	if cfg.Filter.Offset > 0 {
+		cfg.Offset = cfg.Filter.Offset
 	}
-	return ucase.repo.Fetch(ctx, dailytribestats.FetchConfig{
-		Server: server,
-		Filter: filter,
-		Count:  true,
-	})
+	if cfg.Filter.Sort != "" {
+		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
+	}
+	if cfg.Filter.TribeFilter != nil {
+		if cfg.Filter.TribeFilter.Sort != "" {
+			cfg.Sort = append(cfg.Sort, "tribe."+cfg.Filter.TribeFilter.Sort)
+		}
+	}
+
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > dailytribestats.PaginationLimit || cfg.Limit <= 0) {
+		cfg.Limit = dailytribestats.PaginationLimit
+	}
+	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	return ucase.repo.Fetch(ctx, cfg)
 }

@@ -22,12 +22,12 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.P
 	if filter == nil {
 		filter = &models.PlayerFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > player.PaginationLimit || filter.Limit <= 0) {
+	if !middleware.CanExceedLimit(ctx) && (filter.Limit > player.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = player.PaginationLimit
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
+	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
 	if filter.TribeFilter != nil {
-		filter.TribeFilter.Sort = utils.SanitizeSort(filter.TribeFilter.Sort)
+		filter.TribeFilter.Sort = utils.SanitizeSortExpression(filter.TribeFilter.Sort)
 	}
 	return ucase.repo.Fetch(ctx, player.FetchConfig{
 		Server: server,

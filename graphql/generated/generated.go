@@ -216,8 +216,8 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		DailyPlayerStats func(childComplexity int, server string, filter *models.DailyPlayerStatsFilter) int
-		DailyTribeStats  func(childComplexity int, server string, filter *models.DailyTribeStatsFilter) int
+		DailyPlayerStats func(childComplexity int, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) int
+		DailyTribeStats  func(childComplexity int, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) int
 		Ennoblements     func(childComplexity int, server string, filter *models.EnnoblementFilter) int
 		LangVersion      func(childComplexity int, tag models.VersionCode) int
 		LangVersions     func(childComplexity int, filter *models.VersionFilter) int
@@ -579,8 +579,8 @@ type PlayerHistoryRecordResolver interface {
 	Tribe(ctx context.Context, obj *models.PlayerHistory) (*models.Tribe, error)
 }
 type QueryResolver interface {
-	DailyPlayerStats(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter) (*DailyPlayerStats, error)
-	DailyTribeStats(ctx context.Context, server string, filter *models.DailyTribeStatsFilter) (*DailyTribeStats, error)
+	DailyPlayerStats(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) (*DailyPlayerStats, error)
+	DailyTribeStats(ctx context.Context, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) (*DailyTribeStats, error)
 	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter) (*EnnoblementList, error)
 	LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error)
 	Players(ctx context.Context, server string, filter *models.PlayerFilter) (*PlayerList, error)
@@ -1477,7 +1477,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.DailyPlayerStats(childComplexity, args["server"].(string), args["filter"].(*models.DailyPlayerStatsFilter)), true
+		return e.complexity.Query.DailyPlayerStats(childComplexity, args["server"].(string), args["filter"].(*models.DailyPlayerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.dailyTribeStats":
 		if e.complexity.Query.DailyTribeStats == nil {
@@ -1489,7 +1489,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.DailyTribeStats(childComplexity, args["server"].(string), args["filter"].(*models.DailyTribeStatsFilter)), true
+		return e.complexity.Query.DailyTribeStats(childComplexity, args["server"].(string), args["filter"].(*models.DailyTribeStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.ennoblements":
 		if e.complexity.Query.Ennoblements == nil {
@@ -3371,15 +3371,18 @@ input DailyPlayerStatsFilter {
   createDateLT: Time
   createDateLTE: Time
 
-  offset: Int
-  limit: Int
-  sort: String
+  offset: Int @deprecated(reason: "Use a new variable added to the query dailyPlayerStats - ` + "`" + `offset` + "`" + `.")
+  limit: Int @deprecated(reason: "Use a new variable added to the query dailyPlayerStats - ` + "`" + `limit` + "`" + `.")
+  sort: String @deprecated(reason: "Use a new variable added to the query dailyPlayerStats - ` + "`" + `sort` + "`" + `.")
 }
 
 extend type Query {
   dailyPlayerStats(
     server: String!
     filter: DailyPlayerStatsFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
   ): DailyPlayerStats!
 }
 `, BuiltIn: false},
@@ -3416,15 +3419,18 @@ input DailyTribeStatsFilter {
   createDateLT: Time
   createDateLTE: Time
 
-  offset: Int
-  limit: Int
-  sort: String
+  offset: Int @deprecated(reason: "Use a new variable added to the query dailyTribeStats - ` + "`" + `offset` + "`" + `.")
+  limit: Int @deprecated(reason: "Use a new variable added to the query dailyTribeStats - ` + "`" + `limit` + "`" + `.")
+  sort: String @deprecated(reason: "Use a new variable added to the query dailyTribeStats - ` + "`" + `sort` + "`" + `.")
 }
 
 extend type Query {
   dailyTribeStats(
     server: String!
     filter: DailyTribeStatsFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
   ): DailyTribeStats!
 }
 `, BuiltIn: false},
@@ -4337,6 +4343,33 @@ func (ec *executionContext) field_Query_dailyPlayerStats_args(ctx context.Contex
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -4361,6 +4394,33 @@ func (ec *executionContext) field_Query_dailyTribeStats_args(ctx context.Context
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -8904,7 +8964,7 @@ func (ec *executionContext) _Query_dailyPlayerStats(ctx context.Context, field g
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().DailyPlayerStats(rctx, args["server"].(string), args["filter"].(*models.DailyPlayerStatsFilter))
+		return ec.resolvers.Query().DailyPlayerStats(rctx, args["server"].(string), args["filter"].(*models.DailyPlayerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8946,7 +9006,7 @@ func (ec *executionContext) _Query_dailyTribeStats(ctx context.Context, field gr
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().DailyTribeStats(rctx, args["server"].(string), args["filter"].(*models.DailyTribeStatsFilter))
+		return ec.resolvers.Query().DailyTribeStats(rctx, args["server"].(string), args["filter"].(*models.DailyTribeStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -25520,6 +25580,21 @@ func (ec *executionContext) marshalOInt2ᚕintᚄ(ctx context.Context, sel ast.S
 	}
 
 	return ret
+}
+
+func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := graphql.UnmarshalInt(v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.SelectionSet, v *int) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return graphql.MarshalInt(*v)
 }
 
 func (ec *executionContext) marshalOLiveEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblementᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.LiveEnnoblement) graphql.Marshaler {

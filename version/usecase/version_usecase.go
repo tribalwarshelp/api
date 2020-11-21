@@ -25,7 +25,7 @@ func (ucase *usecase) Fetch(ctx context.Context, filter *models.VersionFilter) (
 	if filter == nil {
 		filter = &models.VersionFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > version.PaginationLimit || filter.Limit <= 0) {
+	if !middleware.CanExceedLimit(ctx) && (filter.Limit > version.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = version.PaginationLimit
 	}
 	if len(filter.Tag) > 0 {
@@ -34,7 +34,7 @@ func (ucase *usecase) Fetch(ctx context.Context, filter *models.VersionFilter) (
 	if len(filter.TagNEQ) > 0 {
 		filter.CodeNEQ = append(filter.Code, filter.TagNEQ...)
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
+	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
 	return ucase.repo.Fetch(ctx, version.FetchConfig{
 		Filter: filter,
 		Count:  true,

@@ -8,6 +8,7 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/dailytribestats"
+	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -23,29 +24,26 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg dailytribestats.FetchCo
 	var err error
 	data := []*models.DailyTribeStats{}
 	total := 0
-	query := repo.WithParam("SERVER", pg.Safe(cfg.Server)).Model(&data).Context(ctx)
+	query := repo.
+		WithParam("SERVER", pg.Safe(cfg.Server)).
+		Model(&data).
+		Context(ctx).
+		Order(cfg.Sort...).
+		Limit(cfg.Limit).
+		Offset(cfg.Offset)
+	tribeRequired := utils.FindStringWithPrefix(cfg.Sort, "tribe") != ""
 
 	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(cfg.Filter).
-			Limit(cfg.Filter.Limit).
-			Offset(cfg.Filter.Offset)
-
-		order := []string{}
-
-		if cfg.Filter.Sort != "" {
-			order = append(order, cfg.Filter.Sort)
-		}
+			WhereStruct(cfg.Filter)
 
 		if cfg.Filter.TribeFilter != nil {
-			query = query.Relation("Tribe._").WhereStruct(cfg.Filter.TribeFilter)
-
-			if cfg.Filter.TribeFilter.Sort != "" {
-				order = append(order, fmt.Sprintf("tribe.%s", cfg.Filter.TribeFilter.Sort))
-			}
+			query = query.WhereStruct(cfg.Filter.TribeFilter)
+			tribeRequired = true
 		}
-
-		query = query.Order(order...)
+	}
+	if tribeRequired {
+		query = query.Relation("Tribe._")
 	}
 
 	if cfg.Count {

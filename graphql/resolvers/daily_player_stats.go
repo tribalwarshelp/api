@@ -3,6 +3,7 @@ package resolvers
 import (
 	"context"
 
+	"github.com/tribalwarshelp/api/dailyplayerstats"
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/shared/models"
 )
@@ -15,9 +16,30 @@ func (r *dailyPlayerStatsRecordResolver) Player(ctx context.Context, obj *models
 	return getPlayer(ctx, obj.PlayerID), nil
 }
 
-func (r *queryResolver) DailyPlayerStats(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter) (*generated.DailyPlayerStats, error) {
+func (r *queryResolver) DailyPlayerStats(ctx context.Context,
+	server string,
+	filter *models.DailyPlayerStatsFilter,
+	limit *int,
+	offset *int,
+	sort []string) (*generated.DailyPlayerStats, error) {
+	defLimit := 0
+	defOffset := 0
+	if limit == nil {
+		limit = &defLimit
+	}
+	if offset == nil {
+		offset = &defOffset
+	}
+
 	var err error
 	list := &generated.DailyPlayerStats{}
-	list.Items, list.Total, err = r.DailyPlayerStatsUcase.Fetch(ctx, server, filter)
+	list.Items, list.Total, err = r.DailyPlayerStatsUcase.Fetch(ctx, dailyplayerstats.FetchConfig{
+		Server: server,
+		Filter: filter,
+		Sort:   sort,
+		Limit:  *limit,
+		Offset: *offset,
+		Count:  true,
+	})
 	return list, err
 }

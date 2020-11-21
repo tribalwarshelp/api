@@ -21,10 +21,10 @@ func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.T
 	if filter == nil {
 		filter = &models.TribeChangeFilter{}
 	}
-	if !middleware.MayExceedLimit(ctx) && (filter.Limit > tribechange.PaginationLimit || filter.Limit <= 0) {
+	if !middleware.CanExceedLimit(ctx) && (filter.Limit > tribechange.PaginationLimit || filter.Limit <= 0) {
 		filter.Limit = tribechange.PaginationLimit
 	}
-	filter.Sort = utils.SanitizeSort(filter.Sort)
+	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
 	return ucase.repo.Fetch(ctx, tribechange.FetchConfig{
 		Server: server,
 		Filter: filter,

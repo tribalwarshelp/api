@@ -16,24 +16,24 @@ func LimitWhitelist(cfg LimitWhitelistConfig) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()
 		clientIP := c.ClientIP()
-		mayExceedLimit := false
+		canExceedLimit := false
 		for _, ip := range cfg.IPAddresses {
 			if ip == clientIP {
-				mayExceedLimit = true
+				canExceedLimit = true
 				break
 			}
 		}
-		ctx = StoreLimitWhitelistDataInContext(ctx, mayExceedLimit)
+		ctx = StoreLimitWhitelistDataInContext(ctx, canExceedLimit)
 		c.Request = c.Request.WithContext(ctx)
 		c.Next()
 	}
 }
 
-func StoreLimitWhitelistDataInContext(ctx context.Context, mayExceedLimit bool) context.Context {
-	return context.WithValue(ctx, limitWhitelistContextKey, mayExceedLimit)
+func StoreLimitWhitelistDataInContext(ctx context.Context, canExceedLimit bool) context.Context {
+	return context.WithValue(ctx, limitWhitelistContextKey, canExceedLimit)
 }
 
-func MayExceedLimit(ctx context.Context) bool {
+func CanExceedLimit(ctx context.Context) bool {
 	whitelisted := ctx.Value(limitWhitelistContextKey)
 	if whitelisted == nil {
 		return false
