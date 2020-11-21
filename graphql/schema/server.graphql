@@ -10,7 +10,9 @@ type Server {
   numberOfTribes: Int!
   numberOfVillages: Int!
 
-  langVersion: Version @goField(forceResolver: true) @deprecated(reason: "Use `version`.")
+  langVersion: Version
+    @goField(forceResolver: true)
+    @deprecated(reason: "Use `version`.")
   version: Version @goField(forceResolver: true)
 
   config: ServerConfig!
@@ -42,11 +44,25 @@ input ServerFilter {
   versionCodeNEQ: [VersionCode!]
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query players - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query players - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query players - `sort`."
+    )
 }
 
 extend type Query {
-  servers(filter: ServerFilter): ServerList!
+  servers(
+    filter: ServerFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): ServerList!
   server(key: String!): Server
 }

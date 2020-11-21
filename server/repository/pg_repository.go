@@ -7,6 +7,7 @@ import (
 	"github.com/go-pg/pg/v10/orm"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/server"
+	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -27,19 +28,20 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg server.FetchConfig) ([]
 	var err error
 	total := 0
 	data := []*models.Server{}
-	query := repo.Model(&data).Context(ctx)
-
+	query := repo.
+		Model(&data).
+		Context(ctx).
+		Order(cfg.Sort...).
+		Limit(cfg.Limit).
+		Offset(cfg.Offset)
+	versionRequired := utils.FindStringWithPrefix(cfg.Sort, "version.") != ""
 	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(cfg.Filter).
-			Limit(cfg.Filter.Limit).
-			Offset(cfg.Filter.Offset)
-
-		if cfg.Filter.Sort != "" {
-			query = query.Order(cfg.Filter.Sort)
-		}
+			WhereStruct(cfg.Filter)
 	}
-
+	if versionRequired {
+		query = query.Relation("Version._")
+	}
 	if len(cfg.Columns) > 0 {
 		query = query.Column(cfg.Columns...)
 	}

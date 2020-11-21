@@ -223,11 +223,11 @@ type ComplexityRoot struct {
 		LangVersions     func(childComplexity int, filter *models.VersionFilter) int
 		LiveEnnoblements func(childComplexity int, server string) int
 		Player           func(childComplexity int, server string, id int) int
-		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter) int
+		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) int
 		Players          func(childComplexity int, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) int
 		Server           func(childComplexity int, key string) int
 		ServerStats      func(childComplexity int, server string, filter *models.ServerStatsFilter) int
-		Servers          func(childComplexity int, filter *models.ServerFilter) int
+		Servers          func(childComplexity int, filter *models.ServerFilter, limit *int, offset *int, sort []string) int
 		Tribe            func(childComplexity int, server string, id int) int
 		TribeChanges     func(childComplexity int, server string, filter *models.TribeChangeFilter) int
 		TribeHistory     func(childComplexity int, server string, filter *models.TribeHistoryFilter) int
@@ -585,8 +585,8 @@ type QueryResolver interface {
 	LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error)
 	Players(ctx context.Context, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) (*PlayerList, error)
 	Player(ctx context.Context, server string, id int) (*models.Player, error)
-	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter) (*PlayerHistory, error)
-	Servers(ctx context.Context, filter *models.ServerFilter) (*ServerList, error)
+	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) (*PlayerHistory, error)
+	Servers(ctx context.Context, filter *models.ServerFilter, limit *int, offset *int, sort []string) (*ServerList, error)
 	Server(ctx context.Context, key string) (*models.Server, error)
 	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter) (*ServerStats, error)
 	Tribes(ctx context.Context, server string, filter *models.TribeFilter) (*TribeList, error)
@@ -1561,7 +1561,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.PlayerHistory(childComplexity, args["server"].(string), args["filter"].(*models.PlayerHistoryFilter)), true
+		return e.complexity.Query.PlayerHistory(childComplexity, args["server"].(string), args["filter"].(*models.PlayerHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.players":
 		if e.complexity.Query.Players == nil {
@@ -1609,7 +1609,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Servers(childComplexity, args["filter"].(*models.ServerFilter)), true
+		return e.complexity.Query.Servers(childComplexity, args["filter"].(*models.ServerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.tribe":
 		if e.complexity.Query.Tribe == nil {
@@ -3712,12 +3712,27 @@ input PlayerHistoryFilter {
   createDateLTE: Time
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query playerHistory - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query playerHistory - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query playerHistory - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  playerHistory(server: String!, filter: PlayerHistoryFilter): PlayerHistory!
+  playerHistory(
+    server: String!
+    filter: PlayerHistoryFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): PlayerHistory!
 }
 `, BuiltIn: false},
 	{Name: "schema/scalars.graphql", Input: `scalar Time
@@ -3734,7 +3749,9 @@ type Server {
   numberOfTribes: Int!
   numberOfVillages: Int!
 
-  langVersion: Version @goField(forceResolver: true) @deprecated(reason: "Use ` + "`" + `version` + "`" + `.")
+  langVersion: Version
+    @goField(forceResolver: true)
+    @deprecated(reason: "Use ` + "`" + `version` + "`" + `.")
   version: Version @goField(forceResolver: true)
 
   config: ServerConfig!
@@ -3766,12 +3783,26 @@ input ServerFilter {
   versionCodeNEQ: [VersionCode!]
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query players - ` + "`" + `offset` + "`" + `."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query players - ` + "`" + `limit` + "`" + `."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query players - ` + "`" + `sort` + "`" + `."
+    )
 }
 
 extend type Query {
-  servers(filter: ServerFilter): ServerList!
+  servers(
+    filter: ServerFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): ServerList!
   server(key: String!): Server
 }
 `, BuiltIn: false},
@@ -4571,6 +4602,33 @@ func (ec *executionContext) field_Query_playerHistory_args(ctx context.Context, 
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
 	return args, nil
 }
 
@@ -4700,6 +4758,33 @@ func (ec *executionContext) field_Query_servers_args(ctx context.Context, rawArg
 		}
 	}
 	args["filter"] = arg0
+	var arg1 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg2
+	var arg3 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg3, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg3
 	return args, nil
 }
 
@@ -9294,7 +9379,7 @@ func (ec *executionContext) _Query_playerHistory(ctx context.Context, field grap
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().PlayerHistory(rctx, args["server"].(string), args["filter"].(*models.PlayerHistoryFilter))
+		return ec.resolvers.Query().PlayerHistory(rctx, args["server"].(string), args["filter"].(*models.PlayerHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9336,7 +9421,7 @@ func (ec *executionContext) _Query_servers(ctx context.Context, field graphql.Co
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Servers(rctx, args["filter"].(*models.ServerFilter))
+		return ec.resolvers.Query().Servers(rctx, args["filter"].(*models.ServerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

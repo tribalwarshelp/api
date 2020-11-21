@@ -17,17 +17,23 @@ func New(repo playerhistory.Repository) playerhistory.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, server string, filter *models.PlayerHistoryFilter) ([]*models.PlayerHistory, int, error) {
-	if filter == nil {
-		filter = &models.PlayerHistoryFilter{}
+func (ucase *usecase) Fetch(ctx context.Context, cfg playerhistory.FetchConfig) ([]*models.PlayerHistory, int, error) {
+	if cfg.Filter == nil {
+		cfg.Filter = &models.PlayerHistoryFilter{}
 	}
-	if !middleware.CanExceedLimit(ctx) && (filter.Limit > playerhistory.PaginationLimit || filter.Limit <= 0) {
-		filter.Limit = playerhistory.PaginationLimit
+	if cfg.Filter.Limit > 0 {
+		cfg.Limit = cfg.Filter.Limit
 	}
-	filter.Sort = utils.SanitizeSortExpression(filter.Sort)
-	return ucase.repo.Fetch(ctx, playerhistory.FetchConfig{
-		Server: server,
-		Filter: filter,
-		Count:  true,
-	})
+	if cfg.Filter.Offset > 0 {
+		cfg.Offset = cfg.Filter.Offset
+	}
+	if cfg.Filter.Sort != "" {
+		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
+	}
+
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > playerhistory.PaginationLimit || cfg.Limit <= 0) {
+		cfg.Limit = playerhistory.PaginationLimit
+	}
+	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	return ucase.repo.Fetch(ctx, cfg)
 }

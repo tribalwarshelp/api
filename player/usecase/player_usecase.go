@@ -31,6 +31,9 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*mod
 	if cfg.Filter.Sort != "" {
 		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
 	}
+	if cfg.Filter.TribeFilter != nil && cfg.Filter.TribeFilter.Sort != "" {
+		cfg.Sort = append(cfg.Sort, "tribe."+cfg.Filter.TribeFilter.Sort)
+	}
 
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.PaginationLimit

@@ -31,10 +31,25 @@ input PlayerHistoryFilter {
   createDateLTE: Time
 
   offset: Int
+    @deprecated(
+      reason: "Use a new variable added to the query playerHistory - `offset`."
+    )
   limit: Int
+    @deprecated(
+      reason: "Use a new variable added to the query playerHistory - `limit`."
+    )
   sort: String
+    @deprecated(
+      reason: "Use a new variable added to the query playerHistory - `sort`."
+    )
 }
 
 extend type Query {
-  playerHistory(server: String!, filter: PlayerHistoryFilter): PlayerHistory!
+  playerHistory(
+    server: String!
+    filter: PlayerHistoryFilter
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): PlayerHistory!
 }

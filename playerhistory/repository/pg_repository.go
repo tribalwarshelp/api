@@ -8,6 +8,7 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/playerhistory"
+	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -23,17 +24,20 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg playerhistory.FetchConf
 	var err error
 	total := 0
 	data := []*models.PlayerHistory{}
-	query := repo.WithParam("SERVER", pg.Safe(cfg.Server)).Model(&data).Context(ctx)
-
+	query := repo.
+		WithParam("SERVER", pg.Safe(cfg.Server)).
+		Model(&data).
+		Context(ctx).
+		Order(cfg.Sort...).
+		Limit(cfg.Limit).
+		Offset(cfg.Offset)
+	playerRequired := utils.FindStringWithPrefix(cfg.Sort, "player.") != ""
 	if cfg.Filter != nil {
 		query = query.
-			WhereStruct(cfg.Filter).
-			Limit(cfg.Filter.Limit).
-			Offset(cfg.Filter.Offset)
-
-		if cfg.Filter.Sort != "" {
-			query = query.Order(cfg.Filter.Sort)
-		}
+			WhereStruct(cfg.Filter)
+	}
+	if playerRequired {
+		query = query.Relation("Player._")
 	}
 
 	if cfg.Count {

@@ -7,6 +7,6 @@ import (
 )
 
 type Usecase interface {
-	Fetch(ctx context.Context, filter *models.ServerFilter) ([]*models.Server, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Server, int, error)
 	GetByKey(ctx context.Context, key string) (*models.Server, error)
 }
