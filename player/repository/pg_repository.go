@@ -75,6 +75,7 @@ func (repo *pgRepository) FetchNameChanges(ctx context.Context, code models.Vers
 		Context(ctx).
 		Where("version_code = ?", code).
 		Where("player_id IN (?)", pg.In(playerID)).
+		Order("change_date ASC").
 		Select(); err != nil && err != pg.ErrNoRows {
 		return nil, errors.Wrap(err, "Internal server error")
 	}
