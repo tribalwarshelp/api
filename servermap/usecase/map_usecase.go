@@ -128,6 +128,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 				Server: cfg.Server,
 				Filter: &models.VillageFilter{
 					PlayerFilter: &models.PlayerFilter{
+						IdNEQ:   playerIDs,
 						TribeID: ids,
 					},
 				},
