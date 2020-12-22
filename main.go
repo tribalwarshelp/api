@@ -71,6 +71,7 @@ func main() {
 		Password: os.Getenv("DB_PASSWORD"),
 		Database: os.Getenv("DB_NAME"),
 		Addr:     os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT"),
+		PoolSize: mustParseEnvToInt("DB_POOL_SIZE"),
 	})
 	defer func() {
 		if err := db.Close(); err != nil {
@@ -192,4 +193,16 @@ func main() {
 		log.Fatal("Server Shutdown:", err)
 	}
 	log.Println("Server exiting")
+}
+
+func mustParseEnvToInt(key string) int {
+	str := os.Getenv(key)
+	if str == "" {
+		return 0
+	}
+	i, err := strconv.Atoi(str)
+	if err != nil {
+		return 0
+	}
+	return i
 }
