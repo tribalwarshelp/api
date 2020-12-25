@@ -12,7 +12,7 @@ import (
 )
 
 type DataLoaders struct {
-	VersionByTag VersionLoader
+	VersionByCode *VersionLoader
 }
 
 type Config struct {
@@ -24,8 +24,8 @@ type Config struct {
 
 func NewDataLoaders(cfg Config) *DataLoaders {
 	return &DataLoaders{
-		VersionByTag: VersionLoader{
-			wait:     2 * time.Millisecond,
+		VersionByCode: &VersionLoader{
+			wait:     4 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(keys []string) ([]*models.Version, []error) {
 				codes := []models.VersionCode{}

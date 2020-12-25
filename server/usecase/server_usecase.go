@@ -35,12 +35,6 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg server.FetchConfig) ([]*mod
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > server.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = server.PaginationLimit
 	}
-	if len(cfg.Filter.LangVersionTag) > 0 {
-		cfg.Filter.VersionCode = append(cfg.Filter.VersionCode, cfg.Filter.LangVersionTag...)
-	}
-	if len(cfg.Filter.LangVersionTagNEQ) > 0 {
-		cfg.Filter.VersionCodeNEQ = append(cfg.Filter.VersionCode, cfg.Filter.LangVersionTagNEQ...)
-	}
 	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }

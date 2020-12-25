@@ -20,9 +20,6 @@ enum VersionCode {
 }
 
 type Version {
-  tag: VersionCode!
-    @goField(forceResolver: true)
-    @deprecated(reason: "Use `code`.")
   code: VersionCode!
   name: String!
   host: String!
@@ -30,8 +27,6 @@ type Version {
 }
 
 input VersionFilter {
-  tag: [VersionCode!] @deprecated(reason: "Use `code`.")
-  tagNEQ: [VersionCode!] @deprecated(reason: "Use `codeNEQ`.")
   code: [VersionCode!]
   codeNEQ: [VersionCode!]
 
@@ -60,9 +55,6 @@ type VersionList {
 }
 
 extend type Query {
-  langVersions(filter: VersionFilter): VersionList!
-    @deprecated(reason: "Use `versions`.")
-  langVersion(tag: VersionCode!): Version @deprecated(reason: "Use `version`.")
   versions(
     filter: VersionFilter
     limit: Int

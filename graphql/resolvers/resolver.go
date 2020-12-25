@@ -61,9 +61,6 @@ func (r *Resolver) DailyPlayerStatsRecord() generated.DailyPlayerStatsRecordReso
 func (r *Resolver) DailyTribeStatsRecord() generated.DailyTribeStatsRecordResolver {
 	return &dailyTribeStatsRecordResolver{r}
 }
-func (r *Resolver) Version() generated.VersionResolver {
-	return &versionResolver{r}
-}
 
 type queryResolver struct{ *Resolver }
 type playerResolver struct{ *Resolver }

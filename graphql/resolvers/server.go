@@ -13,14 +13,10 @@ import (
 func (r *serverResolver) Version(ctx context.Context, obj *models.Server) (*models.Version, error) {
 	loaders := middleware.DataLoadersFromContext(ctx)
 	if loaders != nil {
-		lv, _ := loaders.VersionByTag.Load(obj.VersionCode.String())
+		lv, _ := loaders.VersionByCode.Load(obj.VersionCode.String())
 		return lv, nil
 	}
 	return nil, nil
-}
-
-func (r *serverResolver) LangVersion(ctx context.Context, obj *models.Server) (*models.Version, error) {
-	return r.Version(ctx, obj)
 }
 
 func (r *queryResolver) Servers(ctx context.Context,

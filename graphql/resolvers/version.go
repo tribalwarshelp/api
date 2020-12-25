@@ -8,10 +8,6 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *versionResolver) Tag(ctx context.Context, obj *models.Version) (models.VersionCode, error) {
-	return obj.Code, nil
-}
-
 func (r *queryResolver) Versions(ctx context.Context,
 	f *models.VersionFilter,
 	limit *int,
@@ -31,12 +27,4 @@ func (r *queryResolver) Versions(ctx context.Context,
 
 func (r *queryResolver) Version(ctx context.Context, code models.VersionCode) (*models.Version, error) {
 	return r.VersionUcase.GetByCode(ctx, code)
-}
-
-func (r *queryResolver) LangVersions(ctx context.Context, filter *models.VersionFilter) (*generated.VersionList, error) {
-	return r.Versions(ctx, filter, nil, nil, []string{})
-}
-
-func (r *queryResolver) LangVersion(ctx context.Context, tag models.VersionCode) (*models.Version, error) {
-	return r.Version(ctx, tag)
 }

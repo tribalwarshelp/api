@@ -8,13 +8,13 @@ import (
 )
 
 type VersionDataLoaders struct {
-	PlayerServersByID     PlayerServersLoader
-	PlayerNameChangesByID PlayerNameChangesLoader
+	PlayerServersByID     *PlayerServersLoader
+	PlayerNameChangesByID *PlayerNameChangesLoader
 }
 
 func NewVersionDataLoaders(versionCode models.VersionCode, cfg Config) *VersionDataLoaders {
 	return &VersionDataLoaders{
-		PlayerServersByID: PlayerServersLoader{
+		PlayerServersByID: &PlayerServersLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(keys []int) ([][]string, []error) {
@@ -29,7 +29,7 @@ func NewVersionDataLoaders(versionCode models.VersionCode, cfg Config) *VersionD
 				return inOrder, nil
 			},
 		},
-		PlayerNameChangesByID: PlayerNameChangesLoader{
+		PlayerNameChangesByID: &PlayerNameChangesLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(keys []int) ([][]*models.PlayerNameChange, []error) {

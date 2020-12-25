@@ -46,7 +46,6 @@ type ResolverRoot interface {
 	Server() ServerResolver
 	TribeChangeRecord() TribeChangeRecordResolver
 	TribeHistoryRecord() TribeHistoryRecordResolver
-	Version() VersionResolver
 	Village() VillageResolver
 }
 
@@ -250,8 +249,6 @@ type ComplexityRoot struct {
 		DailyPlayerStats func(childComplexity int, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) int
 		DailyTribeStats  func(childComplexity int, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) int
 		Ennoblements     func(childComplexity int, server string, filter *models.EnnoblementFilter, limit *int, offset *int, sort []string) int
-		LangVersion      func(childComplexity int, tag models.VersionCode) int
-		LangVersions     func(childComplexity int, filter *models.VersionFilter) int
 		LiveEnnoblements func(childComplexity int, server string) int
 		Player           func(childComplexity int, server string, id int) int
 		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) int
@@ -277,7 +274,6 @@ type ComplexityRoot struct {
 		DataUpdatedAt    func(childComplexity int) int
 		HistoryUpdatedAt func(childComplexity int) int
 		Key              func(childComplexity int) int
-		LangVersion      func(childComplexity int) int
 		NumberOfPlayers  func(childComplexity int) int
 		NumberOfTribes   func(childComplexity int) int
 		NumberOfVillages func(childComplexity int) int
@@ -558,7 +554,6 @@ type ComplexityRoot struct {
 		Code     func(childComplexity int) int
 		Host     func(childComplexity int) int
 		Name     func(childComplexity int) int
-		Tag      func(childComplexity int) int
 		Timezone func(childComplexity int) int
 	}
 
@@ -628,15 +623,12 @@ type QueryResolver interface {
 	SearchTribe(ctx context.Context, version string, query string, limit *int, offset *int, sort []string) (*FoundTribeList, error)
 	TribeChanges(ctx context.Context, server string, filter *models.TribeChangeFilter, limit *int, offset *int, sort []string) (*TribeChanges, error)
 	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter, limit *int, offset *int, sort []string) (*TribeHistory, error)
-	LangVersions(ctx context.Context, filter *models.VersionFilter) (*VersionList, error)
-	LangVersion(ctx context.Context, tag models.VersionCode) (*models.Version, error)
 	Versions(ctx context.Context, filter *models.VersionFilter, limit *int, offset *int, sort []string) (*VersionList, error)
 	Version(ctx context.Context, code models.VersionCode) (*models.Version, error)
 	Villages(ctx context.Context, server string, filter *models.VillageFilter, limit *int, offset *int, sort []string) (*VillageList, error)
 	Village(ctx context.Context, server string, id int) (*models.Village, error)
 }
 type ServerResolver interface {
-	LangVersion(ctx context.Context, obj *models.Server) (*models.Version, error)
 	Version(ctx context.Context, obj *models.Server) (*models.Version, error)
 }
 type TribeChangeRecordResolver interface {
@@ -646,9 +638,6 @@ type TribeChangeRecordResolver interface {
 }
 type TribeHistoryRecordResolver interface {
 	Tribe(ctx context.Context, obj *models.TribeHistory) (*models.Tribe, error)
-}
-type VersionResolver interface {
-	Tag(ctx context.Context, obj *models.Version) (models.VersionCode, error)
 }
 type VillageResolver interface {
 	Player(ctx context.Context, obj *models.Village) (*models.Player, error)
@@ -1671,30 +1660,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Ennoblements(childComplexity, args["server"].(string), args["filter"].(*models.EnnoblementFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
-	case "Query.langVersion":
-		if e.complexity.Query.LangVersion == nil {
-			break
-		}
-
-		args, err := ec.field_Query_langVersion_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.LangVersion(childComplexity, args["tag"].(models.VersionCode)), true
-
-	case "Query.langVersions":
-		if e.complexity.Query.LangVersions == nil {
-			break
-		}
-
-		args, err := ec.field_Query_langVersions_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.LangVersions(childComplexity, args["filter"].(*models.VersionFilter)), true
-
 	case "Query.liveEnnoblements":
 		if e.complexity.Query.LiveEnnoblements == nil {
 			break
@@ -1933,13 +1898,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Server.Key(childComplexity), true
-
-	case "Server.langVersion":
-		if e.complexity.Server.LangVersion == nil {
-			break
-		}
-
-		return e.complexity.Server.LangVersion(childComplexity), true
 
 	case "Server.numberOfPlayers":
 		if e.complexity.Server.NumberOfPlayers == nil {
@@ -3355,13 +3313,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Version.Name(childComplexity), true
 
-	case "Version.tag":
-		if e.complexity.Version.Tag == nil {
-			break
-		}
-
-		return e.complexity.Version.Tag(childComplexity), true
-
 	case "Version.timezone":
 		if e.complexity.Version.Timezone == nil {
 			break
@@ -3965,9 +3916,6 @@ type Server {
   numberOfTribes: Int!
   numberOfVillages: Int!
 
-  langVersion: Version
-    @goField(forceResolver: true)
-    @deprecated(reason: "Use ` + "`" + `version` + "`" + `.")
   version: Version @goField(forceResolver: true)
 
   config: ServerConfig!
@@ -3993,8 +3941,6 @@ input ServerFilter {
   status: [ServerStatus!]
   statusNEQ: [ServerStatus!]
 
-  langVersionTag: [VersionCode!] @deprecated(reason: "Use ` + "`" + `versionCode` + "`" + `.")
-  langVersionTagNEQ: [VersionCode!] @deprecated(reason: "Use ` + "`" + `versionCodeNEQ` + "`" + `.")
   versionCode: [VersionCode!]
   versionCodeNEQ: [VersionCode!]
 
@@ -4565,9 +4511,6 @@ type UnitConfig {
 }
 
 type Version {
-  tag: VersionCode!
-    @goField(forceResolver: true)
-    @deprecated(reason: "Use ` + "`" + `code` + "`" + `.")
   code: VersionCode!
   name: String!
   host: String!
@@ -4575,8 +4518,6 @@ type Version {
 }
 
 input VersionFilter {
-  tag: [VersionCode!] @deprecated(reason: "Use ` + "`" + `code` + "`" + `.")
-  tagNEQ: [VersionCode!] @deprecated(reason: "Use ` + "`" + `codeNEQ` + "`" + `.")
   code: [VersionCode!]
   codeNEQ: [VersionCode!]
 
@@ -4605,9 +4546,6 @@ type VersionList {
 }
 
 extend type Query {
-  langVersions(filter: VersionFilter): VersionList!
-    @deprecated(reason: "Use ` + "`" + `versions` + "`" + `.")
-  langVersion(tag: VersionCode!): Version @deprecated(reason: "Use ` + "`" + `version` + "`" + `.")
   versions(
     filter: VersionFilter
     limit: Int
@@ -4863,36 +4801,6 @@ func (ec *executionContext) field_Query_ennoblements_args(ctx context.Context, r
 		}
 	}
 	args["sort"] = arg4
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_langVersion_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 models.VersionCode
-	if tmp, ok := rawArgs["tag"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tag"))
-		arg0, err = ec.unmarshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["tag"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_langVersions_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 *models.VersionFilter
-	if tmp, ok := rawArgs["filter"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
-		arg0, err = ec.unmarshalOVersionFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionFilter(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["filter"] = arg0
 	return args, nil
 }
 
@@ -11030,87 +10938,6 @@ func (ec *executionContext) _Query_tribeHistory(ctx context.Context, field graph
 	return ec.marshalNTribeHistory2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐTribeHistory(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_langVersions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_langVersions_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().LangVersions(rctx, args["filter"].(*models.VersionFilter))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*VersionList)
-	fc.Result = res
-	return ec.marshalNVersionList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐVersionList(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Query_langVersion(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_langVersion_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().LangVersion(rctx, args["tag"].(models.VersionCode))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*models.Version)
-	fc.Result = res
-	return ec.marshalOVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersion(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Query_versions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -11517,38 +11344,6 @@ func (ec *executionContext) _Server_numberOfVillages(ctx context.Context, field 
 	res := resTmp.(int)
 	fc.Result = res
 	return ec.marshalNInt2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Server_langVersion(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Server",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Server().LangVersion(rctx, obj)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*models.Version)
-	fc.Result = res
-	return ec.marshalOVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersion(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Server_version(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
@@ -18483,41 +18278,6 @@ func (ec *executionContext) _UnitConfig_militia(ctx context.Context, field graph
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Version_tag(ctx context.Context, field graphql.CollectedField, obj *models.Version) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Version",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Version().Tag(rctx, obj)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(models.VersionCode)
-	fc.Result = res
-	return ec.marshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Version_code(ctx context.Context, field graphql.CollectedField, obj *models.Version) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -21343,22 +21103,6 @@ func (ec *executionContext) unmarshalInputServerFilter(ctx context.Context, obj 
 			if err != nil {
 				return it, err
 			}
-		case "langVersionTag":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("langVersionTag"))
-			it.LangVersionTag, err = ec.unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "langVersionTagNEQ":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("langVersionTagNEQ"))
-			it.LangVersionTagNEQ, err = ec.unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		case "versionCode":
 			var err error
 
@@ -22423,22 +22167,6 @@ func (ec *executionContext) unmarshalInputVersionFilter(ctx context.Context, obj
 
 	for k, v := range asMap {
 		switch k {
-		case "tag":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tag"))
-			it.Tag, err = ec.unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "tagNEQ":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tagNEQ"))
-			it.TagNEQ, err = ec.unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		case "code":
 			var err error
 
@@ -24162,31 +23890,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
-		case "langVersions":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_langVersions(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
-		case "langVersion":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_langVersion(ctx, field)
-				return res
-			})
 		case "versions":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -24288,17 +23991,6 @@ func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
-		case "langVersion":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Server_langVersion(ctx, field, obj)
-				return res
-			})
 		case "version":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -25878,39 +25570,25 @@ func (ec *executionContext) _Version(ctx context.Context, sel ast.SelectionSet, 
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Version")
-		case "tag":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Version_tag(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
 		case "code":
 			out.Values[i] = ec._Version_code(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "name":
 			out.Values[i] = ec._Version_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "host":
 			out.Values[i] = ec._Version_host(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "timezone":
 			out.Values[i] = ec._Version_timezone(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))

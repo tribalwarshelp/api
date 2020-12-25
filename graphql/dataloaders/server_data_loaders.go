@@ -11,14 +11,14 @@ import (
 )
 
 type ServerDataLoaders struct {
-	PlayerByID  PlayerLoader
-	TribeByID   TribeLoader
-	VillageByID VillageLoader
+	PlayerByID  *PlayerLoader
+	TribeByID   *TribeLoader
+	VillageByID *VillageLoader
 }
 
 func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 	return &ServerDataLoaders{
-		PlayerByID: PlayerLoader{
+		PlayerByID: &PlayerLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(ids []int) ([]*models.Player, []error) {
@@ -45,7 +45,7 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 				return inOrder, nil
 			},
 		},
-		TribeByID: TribeLoader{
+		TribeByID: &TribeLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(ids []int) ([]*models.Tribe, []error) {
@@ -72,7 +72,7 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 				return inOrder, nil
 			},
 		},
-		VillageByID: VillageLoader{
+		VillageByID: &VillageLoader{
 			wait:     2 * time.Millisecond,
 			maxBatch: 0,
 			fetch: func(ids []int) ([]*models.Village, []error) {

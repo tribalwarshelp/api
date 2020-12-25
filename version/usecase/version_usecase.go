@@ -37,12 +37,6 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*mo
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > version.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = version.PaginationLimit
 	}
-	if len(cfg.Filter.Tag) > 0 {
-		cfg.Filter.Code = append(cfg.Filter.Code, cfg.Filter.Tag...)
-	}
-	if len(cfg.Filter.TagNEQ) > 0 {
-		cfg.Filter.CodeNEQ = append(cfg.Filter.Code, cfg.Filter.TagNEQ...)
-	}
 	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
