@@ -144,6 +144,21 @@ input TribeFilter {
     )
 }
 
+type FoundTribe {
+  server: String!
+  id: Int!
+  tag: String!
+  name: String!
+  bestRank: Int!
+  mostPoints: Int!
+  mostVillages: Int!
+}
+
+type FoundTribeList {
+  items: [FoundTribe!]
+  total: Int!
+}
+
 extend type Query {
   tribes(
     server: String!
@@ -153,4 +168,11 @@ extend type Query {
     sort: [String!]
   ): TribeList!
   tribe(server: String!, id: Int!): Tribe
+  searchTribe(
+    version: String!
+    query: String!
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): FoundTribeList!
 }

@@ -21,6 +21,16 @@ type EnnoblementList struct {
 	Total int                   `json:"total"`
 }
 
+type FoundPlayerList struct {
+	Items []*models.FoundPlayer `json:"items"`
+	Total int                   `json:"total"`
+}
+
+type FoundTribeList struct {
+	Items []*models.FoundTribe `json:"items"`
+	Total int                  `json:"total"`
+}
+
 type PlayerHistory struct {
 	Total int                     `json:"total"`
 	Items []*models.PlayerHistory `json:"items"`

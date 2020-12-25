@@ -67,10 +67,14 @@ models:
     model: github.com/tribalwarshelp/shared/models.Player
   PlayerFilter:
     model: github.com/tribalwarshelp/shared/models.PlayerFilter
+  FoundPlayer:
+    model: github.com/tribalwarshelp/shared/models.FoundPlayer
   Tribe:
     model: github.com/tribalwarshelp/shared/models.Tribe
   TribeFilter:
     model: github.com/tribalwarshelp/shared/models.TribeFilter
+  FoundTribe:
+    model: github.com/tribalwarshelp/shared/models.FoundTribe
   Village:
     model: github.com/tribalwarshelp/shared/models.Village
   VillageFilter:

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/go-pg/pg/v10"
+	"github.com/go-pg/pg/v10/orm"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/api/utils"
@@ -106,4 +107,64 @@ func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code models.Ve
 		m[res.PlayerID] = res.Servers
 	}
 	return m, nil
+}
+
+func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPlayerConfig) ([]*models.FoundPlayer, int, error) {
+	servers := []*models.Server{}
+	if err := repo.
+		Model(&servers).
+		Context(ctx).
+		Column("key").
+		Where("version_code = ?", cfg.Version).
+		Select(); err != nil {
+		return nil, 0, errors.Wrap(err, "Internal server error")
+	}
+
+	var query *orm.Query
+	res := []*models.FoundPlayer{}
+	whereClause := "player.id = ?1 OR player.name ILIKE ?0"
+	if cfg.ID <= 0 {
+		whereClause = "player.name ILIKE ?0"
+	} else if cfg.Name == "" {
+		whereClause = "player.id = ?1"
+	}
+	for _, server := range servers {
+		safeKey := pg.Safe(server.Key)
+		otherQuery := repo.
+			Model().
+			Context(ctx).
+			ColumnExpr("? AS server", server.Key).
+			ColumnExpr("tribe.tag as tribe_tag").
+			Column("player.id", "player.name", "player.most_points", "player.best_rank", "player.most_villages", "player.tribe_id").
+			TableExpr("?0.players as player", safeKey).
+			Join("LEFT JOIN ?0.tribes as tribe ON player.tribe_id = tribe.id", safeKey).
+			Where(whereClause, cfg.Name, cfg.ID)
+		if query == nil {
+			query = otherQuery
+		} else {
+			query = query.UnionAll(otherQuery)
+		}
+	}
+
+	var err error
+	count := 0
+	if query != nil {
+		base := repo.
+			Model().
+			With("union_q", query).
+			Table("union_q").
+			Limit(cfg.Limit).
+			Offset(cfg.Offset).
+			Order(cfg.Sort...)
+		if cfg.Count {
+			count, err = base.SelectAndCount(&res)
+		} else {
+			err = base.Select(&res)
+		}
+		if err != nil && err != pg.ErrNoRows {
+			return nil, 0, errors.Wrap(err, "Internal server error")
+		}
+	}
+
+	return res, count, nil
 }

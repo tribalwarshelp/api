@@ -66,3 +66,28 @@ func getTribe(ctx context.Context, id int) *models.Tribe {
 	}
 	return nil
 }
+
+func shouldCount(ctx context.Context) bool {
+	count := false
+	for _, field := range graphql.CollectFieldsCtx(ctx, nil) {
+		if field.Name == countField {
+			count = true
+			break
+		}
+	}
+	return count
+}
+
+func safeStrPointer(s *string, def string) string {
+	if s == nil {
+		return def
+	}
+	return *s
+}
+
+func safeIntPointer(s *int, def int) int {
+	if s == nil {
+		return def
+	}
+	return *s
+}

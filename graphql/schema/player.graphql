@@ -150,6 +150,22 @@ input PlayerFilter {
     )
 }
 
+type FoundPlayer {
+  server: String!
+  id: Int!
+  name: String!
+  bestRank: Int!
+  mostPoints: Int!
+  mostVillages: Int!
+  tribeID: Int!
+  tribeTag: String!
+}
+
+type FoundPlayerList {
+  items: [FoundPlayer!]
+  total: Int!
+}
+
 extend type Query {
   players(
     server: String!
@@ -159,4 +175,12 @@ extend type Query {
     sort: [String!]
   ): PlayerList!
   player(server: String!, id: Int!): Player
+  searchPlayer(
+    version: String!
+    name: String
+    id: Int
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): FoundPlayerList!
 }

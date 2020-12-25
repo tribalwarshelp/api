@@ -146,6 +146,37 @@ type ComplexityRoot struct {
 		Total func(childComplexity int) int
 	}
 
+	FoundPlayer struct {
+		BestRank     func(childComplexity int) int
+		ID           func(childComplexity int) int
+		MostPoints   func(childComplexity int) int
+		MostVillages func(childComplexity int) int
+		Name         func(childComplexity int) int
+		Server       func(childComplexity int) int
+		TribeID      func(childComplexity int) int
+		TribeTag     func(childComplexity int) int
+	}
+
+	FoundPlayerList struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
+	FoundTribe struct {
+		BestRank     func(childComplexity int) int
+		ID           func(childComplexity int) int
+		MostPoints   func(childComplexity int) int
+		MostVillages func(childComplexity int) int
+		Name         func(childComplexity int) int
+		Server       func(childComplexity int) int
+		Tag          func(childComplexity int) int
+	}
+
+	FoundTribeList struct {
+		Items func(childComplexity int) int
+		Total func(childComplexity int) int
+	}
+
 	LiveEnnoblement struct {
 		EnnobledAt func(childComplexity int) int
 		NewOwner   func(childComplexity int) int
@@ -225,6 +256,8 @@ type ComplexityRoot struct {
 		Player           func(childComplexity int, server string, id int) int
 		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) int
 		Players          func(childComplexity int, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) int
+		SearchPlayer     func(childComplexity int, version string, name *string, id *int, limit *int, offset *int, sort []string) int
+		SearchTribe      func(childComplexity int, version string, query string, limit *int, offset *int, sort []string) int
 		Server           func(childComplexity int, key string) int
 		ServerStats      func(childComplexity int, server string, filter *models.ServerStatsFilter, limit *int, offset *int, sort []string) int
 		Servers          func(childComplexity int, filter *models.ServerFilter, limit *int, offset *int, sort []string) int
@@ -585,12 +618,14 @@ type QueryResolver interface {
 	LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error)
 	Players(ctx context.Context, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) (*PlayerList, error)
 	Player(ctx context.Context, server string, id int) (*models.Player, error)
+	SearchPlayer(ctx context.Context, version string, name *string, id *int, limit *int, offset *int, sort []string) (*FoundPlayerList, error)
 	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) (*PlayerHistory, error)
 	Servers(ctx context.Context, filter *models.ServerFilter, limit *int, offset *int, sort []string) (*ServerList, error)
 	Server(ctx context.Context, key string) (*models.Server, error)
 	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter, limit *int, offset *int, sort []string) (*ServerStats, error)
 	Tribes(ctx context.Context, server string, filter *models.TribeFilter, limit *int, offset *int, sort []string) (*TribeList, error)
 	Tribe(ctx context.Context, server string, id int) (*models.Tribe, error)
+	SearchTribe(ctx context.Context, version string, query string, limit *int, offset *int, sort []string) (*FoundTribeList, error)
 	TribeChanges(ctx context.Context, server string, filter *models.TribeChangeFilter, limit *int, offset *int, sort []string) (*TribeChanges, error)
 	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter, limit *int, offset *int, sort []string) (*TribeHistory, error)
 	LangVersions(ctx context.Context, filter *models.VersionFilter) (*VersionList, error)
@@ -1110,6 +1145,139 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.EnnoblementList.Total(childComplexity), true
 
+	case "FoundPlayer.bestRank":
+		if e.complexity.FoundPlayer.BestRank == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayer.BestRank(childComplexity), true
+
+	case "FoundPlayer.id":
+		if e.complexity.FoundPlayer.ID == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayer.ID(childComplexity), true
+
+	case "FoundPlayer.mostPoints":
+		if e.complexity.FoundPlayer.MostPoints == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayer.MostPoints(childComplexity), true
+
+	case "FoundPlayer.mostVillages":
+		if e.complexity.FoundPlayer.MostVillages == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayer.MostVillages(childComplexity), true
+
+	case "FoundPlayer.name":
+		if e.complexity.FoundPlayer.Name == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayer.Name(childComplexity), true
+
+	case "FoundPlayer.server":
+		if e.complexity.FoundPlayer.Server == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayer.Server(childComplexity), true
+
+	case "FoundPlayer.tribeID":
+		if e.complexity.FoundPlayer.TribeID == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayer.TribeID(childComplexity), true
+
+	case "FoundPlayer.tribeTag":
+		if e.complexity.FoundPlayer.TribeTag == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayer.TribeTag(childComplexity), true
+
+	case "FoundPlayerList.items":
+		if e.complexity.FoundPlayerList.Items == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayerList.Items(childComplexity), true
+
+	case "FoundPlayerList.total":
+		if e.complexity.FoundPlayerList.Total == nil {
+			break
+		}
+
+		return e.complexity.FoundPlayerList.Total(childComplexity), true
+
+	case "FoundTribe.bestRank":
+		if e.complexity.FoundTribe.BestRank == nil {
+			break
+		}
+
+		return e.complexity.FoundTribe.BestRank(childComplexity), true
+
+	case "FoundTribe.id":
+		if e.complexity.FoundTribe.ID == nil {
+			break
+		}
+
+		return e.complexity.FoundTribe.ID(childComplexity), true
+
+	case "FoundTribe.mostPoints":
+		if e.complexity.FoundTribe.MostPoints == nil {
+			break
+		}
+
+		return e.complexity.FoundTribe.MostPoints(childComplexity), true
+
+	case "FoundTribe.mostVillages":
+		if e.complexity.FoundTribe.MostVillages == nil {
+			break
+		}
+
+		return e.complexity.FoundTribe.MostVillages(childComplexity), true
+
+	case "FoundTribe.name":
+		if e.complexity.FoundTribe.Name == nil {
+			break
+		}
+
+		return e.complexity.FoundTribe.Name(childComplexity), true
+
+	case "FoundTribe.server":
+		if e.complexity.FoundTribe.Server == nil {
+			break
+		}
+
+		return e.complexity.FoundTribe.Server(childComplexity), true
+
+	case "FoundTribe.tag":
+		if e.complexity.FoundTribe.Tag == nil {
+			break
+		}
+
+		return e.complexity.FoundTribe.Tag(childComplexity), true
+
+	case "FoundTribeList.items":
+		if e.complexity.FoundTribeList.Items == nil {
+			break
+		}
+
+		return e.complexity.FoundTribeList.Items(childComplexity), true
+
+	case "FoundTribeList.total":
+		if e.complexity.FoundTribeList.Total == nil {
+			break
+		}
+
+		return e.complexity.FoundTribeList.Total(childComplexity), true
+
 	case "LiveEnnoblement.ennobledAt":
 		if e.complexity.LiveEnnoblement.EnnobledAt == nil {
 			break
@@ -1574,6 +1742,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Players(childComplexity, args["server"].(string), args["filter"].(*models.PlayerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+
+	case "Query.searchPlayer":
+		if e.complexity.Query.SearchPlayer == nil {
+			break
+		}
+
+		args, err := ec.field_Query_searchPlayer_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.SearchPlayer(childComplexity, args["version"].(string), args["name"].(*string), args["id"].(*int), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+
+	case "Query.searchTribe":
+		if e.complexity.Query.SearchTribe == nil {
+			break
+		}
+
+		args, err := ec.field_Query_searchTribe_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.SearchTribe(childComplexity, args["version"].(string), args["query"].(string), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.server":
 		if e.complexity.Query.Server == nil {
@@ -3668,6 +3860,22 @@ input PlayerFilter {
     )
 }
 
+type FoundPlayer {
+  server: String!
+  id: Int!
+  name: String!
+  bestRank: Int!
+  mostPoints: Int!
+  mostVillages: Int!
+  tribeID: Int!
+  tribeTag: String!
+}
+
+type FoundPlayerList {
+  items: [FoundPlayer!]
+  total: Int!
+}
+
 extend type Query {
   players(
     server: String!
@@ -3677,6 +3885,14 @@ extend type Query {
     sort: [String!]
   ): PlayerList!
   player(server: String!, id: Int!): Player
+  searchPlayer(
+    version: String!
+    name: String
+    id: Int
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): FoundPlayerList!
 }
 `, BuiltIn: false},
 	{Name: "schema/player_history.graphql", Input: `type PlayerHistoryRecord {
@@ -4152,6 +4368,21 @@ input TribeFilter {
     )
 }
 
+type FoundTribe {
+  server: String!
+  id: Int!
+  tag: String!
+  name: String!
+  bestRank: Int!
+  mostPoints: Int!
+  mostVillages: Int!
+}
+
+type FoundTribeList {
+  items: [FoundTribe!]
+  total: Int!
+}
+
 extend type Query {
   tribes(
     server: String!
@@ -4161,6 +4392,13 @@ extend type Query {
     sort: [String!]
   ): TribeList!
   tribe(server: String!, id: Int!): Tribe
+  searchTribe(
+    version: String!
+    query: String!
+    limit: Int
+    offset: Int
+    sort: [String!]
+  ): FoundTribeList!
 }
 `, BuiltIn: false},
 	{Name: "schema/tribe_change.graphql", Input: `type TribeChangeRecord {
@@ -4769,6 +5007,117 @@ func (ec *executionContext) field_Query_players_args(ctx context.Context, rawArg
 		}
 	}
 	args["filter"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg3
+	var arg4 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg4, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg4
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_searchPlayer_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["version"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("version"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["version"] = arg0
+	var arg1 *string
+	if tmp, ok := rawArgs["name"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+		arg1, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["name"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg2
+	var arg3 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg3
+	var arg4 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg4, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg4
+	var arg5 []string
+	if tmp, ok := rawArgs["sort"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
+		arg5, err = ec.unmarshalOString2ᚕstringᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["sort"] = arg5
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_searchTribe_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["version"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("version"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["version"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["query"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("query"))
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["query"] = arg1
 	var arg2 *int
 	if tmp, ok := rawArgs["limit"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
@@ -7604,6 +7953,665 @@ func (ec *executionContext) _EnnoblementList_total(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _FoundPlayer_server(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Server, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayer_id(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayer_name(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayer_bestRank(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BestRank, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayer_mostPoints(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostPoints, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayer_mostVillages(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayer_tribeID(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TribeID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayer_tribeTag(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayer",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TribeTag, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayerList_items(ctx context.Context, field graphql.CollectedField, obj *FoundPlayerList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayerList",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.FoundPlayer)
+	fc.Result = res
+	return ec.marshalOFoundPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayerᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundPlayerList_total(ctx context.Context, field graphql.CollectedField, obj *FoundPlayerList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundPlayerList",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribe_server(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribe",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Server, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribe_id(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribe",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribe_tag(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribe",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tag, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribe_name(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribe",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribe_bestRank(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribe",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BestRank, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribe_mostPoints(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribe",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostPoints, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribe_mostVillages(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribe",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MostVillages, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribeList_items(ctx context.Context, field graphql.CollectedField, obj *FoundTribeList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribeList",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Items, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*models.FoundTribe)
+	fc.Result = res
+	return ec.marshalOFoundTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribeᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FoundTribeList_total(ctx context.Context, field graphql.CollectedField, obj *FoundTribeList) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FoundTribeList",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Total, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _LiveEnnoblement_village(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -9608,6 +10616,48 @@ func (ec *executionContext) _Query_player(ctx context.Context, field graphql.Col
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_searchPlayer(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_searchPlayer_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().SearchPlayer(rctx, args["version"].(string), args["name"].(*string), args["id"].(*int), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*FoundPlayerList)
+	fc.Result = res
+	return ec.marshalNFoundPlayerList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐFoundPlayerList(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_playerHistory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -9852,6 +10902,48 @@ func (ec *executionContext) _Query_tribe(ctx context.Context, field graphql.Coll
 	res := resTmp.(*models.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_searchTribe(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_searchTribe_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().SearchTribe(rctx, args["version"].(string), args["query"].(string), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*FoundTribeList)
+	fc.Result = res
+	return ec.marshalNFoundTribeList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐFoundTribeList(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_tribeChanges(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -22234,6 +23326,183 @@ func (ec *executionContext) _EnnoblementList(ctx context.Context, sel ast.Select
 	return out
 }
 
+var foundPlayerImplementors = []string{"FoundPlayer"}
+
+func (ec *executionContext) _FoundPlayer(ctx context.Context, sel ast.SelectionSet, obj *models.FoundPlayer) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, foundPlayerImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("FoundPlayer")
+		case "server":
+			out.Values[i] = ec._FoundPlayer_server(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "id":
+			out.Values[i] = ec._FoundPlayer_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "name":
+			out.Values[i] = ec._FoundPlayer_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "bestRank":
+			out.Values[i] = ec._FoundPlayer_bestRank(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "mostPoints":
+			out.Values[i] = ec._FoundPlayer_mostPoints(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "mostVillages":
+			out.Values[i] = ec._FoundPlayer_mostVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "tribeID":
+			out.Values[i] = ec._FoundPlayer_tribeID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "tribeTag":
+			out.Values[i] = ec._FoundPlayer_tribeTag(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var foundPlayerListImplementors = []string{"FoundPlayerList"}
+
+func (ec *executionContext) _FoundPlayerList(ctx context.Context, sel ast.SelectionSet, obj *FoundPlayerList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, foundPlayerListImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("FoundPlayerList")
+		case "items":
+			out.Values[i] = ec._FoundPlayerList_items(ctx, field, obj)
+		case "total":
+			out.Values[i] = ec._FoundPlayerList_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var foundTribeImplementors = []string{"FoundTribe"}
+
+func (ec *executionContext) _FoundTribe(ctx context.Context, sel ast.SelectionSet, obj *models.FoundTribe) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, foundTribeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("FoundTribe")
+		case "server":
+			out.Values[i] = ec._FoundTribe_server(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "id":
+			out.Values[i] = ec._FoundTribe_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "tag":
+			out.Values[i] = ec._FoundTribe_tag(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "name":
+			out.Values[i] = ec._FoundTribe_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "bestRank":
+			out.Values[i] = ec._FoundTribe_bestRank(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "mostPoints":
+			out.Values[i] = ec._FoundTribe_mostPoints(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "mostVillages":
+			out.Values[i] = ec._FoundTribe_mostVillages(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var foundTribeListImplementors = []string{"FoundTribeList"}
+
+func (ec *executionContext) _FoundTribeList(ctx context.Context, sel ast.SelectionSet, obj *FoundTribeList) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, foundTribeListImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("FoundTribeList")
+		case "items":
+			out.Values[i] = ec._FoundTribeList_items(ctx, field, obj)
+		case "total":
+			out.Values[i] = ec._FoundTribeList_total(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var liveEnnoblementImplementors = []string{"LiveEnnoblement"}
 
 func (ec *executionContext) _LiveEnnoblement(ctx context.Context, sel ast.SelectionSet, obj *models.LiveEnnoblement) graphql.Marshaler {
@@ -22759,6 +24028,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				res = ec._Query_player(ctx, field)
 				return res
 			})
+		case "searchPlayer":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_searchPlayer(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "playerHistory":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -22835,6 +24118,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_tribe(ctx, field)
+				return res
+			})
+		case "searchTribe":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_searchTribe(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
 		case "tribeChanges":
@@ -25123,6 +26420,54 @@ func (ec *executionContext) marshalNFloat2float64(ctx context.Context, sel ast.S
 	return res
 }
 
+func (ec *executionContext) marshalNFoundPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayer(ctx context.Context, sel ast.SelectionSet, v *models.FoundPlayer) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._FoundPlayer(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNFoundPlayerList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐFoundPlayerList(ctx context.Context, sel ast.SelectionSet, v FoundPlayerList) graphql.Marshaler {
+	return ec._FoundPlayerList(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNFoundPlayerList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐFoundPlayerList(ctx context.Context, sel ast.SelectionSet, v *FoundPlayerList) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._FoundPlayerList(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNFoundTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribe(ctx context.Context, sel ast.SelectionSet, v *models.FoundTribe) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._FoundTribe(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNFoundTribeList2githubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐFoundTribeList(ctx context.Context, sel ast.SelectionSet, v FoundTribeList) graphql.Marshaler {
+	return ec._FoundTribeList(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNFoundTribeList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐFoundTribeList(ctx context.Context, sel ast.SelectionSet, v *FoundTribeList) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._FoundTribeList(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
 	res, err := graphql.UnmarshalInt(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -25958,6 +27303,86 @@ func (ec *executionContext) unmarshalOEnnoblementFilterOr2ᚖgithubᚗcomᚋtrib
 	}
 	res, err := ec.unmarshalInputEnnoblementFilterOr(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOFoundPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayerᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.FoundPlayer) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNFoundPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayer(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOFoundTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.FoundTribe) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNFoundTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribe(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
 }
 
 func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {

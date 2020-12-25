@@ -17,6 +17,10 @@ import (
 	"github.com/tribalwarshelp/api/village"
 )
 
+const (
+	countField = "total"
+)
+
 type Resolver struct {
 	VersionUcase          version.Usecase
 	ServerUcase           server.Usecase

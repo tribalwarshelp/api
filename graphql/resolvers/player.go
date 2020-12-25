@@ -77,3 +77,24 @@ func (r *queryResolver) Players(ctx context.Context,
 func (r *queryResolver) Player(ctx context.Context, server string, id int) (*models.Player, error) {
 	return r.PlayerUcase.GetByID(ctx, server, id)
 }
+
+func (r *queryResolver) SearchPlayer(ctx context.Context,
+	version string,
+	name *string,
+	id *int,
+	limit *int,
+	offset *int,
+	sort []string) (*generated.FoundPlayerList, error) {
+	var err error
+	list := &generated.FoundPlayerList{}
+	list.Items, list.Total, err = r.PlayerUcase.SearchPlayer(ctx, player.SearchPlayerConfig{
+		Sort:    sort,
+		Limit:   safeIntPointer(limit, 0),
+		Offset:  safeIntPointer(offset, 0),
+		Version: version,
+		Name:    safeStrPointer(name, ""),
+		ID:      safeIntPointer(id, 0),
+		Count:   shouldCount(ctx),
+	})
+	return list, err
+}
