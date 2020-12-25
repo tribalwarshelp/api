@@ -22,23 +22,14 @@ func (r *Resolver) TribeHistory(ctx context.Context,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.TribeHistory, error) {
-	defLimit := 0
-	defOffset := 0
-	if limit == nil {
-		limit = &defLimit
-	}
-	if offset == nil {
-		offset = &defOffset
-	}
-
 	var err error
 	list := &generated.TribeHistory{}
 	list.Items, list.Total, err = r.TribeHistoryUcase.Fetch(ctx, tribehistory.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  *limit,
-		Offset: *offset,
-		Count:  true,
+		Limit:  safeIntPointer(limit, 0),
+		Offset: safeIntPointer(offset, 0),
+		Count:  shouldCount(ctx),
 		Server: server,
 	})
 	return list, err

@@ -30,24 +30,15 @@ func (r *Resolver) PlayerHistory(ctx context.Context,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.PlayerHistory, error) {
-	defLimit := 0
-	defOffset := 0
-	if limit == nil {
-		limit = &defLimit
-	}
-	if offset == nil {
-		offset = &defOffset
-	}
-
 	var err error
 	list := &generated.PlayerHistory{}
 	list.Items, list.Total, err = r.PlayerHistoryUcase.Fetch(ctx, playerhistory.FetchConfig{
 		Server: server,
 		Filter: f,
 		Sort:   sort,
-		Limit:  *limit,
-		Offset: *offset,
-		Count:  true,
+		Limit:  safeIntPointer(limit, 0),
+		Offset: safeIntPointer(offset, 0),
+		Count:  shouldCount(ctx),
 	})
 	return list, err
 }

@@ -17,23 +17,14 @@ func (r *queryResolver) Versions(ctx context.Context,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.VersionList, error) {
-	defLimit := 0
-	defOffset := 0
-	if limit == nil {
-		limit = &defLimit
-	}
-	if offset == nil {
-		offset = &defOffset
-	}
-
 	var err error
 	list := &generated.VersionList{}
 	list.Items, list.Total, err = r.VersionUcase.Fetch(ctx, version.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  *limit,
-		Offset: *offset,
-		Count:  true,
+		Limit:  safeIntPointer(limit, 0),
+		Offset: safeIntPointer(offset, 0),
+		Count:  shouldCount(ctx),
 	})
 	return list, err
 }

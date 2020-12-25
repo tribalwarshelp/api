@@ -28,23 +28,14 @@ func (r *queryResolver) Servers(ctx context.Context,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.ServerList, error) {
-	defLimit := 0
-	defOffset := 0
-	if limit == nil {
-		limit = &defLimit
-	}
-	if offset == nil {
-		offset = &defOffset
-	}
-
 	var err error
 	list := &generated.ServerList{}
 	list.Items, list.Total, err = r.ServerUcase.Fetch(ctx, server.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  *limit,
-		Offset: *offset,
-		Count:  true,
+		Limit:  safeIntPointer(limit, 0),
+		Offset: safeIntPointer(offset, 0),
+		Count:  shouldCount(ctx),
 	})
 	return list, err
 }

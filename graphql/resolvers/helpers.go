@@ -68,14 +68,12 @@ func getTribe(ctx context.Context, id int) *models.Tribe {
 }
 
 func shouldCount(ctx context.Context) bool {
-	count := false
 	for _, field := range graphql.CollectFieldsCtx(ctx, nil) {
 		if field.Name == countField {
-			count = true
-			break
+			return true
 		}
 	}
-	return count
+	return false
 }
 
 func safeStrPointer(s *string, def string) string {

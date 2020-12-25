@@ -22,23 +22,14 @@ func (r *queryResolver) Villages(ctx context.Context,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.VillageList, error) {
-	defLimit := 0
-	defOffset := 0
-	if limit == nil {
-		limit = &defLimit
-	}
-	if offset == nil {
-		offset = &defOffset
-	}
-
 	var err error
 	list := &generated.VillageList{}
 	list.Items, list.Total, err = r.VillageUcase.Fetch(ctx, village.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  *limit,
-		Offset: *offset,
-		Count:  true,
+		Limit:  safeIntPointer(limit, 0),
+		Offset: safeIntPointer(offset, 0),
+		Count:  shouldCount(ctx),
 		Server: server,
 	})
 	return list, err

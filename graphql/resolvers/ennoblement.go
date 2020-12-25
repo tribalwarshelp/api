@@ -53,24 +53,15 @@ func (r *queryResolver) Ennoblements(ctx context.Context, server string,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.EnnoblementList, error) {
-	defLimit := 0
-	defOffset := 0
-	if limit == nil {
-		limit = &defLimit
-	}
-	if offset == nil {
-		offset = &defOffset
-	}
-
 	var err error
 	list := &generated.EnnoblementList{}
 	list.Items, list.Total, err = r.EnnoblementUcase.Fetch(ctx, ennoblement.FetchConfig{
 		Server: server,
 		Filter: f,
 		Sort:   sort,
-		Limit:  *limit,
-		Offset: *offset,
-		Count:  true,
+		Limit:  safeIntPointer(limit, 0),
+		Offset: safeIntPointer(offset, 0),
+		Count:  shouldCount(ctx),
 	})
 	return list, err
 }

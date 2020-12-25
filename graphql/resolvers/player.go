@@ -52,24 +52,15 @@ func (r *queryResolver) Players(ctx context.Context,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.PlayerList, error) {
-	defLimit := 0
-	defOffset := 0
-	if limit == nil {
-		limit = &defLimit
-	}
-	if offset == nil {
-		offset = &defOffset
-	}
-
 	var err error
 	list := &generated.PlayerList{}
 	list.Items, list.Total, err = r.PlayerUcase.Fetch(ctx, player.FetchConfig{
 		Server: server,
 		Filter: f,
 		Sort:   sort,
-		Limit:  *limit,
-		Offset: *offset,
-		Count:  true,
+		Limit:  safeIntPointer(limit, 0),
+		Offset: safeIntPointer(offset, 0),
+		Count:  shouldCount(ctx),
 	})
 	return list, err
 }
