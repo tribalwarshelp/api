@@ -74,7 +74,7 @@ func (repo *pgRepository) SearchTribe(ctx context.Context, cfg tribe.SearchTribe
 			Model().
 			Context(ctx).
 			ColumnExpr("? AS server", server.Key).
-			Column("tribe.id", "tribe.name", "tribe.most_points", "tribe.best_rank", "tribe.most_villages").
+			Column("tribe.id", "tribe.name", "tribe.tag", "tribe.most_points", "tribe.best_rank", "tribe.most_villages").
 			TableExpr("?0.tribes as tribe", safeKey).
 			Where("tribe.tag ILIKE ?0 OR tribe.name ILIKE ?0", cfg.Query)
 		if query == nil {
