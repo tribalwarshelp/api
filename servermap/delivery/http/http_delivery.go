@@ -50,13 +50,16 @@ func (h *handler) mapHandler(c *gin.Context) {
 		return
 	}
 
+	showBarbarian := c.Query("showBarbarian")
+	largerMarkers := c.Query("largerMarkers")
+	markersOnly := c.Query("markersOnly")
 	markers, err := h.mapUsecase.GetMarkers(c.Request.Context(), servermap.GetMarkersConfig{
 		Server:                  server.Key,
 		Tribes:                  c.Request.URL.Query()["tribe"],
 		Players:                 c.Request.URL.Query()["player"],
-		ShowBarbarianVillages:   c.Query("showBarbarian") == "true",
-		LargerMarkers:           c.Query("largerMarkers") == "true",
-		ShowOtherPlayerVillages: !(c.Query("markersOnly") == "true"),
+		ShowBarbarianVillages:   showBarbarian == "true" || showBarbarian == "1",
+		LargerMarkers:           largerMarkers == "true" || largerMarkers == "1",
+		ShowOtherPlayerVillages: !(markersOnly == "true" || markersOnly == "1"),
 	})
 	if err != nil {
 		c.JSON(http.StatusBadRequest, &gqlerror.Error{
@@ -71,11 +74,13 @@ func (h *handler) mapHandler(c *gin.Context) {
 	if scale > maxScale {
 		scale = maxScale
 	}
+	showGrid := c.Query("showGrid")
+	showContinentNumbers := c.Query("showContinentNumbers")
 	if err := generator.Generate(generator.Config{
 		Markers:              markers,
 		Destination:          c.Writer,
-		ContinentGrid:        c.Query("showGrid") == "true",
-		ContinentNumbers:     c.Query("showContinentNumbers") == "true",
+		ContinentGrid:        showGrid == "true" || showGrid == "1",
+		ContinentNumbers:     showContinentNumbers == "true" || showContinentNumbers == "1",
 		BackgroundColor:      c.Query("backgroundColor"),
 		GridLineColor:        c.Query("gridLineColor"),
 		ContinentNumberColor: c.Query("continentNumberColor"),
@@ -83,7 +88,7 @@ func (h *handler) mapHandler(c *gin.Context) {
 		CenterX:              centerX,
 		CenterY:              centerY,
 		Scale:                float32(scale),
-		Quality:              60,
+		Quality:              90,
 	}); err != nil {
 		c.JSON(http.StatusBadRequest, &gqlerror.Error{
 			Message: err.Error(),
