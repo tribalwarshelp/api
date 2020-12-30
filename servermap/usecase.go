@@ -13,6 +13,8 @@ type GetMarkersConfig struct {
 	ShowBarbarianVillages   bool
 	ShowOtherPlayerVillages bool
 	LargerMarkers           bool
+	PlayerVillageColor      string
+	BarbarianVillageColor   string
 }
 
 type Usecase interface {

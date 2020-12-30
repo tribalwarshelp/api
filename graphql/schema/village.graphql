@@ -45,6 +45,7 @@ input VillageFilter {
   bonusLTE: Int
 
   playerID: [Int!]
+  playerIDNEQ: [Int!]
   playerFilter: PlayerFilter
 
   offset: Int

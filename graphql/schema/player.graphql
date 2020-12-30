@@ -134,6 +134,7 @@ input PlayerFilter {
   deletedAtLTE: Time
 
   tribeID: [Int!]
+  tribeIDNEQ: [Int!]
   tribeFilter: TribeFilter
 
   offset: Int

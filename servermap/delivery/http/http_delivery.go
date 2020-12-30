@@ -60,6 +60,8 @@ func (h *handler) mapHandler(c *gin.Context) {
 		ShowBarbarianVillages:   showBarbarian == "true" || showBarbarian == "1",
 		LargerMarkers:           largerMarkers == "true" || largerMarkers == "1",
 		ShowOtherPlayerVillages: !(markersOnly == "true" || markersOnly == "1"),
+		PlayerVillageColor:      c.Query("playerVillageColor"),
+		BarbarianVillageColor:   c.Query("barbarianVillageColor"),
 	})
 	if err != nil {
 		c.JSON(http.StatusBadRequest, &gqlerror.Error{

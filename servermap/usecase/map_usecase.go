@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	defaultBarbarianVillagesColor = "#808080"
-	defaultPlayerVillagesColor    = "#FF0000"
+	defaultBarbarianVillageColor = "#808080"
+	defaultPlayerVillageColor    = "#FF0000"
 )
 
 type usecase struct {
@@ -30,7 +30,6 @@ func New(villageRepo village.Repository) servermap.Usecase {
 }
 
 func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersConfig) ([]*generator.Marker, error) {
-	var mutex sync.Mutex
 	g := new(errgroup.Group)
 
 	tribes := make(map[string][]int)
@@ -67,18 +66,20 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		players[color] = append(players[color], id)
 	}
 
-	markers := []*generator.Marker{}
-
+	otherMarkers := []*generator.Marker{}
+	var otherMarkersMutex sync.Mutex
 	if cfg.ShowOtherPlayerVillages {
+		color := cfg.PlayerVillageColor
+		if color == "" {
+			color = defaultPlayerVillageColor
+		}
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
 				Filter: &models.VillageFilter{
 					PlayerFilter: &models.PlayerFilter{
-						IdNEQ: append(playerIDs, 0),
-						TribeFilter: &models.TribeFilter{
-							IdNEQ: tribeIDs,
-						},
+						IdNEQ:      append(playerIDs, 0),
+						TribeIdNEQ: tribeIDs,
 					},
 				},
 				Columns: []string{"x", "y"},
@@ -87,17 +88,20 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 			if err != nil {
 				return err
 			}
-			mutex.Lock()
-			markers = append(markers, &generator.Marker{
+			otherMarkersMutex.Lock()
+			otherMarkers = append(otherMarkers, &generator.Marker{
 				Villages: villages,
-				Color:    defaultPlayerVillagesColor,
+				Color:    color,
 			})
-			mutex.Unlock()
+			otherMarkersMutex.Unlock()
 			return nil
 		})
 	}
-
 	if cfg.ShowBarbarianVillages {
+		color := cfg.BarbarianVillageColor
+		if color == "" {
+			color = defaultBarbarianVillageColor
+		}
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
@@ -110,16 +114,18 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 			if err != nil {
 				return err
 			}
-			mutex.Lock()
-			markers = append(markers, &generator.Marker{
+			otherMarkersMutex.Lock()
+			otherMarkers = append(otherMarkers, &generator.Marker{
 				Villages: villages,
-				Color:    defaultBarbarianVillagesColor,
+				Color:    color,
 			})
-			mutex.Unlock()
+			otherMarkersMutex.Unlock()
 			return nil
 		})
 	}
 
+	tribeMarkers := []*generator.Marker{}
+	var tribeMarkersMutex sync.Mutex
 	for color, tribeIDs := range tribes {
 		c := color
 		ids := tribeIDs
@@ -138,17 +144,19 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 			if err != nil {
 				return err
 			}
-			mutex.Lock()
-			markers = append(markers, &generator.Marker{
+			tribeMarkersMutex.Lock()
+			tribeMarkers = append(tribeMarkers, &generator.Marker{
 				Villages: villages,
 				Color:    c,
 				Larger:   cfg.LargerMarkers,
 			})
-			mutex.Unlock()
+			tribeMarkersMutex.Unlock()
 			return nil
 		})
 	}
 
+	playerMarkers := []*generator.Marker{}
+	var playerMarkersMutex sync.Mutex
 	for color, playerIDs := range players {
 		c := color
 		ids := playerIDs
@@ -164,22 +172,38 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 			if err != nil {
 				return err
 			}
-			mutex.Lock()
-			markers = append(markers, &generator.Marker{
+			playerMarkersMutex.Lock()
+			playerMarkers = append(playerMarkers, &generator.Marker{
 				Villages: villages,
 				Color:    c,
 				Larger:   cfg.LargerMarkers,
 			})
-			mutex.Unlock()
+			playerMarkersMutex.Unlock()
 			return nil
 		})
 	}
 
 	err := g.Wait()
-	sort.SliceStable(markers, func(i, j int) bool {
-		return markers[i].Color < markers[j].Color
+	sort.SliceStable(playerMarkers, func(i, j int) bool {
+		return len(playerMarkers[i].Villages) < len(playerMarkers[j].Villages)
 	})
-	return markers, err
+	sort.SliceStable(tribeMarkers, func(i, j int) bool {
+		return len(tribeMarkers[i].Villages) < len(tribeMarkers[j].Villages)
+	})
+	return concatMarkers(otherMarkers, tribeMarkers, playerMarkers), err
+}
+
+func concatMarkers(slices ...[]*generator.Marker) []*generator.Marker {
+	var totalLen int
+	for _, s := range slices {
+		totalLen += len(s)
+	}
+	tmp := make([]*generator.Marker, totalLen)
+	var i int
+	for _, s := range slices {
+		i += copy(tmp[i:], s)
+	}
+	return tmp
 }
 
 func parseMarker(str string) (int, string, error) {

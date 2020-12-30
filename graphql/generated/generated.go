@@ -3795,6 +3795,7 @@ input PlayerFilter {
   deletedAtLTE: Time
 
   tribeID: [Int!]
+  tribeIDNEQ: [Int!]
   tribeFilter: TribeFilter
 
   offset: Int
@@ -4602,6 +4603,7 @@ input VillageFilter {
   bonusLTE: Int
 
   playerID: [Int!]
+  playerIDNEQ: [Int!]
   playerFilter: PlayerFilter
 
   offset: Int
@@ -20919,6 +20921,14 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 			if err != nil {
 				return it, err
 			}
+		case "tribeIDNEQ":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tribeIDNEQ"))
+			it.TribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "tribeFilter":
 			var err error
 
@@ -22456,6 +22466,14 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerID"))
 			it.PlayerID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "playerIDNEQ":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerIDNEQ"))
+			it.PlayerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
