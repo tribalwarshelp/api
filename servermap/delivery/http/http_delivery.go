@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/tribalwarshelp/map-generator/generator"
+	"github.com/tribalwarshelp/shared/mode"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tribalwarshelp/api/server"
@@ -91,6 +92,7 @@ func (h *handler) mapHandler(c *gin.Context) {
 		CenterY:              centerY,
 		Scale:                float32(scale),
 		Quality:              90,
+		PNG:                  mode.Get() == mode.ProductionMode,
 	}); err != nil {
 		c.JSON(http.StatusBadRequest, &gqlerror.Error{
 			Message: err.Error(),

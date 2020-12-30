@@ -15,7 +15,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/segmentio/encoding v0.1.14 // indirect
-	github.com/tribalwarshelp/map-generator v0.0.0-20201230155505-86ffb35e095b
+	github.com/tribalwarshelp/map-generator v0.0.0-20201230172408-9854b94d3578
 	github.com/tribalwarshelp/shared v0.0.0-20201230135308-316413cf7f53
 	github.com/vektah/gqlparser/v2 v2.1.0
 	go.opentelemetry.io/otel v0.9.0 // indirect

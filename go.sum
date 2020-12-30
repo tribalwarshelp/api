@@ -190,8 +190,8 @@ github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc h1:9lRDQMhESg+zvGYmW5DyG0UqvY96Bu5QYsTLvCHdrgo=
 github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc/go.mod h1:bciPuU6GHm1iF1pBvUfxfsH0Wmnc2VbpgvbI9ZWuIRs=
-github.com/tribalwarshelp/map-generator v0.0.0-20201230155505-86ffb35e095b h1:ISOo9/QADwRp+IWEkXF91atkaQhqAvEPF9yVVJnyv70=
-github.com/tribalwarshelp/map-generator v0.0.0-20201230155505-86ffb35e095b/go.mod h1:LD8bRgTmZn9CA/0Yk4MrleDTJ5OYzvd8uALznvVUslI=
+github.com/tribalwarshelp/map-generator v0.0.0-20201230172408-9854b94d3578 h1:QEtIQtv+xquFv7kaPe9Y8uKd4+p/Ug31WsuSoFChOl8=
+github.com/tribalwarshelp/map-generator v0.0.0-20201230172408-9854b94d3578/go.mod h1:LD8bRgTmZn9CA/0Yk4MrleDTJ5OYzvd8uALznvVUslI=
 github.com/tribalwarshelp/shared v0.0.0-20201225112152-d1d8bc92fc33 h1:ItFd9kzpvO69r3Ta7S8+3OT6Wc56Ga5MEGBYW7DotUE=
 github.com/tribalwarshelp/shared v0.0.0-20201225112152-d1d8bc92fc33/go.mod h1:Lxk6zaQhPTPrgz9ksMgg51m8XgflrCo/kRBx2cM3yfk=
 github.com/tribalwarshelp/shared v0.0.0-20201230135308-316413cf7f53 h1:uIkJ6PVqnGHBM5QE0mcsN+3fFv0103DMeUmx2Wzw/E4=
