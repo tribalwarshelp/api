@@ -4509,6 +4509,7 @@ type UnitConfig {
   PT
   BR
   HU
+  SK
 }
 
 type Version {
