@@ -4492,24 +4492,43 @@ type UnitConfig {
 `, BuiltIn: false},
 	{Name: "schema/version.graphql", Input: `enum VersionCode {
   PL
+  pl
   EN
+  en
   DE
+  de
   UK
+  uk
   IT
+  it
   FR
+  fr
   US
+  us
   NL
+  nl
   ES
+  es
   RO
+  ro
   RU
+  ru
   GR
+  gr
   TR
+  tr
   CS
+  cs
   CH
+  ch
   PT
+  pt
   BR
+  br
   HU
+  hu
   SK
+  sk
 }
 
 type Version {
