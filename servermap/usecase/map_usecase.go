@@ -78,8 +78,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 				Server: cfg.Server,
 				Filter: &models.VillageFilter{
 					PlayerFilter: &models.PlayerFilter{
-						IdNEQ:      append(playerIDs, 0),
-						TribeIdNEQ: tribeIDs,
+						IDNEQ:      append(playerIDs, 0),
+						TribeIDNEQ: tribeIDs,
 					},
 				},
 				Columns: []string{"x", "y"},
@@ -134,7 +134,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 				Server: cfg.Server,
 				Filter: &models.VillageFilter{
 					PlayerFilter: &models.PlayerFilter{
-						IdNEQ:   playerIDs,
+						IDNEQ:   playerIDs,
 						TribeID: ids,
 					},
 				},

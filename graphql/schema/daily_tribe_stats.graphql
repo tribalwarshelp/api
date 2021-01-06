@@ -30,10 +30,6 @@ input DailyTribeStatsFilter {
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int @deprecated(reason: "Use a new variable added to the query dailyTribeStats - `offset`.")
-  limit: Int @deprecated(reason: "Use a new variable added to the query dailyTribeStats - `limit`.")
-  sort: String @deprecated(reason: "Use a new variable added to the query dailyTribeStats - `sort`.")
 }
 
 extend type Query {

@@ -37,19 +37,6 @@ input ServerFilter {
 
   versionCode: [VersionCode!]
   versionCodeNEQ: [VersionCode!]
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query players - `offset`."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query players - `limit`."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query players - `sort`."
-    )
 }
 
 extend type Query {

@@ -22,16 +22,21 @@ input EnnoblementFilterOr {
 input EnnoblementFilter {
   villageID: [Int!]
   villageIDNEQ: [Int!]
+  villageFilter: VillageFilter
 
   newOwnerID: [Int!]
   newOwnerIDNEQ: [Int!]
+  newOwnerFilter: PlayerFilter
   newOwnerTribeID: [Int!]
   newOwnerTribeIDNEQ: [Int!]
+  newOwnerTribeFilter: TribeFilter
 
   oldOwnerID: [Int!]
   oldOwnerIDNEQ: [Int!]
+  oldOwnerFilter: PlayerFilter
   oldOwnerTribeID: [Int!]
   oldOwnerTribeIDNEQ: [Int!]
+  oldOwnerTribeFilter: TribeFilter
 
   ennobledAt: Time
   ennobledAtGT: Time
@@ -40,19 +45,6 @@ input EnnoblementFilter {
   ennobledAtLTE: Time
 
   or: EnnoblementFilterOr
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query ennoblements - `offset`."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query ennoblements - `limit`."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query ennoblements - `sort`."
-    )
 }
 
 extend type Query {

@@ -23,25 +23,13 @@ type TribeHistory {
 input TribeHistoryFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
+  tribeFilter: TribeFilter
 
   createDate: Time
   createDateGT: Time
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribeHistory - `offset`."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribeHistory - `limit`."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query tribeHistory - `sort`."
-    )
 }
 
 extend type Query {

@@ -8,7 +8,6 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/dailytribestats"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -28,23 +27,17 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg dailytribestats.FetchCo
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).
 		Context(ctx).
-		Order(cfg.Sort...).
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
-	tribeRequired := utils.FindStringWithPrefix(cfg.Sort, "tribe.") != ""
-
+	relationshipAndSortAppender := &models.DailyTribeStatsRelationshipAndSortAppender{
+		Filter: &models.DailyTribeStatsFilter{},
+		Sort:   cfg.Sort,
+	}
 	if cfg.Filter != nil {
-		query = query.
-			WhereStruct(cfg.Filter)
-
-		if cfg.Filter.TribeFilter != nil {
-			query = query.WhereStruct(cfg.Filter.TribeFilter)
-			tribeRequired = true
-		}
+		query = query.Apply(cfg.Filter.Where)
+		relationshipAndSortAppender.Filter = cfg.Filter
 	}
-	if tribeRequired {
-		query = query.Relation("Tribe._")
-	}
+	query = query.Apply(relationshipAndSortAppender.Append)
 
 	if cfg.Count {
 		total, err = query.SelectAndCount()

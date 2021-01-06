@@ -23,25 +23,13 @@ type PlayerHistory {
 input PlayerHistoryFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
+  playerFilter: PlayerFilter
 
   createDate: Time
   createDateGT: Time
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query playerHistory - `offset`."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query playerHistory - `limit`."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query playerHistory - `sort`."
-    )
 }
 
 extend type Query {

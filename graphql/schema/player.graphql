@@ -136,19 +136,6 @@ input PlayerFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
   tribeFilter: TribeFilter
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query players - `offset`."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query players - `limit`."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query players - `sort`."
-    )
 }
 
 type FoundPlayer {

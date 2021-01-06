@@ -32,12 +32,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
 	if cfg.Filter != nil {
-		query = query.
-			WhereStruct(cfg.Filter)
-
-		if cfg.Filter.Exists != nil {
-			query = query.Where("exists = ?", *cfg.Filter.Exists)
-		}
+		query = query.Apply(cfg.Filter.Where)
 	}
 
 	if cfg.Count {

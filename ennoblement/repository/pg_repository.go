@@ -8,7 +8,6 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/ennoblement"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -28,36 +27,17 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg ennoblement.FetchConfig
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).
 		Context(ctx).
-		Order(cfg.Sort...).
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
-	villageRequired := utils.FindStringWithPrefix(cfg.Sort, "village.") != ""
-	newOwnerRequired := utils.FindStringWithPrefix(cfg.Sort, "new_owner.") != ""
-	newOwnerTribeRequired := utils.FindStringWithPrefix(cfg.Sort, "new_owner_tribe.") != ""
-	oldOwnerRequired := utils.FindStringWithPrefix(cfg.Sort, "old_owner.") != ""
-	oldOwnerTribeRequired := utils.FindStringWithPrefix(cfg.Sort, "old_owner_tribe.") != ""
-
+	relationshipAndSortAppender := &models.EnnoblementRelationshipAndSortAppender{
+		Filter: &models.EnnoblementFilter{},
+		Sort:   cfg.Sort,
+	}
 	if cfg.Filter != nil {
-		query = query.
-			WhereStruct(cfg.Filter).
-			WhereGroup(appendOrFilter(cfg.Filter.Or))
+		query = query.Apply(cfg.Filter.Where)
+		relationshipAndSortAppender.Filter = cfg.Filter
 	}
-
-	if villageRequired {
-		query = query.Relation("Village._")
-	}
-	if newOwnerRequired {
-		query = query.Join("LEFT JOIN ?SERVER.players AS new_owner ON new_owner.id = ennoblement.new_owner_id")
-	}
-	if newOwnerTribeRequired {
-		query = query.Join("LEFT JOIN ?SERVER.tribes AS new_owner_tribe ON new_owner_tribe.id = ennoblement.new_owner_tribe_id")
-	}
-	if oldOwnerRequired {
-		query = query.Join("LEFT JOIN ?SERVER.players AS old_owner ON old_owner.id = ennoblement.old_owner_id")
-	}
-	if oldOwnerTribeRequired {
-		query = query.Join("LEFT JOIN ?SERVER.tribes AS old_owner_tribe ON old_owner_tribe.id = ennoblement.old_owner_tribe_id")
-	}
+	query = query.Apply(relationshipAndSortAppender.Append)
 
 	if cfg.Count {
 		total, err = query.SelectAndCount()

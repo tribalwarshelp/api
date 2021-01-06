@@ -30,6 +30,12 @@ type TribeList {
   total: Int!
 }
 
+input TribeFilterOr {
+  id: [Int!]
+  nameIEQ: String
+  tagIEQ: String
+}
+
 input TribeFilter {
   id: [Int!]
   idNEQ: [Int!]
@@ -130,18 +136,7 @@ input TribeFilter {
   deletedAtLT: Time
   deletedAtLTE: Time
 
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribes - `offset`."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribes - `limit`."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query tribes - `sort`."
-    )
+  or: TribeFilterOr
 }
 
 type FoundTribe {

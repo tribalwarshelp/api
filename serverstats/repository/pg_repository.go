@@ -30,10 +30,8 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg serverstats.FetchConfig
 		Order(cfg.Sort...).
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
-
 	if cfg.Filter != nil {
-		query = query.
-			WhereStruct(cfg.Filter)
+		query = query.Apply(cfg.Filter.Where)
 	}
 
 	if cfg.Count {

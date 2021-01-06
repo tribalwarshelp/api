@@ -7,7 +7,6 @@ import (
 	"github.com/go-pg/pg/v10/orm"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/server"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -16,7 +15,7 @@ type pgRepository struct {
 }
 
 func NewPGRepository(db *pg.DB) (server.Repository, error) {
-	if err := db.CreateTable((*models.Server)(nil), &orm.CreateTableOptions{
+	if err := db.Model(&models.Server{}).CreateTable(&orm.CreateTableOptions{
 		IfNotExists: true,
 	}); err != nil {
 		return nil, errors.Wrap(err, "Cannot create 'servers' table")
@@ -34,13 +33,8 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg server.FetchConfig) ([]
 		Order(cfg.Sort...).
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
-	versionRequired := utils.FindStringWithPrefix(cfg.Sort, "version.") != ""
 	if cfg.Filter != nil {
-		query = query.
-			WhereStruct(cfg.Filter)
-	}
-	if versionRequired {
-		query = query.Relation("Version._")
+		query = query.Apply(cfg.Filter.Where)
 	}
 	if len(cfg.Columns) > 0 {
 		query = query.Column(cfg.Columns...)

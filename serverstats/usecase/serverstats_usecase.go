@@ -21,15 +21,7 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg serverstats.FetchConfig) ([
 	if cfg.Filter == nil {
 		cfg.Filter = &models.ServerStatsFilter{}
 	}
-	if cfg.Filter.Limit > 0 {
-		cfg.Limit = cfg.Filter.Limit
-	}
-	if cfg.Filter.Offset > 0 {
-		cfg.Offset = cfg.Filter.Offset
-	}
-	if cfg.Filter.Sort != "" {
-		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
-	}
+
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > serverstats.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = serverstats.PaginationLimit
 	}

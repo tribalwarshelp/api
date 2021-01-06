@@ -23,18 +23,6 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*mod
 	if cfg.Filter == nil {
 		cfg.Filter = &models.PlayerFilter{}
 	}
-	if cfg.Filter.Limit > 0 {
-		cfg.Limit = cfg.Filter.Limit
-	}
-	if cfg.Filter.Offset > 0 {
-		cfg.Offset = cfg.Filter.Offset
-	}
-	if cfg.Filter.Sort != "" {
-		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
-	}
-	if cfg.Filter.TribeFilter != nil && cfg.Filter.TribeFilter.Sort != "" {
-		cfg.Sort = append(cfg.Sort, "tribe."+cfg.Filter.TribeFilter.Sort)
-	}
 
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.PaginationLimit

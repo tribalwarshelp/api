@@ -25,15 +25,7 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*mo
 	if cfg.Filter == nil {
 		cfg.Filter = &models.VersionFilter{}
 	}
-	if cfg.Filter.Limit > 0 {
-		cfg.Limit = cfg.Filter.Limit
-	}
-	if cfg.Filter.Offset > 0 {
-		cfg.Offset = cfg.Filter.Offset
-	}
-	if cfg.Filter.Sort != "" {
-		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
-	}
+
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > version.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = version.PaginationLimit
 	}
@@ -44,9 +36,9 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*mo
 func (ucase *usecase) GetByCode(ctx context.Context, code models.VersionCode) (*models.Version, error) {
 	versions, _, err := ucase.repo.Fetch(ctx, version.FetchConfig{
 		Filter: &models.VersionFilter{
-			Code:  []models.VersionCode{code},
-			Limit: 1,
+			Code: []models.VersionCode{code},
 		},
+		Limit: 1,
 	})
 	if err != nil {
 		return nil, err

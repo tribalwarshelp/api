@@ -23,24 +23,6 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*mo
 		cfg.Filter = &models.VillageFilter{}
 	}
 
-	if cfg.Filter.Limit > 0 {
-		cfg.Limit = cfg.Filter.Limit
-	}
-	if cfg.Filter.Offset > 0 {
-		cfg.Offset = cfg.Filter.Offset
-	}
-	if cfg.Filter.Sort != "" {
-		cfg.Sort = append(cfg.Sort, cfg.Filter.Sort)
-	}
-	if cfg.Filter.PlayerFilter != nil {
-		if cfg.Filter.PlayerFilter.Sort != "" {
-			cfg.Sort = append(cfg.Sort, "player."+cfg.Filter.PlayerFilter.Sort)
-		}
-		if cfg.Filter.PlayerFilter.TribeFilter != nil && cfg.Filter.PlayerFilter.TribeFilter.Sort != "" {
-			cfg.Sort = append(cfg.Sort, "tribe."+cfg.Filter.PlayerFilter.TribeFilter.Sort)
-		}
-	}
-
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > village.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = village.PaginationLimit
 	}
@@ -51,9 +33,9 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*mo
 func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*models.Village, error) {
 	villages, _, err := ucase.repo.Fetch(ctx, village.FetchConfig{
 		Filter: &models.VillageFilter{
-			ID:    []int{id},
-			Limit: 1,
+			ID: []int{id},
 		},
+		Limit:  1,
 		Server: server,
 	})
 	if err != nil {

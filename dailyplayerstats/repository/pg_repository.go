@@ -8,7 +8,6 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/dailyplayerstats"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/shared/models"
 )
 
@@ -28,33 +27,17 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg dailyplayerstats.FetchC
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).
 		Context(ctx).
-		Order(cfg.Sort...).
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
-	playerRequired := utils.FindStringWithPrefix(cfg.Sort, "player.") != ""
-	tribeRequired := utils.FindStringWithPrefix(cfg.Sort, "tribe.") != ""
-
+	relationshipAndSortAppender := &models.DailyPlayerStatsRelationshipAndSortAppender{
+		Filter: &models.DailyPlayerStatsFilter{},
+		Sort:   cfg.Sort,
+	}
 	if cfg.Filter != nil {
-		query = query.
-			WhereStruct(cfg.Filter)
-
-		if cfg.Filter.PlayerFilter != nil {
-			playerRequired = true
-			query = query.WhereStruct(cfg.Filter.PlayerFilter)
-
-			if cfg.Filter.PlayerFilter.TribeFilter != nil {
-				tribeRequired = true
-				query = query.
-					WhereStruct(cfg.Filter.PlayerFilter.TribeFilter)
-			}
-		}
+		query = query.Apply(cfg.Filter.Where)
+		relationshipAndSortAppender.Filter = cfg.Filter
 	}
-	if playerRequired {
-		query = query.Relation("Player._")
-	}
-	if tribeRequired {
-		query = query.Join("LEFT JOIN ?SERVER.tribes AS tribe ON tribe.id = player.tribe_id")
-	}
+	query = query.Apply(relationshipAndSortAppender.Append)
 
 	if cfg.Count {
 		total, err = query.SelectAndCount()

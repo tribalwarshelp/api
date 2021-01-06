@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-pg/pg/extra/pgdebug"
+
 	"github.com/gin-contrib/cors"
 	servermaphttpdelivery "github.com/tribalwarshelp/api/servermap/delivery/http"
 
@@ -52,7 +54,6 @@ import (
 	villageucase "github.com/tribalwarshelp/api/village/usecase"
 
 	"github.com/go-pg/pg/v10"
-	"github.com/go-pg/pg/v10/pgext"
 	"github.com/joho/godotenv"
 
 	"github.com/gin-gonic/gin"
@@ -80,7 +81,9 @@ func main() {
 		}
 	}()
 	if strings.ToUpper(os.Getenv("LOG_DB_QUERIES")) == "TRUE" {
-		db.AddQueryHook(pgext.DebugHook{})
+		db.AddQueryHook(pgdebug.DebugHook{
+			Verbose: true,
+		})
 	}
 
 	redisClient := redis.NewClient(&redis.Options{

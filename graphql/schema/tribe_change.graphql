@@ -18,12 +18,15 @@ input TribeChangeFilterOr {
 input TribeChangeFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
+  playerFilter: PlayerFilter
 
   oldTribeID: [Int!]
   oldTribeIDNEQ: [Int!]
+  oldTribeFilter: TribeFilter
 
   newTribeID: [Int!]
   newTribeIDNEQ: [Int!]
+  newTribeFilter: TribeFilter
 
   createdAt: Time
   createdAtGT: Time
@@ -32,19 +35,6 @@ input TribeChangeFilter {
   createdAtLTE: Time
 
   or: TribeChangeFilterOr
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribeChanges - `offset`."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribeChanges - `limit`."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query tribeChanges - `sort`."
-    )
 }
 
 extend type Query {

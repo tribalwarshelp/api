@@ -15,7 +15,7 @@ type pgRepository struct {
 }
 
 func NewPGRepository(db *pg.DB) (version.Repository, error) {
-	if err := db.CreateTable((*models.Version)(nil), &orm.CreateTableOptions{
+	if err := db.Model(&models.Version{}).CreateTable(&orm.CreateTableOptions{
 		IfNotExists: true,
 	}); err != nil {
 		return nil, errors.Wrap(err, "Cannot create 'versions' table")
@@ -34,8 +34,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg version.FetchConfig) ([
 		Limit(cfg.Limit).
 		Offset(cfg.Offset)
 	if cfg.Filter != nil {
-		query = query.
-			WhereStruct(cfg.Filter)
+		query = query.Apply(cfg.Filter.Where)
 	}
 
 	if cfg.Count {

@@ -3513,10 +3513,6 @@ input DailyPlayerStatsFilter {
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int @deprecated(reason: "Use a new variable added to the query dailyPlayerStats - ` + "`" + `offset` + "`" + `.")
-  limit: Int @deprecated(reason: "Use a new variable added to the query dailyPlayerStats - ` + "`" + `limit` + "`" + `.")
-  sort: String @deprecated(reason: "Use a new variable added to the query dailyPlayerStats - ` + "`" + `sort` + "`" + `.")
 }
 
 extend type Query {
@@ -3561,10 +3557,6 @@ input DailyTribeStatsFilter {
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int @deprecated(reason: "Use a new variable added to the query dailyTribeStats - ` + "`" + `offset` + "`" + `.")
-  limit: Int @deprecated(reason: "Use a new variable added to the query dailyTribeStats - ` + "`" + `limit` + "`" + `.")
-  sort: String @deprecated(reason: "Use a new variable added to the query dailyTribeStats - ` + "`" + `sort` + "`" + `.")
 }
 
 extend type Query {
@@ -3605,16 +3597,21 @@ input EnnoblementFilterOr {
 input EnnoblementFilter {
   villageID: [Int!]
   villageIDNEQ: [Int!]
+  villageFilter: VillageFilter
 
   newOwnerID: [Int!]
   newOwnerIDNEQ: [Int!]
+  newOwnerFilter: PlayerFilter
   newOwnerTribeID: [Int!]
   newOwnerTribeIDNEQ: [Int!]
+  newOwnerTribeFilter: TribeFilter
 
   oldOwnerID: [Int!]
   oldOwnerIDNEQ: [Int!]
+  oldOwnerFilter: PlayerFilter
   oldOwnerTribeID: [Int!]
   oldOwnerTribeIDNEQ: [Int!]
+  oldOwnerTribeFilter: TribeFilter
 
   ennobledAt: Time
   ennobledAtGT: Time
@@ -3623,19 +3620,6 @@ input EnnoblementFilter {
   ennobledAtLTE: Time
 
   or: EnnoblementFilterOr
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query ennoblements - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query ennoblements - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query ennoblements - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 extend type Query {
@@ -3797,19 +3781,6 @@ input PlayerFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
   tribeFilter: TribeFilter
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query players - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query players - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query players - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 type FoundPlayer {
@@ -3872,25 +3843,13 @@ type PlayerHistory {
 input PlayerHistoryFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
+  playerFilter: PlayerFilter
 
   createDate: Time
   createDateGT: Time
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query playerHistory - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query playerHistory - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query playerHistory - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 extend type Query {
@@ -3944,19 +3903,6 @@ input ServerFilter {
 
   versionCode: [VersionCode!]
   versionCodeNEQ: [VersionCode!]
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query players - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query players - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query players - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 extend type Query {
@@ -4144,19 +4090,6 @@ input ServerStatsFilter {
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query serverStats - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query serverStats - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query serverStats - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 extend type Query {
@@ -4199,6 +4132,12 @@ extend type Query {
 type TribeList {
   items: [Tribe!]
   total: Int!
+}
+
+input TribeFilterOr {
+  id: [Int!]
+  nameIEQ: String
+  tagIEQ: String
 }
 
 input TribeFilter {
@@ -4301,18 +4240,7 @@ input TribeFilter {
   deletedAtLT: Time
   deletedAtLTE: Time
 
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribes - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribes - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query tribes - ` + "`" + `sort` + "`" + `."
-    )
+  or: TribeFilterOr
 }
 
 type FoundTribe {
@@ -4368,12 +4296,15 @@ input TribeChangeFilterOr {
 input TribeChangeFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
+  playerFilter: PlayerFilter
 
   oldTribeID: [Int!]
   oldTribeIDNEQ: [Int!]
+  oldTribeFilter: TribeFilter
 
   newTribeID: [Int!]
   newTribeIDNEQ: [Int!]
+  newTribeFilter: TribeFilter
 
   createdAt: Time
   createdAtGT: Time
@@ -4382,19 +4313,6 @@ input TribeChangeFilter {
   createdAtLTE: Time
 
   or: TribeChangeFilterOr
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribeChanges - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribeChanges - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query tribeChanges - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 extend type Query {
@@ -4432,25 +4350,13 @@ type TribeHistory {
 input TribeHistoryFilter {
   tribeID: [Int!]
   tribeIDNEQ: [Int!]
+  tribeFilter: TribeFilter
 
   createDate: Time
   createDateGT: Time
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribeHistory - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query tribeHistory - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query tribeHistory - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 extend type Query {
@@ -4546,19 +4452,6 @@ input VersionFilter {
   hostNEQ: [String!]
   hostMATCH: String
   hostIEQ: String
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query versions - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query versions - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query versions - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 type VersionList {
@@ -4625,19 +4518,6 @@ input VillageFilter {
   playerID: [Int!]
   playerIDNEQ: [Int!]
   playerFilter: PlayerFilter
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query versions - ` + "`" + `offset` + "`" + `."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query versions - ` + "`" + `limit` + "`" + `."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query versions - ` + "`" + `sort` + "`" + `."
-    )
 }
 
 extend type Query {
@@ -19921,7 +19801,7 @@ func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Con
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerIDNEQ"))
-			it.PlayerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.PlayerIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -19973,30 +19853,6 @@ func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Con
 			if err != nil {
 				return it, err
 			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		}
 	}
 
@@ -20021,7 +19877,7 @@ func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Cont
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tribeIDNEQ"))
-			it.TribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.TribeIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20073,30 +19929,6 @@ func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Cont
 			if err != nil {
 				return it, err
 			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		}
 	}
 
@@ -20121,7 +19953,15 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("villageIDNEQ"))
-			it.VillageIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.VillageIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "villageFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("villageFilter"))
+			it.VillageFilter, err = ec.unmarshalOVillageFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillageFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20137,7 +19977,15 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newOwnerIDNEQ"))
-			it.NewOwnerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.NewOwnerIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newOwnerFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newOwnerFilter"))
+			it.NewOwnerFilter, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20153,7 +20001,15 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newOwnerTribeIDNEQ"))
-			it.NewOwnerTribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.NewOwnerTribeIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newOwnerTribeFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newOwnerTribeFilter"))
+			it.NewOwnerTribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20169,7 +20025,15 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("oldOwnerIDNEQ"))
-			it.OldOwnerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.OldOwnerIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldOwnerFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("oldOwnerFilter"))
+			it.OldOwnerFilter, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20185,7 +20049,15 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("oldOwnerTribeIDNEQ"))
-			it.OldOwnerTribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.OldOwnerTribeIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldOwnerTribeFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("oldOwnerTribeFilter"))
+			it.OldOwnerTribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20234,30 +20106,6 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
 			it.Or, err = ec.unmarshalOEnnoblementFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilterOr(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20329,7 +20177,7 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNEQ"))
-			it.IdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.IDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20945,7 +20793,7 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tribeIDNEQ"))
-			it.TribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.TribeIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -20954,30 +20802,6 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tribeFilter"))
 			it.TribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -21005,7 +20829,15 @@ func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Contex
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerIDNEQ"))
-			it.PlayerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.PlayerIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "playerFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerFilter"))
+			it.PlayerFilter, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -21046,30 +20878,6 @@ func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Contex
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createDateLTE"))
 			it.CreateDateLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -21149,30 +20957,6 @@ func (ec *executionContext) unmarshalInputServerFilter(ctx context.Context, obj 
 			if err != nil {
 				return it, err
 			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		}
 	}
 
@@ -21225,30 +21009,6 @@ func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context,
 			if err != nil {
 				return it, err
 			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		}
 	}
 
@@ -21273,7 +21033,15 @@ func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context,
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerIDNEQ"))
-			it.PlayerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.PlayerIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "playerFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerFilter"))
+			it.PlayerFilter, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -21289,7 +21057,15 @@ func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context,
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("oldTribeIDNEQ"))
-			it.OldTribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.OldTribeIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldTribeFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("oldTribeFilter"))
+			it.OldTribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -21305,7 +21081,15 @@ func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context,
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newTribeIDNEQ"))
-			it.NewTribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.NewTribeIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newTribeFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("newTribeFilter"))
+			it.NewTribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -21354,30 +21138,6 @@ func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context,
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
 			it.Or, err = ec.unmarshalOTribeChangeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilterOr(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -21433,7 +21193,7 @@ func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj i
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNEQ"))
-			it.IdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.IDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22069,27 +21829,47 @@ func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj i
 			if err != nil {
 				return it, err
 			}
-		case "offset":
+		case "or":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("or"))
+			it.Or, err = ec.unmarshalOTribeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilterOr(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "limit":
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputTribeFilterOr(ctx context.Context, obj interface{}) (models.TribeFilterOr, error) {
+	var it models.TribeFilterOr
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
-		case "sort":
+		case "nameIEQ":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameIEQ"))
+			it.NameIEQ, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "tagIEQ":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tagIEQ"))
+			it.TagIEQ, err = ec.unmarshalOString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22117,7 +21897,15 @@ func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tribeIDNEQ"))
-			it.TribeIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.TribeIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "tribeFilter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tribeFilter"))
+			it.TribeFilter, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22158,30 +21946,6 @@ func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("createDateLTE"))
 			it.CreateDateLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22245,30 +22009,6 @@ func (ec *executionContext) unmarshalInputVersionFilter(ctx context.Context, obj
 			if err != nil {
 				return it, err
 			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		}
 	}
 
@@ -22293,7 +22033,7 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("idNEQ"))
-			it.IdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.IDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22493,7 +22233,7 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerIDNEQ"))
-			it.PlayerIdNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
+			it.PlayerIDNEQ, err = ec.unmarshalOInt2ᚕintᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -22502,30 +22242,6 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("playerFilter"))
 			it.PlayerFilter, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "offset":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
-			it.Offset, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "limit":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
-			it.Limit, err = ec.unmarshalOInt2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "sort":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("sort"))
-			it.Sort, err = ec.unmarshalOString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -27648,6 +27364,14 @@ func (ec *executionContext) unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshe
 		return nil, nil
 	}
 	res, err := ec.unmarshalInputTribeFilter(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOTribeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilterOr(ctx context.Context, v interface{}) (*models.TribeFilterOr, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputTribeFilterOr(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 

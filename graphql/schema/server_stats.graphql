@@ -23,19 +23,6 @@ input ServerStatsFilter {
   createDateGTE: Time
   createDateLT: Time
   createDateLTE: Time
-
-  offset: Int
-    @deprecated(
-      reason: "Use a new variable added to the query serverStats - `offset`."
-    )
-  limit: Int
-    @deprecated(
-      reason: "Use a new variable added to the query serverStats - `limit`."
-    )
-  sort: String
-    @deprecated(
-      reason: "Use a new variable added to the query serverStats - `sort`."
-    )
 }
 
 extend type Query {

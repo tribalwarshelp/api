@@ -73,6 +73,8 @@ models:
     model: github.com/tribalwarshelp/shared/models.Tribe
   TribeFilter:
     model: github.com/tribalwarshelp/shared/models.TribeFilter
+  TribeFilterOr:
+    model: github.com/tribalwarshelp/shared/models.TribeFilterOr
   FoundTribe:
     model: github.com/tribalwarshelp/shared/models.FoundTribe
   Village:
