@@ -58,7 +58,7 @@ func playgroundHandler() gin.HandlerFunc {
 	h := playground.Handler("Playground", "/graphql")
 
 	return func(c *gin.Context) {
-		c.Header("Cache-Control", fmt.Sprintf(`public, must-revalidate, max-age=%d, s-maxage=%d`, playgroundTTL, playgroundTTL))
+		c.Header("Cache-Control", fmt.Sprintf(`public, max-age=%d`, playgroundTTL))
 		h.ServeHTTP(c.Writer, c.Request)
 	}
 }

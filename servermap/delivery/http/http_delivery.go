@@ -41,7 +41,7 @@ func Attach(cfg Config) error {
 }
 
 func (h *handler) mapHandler(c *gin.Context) {
-	c.Header("Cache-Control", fmt.Sprintf(`public, must-revalidate, max-age=%d, s-maxage=%d`, imageTTL, imageTTL))
+	c.Header("Cache-Control", fmt.Sprintf(`public, max-age=%d`, imageTTL))
 
 	server, err := h.serverUsecase.GetByKey(c.Request.Context(), c.Param("server"))
 	if err != nil {
