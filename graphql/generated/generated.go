@@ -4136,8 +4136,10 @@ type TribeList {
 
 input TribeFilterOr {
   id: [Int!]
-  nameIEQ: String
+  tag: [String!]
   tagIEQ: String
+  name: [String!]
+  nameIEQ: String
 }
 
 input TribeFilter {
@@ -21857,11 +21859,11 @@ func (ec *executionContext) unmarshalInputTribeFilterOr(ctx context.Context, obj
 			if err != nil {
 				return it, err
 			}
-		case "nameIEQ":
+		case "tag":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameIEQ"))
-			it.NameIEQ, err = ec.unmarshalOString2string(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tag"))
+			it.Tag, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -21870,6 +21872,22 @@ func (ec *executionContext) unmarshalInputTribeFilterOr(ctx context.Context, obj
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tagIEQ"))
 			it.TagIEQ, err = ec.unmarshalOString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "nameIEQ":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nameIEQ"))
+			it.NameIEQ, err = ec.unmarshalOString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}

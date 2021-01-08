@@ -32,8 +32,10 @@ type TribeList {
 
 input TribeFilterOr {
   id: [Int!]
-  nameIEQ: String
+  tag: [String!]
   tagIEQ: String
+  name: [String!]
+  nameIEQ: String
 }
 
 input TribeFilter {
