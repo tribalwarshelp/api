@@ -191,6 +191,7 @@ type ComplexityRoot struct {
 		Exists         func(childComplexity int) int
 		ID             func(childComplexity int) int
 		JoinedAt       func(childComplexity int) int
+		LastActivityAt func(childComplexity int) int
 		MostPoints     func(childComplexity int) int
 		MostPointsAt   func(childComplexity int) int
 		MostVillages   func(childComplexity int) int
@@ -1343,6 +1344,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Player.JoinedAt(childComplexity), true
+
+	case "Player.lastActivityAt":
+		if e.complexity.Player.LastActivityAt == nil {
+			break
+		}
+
+		return e.complexity.Player.LastActivityAt(childComplexity), true
 
 	case "Player.mostPoints":
 		if e.complexity.Player.MostPoints == nil {
@@ -3672,6 +3680,7 @@ type Player {
   mostVillages: Int!
   mostVillagesAt: Time!
   joinedAt: Time!
+  lastActivityAt: Time!
   deletedAt: Time
   tribe: Tribe @goField(forceResolver: true)
   servers: [String!]! @goField(forceResolver: true)
@@ -3771,6 +3780,12 @@ input PlayerFilter {
   joinedAtGTE: Time
   joinedAtLT: Time
   joinedAtLTE: Time
+
+  lastActivityAt: Time
+  lastActivityAtGT: Time
+  lastActivityAtGTE: Time
+  lastActivityAtLT: Time
+  lastActivityAtLTE: Time
 
   deletedAt: Time
   deletedAtGT: Time
@@ -9309,6 +9324,41 @@ func (ec *executionContext) _Player_joinedAt(ctx context.Context, field graphql.
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return obj.JoinedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Player_lastActivityAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Player",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.LastActivityAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -20743,6 +20793,46 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 			if err != nil {
 				return it, err
 			}
+		case "lastActivityAt":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastActivityAt"))
+			it.LastActivityAt, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "lastActivityAtGT":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastActivityAtGT"))
+			it.LastActivityAtGT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "lastActivityAtGTE":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastActivityAtGTE"))
+			it.LastActivityAtGTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "lastActivityAtLT":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastActivityAtLT"))
+			it.LastActivityAtLT, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "lastActivityAtLTE":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lastActivityAtLTE"))
+			it.LastActivityAtLTE, err = ec.unmarshalOTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "deletedAt":
 			var err error
 
@@ -23181,6 +23271,11 @@ func (ec *executionContext) _Player(ctx context.Context, sel ast.SelectionSet, o
 			}
 		case "joinedAt":
 			out.Values[i] = ec._Player_joinedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "lastActivityAt":
+			out.Values[i] = ec._Player_lastActivityAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}

@@ -27,6 +27,7 @@ type Player {
   mostVillages: Int!
   mostVillagesAt: Time!
   joinedAt: Time!
+  lastActivityAt: Time!
   deletedAt: Time
   tribe: Tribe @goField(forceResolver: true)
   servers: [String!]! @goField(forceResolver: true)
@@ -126,6 +127,12 @@ input PlayerFilter {
   joinedAtGTE: Time
   joinedAtLT: Time
   joinedAtLTE: Time
+
+  lastActivityAt: Time
+  lastActivityAtGT: Time
+  lastActivityAtGTE: Time
+  lastActivityAtLT: Time
+  lastActivityAtLTE: Time
 
   deletedAt: Time
   deletedAtGT: Time
