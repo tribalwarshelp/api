@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
@@ -43,7 +44,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg version.FetchConfig) ([
 		err = query.Select()
 	}
 	if err != nil && err != pg.ErrNoRows {
-		return nil, 0, errors.Wrap(err, "Internal server error")
+		return nil, 0, fmt.Errorf("Internal server error")
 	}
 
 	return data, total, nil

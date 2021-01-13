@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/go-pg/pg/v10"
-	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/dailyplayerstats"
 	"github.com/tribalwarshelp/shared/models"
 )
@@ -48,7 +47,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg dailyplayerstats.FetchC
 		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
 			return nil, 0, fmt.Errorf("Server not found")
 		}
-		return nil, 0, errors.Wrap(err, "Internal server error")
+		return nil, 0, fmt.Errorf("Internal server error")
 	}
 
 	return data, total, nil

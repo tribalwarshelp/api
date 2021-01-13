@@ -7,7 +7,6 @@ import (
 
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
-	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/shared/models"
 )
@@ -49,7 +48,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]
 		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
 			return nil, 0, fmt.Errorf("Server not found")
 		}
-		return nil, 0, errors.Wrap(err, "Internal server error")
+		return nil, 0, fmt.Errorf("Internal server error")
 	}
 
 	return data, total, nil
@@ -68,7 +67,7 @@ func (repo *pgRepository) FetchNameChanges(ctx context.Context, code models.Vers
 		Where("player_id IN (?)", pg.In(playerID)).
 		Order("change_date ASC").
 		Select(); err != nil && err != pg.ErrNoRows {
-		return nil, errors.Wrap(err, "Internal server error")
+		return nil, fmt.Errorf("Internal server error")
 	}
 
 	m := make(map[int][]*models.PlayerNameChange)
@@ -89,7 +88,7 @@ func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code models.Ve
 		Where("player_id IN (?)", pg.In(playerID)).
 		Group("player_id").
 		Select(&data); err != nil && err != pg.ErrNoRows {
-		return nil, errors.Wrap(err, "Internal server error")
+		return nil, fmt.Errorf("Internal server error")
 	}
 
 	m := make(map[int][]string)
@@ -107,7 +106,7 @@ func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPla
 		Column("key").
 		Where("version_code = ?", cfg.Version).
 		Select(); err != nil {
-		return nil, 0, errors.Wrap(err, "Internal server error")
+		return nil, 0, fmt.Errorf("Internal server error")
 	}
 
 	var query *orm.Query
@@ -152,7 +151,7 @@ func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPla
 			err = base.Select(&res)
 		}
 		if err != nil && err != pg.ErrNoRows {
-			return nil, 0, errors.Wrap(err, "Internal server error")
+			return nil, 0, fmt.Errorf("Internal server error")
 		}
 	}
 

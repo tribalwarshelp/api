@@ -41,7 +41,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string) ([]*models.L
 			return nil, fmt.Errorf("Server not found")
 		}
 
-		return nil, errors.Wrap(err, "Internal server error")
+		return nil, fmt.Errorf("Internal server error")
 	}
 
 	if s.Status == models.ServerStatusClosed {
@@ -55,7 +55,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, server string) ([]*models.L
 		EnnobledAtGTE: time.Now().Add(-1 * time.Hour),
 	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Cannot load ennoblements for the server '%s' at the moment, please try again later", s.Key)
 	}
 
 	liveEnnoblements := convertToLiveEnnoblements(ennoblements)
