@@ -16,7 +16,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/tribalwarshelp/map-generator v0.0.0-20210106163923-fa048a59f5f2
-	github.com/tribalwarshelp/shared v0.0.0-20210109140005-237443e96235
+	github.com/tribalwarshelp/shared v0.0.0-20210113192528-c747617519f2
 	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208
 )

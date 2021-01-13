@@ -18,7 +18,7 @@ func NewPGRepository(db *pg.DB) (version.Repository, error) {
 	if err := db.Model(&models.Version{}).CreateTable(&orm.CreateTableOptions{
 		IfNotExists: true,
 	}); err != nil {
-		return nil, errors.Wrap(err, "Cannot create 'versions' table")
+		return nil, errors.Wrap(err, "cannot create 'versions' table")
 	}
 	return &pgRepository{db}, nil
 }
