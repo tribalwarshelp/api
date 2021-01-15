@@ -15,8 +15,6 @@ import (
 	"github.com/gin-contrib/cors"
 	servermaphttpdelivery "github.com/tribalwarshelp/api/servermap/delivery/http"
 
-	"github.com/go-redis/redis/v8"
-	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/mode"
 
 	httpdelivery "github.com/tribalwarshelp/api/graphql/delivery/http"
@@ -30,8 +28,6 @@ import (
 	dailytribestatsucase "github.com/tribalwarshelp/api/dailytribestats/usecase"
 	ennoblementrepo "github.com/tribalwarshelp/api/ennoblement/repository"
 	ennoblementucase "github.com/tribalwarshelp/api/ennoblement/usecase"
-	liveennoblementrepo "github.com/tribalwarshelp/api/liveennoblement/repository"
-	liveennoblementucase "github.com/tribalwarshelp/api/liveennoblement/usecase"
 	"github.com/tribalwarshelp/api/middleware"
 	playerrepo "github.com/tribalwarshelp/api/player/repository"
 	playerucase "github.com/tribalwarshelp/api/player/usecase"
@@ -86,21 +82,6 @@ func main() {
 		})
 	}
 
-	redisClient := redis.NewClient(&redis.Options{
-		Addr:     os.Getenv("REDIS_HOST") + ":" + os.Getenv("REDIS_PORT"),
-		Password: os.Getenv("REDIS_PASSWORD"),
-	})
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	if err := redisClient.Ping(ctx).Err(); err != nil {
-		log.Fatal(errors.Wrap(err, "cannot connect to redis"))
-	}
-	cancel()
-	defer func() {
-		if err := redisClient.Close(); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
 	versionRepo, err := versionrepo.NewPGRepository(db)
 	if err != nil {
 		log.Fatal(err)
@@ -119,7 +100,6 @@ func main() {
 	tribeChangeRepo := tribechangerepo.NewPGRepository(db)
 	dailyPlayerStatsRepo := dailyplayerstatsrepo.NewPGRepository(db)
 	dailyTribeStatsRepo := dailytribestatsrepo.NewPGRepository(db)
-	liveennoblementRepo := liveennoblementrepo.NewPGRepository(db, redisClient)
 
 	serverUcase := serverucase.New(serverRepo)
 
@@ -164,7 +144,6 @@ func main() {
 			PlayerUcase:           playerucase.New(playerRepo),
 			VillageUcase:          villageucase.New(villageRepo),
 			EnnoblementUcase:      ennoblementucase.New(ennoblementRepo),
-			LiveEnnoblementUcase:  liveennoblementucase.New(liveennoblementRepo),
 			TribeHistoryUcase:     tribehistoryucase.New(tribehistoryRepo),
 			PlayerHistoryUcase:    playerhistoryucase.New(playerhistoryRepo),
 			ServerStatsUcase:      serverstatsucase.New(serverstatsRepo),
@@ -191,7 +170,7 @@ func main() {
 	<-quit
 	log.Println("Shutdown Server ...")
 
-	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatal("Server Shutdown:", err)

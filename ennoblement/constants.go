@@ -1,5 +1,5 @@
 package ennoblement
 
 const (
-	PaginationLimit = 100
+	PaginationLimit = 200
 )

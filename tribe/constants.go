@@ -1,5 +1,5 @@
 package tribe
 
 const (
-	PaginationLimit = 100
+	PaginationLimit = 200
 )

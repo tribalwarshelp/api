@@ -3649,6 +3649,7 @@ extend type Query {
 
 extend type Query {
   liveEnnoblements(server: String!): [LiveEnnoblement!]
+    @deprecated(reason: "use ` + "`" + `ennoblements` + "`" + ` instead")
 }
 `, BuiltIn: false},
 	{Name: "schema/player.graphql", Input: `type PlayerNameChange {

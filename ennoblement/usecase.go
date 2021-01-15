@@ -8,4 +8,5 @@ import (
 
 type Usecase interface {
 	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Ennoblement, int, error)
+	FetchLiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error)
 }

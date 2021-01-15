@@ -7,4 +7,5 @@ type LiveEnnoblement {
 
 extend type Query {
   liveEnnoblements(server: String!): [LiveEnnoblement!]
+    @deprecated(reason: "use `ennoblements` instead")
 }

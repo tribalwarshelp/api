@@ -31,5 +31,5 @@ func (r *liveEnnoblementResolver) Village(ctx context.Context, obj *models.LiveE
 }
 
 func (r *queryResolver) LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error) {
-	return r.LiveEnnoblementUcase.Fetch(ctx, server)
+	return r.EnnoblementUcase.FetchLiveEnnoblements(ctx, server)
 }

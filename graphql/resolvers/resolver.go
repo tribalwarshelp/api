@@ -5,7 +5,6 @@ import (
 	"github.com/tribalwarshelp/api/dailytribestats"
 	"github.com/tribalwarshelp/api/ennoblement"
 	"github.com/tribalwarshelp/api/graphql/generated"
-	"github.com/tribalwarshelp/api/liveennoblement"
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/api/playerhistory"
 	"github.com/tribalwarshelp/api/server"
@@ -27,7 +26,6 @@ type Resolver struct {
 	PlayerUcase           player.Usecase
 	TribeUcase            tribe.Usecase
 	VillageUcase          village.Usecase
-	LiveEnnoblementUcase  liveennoblement.Usecase
 	EnnoblementUcase      ennoblement.Usecase
 	PlayerHistoryUcase    playerhistory.Usecase
 	TribeHistoryUcase     tribehistory.Usecase
