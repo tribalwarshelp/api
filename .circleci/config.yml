@@ -1,0 +1,28 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.15
+    working_directory: ~/twhelpapi
+    steps:
+      - checkout
+      - setup_remote_docker
+      # start proprietary DB using private Docker image
+      # with credentials stored in the UI
+      - run: |
+          docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      # build the application image
+      - run: docker build -t $DOCKER_LOGIN/twhelp-api:latest .
+
+      # deploy the image
+      - run: docker push $DOCKER_LOGIN/twhelp-api:latest
+workflows:
+  version: 2
+  deploy_prod:
+    jobs:
+      - build:
+          context: TWHelp
+          filters:
+            branches:
+              only:
+                - master
