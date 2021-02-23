@@ -61,6 +61,7 @@ func init() {
 	if mode.Get() == mode.DevelopmentMode {
 		godotenv.Load(".env.development")
 	}
+	log.Printf(os.Getenv("GIN_MODE"))
 }
 
 func main() {
