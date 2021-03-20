@@ -25,6 +25,6 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg tribehistory.FetchConfig) (
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribehistory.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = tribehistory.PaginationLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }

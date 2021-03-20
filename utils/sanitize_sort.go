@@ -9,9 +9,8 @@ var (
 	sortexprRegex = regexp.MustCompile(`^[\p{L}\_\.]+$`)
 )
 
-func SanitizeSortExpression(expr string) string {
-	trimmed := strings.TrimSpace(expr)
-	splitted := strings.Split(trimmed, " ")
+func SanitizeSort(expr string) string {
+	splitted := strings.Split(strings.TrimSpace(expr), " ")
 	length := len(splitted)
 	if length != 2 || !sortexprRegex.Match([]byte(splitted[0])) {
 		return ""
@@ -30,13 +29,13 @@ func SanitizeSortExpression(expr string) string {
 	return strings.ToLower(table+Underscore(column)) + " " + keyword
 }
 
-func SanitizeSortExpressions(exprs []string) []string {
-	filtered := []string{}
-	for _, expr := range exprs {
-		sanitized := SanitizeSortExpression(expr)
-		if sanitized != "" {
-			filtered = append(filtered, sanitized)
+func SanitizeSorts(sorts []string) []string {
+	sanitized := []string{}
+	for _, sort := range sorts {
+		sanitizedSort := SanitizeSort(sort)
+		if sanitizedSort != "" {
+			sanitized = append(sanitized, sanitizedSort)
 		}
 	}
-	return filtered
+	return sanitized
 }

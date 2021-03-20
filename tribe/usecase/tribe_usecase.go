@@ -27,7 +27,7 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*mode
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = tribe.PaginationLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
@@ -59,6 +59,6 @@ func (ucase *usecase) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConf
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = tribe.PaginationLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.SearchTribe(ctx, cfg)
 }

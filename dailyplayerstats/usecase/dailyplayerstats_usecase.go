@@ -25,6 +25,6 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg dailyplayerstats.FetchConfi
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > dailyplayerstats.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = dailyplayerstats.PaginationLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }

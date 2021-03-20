@@ -26,7 +26,7 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*mo
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > village.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = village.PaginationLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 

@@ -31,16 +31,16 @@ func DataLoadersToContext(dltcc DataLoadersToContextConfig, cfg dataloaders.Conf
 			Columns: []string{utils.Underscore("versionCode"), "key"},
 		})
 		if err != nil {
-			c.JSON(http.StatusOK, &gqlerror.Error{
+			c.JSON(http.StatusInternalServerError, &gqlerror.Error{
 				Message: err.Error(),
 			})
 			c.Abort()
 			return
 		}
-		for _, server := range servers {
-			serverDataLoaders[server.Key] = dataloaders.NewServerDataLoaders(server.Key, cfg)
-			if _, ok := versionDataLoaders[server.VersionCode]; !ok {
-				versionDataLoaders[server.VersionCode] = dataloaders.NewVersionDataLoaders(server.VersionCode, cfg)
+		for _, serv := range servers {
+			serverDataLoaders[serv.Key] = dataloaders.NewServerDataLoaders(serv.Key, cfg)
+			if _, ok := versionDataLoaders[serv.VersionCode]; !ok {
+				versionDataLoaders[serv.VersionCode] = dataloaders.NewVersionDataLoaders(serv.VersionCode, cfg)
 			}
 		}
 		ctx = StoreServerDataLoadersInContext(ctx, serverDataLoaders)

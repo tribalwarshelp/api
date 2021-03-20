@@ -27,7 +27,7 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*mod
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.PaginationLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
@@ -59,6 +59,6 @@ func (ucase *usecase) SearchPlayer(ctx context.Context, cfg player.SearchPlayerC
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.PaginationLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.PaginationLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.SearchPlayer(ctx, cfg)
 }

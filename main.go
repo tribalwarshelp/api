@@ -74,7 +74,7 @@ func main() {
 	})
 	defer func() {
 		if err := db.Close(); err != nil {
-			log.Fatal("Database disconnecting:", err)
+			log.Fatal("While disconnecting from the database:", err)
 		}
 	}()
 	if strings.ToUpper(os.Getenv("LOG_DB_QUERIES")) == "TRUE" {
@@ -124,15 +124,19 @@ func main() {
 		ServerUsecase: serverUcase,
 	})
 	graphql := router.Group("")
-	graphql.Use(middleware.DataLoadersToContext(middleware.DataLoadersToContextConfig{
-		ServerRepo: serverRepo,
-	},
-		dataloaders.Config{
-			PlayerRepo:  playerRepo,
-			TribeRepo:   tribeRepo,
-			VillageRepo: villageRepo,
-			VersionRepo: versionRepo,
-		}))
+	graphql.Use(
+		middleware.DataLoadersToContext(
+			middleware.DataLoadersToContextConfig{
+				ServerRepo: serverRepo,
+			},
+			dataloaders.Config{
+				PlayerRepo:  playerRepo,
+				TribeRepo:   tribeRepo,
+				VillageRepo: villageRepo,
+				VersionRepo: versionRepo,
+			},
+		),
+	)
 	graphql.Use(middleware.LimitWhitelist(middleware.LimitWhitelistConfig{
 		IPAddresses: strings.Split(os.Getenv("LIMIT_WHITELIST"), ","),
 	}))
@@ -160,7 +164,6 @@ func main() {
 	}
 
 	go func() {
-		// service connections
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}
