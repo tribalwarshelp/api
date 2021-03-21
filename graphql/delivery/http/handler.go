@@ -68,7 +68,7 @@ func graphqlHandler(cfg generated.Config) gin.HandlerFunc {
 	srv.Use(&extension.ComplexityLimit{
 		Func: func(ctx context.Context, rc *graphql.OperationContext) int {
 			if middleware.CanExceedLimit(ctx) {
-				return 500000
+				return 500000000
 			}
 			return 10000
 		},
