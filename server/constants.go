@@ -1,5 +1,5 @@
 package server
 
 const (
-	PaginationLimit = 100
+	FetchLimit = 100
 )

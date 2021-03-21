@@ -1,5 +1,5 @@
 package player
 
 const (
-	PaginationLimit = 200
+	FetchLimit = 200
 )

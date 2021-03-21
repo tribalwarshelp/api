@@ -22,10 +22,10 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg server.FetchConfig) ([]*mod
 	if cfg.Filter == nil {
 		cfg.Filter = &models.ServerFilter{}
 	}
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > server.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = server.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > server.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = server.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 

@@ -22,9 +22,9 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg dailytribestats.FetchConfig
 		cfg.Filter = &models.DailyTribeStatsFilter{}
 	}
 
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > dailytribestats.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = dailytribestats.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > dailytribestats.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = dailytribestats.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }

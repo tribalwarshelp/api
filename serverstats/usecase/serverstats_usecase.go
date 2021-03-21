@@ -22,9 +22,9 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg serverstats.FetchConfig) ([
 		cfg.Filter = &models.ServerStatsFilter{}
 	}
 
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > serverstats.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = serverstats.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > serverstats.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = serverstats.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }

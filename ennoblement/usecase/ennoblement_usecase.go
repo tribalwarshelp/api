@@ -23,17 +23,17 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg ennoblement.FetchConfig) ([
 		cfg.Filter = &models.EnnoblementFilter{}
 	}
 
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > ennoblement.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = ennoblement.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > ennoblement.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = ennoblement.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
 func (ucase *usecase) FetchLiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error) {
 	limit := 0
 	if !middleware.CanExceedLimit(ctx) {
-		limit = ennoblement.PaginationLimit
+		limit = ennoblement.FetchLimit
 	}
 	ennoblements, _, err := ucase.repo.Fetch(ctx, ennoblement.FetchConfig{
 		Server: server,

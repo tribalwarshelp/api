@@ -1,5 +1,5 @@
 package dailytribestats
 
 const (
-	PaginationLimit = 500
+	FetchLimit = 1000
 )

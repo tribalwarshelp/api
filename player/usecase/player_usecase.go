@@ -24,10 +24,10 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*mod
 		cfg.Filter = &models.PlayerFilter{}
 	}
 
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = player.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = player.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
@@ -56,9 +56,9 @@ func (ucase *usecase) SearchPlayer(ctx context.Context, cfg player.SearchPlayerC
 	if "" == strings.TrimSpace(cfg.Name) && cfg.ID <= 0 {
 		return nil, 0, fmt.Errorf("Your search is ambiguous. You must specify the variable 'name' or 'id'.")
 	}
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = player.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = player.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSortExpressions(cfg.Sort)
+	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.SearchPlayer(ctx, cfg)
 }

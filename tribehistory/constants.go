@@ -1,5 +1,5 @@
 package tribehistory
 
 const (
-	PaginationLimit = 100
+	FetchLimit = 100
 )
