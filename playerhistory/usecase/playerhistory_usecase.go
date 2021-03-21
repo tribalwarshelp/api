@@ -22,8 +22,8 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg playerhistory.FetchConfig) 
 		cfg.Filter = &models.PlayerHistoryFilter{}
 	}
 
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > playerhistory.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = playerhistory.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > playerhistory.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = playerhistory.FetchLimit
 	}
 	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)

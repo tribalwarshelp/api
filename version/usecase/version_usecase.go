@@ -26,8 +26,8 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*mo
 		cfg.Filter = &models.VersionFilter{}
 	}
 
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > version.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = version.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > version.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = version.FetchLimit
 	}
 	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)

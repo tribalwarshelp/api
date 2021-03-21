@@ -89,6 +89,9 @@ func getComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Player.NameChanges = func(childComplexity int) int {
 		return 50 + childComplexity
 	}
+	complexityRoot.Player.Servers = func(childComplexity int) int {
+		return 50 + childComplexity
+	}
 	complexityRoot.Query.DailyPlayerStats = func(
 		childComplexity int,
 		server string,
@@ -211,7 +214,7 @@ func getComplexityRoot() generated.ComplexityRoot {
 		return 100 + childComplexity
 	}
 	complexityRoot.Query.Server = func(childComplexity int, key string) int {
-		return 50 + childComplexity
+		return 10 + childComplexity
 	}
 	complexityRoot.Query.Servers = func(
 		childComplexity int,

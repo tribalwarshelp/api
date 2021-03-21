@@ -1,5 +1,5 @@
 package serverstats
 
 const (
-	PaginationLimit = 60
+	FetchLimit = 60
 )

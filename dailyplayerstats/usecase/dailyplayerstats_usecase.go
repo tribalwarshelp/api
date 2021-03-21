@@ -22,8 +22,8 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg dailyplayerstats.FetchConfi
 		cfg.Filter = &models.DailyPlayerStatsFilter{}
 	}
 
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > dailyplayerstats.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = dailyplayerstats.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > dailyplayerstats.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = dailyplayerstats.FetchLimit
 	}
 	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)

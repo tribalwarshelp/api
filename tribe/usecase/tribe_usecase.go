@@ -24,8 +24,8 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*mode
 		cfg.Filter = &models.TribeFilter{}
 	}
 
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = tribe.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = tribe.FetchLimit
 	}
 	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
@@ -56,8 +56,8 @@ func (ucase *usecase) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConf
 	if "" == strings.TrimSpace(cfg.Query) {
 		return nil, 0, fmt.Errorf("Your search is ambiguous. You must specify the variable 'query'.")
 	}
-	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.PaginationLimit || cfg.Limit <= 0) {
-		cfg.Limit = tribe.PaginationLimit
+	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.FetchLimit || cfg.Limit <= 0) {
+		cfg.Limit = tribe.FetchLimit
 	}
 	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.SearchTribe(ctx, cfg)
