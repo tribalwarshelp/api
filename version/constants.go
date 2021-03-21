@@ -1,5 +1,5 @@
 package version
 
 const (
-	FetchLimit = 100
+	FetchLimit = 30
 )

@@ -140,6 +140,7 @@ func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPla
 	if query != nil {
 		base := repo.
 			Model().
+			Context(ctx).
 			With("union_q", query).
 			Table("union_q").
 			Limit(cfg.Limit).
