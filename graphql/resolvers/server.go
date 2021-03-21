@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/tribalwarshelp/api/utils"
 
 	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/api/server"
@@ -29,8 +30,8 @@ func (r *queryResolver) Servers(ctx context.Context,
 	list.Items, list.Total, err = r.ServerUcase.Fetch(ctx, server.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  safeIntPointer(limit, 0),
-		Offset: safeIntPointer(offset, 0),
+		Limit:  utils.SafeIntPointer(limit, 0),
+		Offset: utils.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
 	})
 	return list, err

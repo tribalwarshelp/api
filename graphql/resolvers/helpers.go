@@ -75,17 +75,3 @@ func shouldCount(ctx context.Context) bool {
 	}
 	return false
 }
-
-func safeStrPointer(s *string, def string) string {
-	if s == nil {
-		return def
-	}
-	return *s
-}
-
-func safeIntPointer(s *int, def int) int {
-	if s == nil {
-		return def
-	}
-	return *s
-}

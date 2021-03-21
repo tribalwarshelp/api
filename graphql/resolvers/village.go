@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/tribalwarshelp/api/utils"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/village"
@@ -27,8 +28,8 @@ func (r *queryResolver) Villages(ctx context.Context,
 	list.Items, list.Total, err = r.VillageUcase.Fetch(ctx, village.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  safeIntPointer(limit, 0),
-		Offset: safeIntPointer(offset, 0),
+		Limit:  utils.SafeIntPointer(limit, 0),
+		Offset: utils.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
 		Server: server,
 	})

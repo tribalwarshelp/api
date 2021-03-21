@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"github.com/tribalwarshelp/api/utils"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/version"
@@ -18,8 +19,8 @@ func (r *queryResolver) Versions(ctx context.Context,
 	list.Items, list.Total, err = r.VersionUcase.Fetch(ctx, version.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  safeIntPointer(limit, 0),
-		Offset: safeIntPointer(offset, 0),
+		Limit:  utils.SafeIntPointer(limit, 0),
+		Offset: utils.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
 	})
 	return list, err
