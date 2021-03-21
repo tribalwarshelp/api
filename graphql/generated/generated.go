@@ -39,7 +39,6 @@ type ResolverRoot interface {
 	DailyPlayerStatsRecord() DailyPlayerStatsRecordResolver
 	DailyTribeStatsRecord() DailyTribeStatsRecordResolver
 	Ennoblement() EnnoblementResolver
-	LiveEnnoblement() LiveEnnoblementResolver
 	Player() PlayerResolver
 	PlayerHistoryRecord() PlayerHistoryRecordResolver
 	Query() QueryResolver
@@ -176,13 +175,6 @@ type ComplexityRoot struct {
 		Total func(childComplexity int) int
 	}
 
-	LiveEnnoblement struct {
-		EnnobledAt func(childComplexity int) int
-		NewOwner   func(childComplexity int) int
-		OldOwner   func(childComplexity int) int
-		Village    func(childComplexity int) int
-	}
-
 	Player struct {
 		BestRank       func(childComplexity int) int
 		BestRankAt     func(childComplexity int) int
@@ -250,7 +242,6 @@ type ComplexityRoot struct {
 		DailyPlayerStats func(childComplexity int, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) int
 		DailyTribeStats  func(childComplexity int, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) int
 		Ennoblements     func(childComplexity int, server string, filter *models.EnnoblementFilter, limit *int, offset *int, sort []string) int
-		LiveEnnoblements func(childComplexity int, server string) int
 		Player           func(childComplexity int, server string, id int) int
 		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) int
 		Players          func(childComplexity int, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) int
@@ -592,11 +583,6 @@ type EnnoblementResolver interface {
 	OldOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error)
 	OldOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error)
 }
-type LiveEnnoblementResolver interface {
-	Village(ctx context.Context, obj *models.LiveEnnoblement) (*models.Village, error)
-	NewOwner(ctx context.Context, obj *models.LiveEnnoblement) (*models.Player, error)
-	OldOwner(ctx context.Context, obj *models.LiveEnnoblement) (*models.Player, error)
-}
 type PlayerResolver interface {
 	Tribe(ctx context.Context, obj *models.Player) (*models.Tribe, error)
 	Servers(ctx context.Context, obj *models.Player) ([]string, error)
@@ -611,7 +597,6 @@ type QueryResolver interface {
 	DailyPlayerStats(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) (*DailyPlayerStats, error)
 	DailyTribeStats(ctx context.Context, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) (*DailyTribeStats, error)
 	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter, limit *int, offset *int, sort []string) (*EnnoblementList, error)
-	LiveEnnoblements(ctx context.Context, server string) ([]*models.LiveEnnoblement, error)
 	Players(ctx context.Context, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) (*PlayerList, error)
 	Player(ctx context.Context, server string, id int) (*models.Player, error)
 	SearchPlayer(ctx context.Context, version string, name *string, id *int, limit *int, offset *int, sort []string) (*FoundPlayerList, error)
@@ -1268,34 +1253,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FoundTribeList.Total(childComplexity), true
 
-	case "LiveEnnoblement.ennobledAt":
-		if e.complexity.LiveEnnoblement.EnnobledAt == nil {
-			break
-		}
-
-		return e.complexity.LiveEnnoblement.EnnobledAt(childComplexity), true
-
-	case "LiveEnnoblement.newOwner":
-		if e.complexity.LiveEnnoblement.NewOwner == nil {
-			break
-		}
-
-		return e.complexity.LiveEnnoblement.NewOwner(childComplexity), true
-
-	case "LiveEnnoblement.oldOwner":
-		if e.complexity.LiveEnnoblement.OldOwner == nil {
-			break
-		}
-
-		return e.complexity.LiveEnnoblement.OldOwner(childComplexity), true
-
-	case "LiveEnnoblement.village":
-		if e.complexity.LiveEnnoblement.Village == nil {
-			break
-		}
-
-		return e.complexity.LiveEnnoblement.Village(childComplexity), true
-
 	case "Player.bestRank":
 		if e.complexity.Player.BestRank == nil {
 			break
@@ -1667,18 +1624,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Ennoblements(childComplexity, args["server"].(string), args["filter"].(*models.EnnoblementFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
-
-	case "Query.liveEnnoblements":
-		if e.complexity.Query.LiveEnnoblements == nil {
-			break
-		}
-
-		args, err := ec.field_Query_liveEnnoblements_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.LiveEnnoblements(childComplexity, args["server"].(string)), true
 
 	case "Query.player":
 		if e.complexity.Query.Player == nil {
@@ -3640,18 +3585,6 @@ extend type Query {
   ): EnnoblementList!
 }
 `, BuiltIn: false},
-	{Name: "schema/live_ennoblement.graphql", Input: `type LiveEnnoblement {
-  village: Village @goField(forceResolver: true)
-  newOwner: Player @goField(forceResolver: true)
-  oldOwner: Player @goField(forceResolver: true)
-  ennobledAt: Time!
-}
-
-extend type Query {
-  liveEnnoblements(server: String!): [LiveEnnoblement!]
-    @deprecated(reason: "use ` + "`" + `ennoblements` + "`" + ` instead")
-}
-`, BuiltIn: false},
 	{Name: "schema/player.graphql", Input: `type PlayerNameChange {
   oldName: String!
   newName: String!
@@ -4721,21 +4654,6 @@ func (ec *executionContext) field_Query_ennoblements_args(ctx context.Context, r
 		}
 	}
 	args["sort"] = arg4
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_liveEnnoblements_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["server"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("server"))
-		arg0, err = ec.unmarshalNString2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["server"] = arg0
 	return args, nil
 }
 
@@ -8440,137 +8358,6 @@ func (ec *executionContext) _FoundTribeList_total(ctx context.Context, field gra
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _LiveEnnoblement_village(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "LiveEnnoblement",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.LiveEnnoblement().Village(rctx, obj)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*models.Village)
-	fc.Result = res
-	return ec.marshalOVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _LiveEnnoblement_newOwner(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "LiveEnnoblement",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.LiveEnnoblement().NewOwner(rctx, obj)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*models.Player)
-	fc.Result = res
-	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _LiveEnnoblement_oldOwner(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "LiveEnnoblement",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.LiveEnnoblement().OldOwner(rctx, obj)
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*models.Player)
-	fc.Result = res
-	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _LiveEnnoblement_ennobledAt(ctx context.Context, field graphql.CollectedField, obj *models.LiveEnnoblement) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "LiveEnnoblement",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.EnnobledAt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	fc.Result = res
-	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Player_id(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -10357,45 +10144,6 @@ func (ec *executionContext) _Query_ennoblements(ctx context.Context, field graph
 	res := resTmp.(*EnnoblementList)
 	fc.Result = res
 	return ec.marshalNEnnoblementList2ᚖgithubᚗcomᚋtribalwarshelpᚋapiᚋgraphqlᚋgeneratedᚐEnnoblementList(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Query_liveEnnoblements(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_liveEnnoblements_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().LiveEnnoblements(rctx, args["server"].(string))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*models.LiveEnnoblement)
-	fc.Result = res
-	return ec.marshalOLiveEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblementᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_players(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -23094,66 +22842,6 @@ func (ec *executionContext) _FoundTribeList(ctx context.Context, sel ast.Selecti
 	return out
 }
 
-var liveEnnoblementImplementors = []string{"LiveEnnoblement"}
-
-func (ec *executionContext) _LiveEnnoblement(ctx context.Context, sel ast.SelectionSet, obj *models.LiveEnnoblement) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, liveEnnoblementImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	var invalids uint32
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("LiveEnnoblement")
-		case "village":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._LiveEnnoblement_village(ctx, field, obj)
-				return res
-			})
-		case "newOwner":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._LiveEnnoblement_newOwner(ctx, field, obj)
-				return res
-			})
-		case "oldOwner":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._LiveEnnoblement_oldOwner(ctx, field, obj)
-				return res
-			})
-		case "ennobledAt":
-			out.Values[i] = ec._LiveEnnoblement_ennobledAt(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalids > 0 {
-		return graphql.Null
-	}
-	return out
-}
-
 var playerImplementors = []string{"Player"}
 
 func (ec *executionContext) _Player(ctx context.Context, sel ast.SelectionSet, obj *models.Player) graphql.Marshaler {
@@ -23586,17 +23274,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
-				return res
-			})
-		case "liveEnnoblements":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_liveEnnoblements(ctx, field)
 				return res
 			})
 		case "players":
@@ -26029,16 +25706,6 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
-func (ec *executionContext) marshalNLiveEnnoblement2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblement(ctx context.Context, sel ast.SelectionSet, v *models.LiveEnnoblement) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._LiveEnnoblement(ctx, sel, v)
-}
-
 func (ec *executionContext) marshalNPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx context.Context, sel ast.SelectionSet, v *models.Player) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -26989,46 +26656,6 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 		return graphql.Null
 	}
 	return graphql.MarshalInt(*v)
-}
-
-func (ec *executionContext) marshalOLiveEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblementᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.LiveEnnoblement) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNLiveEnnoblement2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐLiveEnnoblement(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-	return ret
 }
 
 func (ec *executionContext) marshalOPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Player) graphql.Marshaler {
