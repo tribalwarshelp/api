@@ -30,6 +30,7 @@ func (r *queryResolver) Villages(ctx context.Context,
 		Sort:   sort,
 		Limit:  utils.SafeIntPointer(limit, 0),
 		Offset: utils.SafeIntPointer(offset, 0),
+		Select: shouldSelectItems(ctx),
 		Count:  shouldCount(ctx),
 		Server: server,
 	})

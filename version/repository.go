@@ -8,6 +8,7 @@ import (
 
 type FetchConfig struct {
 	Filter *models.VersionFilter
+	Select bool
 	Count  bool
 	Sort   []string
 	Limit  int

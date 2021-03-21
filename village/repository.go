@@ -10,6 +10,7 @@ type FetchConfig struct {
 	Server  string
 	Filter  *models.VillageFilter
 	Columns []string
+	Select  bool
 	Count   bool
 	Sort    []string
 	Limit   int

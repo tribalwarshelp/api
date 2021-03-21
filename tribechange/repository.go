@@ -10,6 +10,7 @@ type FetchConfig struct {
 	Server string
 	Filter *models.TribeChangeFilter
 	Count  bool
+	Select bool
 	Sort   []string
 	Limit  int
 	Offset int

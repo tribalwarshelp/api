@@ -41,10 +41,12 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg server.FetchConfig) ([]
 		query = query.Column(cfg.Columns...)
 	}
 
-	if cfg.Count {
+	if cfg.Count && cfg.Select {
 		total, err = query.SelectAndCount()
-	} else {
+	} else if cfg.Select {
 		err = query.Select()
+	} else if cfg.Count {
+		total, err = query.Count()
 	}
 	if err != nil && err != pg.ErrNoRows {
 		return nil, 0, fmt.Errorf("Internal server error")

@@ -34,8 +34,9 @@ func (ucase *usecase) GetByKey(ctx context.Context, key string) (*models.Server,
 		Filter: &models.ServerFilter{
 			Key: []string{key},
 		},
-		Limit: 1,
-		Count: false,
+		Limit:  1,
+		Count:  false,
+		Select: true,
 	})
 	if err != nil {
 		return nil, err

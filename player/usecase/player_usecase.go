@@ -37,8 +37,9 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*mode
 		Filter: &models.PlayerFilter{
 			ID: []int{id},
 		},
-		Limit: 1,
-		Count: false,
+		Limit:  1,
+		Count:  false,
+		Select: true,
 	})
 	if err != nil {
 		return nil, err

@@ -38,7 +38,9 @@ func (ucase *usecase) GetByCode(ctx context.Context, code models.VersionCode) (*
 		Filter: &models.VersionFilter{
 			Code: []models.VersionCode{code},
 		},
-		Limit: 1,
+		Limit:  1,
+		Select: true,
+		Count:  false,
 	})
 	if err != nil {
 		return nil, err

@@ -29,6 +29,7 @@ func DataLoadersToContext(dltcc DataLoadersToContextConfig, cfg dataloaders.Conf
 		versionDataLoaders := make(map[models.VersionCode]*dataloaders.VersionDataLoaders)
 		servers, _, err := dltcc.ServerRepo.Fetch(c.Request.Context(), server.FetchConfig{
 			Columns: []string{utils.Underscore("versionCode"), "key"},
+			Select:  true,
 		})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, &gqlerror.Error{
