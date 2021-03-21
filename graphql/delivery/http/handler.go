@@ -70,7 +70,7 @@ func graphqlHandler(cfg generated.Config) gin.HandlerFunc {
 			if middleware.CanExceedLimit(ctx) {
 				return 500000000
 			}
-			return 10000
+			return 20000
 		},
 	})
 
