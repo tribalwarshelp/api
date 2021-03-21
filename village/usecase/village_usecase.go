@@ -37,6 +37,8 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*mode
 		},
 		Limit:  1,
 		Server: server,
+		Select: true,
+		Count:  false,
 	})
 	if err != nil {
 		return nil, err

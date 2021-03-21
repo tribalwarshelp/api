@@ -18,6 +18,7 @@ import (
 
 const (
 	countField = "total"
+	itemsField = "items"
 )
 
 type Resolver struct {

@@ -21,7 +21,6 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg dailyplayerstats.FetchConfi
 	if cfg.Filter == nil {
 		cfg.Filter = &models.DailyPlayerStatsFilter{}
 	}
-
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > dailyplayerstats.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = dailyplayerstats.FetchLimit
 	}

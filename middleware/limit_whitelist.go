@@ -16,13 +16,13 @@ type NetworksAndIps struct {
 }
 
 func (networksAndIps NetworksAndIps) Contains(ip net.IP) bool {
-	for _, expectedIP := range networksAndIps.Ips {
-		if expectedIP.Equal(ip) {
+	for _, whitelistedIP := range networksAndIps.Ips {
+		if whitelistedIP.Equal(ip) {
 			return true
 		}
 	}
-	for _, subnetwork := range networksAndIps.Networks {
-		if subnetwork.Contains(ip) {
+	for _, network := range networksAndIps.Networks {
+		if network.Contains(ip) {
 			return true
 		}
 	}
@@ -43,7 +43,10 @@ func (cfg LimitWhitelistConfig) GetNetworksAndIps() NetworksAndIps {
 			continue
 		}
 
-		ips = append(ips, net.ParseIP(ip))
+		parsed := net.ParseIP(ip)
+		if parsed != nil {
+			ips = append(ips, parsed)
+		}
 	}
 	return NetworksAndIps{
 		Networks: networks,

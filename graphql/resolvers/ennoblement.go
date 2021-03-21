@@ -63,6 +63,7 @@ func (r *queryResolver) Ennoblements(ctx context.Context, server string,
 		Limit:  utils.SafeIntPointer(limit, 0),
 		Offset: utils.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
+		Select: shouldSelectItems(ctx),
 	})
 	return list, err
 }

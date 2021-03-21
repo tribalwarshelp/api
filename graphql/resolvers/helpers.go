@@ -67,11 +67,19 @@ func getTribe(ctx context.Context, id int) *models.Tribe {
 	return nil
 }
 
-func shouldCount(ctx context.Context) bool {
+func findField(ctx context.Context, name string) bool {
 	for _, field := range graphql.CollectFieldsCtx(ctx, nil) {
-		if field.Name == countField {
+		if field.Name == name {
 			return true
 		}
 	}
 	return false
+}
+
+func shouldCount(ctx context.Context) bool {
+	return findField(ctx, countField)
+}
+
+func shouldSelectItems(ctx context.Context) bool {
+	return findField(ctx, itemsField)
 }

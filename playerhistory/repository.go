@@ -10,6 +10,7 @@ type FetchConfig struct {
 	Server string
 	Filter *models.PlayerHistoryFilter
 	Count  bool
+	Select bool
 	Sort   []string
 	Limit  int
 	Offset int

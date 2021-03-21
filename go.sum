@@ -160,8 +160,6 @@ github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc/go.mod h1:bciPuU6GH
 github.com/tribalwarshelp/map-generator v0.0.0-20210106163923-fa048a59f5f2 h1:yYSQuWN6YvY0cL77Ha7Y350Xm2/J+6suHubv5F/ZluY=
 github.com/tribalwarshelp/map-generator v0.0.0-20210106163923-fa048a59f5f2/go.mod h1:ywyp0CZ3JsJ+0GAbUJVWo3dipHcAohD7KkV2TNbiTHU=
 github.com/tribalwarshelp/shared v0.0.0-20210106162314-d3488036ca2f/go.mod h1:vtDs7EjEysk4dpFPfu3c4lkICXZYIRV0BrT7rsqG0dw=
-github.com/tribalwarshelp/shared v0.0.0-20210115163415-972e2df3f7db h1:RzMEF4BP3YJ7jJOyYO00TdeB6DY7g0Dp/8cQ8t6WKzw=
-github.com/tribalwarshelp/shared v0.0.0-20210115163415-972e2df3f7db/go.mod h1:vtDs7EjEysk4dpFPfu3c4lkICXZYIRV0BrT7rsqG0dw=
 github.com/tribalwarshelp/shared v0.0.0-20210321105345-7a8582fd0b91 h1:YxUIaDrLe3nE+8MHWxcGn1f/Ic0AfC/iS8/tnHAm2iE=
 github.com/tribalwarshelp/shared v0.0.0-20210321105345-7a8582fd0b91/go.mod h1:EnTN6KBL5jZZnan7cVOWIsAO3q+a1XNPpa9m6Pv3MeM=
 github.com/ugorji/go v1.1.7 h1:/68gy2h+1mWMrwZFeD1kQialdSzAb432dtpeJ42ovdo=

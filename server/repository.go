@@ -9,6 +9,7 @@ import (
 type FetchConfig struct {
 	Filter  *models.ServerFilter
 	Columns []string
+	Select  bool
 	Count   bool
 	Sort    []string
 	Limit   int

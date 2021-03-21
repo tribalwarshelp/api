@@ -31,6 +31,7 @@ func (r *Resolver) TribeHistory(ctx context.Context,
 		Limit:  utils.SafeIntPointer(limit, 0),
 		Offset: utils.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
+		Select: shouldSelectItems(ctx),
 		Server: server,
 	})
 	return list, err

@@ -1,78 +1,83 @@
 # TWHelp API
 
-A GraphQL API for Tribal Wars data. All versions are available. 
+A GraphQL API for Tribal Wars data. 
 
 ## API Limits
 
-You can fetch in one HTTP request:
+You can fetch in one GraphQL query:
 
-1. 1000 daily player/tribe stats
-2. 100 ennoblements
-3. 100 versions
-4. 100 players/tribes
+1. 1000 daily player/tribe stats records
+2. 200 ennoblements
+3. 30 versions
+4. 200 players/tribes
 5. 1000 villages
 6. 100 player/tribe history records
 7. 100 servers
-8. 60 server stats
+8. 60 server stats records
 9. 100 tribe changes
 
 ## Sample queries
 
 You can check how to make requests from JavaScript [here](https://github.com/tribalwarshelp/scripts).
 
-1. All barbarian villages with 10% more population
+1. All bonus villages with 10% more population
 
 ```graphql
 query {
-  villages(server: "en115", filter: { playerID: [0], bonus: 4 }) {
-    total
-    items {
-      id
-      name
-      x
-      y
-      points
+    villages(server: "en115", filter: { playerID: [0], bonus: 4 }) {
+        total
+        items {
+            id
+            name
+            x
+            y
+            points
+        }
     }
-  }
 }
+
 ```
 
 2. Top 30 players without a tribe, ordered by points.
 
 ```graphql
 query {
-  players(
-    server: "pl148"
-    filter: { tribeID: [0], sort: "points DESC", limit: 30 }
-  ) {
-    total
-    items {
-      id
-      name
-      rank
-      points
-      totalVillages
-      rankAtt
-      rankDef
-      rankTotal
-      rankSup
+    players(
+        server: "pl148"
+        filter: { tribeID: [0] }
+        sort: ["points DESC"]
+        limit: 30
+    ) {
+        total
+        items {
+            id
+            name
+            rank
+            points
+            totalVillages
+            rankAtt
+            rankDef
+            rankTotal
+            rankSup
+        }
     }
-  }
 }
+
 ```
 
 3. Search a player by a nickname fragment.
 
 ```graphql
 query {
-  players(server: "pl148", filter: { nameIEQ: "%pablo%" }) {
-    total
-    items {
-      id
-      name
+    players(server: "pl148", filter: { nameIEQ: "%pablo%" }) {
+        total
+        items {
+            id
+            name
+        }
     }
-  }
 }
+
 ```
 
 ## Map service
@@ -112,8 +117,6 @@ DB_NAME=your_pgdb_name
 DB_PORT=your_pgdb_port
 DB_HOST=your_pgdb_host
 DB_PASSWORD=your_pgdb_password
-REDIS_HOST=your_redis_host
-REDIS_PORT=your_redis_port
 LIMIT_WHITELIST=127.0.0.1,::1
 LOG_DB_QUERIES=[true|false]
 ```

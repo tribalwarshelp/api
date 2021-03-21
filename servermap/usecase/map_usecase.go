@@ -32,38 +32,14 @@ func New(villageRepo village.Repository) servermap.Usecase {
 func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersConfig) ([]*generator.Marker, error) {
 	g := new(errgroup.Group)
 
-	tribes := make(map[string][]int)
-	tribeIDs := []int{}
-	cache := make(map[int]bool)
-	for _, data := range cfg.Tribes {
-		//id,#color
-		id, color, err := parseMarker(data)
-		if err != nil {
-			return nil, errors.Wrapf(err, "tribe=%s", data)
-		}
-		if ok := cache[id]; ok || color == "" {
-			continue
-		}
-		tribeIDs = append(tribeIDs, id)
-		cache[id] = true
-		tribes[color] = append(tribes[color], id)
+	tribes, tribeIDs, err := toMarkers(cfg.Tribes)
+	if err != nil {
+		return nil, err
 	}
 
-	players := make(map[string][]int)
-	playerIDs := []int{}
-	cache = make(map[int]bool)
-	for _, data := range cfg.Players {
-		//id,#color
-		id, color, err := parseMarker(data)
-		if err != nil {
-			return nil, errors.Wrapf(err, "player=%s", data)
-		}
-		if ok := cache[id]; ok || color == "" {
-			continue
-		}
-		playerIDs = append(playerIDs, id)
-		cache[id] = true
-		players[color] = append(players[color], id)
+	players, playerIDs, err := toMarkers(cfg.Players)
+	if err != nil {
+		return nil, err
 	}
 
 	otherMarkers := []*generator.Marker{}
@@ -82,6 +58,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 						TribeIDNEQ: tribeIDs,
 					},
 				},
+				Select:  true,
 				Columns: []string{"x", "y"},
 				Count:   false,
 			})
@@ -108,6 +85,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 				Filter: &models.VillageFilter{
 					PlayerID: []int{0},
 				},
+				Select:  true,
 				Columns: []string{"x", "y"},
 				Count:   false,
 			})
@@ -138,6 +116,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 						TribeID: ids,
 					},
 				},
+				Select:  true,
 				Columns: []string{"x", "y"},
 				Count:   false,
 			})
@@ -166,6 +145,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 				Filter: &models.VillageFilter{
 					PlayerID: ids,
 				},
+				Select:  true,
 				Columns: []string{"x", "y"},
 				Count:   false,
 			})
@@ -183,14 +163,17 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		})
 	}
 
-	err := g.Wait()
+	err = g.Wait()
+	if err != nil {
+		return nil, err
+	}
 	sort.SliceStable(playerMarkers, func(i, j int) bool {
 		return len(playerMarkers[i].Villages) < len(playerMarkers[j].Villages)
 	})
 	sort.SliceStable(tribeMarkers, func(i, j int) bool {
 		return len(tribeMarkers[i].Villages) < len(tribeMarkers[j].Villages)
 	})
-	return concatMarkers(otherMarkers, tribeMarkers, playerMarkers), err
+	return concatMarkers(otherMarkers, tribeMarkers, playerMarkers), nil
 }
 
 func concatMarkers(slices ...[]*generator.Marker) []*generator.Marker {
@@ -206,18 +189,38 @@ func concatMarkers(slices ...[]*generator.Marker) []*generator.Marker {
 	return tmp
 }
 
-func parseMarker(str string) (int, string, error) {
-	splitted := strings.Split(str, ",")
+func toMarker(param string) (int, string, error) {
+	splitted := strings.Split(param, ",")
 	if len(splitted) != 2 {
-		return 0, "", fmt.Errorf("%s: Invalid marker format (should be id,#hexcolor)", str)
+		return 0, "", fmt.Errorf("%s: Invalid marker format (should be id,#hexcolor)", param)
 	}
 	id, err := strconv.Atoi(splitted[0])
 	if err != nil {
-		return 0, "", errors.Wrapf(err, "%s: Invalid marker format (should be id,#hexcolor)", str)
+		return 0, "", errors.Wrapf(err, "%s: Invalid marker format (should be id,#hexcolor)", param)
 	}
 	if id <= 0 {
 		return 0, "", fmt.Errorf("ID should be greater than 0")
 	}
 
 	return id, splitted[1], nil
+}
+
+func toMarkers(params []string) (map[string][]int, []int, error) {
+	idsByColor := make(map[string][]int)
+	ids := []int{}
+	cache := make(map[int]bool)
+	for _, param := range params {
+		//id,#color
+		id, color, err := toMarker(param)
+		if err != nil {
+			return nil, nil, errors.Wrapf(err, "invalid param %s", param)
+		}
+		if ok := cache[id]; ok || color == "" {
+			continue
+		}
+		ids = append(ids, id)
+		cache[id] = true
+		idsByColor[color] = append(idsByColor[color], id)
+	}
+	return idsByColor, ids, nil
 }

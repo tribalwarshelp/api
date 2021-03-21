@@ -11,6 +11,10 @@ import (
 	"github.com/tribalwarshelp/shared/models"
 )
 
+const (
+	wait = 4 * time.Millisecond
+)
+
 type DataLoaders struct {
 	VersionByCode *VersionLoader
 }
@@ -25,7 +29,7 @@ type Config struct {
 func NewDataLoaders(cfg Config) *DataLoaders {
 	return &DataLoaders{
 		VersionByCode: &VersionLoader{
-			wait:     4 * time.Millisecond,
+			wait:     wait,
 			maxBatch: 0,
 			fetch: func(keys []string) ([]*models.Version, []error) {
 				codes := []models.VersionCode{}
@@ -36,6 +40,7 @@ func NewDataLoaders(cfg Config) *DataLoaders {
 					Filter: &models.VersionFilter{
 						Code: codes,
 					},
+					Select: true,
 				})
 				if err != nil {
 					return nil, []error{err}
