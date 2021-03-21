@@ -33,12 +33,12 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	g := new(errgroup.Group)
 
 	tribes, tribeIDs, err := toMarkers(cfg.Tribes)
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 
 	players, playerIDs, err := toMarkers(cfg.Players)
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 
@@ -164,7 +164,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 	}
 
 	err = g.Wait()
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 	sort.SliceStable(playerMarkers, func(i, j int) bool {
