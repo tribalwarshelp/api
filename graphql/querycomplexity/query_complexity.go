@@ -19,7 +19,21 @@ import (
 )
 
 const (
-	countComplexity = 1000
+	countComplexity                      = 1000
+	dailyPlayerStatsTotalFieldComplexity = 1000
+	dailyTribeStatsTotalFieldComplexity  = dailyPlayerStatsTotalFieldComplexity
+	ennoblementsTotalFieldComplexity     = 1000
+	playerHistoryTotalFieldComplexity    = 500
+	tribeHistoryTotalFieldComplexity     = playersTotalFieldComplexity
+	tribeChangesTotalFieldComplexity     = 300
+	searchPlayerTotalFieldComplexity     = 1000
+	searchTribeTotalFieldComplexity      = searchPlayerTotalFieldComplexity
+	playersTotalFieldComplexity          = 300
+	tribesTotalFieldComplexity           = playersTotalFieldComplexity
+	villagesTotalFieldComplexity         = 1000
+	serverStatsTotalFieldComplexity      = 100
+	serversTotalFieldComplexity          = 200
+	versionsTotalFieldComplexity         = 50
 )
 
 func GetComplexityRoot() generated.ComplexityRoot {
@@ -37,7 +51,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, dailyplayerstats.FetchLimit),
-			500,
+			dailyPlayerStatsTotalFieldComplexity,
 			1,
 		)
 	}
@@ -54,7 +68,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, dailytribestats.FetchLimit),
-			500,
+			dailyTribeStatsTotalFieldComplexity,
 			1,
 		)
 	}
@@ -71,7 +85,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, ennoblement.FetchLimit),
-			1000,
+			ennoblementsTotalFieldComplexity,
 			1,
 		)
 	}
@@ -88,7 +102,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, playerhistory.FetchLimit),
-			500,
+			playerHistoryTotalFieldComplexity,
 			1,
 		)
 	}
@@ -105,7 +119,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, tribehistory.FetchLimit),
-			500,
+			tribeHistoryTotalFieldComplexity,
 			1,
 		)
 	}
@@ -122,7 +136,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, tribechange.FetchLimit),
-			300,
+			tribeChangesTotalFieldComplexity,
 			1,
 		)
 	}
@@ -140,7 +154,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, player.FetchLimit),
-			1000,
+			searchPlayerTotalFieldComplexity,
 			3,
 		)
 	}
@@ -157,7 +171,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, tribe.FetchLimit),
-			1000,
+			searchTribeTotalFieldComplexity,
 			3,
 		)
 	}
@@ -180,7 +194,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, player.FetchLimit),
-			300,
+			playersTotalFieldComplexity,
 			1,
 		)
 	}
@@ -197,7 +211,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, tribe.FetchLimit),
-			300,
+			tribesTotalFieldComplexity,
 			1,
 		)
 	}
@@ -214,7 +228,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, village.FetchLimit),
-			village.FetchLimit,
+			villagesTotalFieldComplexity,
 			1,
 		)
 	}
@@ -231,7 +245,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, serverstats.FetchLimit),
-			serverstats.FetchLimit,
+			serverStatsTotalFieldComplexity,
 			1,
 		)
 	}
@@ -247,7 +261,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, server.FetchLimit),
-			200,
+			serversTotalFieldComplexity,
 			1,
 		)
 	}
@@ -263,7 +277,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, version.FetchLimit),
-			version.FetchLimit,
+			versionsTotalFieldComplexity,
 			1,
 		)
 	}
