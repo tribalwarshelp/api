@@ -24,12 +24,7 @@ const (
 
 func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot := generated.ComplexityRoot{}
-	complexityRoot.Player.NameChanges = func(childComplexity int) int {
-		return 10 + childComplexity
-	}
-	complexityRoot.Player.Servers = func(childComplexity int) int {
-		return 10 + childComplexity
-	}
+
 	complexityRoot.DailyPlayerStats.Total = getCountComplexity
 	complexityRoot.Query.DailyPlayerStats = func(
 		childComplexity int,
@@ -42,10 +37,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, dailyplayerstats.FetchLimit),
-			dailyplayerstats.FetchLimit,
+			500,
 			1,
 		)
 	}
+
+	complexityRoot.DailyTribeStats.Total = getCountComplexity
 	complexityRoot.Query.DailyTribeStats = func(
 		childComplexity int,
 		server string,
@@ -57,10 +54,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, dailytribestats.FetchLimit),
-			dailytribestats.FetchLimit,
+			500,
 			1,
 		)
 	}
+
+	complexityRoot.EnnoblementList.Total = getCountComplexity
 	complexityRoot.Query.Ennoblements = func(
 		childComplexity int,
 		server string,
@@ -72,10 +71,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, ennoblement.FetchLimit),
-			ennoblement.FetchLimit,
+			1000,
 			1,
 		)
 	}
+
+	complexityRoot.PlayerHistory.Total = getCountComplexity
 	complexityRoot.Query.PlayerHistory = func(
 		childComplexity int,
 		server string,
@@ -87,10 +88,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, playerhistory.FetchLimit),
-			playerhistory.FetchLimit,
+			500,
 			1,
 		)
 	}
+
+	complexityRoot.TribeHistory.Total = getCountComplexity
 	complexityRoot.Query.TribeHistory = func(
 		childComplexity int,
 		server string,
@@ -102,10 +105,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, tribehistory.FetchLimit),
-			tribehistory.FetchLimit,
+			500,
 			1,
 		)
 	}
+
+	complexityRoot.TribeChanges.Total = getCountComplexity
 	complexityRoot.Query.TribeChanges = func(
 		childComplexity int,
 		server string,
@@ -117,10 +122,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, tribechange.FetchLimit),
-			tribechange.FetchLimit,
+			300,
 			1,
 		)
 	}
+
+	complexityRoot.FoundPlayerList.Total = getCountComplexity
 	complexityRoot.Query.SearchPlayer = func(
 		childComplexity int,
 		version string,
@@ -133,10 +140,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, player.FetchLimit),
-			player.FetchLimit,
+			1000,
 			3,
 		)
 	}
+
+	complexityRoot.FoundTribeList.Total = getCountComplexity
 	complexityRoot.Query.SearchTribe = func(
 		childComplexity int,
 		version string,
@@ -148,10 +157,18 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, tribe.FetchLimit),
-			tribe.FetchLimit,
+			1000,
 			3,
 		)
 	}
+
+	complexityRoot.Player.NameChanges = func(childComplexity int) int {
+		return 10 + childComplexity
+	}
+	complexityRoot.Player.Servers = func(childComplexity int) int {
+		return 10 + childComplexity
+	}
+	complexityRoot.PlayerList.Total = getCountComplexity
 	complexityRoot.Query.Players = func(
 		childComplexity int,
 		server string,
@@ -163,10 +180,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, player.FetchLimit),
-			player.FetchLimit,
+			300,
 			1,
 		)
 	}
+
+	complexityRoot.TribeList.Total = getCountComplexity
 	complexityRoot.Query.Tribes = func(
 		childComplexity int,
 		server string,
@@ -178,10 +197,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, tribe.FetchLimit),
-			tribe.FetchLimit,
+			300,
 			1,
 		)
 	}
+
+	complexityRoot.VillageList.Total = getCountComplexity
 	complexityRoot.Query.Villages = func(
 		childComplexity int,
 		server string,
@@ -197,6 +218,8 @@ func GetComplexityRoot() generated.ComplexityRoot {
 			1,
 		)
 	}
+
+	complexityRoot.ServerStats.Total = getCountComplexity
 	complexityRoot.Query.ServerStats = func(
 		childComplexity int,
 		server string,
@@ -212,6 +235,8 @@ func GetComplexityRoot() generated.ComplexityRoot {
 			1,
 		)
 	}
+
+	complexityRoot.ServerList.Total = getCountComplexity
 	complexityRoot.Query.Servers = func(
 		childComplexity int,
 		filter *models.ServerFilter,
@@ -222,10 +247,12 @@ func GetComplexityRoot() generated.ComplexityRoot {
 		return computeComplexity(
 			childComplexity,
 			utils.SafeIntPointer(limit, server.FetchLimit),
-			server.FetchLimit,
+			200,
 			1,
 		)
 	}
+
+	complexityRoot.VersionList.Total = getCountComplexity
 	complexityRoot.Query.Versions = func(
 		childComplexity int,
 		filter *models.VersionFilter,
@@ -240,6 +267,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 			1,
 		)
 	}
+
 	return complexityRoot
 }
 
