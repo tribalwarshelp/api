@@ -51,7 +51,7 @@ func graphqlHandler(cfg generated.Config) gin.HandlerFunc {
 	srv.Use(extension.AutomaticPersistedQuery{
 		Cache: lru.New(100),
 	})
-	srv.SetQueryCache(lru.New(1000))
+	srv.SetQueryCache(lru.New(100))
 	srv.Use(&extension.ComplexityLimit{
 		Func: func(ctx context.Context, rc *graphql.OperationContext) int {
 			if middleware.CanExceedLimit(ctx) {
