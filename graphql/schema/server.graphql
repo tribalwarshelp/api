@@ -1,6 +1,8 @@
 enum ServerStatus {
   OPEN
+  open
   CLOSED
+  closed
 }
 
 type Server {

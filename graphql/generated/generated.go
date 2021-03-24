@@ -3815,7 +3815,9 @@ extend type Query {
 `, BuiltIn: false},
 	{Name: "schema/server.graphql", Input: `enum ServerStatus {
   OPEN
+  open
   CLOSED
+  closed
 }
 
 type Server {
