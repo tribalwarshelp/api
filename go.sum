@@ -162,6 +162,8 @@ github.com/tribalwarshelp/map-generator v0.0.0-20210106163923-fa048a59f5f2/go.mo
 github.com/tribalwarshelp/shared v0.0.0-20210106162314-d3488036ca2f/go.mod h1:vtDs7EjEysk4dpFPfu3c4lkICXZYIRV0BrT7rsqG0dw=
 github.com/tribalwarshelp/shared v0.0.0-20210321105345-7a8582fd0b91 h1:YxUIaDrLe3nE+8MHWxcGn1f/Ic0AfC/iS8/tnHAm2iE=
 github.com/tribalwarshelp/shared v0.0.0-20210321105345-7a8582fd0b91/go.mod h1:EnTN6KBL5jZZnan7cVOWIsAO3q+a1XNPpa9m6Pv3MeM=
+github.com/tribalwarshelp/shared v0.0.0-20210403063707-35467af17dc1 h1:M1N+JdJ0LeVELF31SgOrX549J3r9+3mkZNyQmQ1zd44=
+github.com/tribalwarshelp/shared v0.0.0-20210403063707-35467af17dc1/go.mod h1:EnTN6KBL5jZZnan7cVOWIsAO3q+a1XNPpa9m6Pv3MeM=
 github.com/ugorji/go v1.1.7 h1:/68gy2h+1mWMrwZFeD1kQialdSzAb432dtpeJ42ovdo=
 github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVMw=
 github.com/ugorji/go/codec v1.1.7 h1:2SvQaVZ1ouYrrKKwoSk2pzd4A9evlKJb9oTL+OaLUSs=
