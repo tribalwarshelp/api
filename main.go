@@ -61,7 +61,6 @@ func init() {
 	if mode.Get() == mode.DevelopmentMode {
 		godotenv.Load(".env.development")
 	}
-	log.Printf(os.Getenv("GIN_MODE"))
 }
 
 func main() {
@@ -74,7 +73,7 @@ func main() {
 	})
 	defer func() {
 		if err := db.Close(); err != nil {
-			log.Fatal("While disconnecting from the database:", err)
+			log.Fatalln("Couldn't close the db connections:", err)
 		}
 	}()
 	if strings.ToUpper(os.Getenv("LOG_DB_QUERIES")) == "TRUE" {
@@ -177,7 +176,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatal("Server Shutdown:", err)
+		log.Fatalln("Couldn't shutdown the server", err)
 	}
 	log.Println("Server exiting")
 }

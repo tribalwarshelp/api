@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/99designs/gqlgen/graphql"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/api/graphql/querycomplexity"
 	"github.com/tribalwarshelp/api/middleware"
 	"time"
@@ -19,7 +20,7 @@ import (
 )
 
 const (
-	endpointMain       = "/graphql"
+	endpointGraphQL    = "/graphql"
 	endpointPlayground = "/"
 	playgroundTTL      = time.Hour / time.Second
 )
@@ -31,11 +32,11 @@ type Config struct {
 
 func Attach(cfg Config) error {
 	if cfg.Resolver == nil {
-		return fmt.Errorf("Graphql resolver cannot be nil")
+		return errors.New("Graphql resolver cannot be nil")
 	}
 	gqlHandler := graphqlHandler(prepareConfig(cfg.Resolver))
-	cfg.RouterGroup.GET(endpointMain, gqlHandler)
-	cfg.RouterGroup.POST(endpointMain, gqlHandler)
+	cfg.RouterGroup.GET(endpointGraphQL, gqlHandler)
+	cfg.RouterGroup.POST(endpointGraphQL, gqlHandler)
 	cfg.RouterGroup.GET(endpointPlayground, playgroundHandler())
 	return nil
 }
@@ -57,7 +58,7 @@ func graphqlHandler(cfg generated.Config) gin.HandlerFunc {
 			if middleware.CanExceedLimit(ctx) {
 				return 500000000
 			}
-			return 18000
+			return 12000
 		},
 	})
 
@@ -69,7 +70,7 @@ func graphqlHandler(cfg generated.Config) gin.HandlerFunc {
 
 // Defining the Playground handler
 func playgroundHandler() gin.HandlerFunc {
-	h := playground.Handler("Playground", endpointMain)
+	h := playground.Handler("Playground", endpointGraphQL)
 
 	return func(c *gin.Context) {
 		c.Header("Cache-Control", fmt.Sprintf(`public, max-age=%d`, playgroundTTL))
