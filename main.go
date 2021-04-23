@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"log"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,9 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-pg/pg/extra/pgdebug"
-
 	"github.com/gin-contrib/cors"
+
 	servermaphttpdelivery "github.com/tribalwarshelp/api/servermap/delivery/http"
 
 	"github.com/tribalwarshelp/shared/mode"
@@ -52,6 +51,8 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/joho/godotenv"
 
+	ginlogrus "github.com/Kichiyaki/gin-logrus"
+	gopglogrusquerylogger "github.com/Kichiyaki/go-pg-logrus-query-logger/v10"
 	"github.com/gin-gonic/gin"
 )
 
@@ -59,8 +60,10 @@ func init() {
 	os.Setenv("TZ", "UTC")
 
 	if mode.Get() == mode.DevelopmentMode {
-		godotenv.Load(".env.development")
+		godotenv.Load(".env.local")
 	}
+
+	setupLogger()
 }
 
 func main() {
@@ -73,22 +76,22 @@ func main() {
 	})
 	defer func() {
 		if err := db.Close(); err != nil {
-			log.Fatalln("Couldn't close the db connections:", err)
+			logrus.Fatalln("Couldn't close the db connections:", err)
 		}
 	}()
 	if strings.ToUpper(os.Getenv("LOG_DB_QUERIES")) == "TRUE" {
-		db.AddQueryHook(pgdebug.DebugHook{
-			Verbose: true,
+		db.AddQueryHook(gopglogrusquerylogger.QueryLogger{
+			Entry: logrus.NewEntry(logrus.StandardLogger()),
 		})
 	}
 
 	versionRepo, err := versionrepo.NewPGRepository(db)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 	serverRepo, err := serverrepo.NewPGRepository(db)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 	tribeRepo := triberepo.NewPGRepository(db)
 	playerRepo := playerrepo.NewPGRepository(db)
@@ -103,7 +106,8 @@ func main() {
 
 	serverUcase := serverucase.New(serverRepo)
 
-	router := gin.Default()
+	router := gin.New()
+	router.Use(ginlogrus.Logger(logrus.WithField("hostname", "api")), gin.Recovery())
 	if mode.Get() == mode.DevelopmentMode {
 		router.Use(cors.New(cors.Config{
 			AllowOriginFunc: func(string) bool {
@@ -164,21 +168,22 @@ func main() {
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("listen: %s\n", err)
+			logrus.Fatalf("listen: %s\n", err)
 		}
 	}()
+	logrus.Info("Server is listening on the port 8080")
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 	<-quit
-	log.Println("Shutdown Server ...")
+	logrus.Info("Shutdown Server ...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalln("Couldn't shutdown the server", err)
+		logrus.Fatalln("Couldn't shutdown the server", err)
 	}
-	log.Println("Server exiting")
+	logrus.Println("Server exiting")
 }
 
 func mustParseEnvToInt(key string) int {
@@ -191,4 +196,22 @@ func mustParseEnvToInt(key string) int {
 		return 0
 	}
 	return i
+}
+
+func setupLogger() {
+	if mode.Get() == mode.DevelopmentMode {
+		logrus.SetLevel(logrus.DebugLevel)
+	}
+
+	timestampFormat := "2006-01-02 15:04:05"
+	if mode.Get() == mode.ProductionMode {
+		customFormatter := new(logrus.JSONFormatter)
+		customFormatter.TimestampFormat = timestampFormat
+		logrus.SetFormatter(customFormatter)
+	} else {
+		customFormatter := new(logrus.TextFormatter)
+		customFormatter.TimestampFormat = timestampFormat
+		customFormatter.FullTimestamp = true
+		logrus.SetFormatter(customFormatter)
+	}
 }
