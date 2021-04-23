@@ -22,15 +22,11 @@ require (
 	github.com/onsi/gomega v1.10.4 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
-	github.com/tribalwarshelp/map-generator v0.0.0-20210106163923-fa048a59f5f2
-	github.com/tribalwarshelp/shared v0.0.0-20210403063707-35467af17dc1
+	github.com/tribalwarshelp/map-generator v0.0.0-20210423190517-1da85d9287dc
+	github.com/tribalwarshelp/shared v0.0.0-20210423190057-03d8445d35dc
 	github.com/ugorji/go v1.2.5 // indirect
 	github.com/vektah/gqlparser/v2 v2.1.0
-	github.com/vmihailenco/msgpack/v5 v5.3.1 // indirect
-	go.opentelemetry.io/otel v0.20.0 // indirect
-	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
-	golang.org/x/sys v0.0.0-20210423082822-04245dca01da // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
