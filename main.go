@@ -81,7 +81,8 @@ func main() {
 	}()
 	if strings.ToUpper(os.Getenv("LOG_DB_QUERIES")) == "TRUE" {
 		db.AddQueryHook(gopglogrusquerylogger.QueryLogger{
-			Entry: logrus.NewEntry(logrus.StandardLogger()),
+			Log:            logrus.NewEntry(logrus.StandardLogger()),
+			MaxQueryLength: 5000,
 		})
 	}
 

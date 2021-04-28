@@ -4,8 +4,8 @@ go 1.16
 
 require (
 	github.com/99designs/gqlgen v0.13.0
-	github.com/Kichiyaki/gin-logrus v0.0.0-20210424132338-4ac67b4af979
-	github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210423175217-c83fa01c60d7
+	github.com/Kichiyaki/gin-logrus v0.0.0-20210428175948-4f47ab6231a6
+	github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210428180109-fb97298564d9
 	github.com/agnivade/levenshtein v1.1.0 // indirect
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
