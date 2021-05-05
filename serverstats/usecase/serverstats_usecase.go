@@ -20,10 +20,8 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg serverstats.FetchConfig) ([
 	if cfg.Filter == nil {
 		cfg.Filter = &twmodel.ServerStatsFilter{}
 	}
-
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > serverstats.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = serverstats.FetchLimit
 	}
-
 	return ucase.repo.Fetch(ctx, cfg)
 }

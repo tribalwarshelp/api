@@ -23,7 +23,7 @@ func NewPGRepository(db *pg.DB) tribe.Repository {
 
 func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*twmodel.Tribe, int, error) {
 	var err error
-	data := []*twmodel.Tribe{}
+	var data []*twmodel.Tribe
 	total := 0
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
@@ -55,7 +55,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*
 }
 
 func (repo *pgRepository) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConfig) ([]*twmodel.FoundTribe, int, error) {
-	servers := []*twmodel.Server{}
+	var servers []*twmodel.Server
 	if err := repo.
 		Model(&servers).
 		Context(ctx).
@@ -66,7 +66,7 @@ func (repo *pgRepository) SearchTribe(ctx context.Context, cfg tribe.SearchTribe
 	}
 
 	var query *orm.Query
-	res := []*twmodel.FoundTribe{}
+	var res []*twmodel.FoundTribe
 	for _, server := range servers {
 		safeKey := pg.Safe(server.Key)
 		otherQuery := repo.

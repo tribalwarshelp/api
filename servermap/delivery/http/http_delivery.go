@@ -75,7 +75,7 @@ func (h *handler) mapHandler(c *gin.Context) {
 
 	centerX, _ := strconv.Atoi(c.Query("centerX"))
 	centerY, _ := strconv.Atoi(c.Query("centerY"))
-	scale, _ := strconv.ParseFloat((c.Query("scale")), 32)
+	scale, _ := strconv.ParseFloat(c.Query("scale"), 32)
 	if scale > maxScale {
 		scale = maxScale
 	}

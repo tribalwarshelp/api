@@ -23,7 +23,7 @@ func NewPGRepository(db *pg.DB) player.Repository {
 
 func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*twmodel.Player, int, error) {
 	var err error
-	data := []*twmodel.Player{}
+	var data []*twmodel.Player
 	total := 0
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
@@ -60,11 +60,11 @@ type fetchPlayerServersQueryResult struct {
 }
 
 func (repo *pgRepository) FetchNameChanges(ctx context.Context, code twmodel.VersionCode, playerID ...int) (map[int][]*twmodel.PlayerNameChange, error) {
-	data := []*twmodel.PlayerNameChange{}
+	var data []*twmodel.PlayerNameChange
 	if err := repo.Model(&data).
 		Context(ctx).
 		Where("version_code = ?", code).
-		Where("player_id IN (?)", pg.In(playerID)).
+		Where(gopgutil.BuildConditionArray("player_id"), pg.Array(playerID)).
 		Order("change_date ASC").
 		Select(); err != nil && err != pg.ErrNoRows {
 		return nil, errors.New("Internal server error")
@@ -78,14 +78,14 @@ func (repo *pgRepository) FetchNameChanges(ctx context.Context, code twmodel.Ver
 }
 
 func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code twmodel.VersionCode, playerID ...int) (map[int][]string, error) {
-	data := []*fetchPlayerServersQueryResult{}
+	var data []*fetchPlayerServersQueryResult
 	if err := repo.Model(&twmodel.PlayerToServer{}).
 		Context(ctx).
 		Column("player_id").
 		ColumnExpr("array_agg(server_key) as servers").
 		Relation("Server._").
 		Where("version_code = ?", code).
-		Where("player_id IN (?)", pg.In(playerID)).
+		Where(gopgutil.BuildConditionArray("player_id"), pg.Array(playerID)).
 		Group("player_id").
 		Select(&data); err != nil && err != pg.ErrNoRows {
 		return nil, errors.New("Internal server error")
@@ -99,7 +99,7 @@ func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code twmodel.V
 }
 
 func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPlayerConfig) ([]*twmodel.FoundPlayer, int, error) {
-	servers := []*twmodel.Server{}
+	var servers []*twmodel.Server
 	if err := repo.
 		Model(&servers).
 		Context(ctx).
@@ -110,7 +110,7 @@ func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPla
 	}
 
 	var query *orm.Query
-	res := []*twmodel.FoundPlayer{}
+	var res []*twmodel.FoundPlayer
 	whereClause := "player.id = ?1 OR player.name ILIKE ?0"
 	if cfg.ID <= 0 {
 		whereClause = "player.name ILIKE ?0"

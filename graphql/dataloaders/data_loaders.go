@@ -32,7 +32,7 @@ func NewDataLoaders(cfg Config) *DataLoaders {
 			wait:     wait,
 			maxBatch: 0,
 			fetch: func(keys []string) ([]*twmodel.Version, []error) {
-				codes := []twmodel.VersionCode{}
+				var codes []twmodel.VersionCode
 				for _, code := range keys {
 					codes = append(codes, twmodel.VersionCode(code))
 				}

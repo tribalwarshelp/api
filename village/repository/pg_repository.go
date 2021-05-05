@@ -22,7 +22,7 @@ func NewPGRepository(db *pg.DB) village.Repository {
 
 func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*twmodel.Village, int, error) {
 	var err error
-	data := []*twmodel.Village{}
+	var data []*twmodel.Village
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).

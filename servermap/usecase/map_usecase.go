@@ -43,7 +43,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		return nil, err
 	}
 
-	otherMarkers := []*generator.Marker{}
+	var otherMarkers []*generator.Marker
 	var otherMarkersMutex sync.Mutex
 	if cfg.ShowOtherPlayerVillages {
 		color := cfg.PlayerVillageColor
@@ -103,7 +103,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		})
 	}
 
-	tribeMarkers := []*generator.Marker{}
+	var tribeMarkers []*generator.Marker
 	var tribeMarkersMutex sync.Mutex
 	for color, tribeIDs := range tribes {
 		c := color
@@ -135,7 +135,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		})
 	}
 
-	playerMarkers := []*generator.Marker{}
+	var playerMarkers []*generator.Marker
 	var playerMarkersMutex sync.Mutex
 	for color, playerIDs := range players {
 		c := color
@@ -191,11 +191,11 @@ func concatMarkers(slices ...[]*generator.Marker) []*generator.Marker {
 }
 
 func toMarker(param string) (int, string, error) {
-	splitted := strings.Split(param, ",")
-	if len(splitted) != 2 {
+	parts := strings.Split(param, ",")
+	if len(parts) != 2 {
 		return 0, "", errors.Errorf("%s: Invalid marker format (should be id,#hexcolor)", param)
 	}
-	id, err := strconv.Atoi(splitted[0])
+	id, err := strconv.Atoi(parts[0])
 	if err != nil {
 		return 0, "", errors.Wrapf(err, "%s: Invalid marker format (should be id,#hexcolor)", param)
 	}
@@ -203,12 +203,12 @@ func toMarker(param string) (int, string, error) {
 		return 0, "", errors.New("ID should be greater than 0")
 	}
 
-	return id, splitted[1], nil
+	return id, parts[1], nil
 }
 
 func toMarkers(params []string) (map[string][]int, []int, error) {
 	idsByColor := make(map[string][]int)
-	ids := []int{}
+	var ids []int
 	cache := make(map[int]bool)
 	for _, param := range params {
 		//id,#color
