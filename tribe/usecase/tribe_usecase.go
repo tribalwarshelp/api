@@ -3,12 +3,11 @@ package usecase
 import (
 	"context"
 	"fmt"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
 	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/api/tribe"
-	"github.com/tribalwarshelp/api/utils"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type usecase struct {
@@ -19,21 +18,19 @@ func New(repo tribe.Repository) tribe.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*models.Tribe, int, error) {
+func (ucase *usecase) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*twmodel.Tribe, int, error) {
 	if cfg.Filter == nil {
-		cfg.Filter = &models.TribeFilter{}
+		cfg.Filter = &twmodel.TribeFilter{}
 	}
-
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = tribe.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
-func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*models.Tribe, error) {
+func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*twmodel.Tribe, error) {
 	tribes, _, err := ucase.repo.Fetch(ctx, tribe.FetchConfig{
-		Filter: &models.TribeFilter{
+		Filter: &twmodel.TribeFilter{
 			ID: []int{id},
 		},
 		Limit:  1,
@@ -50,7 +47,7 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*mode
 	return tribes[0], nil
 }
 
-func (ucase *usecase) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConfig) ([]*models.FoundTribe, int, error) {
+func (ucase *usecase) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConfig) ([]*twmodel.FoundTribe, int, error) {
 	if "" == strings.TrimSpace(cfg.Version) {
 		return nil, 0, fmt.Errorf("Version is required.")
 	}
@@ -60,6 +57,5 @@ func (ucase *usecase) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConf
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = tribe.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.SearchTribe(ctx, cfg)
 }

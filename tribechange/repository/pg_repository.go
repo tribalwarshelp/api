@@ -3,11 +3,13 @@ package repository
 import (
 	"context"
 	"fmt"
+	"github.com/Kichiyaki/gopgutil/v10"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
 	"github.com/go-pg/pg/v10"
+
 	"github.com/tribalwarshelp/api/tribechange"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type pgRepository struct {
@@ -18,25 +20,21 @@ func NewPGRepository(db *pg.DB) tribechange.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, cfg tribechange.FetchConfig) ([]*models.TribeChange, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg tribechange.FetchConfig) ([]*twmodel.TribeChange, int, error) {
 	var err error
 	total := 0
-	data := []*models.TribeChange{}
+	data := []*twmodel.TribeChange{}
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).
 		Context(ctx).
 		Limit(cfg.Limit).
-		Offset(cfg.Offset)
-	relationshipAndSortAppender := &models.TribeChangeRelationshipAndSortAppender{
-		Filter: &models.TribeChangeFilter{},
-		Sort:   cfg.Sort,
-	}
-	if cfg.Filter != nil {
-		query = query.Apply(cfg.Filter.Where)
-		relationshipAndSortAppender.Filter = cfg.Filter
-	}
-	query = query.Apply(relationshipAndSortAppender.Append)
+		Offset(cfg.Offset).
+		Apply(cfg.Filter.WhereWithRelations).
+		Apply(gopgutil.OrderAppender{
+			Orders:   cfg.Sort,
+			MaxDepth: 4,
+		}.Apply)
 
 	if cfg.Count && cfg.Select {
 		total, err = query.SelectAndCount()

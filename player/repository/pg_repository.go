@@ -2,13 +2,15 @@ package repository
 
 import (
 	"context"
-	"fmt"
+	"github.com/Kichiyaki/gopgutil/v10"
+	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
+
 	"github.com/tribalwarshelp/api/player"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type pgRepository struct {
@@ -19,25 +21,21 @@ func NewPGRepository(db *pg.DB) player.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*models.Player, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*twmodel.Player, int, error) {
 	var err error
-	data := []*models.Player{}
+	data := []*twmodel.Player{}
 	total := 0
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).
 		Context(ctx).
 		Limit(cfg.Limit).
-		Offset(cfg.Offset)
-	relationshipAndSortAppender := &models.PlayerRelationshipAndSortAppender{
-		Filter: &models.PlayerFilter{},
-		Sort:   cfg.Sort,
-	}
-	if cfg.Filter != nil {
-		query = query.Apply(cfg.Filter.Where)
-		relationshipAndSortAppender.Filter = cfg.Filter
-	}
-	query = query.Apply(relationshipAndSortAppender.Append)
+		Offset(cfg.Offset).
+		Apply(cfg.Filter.WhereWithRelations).
+		Apply(gopgutil.OrderAppender{
+			Orders:   cfg.Sort,
+			MaxDepth: 4,
+		}.Apply)
 
 	if cfg.Count && cfg.Select {
 		total, err = query.SelectAndCount()
@@ -48,9 +46,9 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]
 	}
 	if err != nil && err != pg.ErrNoRows {
 		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
-			return nil, 0, fmt.Errorf("Server not found")
+			return nil, 0, errors.New("Server not found")
 		}
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	return data, total, nil
@@ -61,27 +59,27 @@ type fetchPlayerServersQueryResult struct {
 	Servers  []string `pg:",array"`
 }
 
-func (repo *pgRepository) FetchNameChanges(ctx context.Context, code models.VersionCode, playerID ...int) (map[int][]*models.PlayerNameChange, error) {
-	data := []*models.PlayerNameChange{}
+func (repo *pgRepository) FetchNameChanges(ctx context.Context, code twmodel.VersionCode, playerID ...int) (map[int][]*twmodel.PlayerNameChange, error) {
+	data := []*twmodel.PlayerNameChange{}
 	if err := repo.Model(&data).
 		Context(ctx).
 		Where("version_code = ?", code).
 		Where("player_id IN (?)", pg.In(playerID)).
 		Order("change_date ASC").
 		Select(); err != nil && err != pg.ErrNoRows {
-		return nil, fmt.Errorf("Internal server error")
+		return nil, errors.New("Internal server error")
 	}
 
-	m := make(map[int][]*models.PlayerNameChange)
+	m := make(map[int][]*twmodel.PlayerNameChange)
 	for _, res := range data {
 		m[res.PlayerID] = append(m[res.PlayerID], res)
 	}
 	return m, nil
 }
 
-func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code models.VersionCode, playerID ...int) (map[int][]string, error) {
+func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code twmodel.VersionCode, playerID ...int) (map[int][]string, error) {
 	data := []*fetchPlayerServersQueryResult{}
-	if err := repo.Model(&models.PlayerToServer{}).
+	if err := repo.Model(&twmodel.PlayerToServer{}).
 		Context(ctx).
 		Column("player_id").
 		ColumnExpr("array_agg(server_key) as servers").
@@ -90,7 +88,7 @@ func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code models.Ve
 		Where("player_id IN (?)", pg.In(playerID)).
 		Group("player_id").
 		Select(&data); err != nil && err != pg.ErrNoRows {
-		return nil, fmt.Errorf("Internal server error")
+		return nil, errors.New("Internal server error")
 	}
 
 	m := make(map[int][]string)
@@ -100,19 +98,19 @@ func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code models.Ve
 	return m, nil
 }
 
-func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPlayerConfig) ([]*models.FoundPlayer, int, error) {
-	servers := []*models.Server{}
+func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPlayerConfig) ([]*twmodel.FoundPlayer, int, error) {
+	servers := []*twmodel.Server{}
 	if err := repo.
 		Model(&servers).
 		Context(ctx).
 		Column("key").
 		Where("version_code = ?", cfg.Version).
 		Select(); err != nil {
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	var query *orm.Query
-	res := []*models.FoundPlayer{}
+	res := []*twmodel.FoundPlayer{}
 	whereClause := "player.id = ?1 OR player.name ILIKE ?0"
 	if cfg.ID <= 0 {
 		whereClause = "player.name ILIKE ?0"
@@ -147,14 +145,17 @@ func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPla
 			Table("union_q").
 			Limit(cfg.Limit).
 			Offset(cfg.Offset).
-			Order(cfg.Sort...)
+			Apply(gopgutil.OrderAppender{
+				Orders:   cfg.Sort,
+				MaxDepth: 4,
+			}.Apply)
 		if cfg.Count {
 			count, err = base.SelectAndCount(&res)
 		} else {
 			err = base.Select(&res)
 		}
 		if err != nil && err != pg.ErrNoRows {
-			return nil, 0, fmt.Errorf("Internal server error")
+			return nil, 0, errors.New("Internal server error")
 		}
 	}
 

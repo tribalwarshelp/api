@@ -2,13 +2,12 @@ package playerhistory
 
 import (
 	"context"
-
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type FetchConfig struct {
 	Server string
-	Filter *models.PlayerHistoryFilter
+	Filter *twmodel.PlayerHistoryFilter
 	Count  bool
 	Select bool
 	Sort   []string
@@ -17,5 +16,5 @@ type FetchConfig struct {
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.PlayerHistory, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*twmodel.PlayerHistory, int, error)
 }

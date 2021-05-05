@@ -2,7 +2,7 @@ package dataloaders
 
 import (
 	"context"
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type VersionDataLoaders struct {
@@ -10,7 +10,7 @@ type VersionDataLoaders struct {
 	PlayerNameChangesByID *PlayerNameChangesLoader
 }
 
-func NewVersionDataLoaders(versionCode models.VersionCode, cfg Config) *VersionDataLoaders {
+func NewVersionDataLoaders(versionCode twmodel.VersionCode, cfg Config) *VersionDataLoaders {
 	return &VersionDataLoaders{
 		PlayerServersByID: &PlayerServersLoader{
 			wait:     wait,
@@ -30,12 +30,12 @@ func NewVersionDataLoaders(versionCode models.VersionCode, cfg Config) *VersionD
 		PlayerNameChangesByID: &PlayerNameChangesLoader{
 			wait:     wait,
 			maxBatch: 0,
-			fetch: func(keys []int) ([][]*models.PlayerNameChange, []error) {
+			fetch: func(keys []int) ([][]*twmodel.PlayerNameChange, []error) {
 				playerNameChangesByID, err := cfg.PlayerRepo.FetchNameChanges(context.Background(), versionCode, keys...)
 				if err != nil {
 					return nil, []error{err}
 				}
-				inOrder := make([][]*models.PlayerNameChange, len(keys))
+				inOrder := make([][]*twmodel.PlayerNameChange, len(keys))
 				for i, id := range keys {
 					inOrder[i] = playerNameChangesByID[id]
 				}

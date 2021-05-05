@@ -3,12 +3,12 @@ package usecase
 import (
 	"context"
 	"fmt"
+	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
 	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/api/player"
-	"github.com/tribalwarshelp/api/utils"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type usecase struct {
@@ -19,22 +19,20 @@ func New(repo player.Repository) player.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*models.Player, int, error) {
+func (ucase *usecase) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*twmodel.Player, int, error) {
 	if cfg.Filter == nil {
-		cfg.Filter = &models.PlayerFilter{}
+		cfg.Filter = &twmodel.PlayerFilter{}
 	}
-
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
-func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*models.Player, error) {
+func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*twmodel.Player, error) {
 	players, _, err := ucase.repo.Fetch(ctx, player.FetchConfig{
 		Server: server,
-		Filter: &models.PlayerFilter{
+		Filter: &twmodel.PlayerFilter{
 			ID: []int{id},
 		},
 		Limit:  1,
@@ -50,16 +48,15 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*mode
 	return players[0], nil
 }
 
-func (ucase *usecase) SearchPlayer(ctx context.Context, cfg player.SearchPlayerConfig) ([]*models.FoundPlayer, int, error) {
+func (ucase *usecase) SearchPlayer(ctx context.Context, cfg player.SearchPlayerConfig) ([]*twmodel.FoundPlayer, int, error) {
 	if "" == strings.TrimSpace(cfg.Version) {
-		return nil, 0, fmt.Errorf("Version is required.")
+		return nil, 0, errors.New("Version is required.")
 	}
 	if "" == strings.TrimSpace(cfg.Name) && cfg.ID <= 0 {
-		return nil, 0, fmt.Errorf("Your search is ambiguous. You must specify the variable 'name' or 'id'.")
+		return nil, 0, errors.New("Your search is ambiguous. You must specify the variable 'name' or 'id'.")
 	}
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.SearchPlayer(ctx, cfg)
 }

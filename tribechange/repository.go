@@ -2,13 +2,12 @@ package tribechange
 
 import (
 	"context"
-
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type FetchConfig struct {
 	Server string
-	Filter *models.TribeChangeFilter
+	Filter *twmodel.TribeChangeFilter
 	Count  bool
 	Select bool
 	Sort   []string
@@ -17,5 +16,5 @@ type FetchConfig struct {
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.TribeChange, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*twmodel.TribeChange, int, error)
 }

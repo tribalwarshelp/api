@@ -2,12 +2,11 @@ package server
 
 import (
 	"context"
-
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type FetchConfig struct {
-	Filter  *models.ServerFilter
+	Filter  *twmodel.ServerFilter
 	Columns []string
 	Select  bool
 	Count   bool
@@ -17,5 +16,5 @@ type FetchConfig struct {
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Server, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*twmodel.Server, int, error)
 }

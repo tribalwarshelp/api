@@ -3,16 +3,15 @@
 package dataloaders
 
 import (
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"sync"
 	"time"
-
-	"github.com/tribalwarshelp/shared/models"
 )
 
 // VersionLoaderConfig captures the config to create a new VersionLoader
 type VersionLoaderConfig struct {
 	// Fetch is a method that provides the data for the loader
-	Fetch func(keys []string) ([]*models.Version, []error)
+	Fetch func(keys []string) ([]*twmodel.Version, []error)
 
 	// Wait is how long wait before sending a batch
 	Wait time.Duration
@@ -33,7 +32,7 @@ func NewVersionLoader(config VersionLoaderConfig) *VersionLoader {
 // VersionLoader batches and caches requests
 type VersionLoader struct {
 	// this method provides the data for the loader
-	fetch func(keys []string) ([]*models.Version, []error)
+	fetch func(keys []string) ([]*twmodel.Version, []error)
 
 	// how long to done before sending a batch
 	wait time.Duration
@@ -44,7 +43,7 @@ type VersionLoader struct {
 	// INTERNAL
 
 	// lazily created cache
-	cache map[string]*models.Version
+	cache map[string]*twmodel.Version
 
 	// the current batch. keys will continue to be collected until timeout is hit,
 	// then everything will be sent to the fetch method and out to the listeners
@@ -56,25 +55,25 @@ type VersionLoader struct {
 
 type versionLoaderBatch struct {
 	keys    []string
-	data    []*models.Version
+	data    []*twmodel.Version
 	error   []error
 	closing bool
 	done    chan struct{}
 }
 
 // Load a Version by key, batching and caching will be applied automatically
-func (l *VersionLoader) Load(key string) (*models.Version, error) {
+func (l *VersionLoader) Load(key string) (*twmodel.Version, error) {
 	return l.LoadThunk(key)()
 }
 
 // LoadThunk returns a function that when called will block waiting for a Version.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *VersionLoader) LoadThunk(key string) func() (*models.Version, error) {
+func (l *VersionLoader) LoadThunk(key string) func() (*twmodel.Version, error) {
 	l.mu.Lock()
 	if it, ok := l.cache[key]; ok {
 		l.mu.Unlock()
-		return func() (*models.Version, error) {
+		return func() (*twmodel.Version, error) {
 			return it, nil
 		}
 	}
@@ -85,10 +84,10 @@ func (l *VersionLoader) LoadThunk(key string) func() (*models.Version, error) {
 	pos := batch.keyIndex(l, key)
 	l.mu.Unlock()
 
-	return func() (*models.Version, error) {
+	return func() (*twmodel.Version, error) {
 		<-batch.done
 
-		var data *models.Version
+		var data *twmodel.Version
 		if pos < len(batch.data) {
 			data = batch.data[pos]
 		}
@@ -113,14 +112,14 @@ func (l *VersionLoader) LoadThunk(key string) func() (*models.Version, error) {
 
 // LoadAll fetches many keys at once. It will be broken into appropriate sized
 // sub batches depending on how the loader is configured
-func (l *VersionLoader) LoadAll(keys []string) ([]*models.Version, []error) {
-	results := make([]func() (*models.Version, error), len(keys))
+func (l *VersionLoader) LoadAll(keys []string) ([]*twmodel.Version, []error) {
+	results := make([]func() (*twmodel.Version, error), len(keys))
 
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
 
-	versions := make([]*models.Version, len(keys))
+	versions := make([]*twmodel.Version, len(keys))
 	errors := make([]error, len(keys))
 	for i, thunk := range results {
 		versions[i], errors[i] = thunk()
@@ -131,13 +130,13 @@ func (l *VersionLoader) LoadAll(keys []string) ([]*models.Version, []error) {
 // LoadAllThunk returns a function that when called will block waiting for a Versions.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *VersionLoader) LoadAllThunk(keys []string) func() ([]*models.Version, []error) {
-	results := make([]func() (*models.Version, error), len(keys))
+func (l *VersionLoader) LoadAllThunk(keys []string) func() ([]*twmodel.Version, []error) {
+	results := make([]func() (*twmodel.Version, error), len(keys))
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
-	return func() ([]*models.Version, []error) {
-		versions := make([]*models.Version, len(keys))
+	return func() ([]*twmodel.Version, []error) {
+		versions := make([]*twmodel.Version, len(keys))
 		errors := make([]error, len(keys))
 		for i, thunk := range results {
 			versions[i], errors[i] = thunk()
@@ -149,7 +148,7 @@ func (l *VersionLoader) LoadAllThunk(keys []string) func() ([]*models.Version, [
 // Prime the cache with the provided key and value. If the key already exists, no change is made
 // and false is returned.
 // (To forcefully prime the cache, clear the key first with loader.clear(key).prime(key, value).)
-func (l *VersionLoader) Prime(key string, value *models.Version) bool {
+func (l *VersionLoader) Prime(key string, value *twmodel.Version) bool {
 	l.mu.Lock()
 	var found bool
 	if _, found = l.cache[key]; !found {
@@ -169,9 +168,9 @@ func (l *VersionLoader) Clear(key string) {
 	l.mu.Unlock()
 }
 
-func (l *VersionLoader) unsafeSet(key string, value *models.Version) {
+func (l *VersionLoader) unsafeSet(key string, value *twmodel.Version) {
 	if l.cache == nil {
-		l.cache = map[string]*models.Version{}
+		l.cache = map[string]*twmodel.Version{}
 	}
 	l.cache[key] = value
 }

@@ -2,11 +2,10 @@ package usecase
 
 import (
 	"context"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/api/tribehistory"
-	"github.com/tribalwarshelp/api/utils"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type usecase struct {
@@ -17,14 +16,12 @@ func New(repo tribehistory.Repository) tribehistory.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, cfg tribehistory.FetchConfig) ([]*models.TribeHistory, int, error) {
+func (ucase *usecase) Fetch(ctx context.Context, cfg tribehistory.FetchConfig) ([]*twmodel.TribeHistory, int, error) {
 	if cfg.Filter == nil {
-		cfg.Filter = &models.TribeHistoryFilter{}
+		cfg.Filter = &twmodel.TribeHistoryFilter{}
 	}
-
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribehistory.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = tribehistory.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }

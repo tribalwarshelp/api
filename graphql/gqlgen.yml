@@ -4,7 +4,7 @@ exec:
   filename: generated/generated.go
   package: generated
 model:
-  filename: generated/models.go
+  filename: generated/twmodel.go
   package: generated
 resolver:
   filename: resolvers/resolver.go
@@ -16,104 +16,104 @@ directives:
     skip_runtime: true
 models:
   VersionCode:
-    model: github.com/tribalwarshelp/shared/models.VersionCode
+    model: github.com/tribalwarshelp/shared/twmodel.VersionCode
   ServerStatus:
-    model: github.com/tribalwarshelp/shared/models.ServerStatus
+    model: github.com/tribalwarshelp/shared/twmodel.ServerStatus
   Version:
-    model: github.com/tribalwarshelp/shared/models.Version
+    model: github.com/tribalwarshelp/shared/twmodel.Version
   VersionFilter:
-    model: github.com/tribalwarshelp/shared/models.VersionFilter
+    model: github.com/tribalwarshelp/shared/twmodel.VersionFilter
   Server:
-    model: github.com/tribalwarshelp/shared/models.Server
+    model: github.com/tribalwarshelp/shared/twmodel.Server
   ServerConfig:
-    model: github.com/tribalwarshelp/shared/models.ServerConfig
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfig
   ServerConfigBuild:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigBuild
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigBuild
   ServerConfigMisc:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigMisc
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigMisc
   ServerConfigCommands:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigCommands
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigCommands
   ServerConfigNewbie:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigNewbie
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigNewbie
   ServerConfigGame:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigGame
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigGame
   ServerConfigBuildings:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigBuildings
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigBuildings
   ServerConfigSnob:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigSnob
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigSnob
   ServerConfigAlly:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigAlly
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigAlly
   ServerConfigCoord:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigCoord
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigCoord
   ServerConfigSitter:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigSitter
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigSitter
   ServerConfigSleep:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigSleep
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigSleep
   ServerConfigNight:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigNight
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigNight
   ServerConfigWin:
-    model: github.com/tribalwarshelp/shared/models.ServerConfigWin
+    model: github.com/tribalwarshelp/shared/twmodel.ServerConfigWin
   Unit:
-    model: github.com/tribalwarshelp/shared/models.Unit
+    model: github.com/tribalwarshelp/shared/twmodel.Unit
   UnitConfig:
-    model: github.com/tribalwarshelp/shared/models.UnitConfig
+    model: github.com/tribalwarshelp/shared/twmodel.UnitConfig
   Building:
-    model: github.com/tribalwarshelp/shared/models.Building
+    model: github.com/tribalwarshelp/shared/twmodel.Building
   BuildingConfig:
-    model: github.com/tribalwarshelp/shared/models.BuildingConfig
+    model: github.com/tribalwarshelp/shared/twmodel.BuildingConfig
   ServerFilter:
-    model: github.com/tribalwarshelp/shared/models.ServerFilter
+    model: github.com/tribalwarshelp/shared/twmodel.ServerFilter
   Player:
-    model: github.com/tribalwarshelp/shared/models.Player
+    model: github.com/tribalwarshelp/shared/twmodel.Player
   PlayerFilter:
-    model: github.com/tribalwarshelp/shared/models.PlayerFilter
+    model: github.com/tribalwarshelp/shared/twmodel.PlayerFilter
   FoundPlayer:
-    model: github.com/tribalwarshelp/shared/models.FoundPlayer
+    model: github.com/tribalwarshelp/shared/twmodel.FoundPlayer
   Tribe:
-    model: github.com/tribalwarshelp/shared/models.Tribe
+    model: github.com/tribalwarshelp/shared/twmodel.Tribe
   TribeFilter:
-    model: github.com/tribalwarshelp/shared/models.TribeFilter
+    model: github.com/tribalwarshelp/shared/twmodel.TribeFilter
   TribeFilterOr:
-    model: github.com/tribalwarshelp/shared/models.TribeFilterOr
+    model: github.com/tribalwarshelp/shared/twmodel.TribeFilterOr
   FoundTribe:
-    model: github.com/tribalwarshelp/shared/models.FoundTribe
+    model: github.com/tribalwarshelp/shared/twmodel.FoundTribe
   Village:
-    model: github.com/tribalwarshelp/shared/models.Village
+    model: github.com/tribalwarshelp/shared/twmodel.Village
   VillageFilter:
-    model: github.com/tribalwarshelp/shared/models.VillageFilter
+    model: github.com/tribalwarshelp/shared/twmodel.VillageFilter
   LiveEnnoblement:
-    model: github.com/tribalwarshelp/shared/models.LiveEnnoblement
+    model: github.com/tribalwarshelp/shared/twmodel.LiveEnnoblement
   Ennoblement:
-    model: github.com/tribalwarshelp/shared/models.Ennoblement
+    model: github.com/tribalwarshelp/shared/twmodel.Ennoblement
   EnnoblementFilter:
-    model: github.com/tribalwarshelp/shared/models.EnnoblementFilter
+    model: github.com/tribalwarshelp/shared/twmodel.EnnoblementFilter
   EnnoblementFilterOr:
-    model: github.com/tribalwarshelp/shared/models.EnnoblementFilterOr
+    model: github.com/tribalwarshelp/shared/twmodel.EnnoblementFilterOr
   PlayerHistoryRecord:
-    model: github.com/tribalwarshelp/shared/models.PlayerHistory
+    model: github.com/tribalwarshelp/shared/twmodel.PlayerHistory
   PlayerHistoryFilter:
-    model: github.com/tribalwarshelp/shared/models.PlayerHistoryFilter
+    model: github.com/tribalwarshelp/shared/twmodel.PlayerHistoryFilter
   TribeHistoryRecord:
-    model: github.com/tribalwarshelp/shared/models.TribeHistory
+    model: github.com/tribalwarshelp/shared/twmodel.TribeHistory
   TribeHistoryFilter:
-    model: github.com/tribalwarshelp/shared/models.TribeHistoryFilter
+    model: github.com/tribalwarshelp/shared/twmodel.TribeHistoryFilter
   ServerStatsRecord:
-    model: github.com/tribalwarshelp/shared/models.ServerStats
+    model: github.com/tribalwarshelp/shared/twmodel.ServerStats
   ServerStatsFilter:
-    model: github.com/tribalwarshelp/shared/models.ServerStatsFilter
+    model: github.com/tribalwarshelp/shared/twmodel.ServerStatsFilter
   TribeChangeRecord:
-    model: github.com/tribalwarshelp/shared/models.TribeChange
+    model: github.com/tribalwarshelp/shared/twmodel.TribeChange
   TribeChangeFilter:
-    model: github.com/tribalwarshelp/shared/models.TribeChangeFilter
+    model: github.com/tribalwarshelp/shared/twmodel.TribeChangeFilter
   TribeChangeFilterOr:
-    model: github.com/tribalwarshelp/shared/models.TribeChangeFilterOr
+    model: github.com/tribalwarshelp/shared/twmodel.TribeChangeFilterOr
   DailyPlayerStatsRecord:
-    model: github.com/tribalwarshelp/shared/models.DailyPlayerStats
+    model: github.com/tribalwarshelp/shared/twmodel.DailyPlayerStats
   DailyPlayerStatsFilter:
-    model: github.com/tribalwarshelp/shared/models.DailyPlayerStatsFilter
+    model: github.com/tribalwarshelp/shared/twmodel.DailyPlayerStatsFilter
   DailyTribeStatsRecord:
-    model: github.com/tribalwarshelp/shared/models.DailyTribeStats
+    model: github.com/tribalwarshelp/shared/twmodel.DailyTribeStats
   DailyTribeStatsFilter:
-    model: github.com/tribalwarshelp/shared/models.DailyTribeStatsFilter
+    model: github.com/tribalwarshelp/shared/twmodel.DailyTribeStatsFilter
   PlayerNameChange:
-    model: github.com/tribalwarshelp/shared/models.PlayerNameChange
+    model: github.com/tribalwarshelp/shared/twmodel.PlayerNameChange

@@ -3,12 +3,14 @@ package repository
 import (
 	"context"
 	"fmt"
+	"github.com/Kichiyaki/gopgutil/v10"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
 	"github.com/pkg/errors"
+
 	"github.com/tribalwarshelp/api/version"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type pgRepository struct {
@@ -16,7 +18,7 @@ type pgRepository struct {
 }
 
 func NewPGRepository(db *pg.DB) (version.Repository, error) {
-	if err := db.Model(&models.Version{}).CreateTable(&orm.CreateTableOptions{
+	if err := db.Model(&twmodel.Version{}).CreateTable(&orm.CreateTableOptions{
 		IfNotExists: true,
 	}); err != nil {
 		return nil, errors.Wrap(err, "cannot create 'versions' table")
@@ -24,19 +26,20 @@ func NewPGRepository(db *pg.DB) (version.Repository, error) {
 	return &pgRepository{db}, nil
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*models.Version, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*twmodel.Version, int, error) {
 	var err error
-	data := []*models.Version{}
+	data := []*twmodel.Version{}
 	total := 0
 	query := repo.
 		Model(&data).
 		Context(ctx).
-		Order(cfg.Sort...).
 		Limit(cfg.Limit).
-		Offset(cfg.Offset)
-	if cfg.Filter != nil {
-		query = query.Apply(cfg.Filter.Where)
-	}
+		Offset(cfg.Offset).
+		Apply(cfg.Filter.Where).
+		Apply(gopgutil.OrderAppender{
+			Orders:   cfg.Sort,
+			MaxDepth: 4,
+		}.Apply)
 
 	if cfg.Count && cfg.Select {
 		total, err = query.SelectAndCount()

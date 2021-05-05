@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"context"
+	"github.com/Kichiyaki/appmode"
 	"net"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tribalwarshelp/shared/mode"
 )
 
 var limitWhitelistContextKey ContextKey = "limitWhitelist"
@@ -59,7 +59,7 @@ func LimitWhitelist(cfg LimitWhitelistConfig) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()
 		clientIP := net.ParseIP(c.ClientIP())
-		canExceedLimit := networksAndIps.Contains(clientIP) || mode.Get() == mode.DevelopmentMode
+		canExceedLimit := networksAndIps.Contains(clientIP) || appmode.Equals(appmode.DevelopmentMode)
 		ctx = StoreLimitWhitelistDataInContext(ctx, canExceedLimit)
 		c.Request = c.Request.WithContext(ctx)
 		c.Next()

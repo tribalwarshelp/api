@@ -2,14 +2,14 @@ package resolvers
 
 import (
 	"context"
-	"github.com/tribalwarshelp/api/utils"
+	"github.com/Kichiyaki/goutil/safeptr"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/tribechange"
-	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *tribeChangeRecordResolver) Player(ctx context.Context, obj *models.TribeChange) (*models.Player, error) {
+func (r *tribeChangeRecordResolver) Player(ctx context.Context, obj *twmodel.TribeChange) (*twmodel.Player, error) {
 	if obj.Player != nil {
 		return obj.Player, nil
 	}
@@ -17,7 +17,7 @@ func (r *tribeChangeRecordResolver) Player(ctx context.Context, obj *models.Trib
 	return getPlayer(ctx, obj.PlayerID), nil
 }
 
-func (r *tribeChangeRecordResolver) NewTribe(ctx context.Context, obj *models.TribeChange) (*models.Tribe, error) {
+func (r *tribeChangeRecordResolver) NewTribe(ctx context.Context, obj *twmodel.TribeChange) (*twmodel.Tribe, error) {
 	if obj.NewTribe != nil {
 		return obj.NewTribe, nil
 	}
@@ -25,7 +25,7 @@ func (r *tribeChangeRecordResolver) NewTribe(ctx context.Context, obj *models.Tr
 	return getTribe(ctx, obj.NewTribeID), nil
 }
 
-func (r *tribeChangeRecordResolver) OldTribe(ctx context.Context, obj *models.TribeChange) (*models.Tribe, error) {
+func (r *tribeChangeRecordResolver) OldTribe(ctx context.Context, obj *twmodel.TribeChange) (*twmodel.Tribe, error) {
 	if obj.OldTribe != nil {
 		return obj.OldTribe, nil
 	}
@@ -35,7 +35,7 @@ func (r *tribeChangeRecordResolver) OldTribe(ctx context.Context, obj *models.Tr
 
 func (r *Resolver) TribeChanges(ctx context.Context,
 	server string,
-	f *models.TribeChangeFilter,
+	f *twmodel.TribeChangeFilter,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.TribeChanges, error) {
@@ -44,8 +44,8 @@ func (r *Resolver) TribeChanges(ctx context.Context,
 	list.Items, list.Total, err = r.TribeChangeUcase.Fetch(ctx, tribechange.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  utils.SafeIntPointer(limit, 0),
-		Offset: utils.SafeIntPointer(offset, 0),
+		Limit:  safeptr.SafeIntPointer(limit, 0),
+		Offset: safeptr.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
 		Select: shouldSelectItems(ctx),
 		Server: server,

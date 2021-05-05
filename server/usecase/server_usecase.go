@@ -3,11 +3,10 @@ package usecase
 import (
 	"context"
 	"fmt"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/api/server"
-	"github.com/tribalwarshelp/api/utils"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type usecase struct {
@@ -18,20 +17,19 @@ func New(repo server.Repository) server.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, cfg server.FetchConfig) ([]*models.Server, int, error) {
+func (ucase *usecase) Fetch(ctx context.Context, cfg server.FetchConfig) ([]*twmodel.Server, int, error) {
 	if cfg.Filter == nil {
-		cfg.Filter = &models.ServerFilter{}
+		cfg.Filter = &twmodel.ServerFilter{}
 	}
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > server.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = server.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
-func (ucase *usecase) GetByKey(ctx context.Context, key string) (*models.Server, error) {
+func (ucase *usecase) GetByKey(ctx context.Context, key string) (*twmodel.Server, error) {
 	servers, _, err := ucase.repo.Fetch(ctx, server.FetchConfig{
-		Filter: &models.ServerFilter{
+		Filter: &twmodel.ServerFilter{
 			Key: []string{key},
 		},
 		Limit:  1,

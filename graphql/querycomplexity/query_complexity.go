@@ -1,6 +1,9 @@
 package querycomplexity
 
 import (
+	"github.com/Kichiyaki/goutil/safeptr"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
+
 	"github.com/tribalwarshelp/api/dailyplayerstats"
 	"github.com/tribalwarshelp/api/dailytribestats"
 	"github.com/tribalwarshelp/api/ennoblement"
@@ -12,10 +15,8 @@ import (
 	"github.com/tribalwarshelp/api/tribe"
 	"github.com/tribalwarshelp/api/tribechange"
 	"github.com/tribalwarshelp/api/tribehistory"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/api/version"
 	"github.com/tribalwarshelp/api/village"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 const (
@@ -43,14 +44,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.DailyPlayerStats = func(
 		childComplexity int,
 		server string,
-		filter *models.DailyPlayerStatsFilter,
+		filter *twmodel.DailyPlayerStatsFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, dailyplayerstats.FetchLimit),
+			safeptr.SafeIntPointer(limit, dailyplayerstats.FetchLimit),
 			dailyPlayerStatsTotalFieldComplexity,
 			1,
 		)
@@ -60,14 +61,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.DailyTribeStats = func(
 		childComplexity int,
 		server string,
-		filter *models.DailyTribeStatsFilter,
+		filter *twmodel.DailyTribeStatsFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, dailytribestats.FetchLimit),
+			safeptr.SafeIntPointer(limit, dailytribestats.FetchLimit),
 			dailyTribeStatsTotalFieldComplexity,
 			1,
 		)
@@ -77,14 +78,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.Ennoblements = func(
 		childComplexity int,
 		server string,
-		filter *models.EnnoblementFilter,
+		filter *twmodel.EnnoblementFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, ennoblement.FetchLimit),
+			safeptr.SafeIntPointer(limit, ennoblement.FetchLimit),
 			ennoblementsTotalFieldComplexity,
 			1,
 		)
@@ -94,14 +95,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.PlayerHistory = func(
 		childComplexity int,
 		server string,
-		filter *models.PlayerHistoryFilter,
+		filter *twmodel.PlayerHistoryFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, playerhistory.FetchLimit),
+			safeptr.SafeIntPointer(limit, playerhistory.FetchLimit),
 			playerHistoryTotalFieldComplexity,
 			1,
 		)
@@ -111,14 +112,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.TribeHistory = func(
 		childComplexity int,
 		server string,
-		filter *models.TribeHistoryFilter,
+		filter *twmodel.TribeHistoryFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, tribehistory.FetchLimit),
+			safeptr.SafeIntPointer(limit, tribehistory.FetchLimit),
 			tribeHistoryTotalFieldComplexity,
 			1,
 		)
@@ -128,14 +129,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.TribeChanges = func(
 		childComplexity int,
 		server string,
-		filter *models.TribeChangeFilter,
+		filter *twmodel.TribeChangeFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, tribechange.FetchLimit),
+			safeptr.SafeIntPointer(limit, tribechange.FetchLimit),
 			tribeChangesTotalFieldComplexity,
 			1,
 		)
@@ -153,7 +154,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, player.FetchLimit),
+			safeptr.SafeIntPointer(limit, player.FetchLimit),
 			searchPlayerTotalFieldComplexity,
 			3,
 		)
@@ -170,7 +171,7 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, tribe.FetchLimit),
+			safeptr.SafeIntPointer(limit, tribe.FetchLimit),
 			searchTribeTotalFieldComplexity,
 			3,
 		)
@@ -186,14 +187,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.Players = func(
 		childComplexity int,
 		server string,
-		filter *models.PlayerFilter,
+		filter *twmodel.PlayerFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, player.FetchLimit),
+			safeptr.SafeIntPointer(limit, player.FetchLimit),
 			playersTotalFieldComplexity,
 			1,
 		)
@@ -203,14 +204,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.Tribes = func(
 		childComplexity int,
 		server string,
-		filter *models.TribeFilter,
+		filter *twmodel.TribeFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, tribe.FetchLimit),
+			safeptr.SafeIntPointer(limit, tribe.FetchLimit),
 			tribesTotalFieldComplexity,
 			1,
 		)
@@ -220,14 +221,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.Villages = func(
 		childComplexity int,
 		server string,
-		filter *models.VillageFilter,
+		filter *twmodel.VillageFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, village.FetchLimit),
+			safeptr.SafeIntPointer(limit, village.FetchLimit),
 			villagesTotalFieldComplexity,
 			1,
 		)
@@ -237,14 +238,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.Query.ServerStats = func(
 		childComplexity int,
 		server string,
-		filter *models.ServerStatsFilter,
+		filter *twmodel.ServerStatsFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, serverstats.FetchLimit),
+			safeptr.SafeIntPointer(limit, serverstats.FetchLimit),
 			serverStatsTotalFieldComplexity,
 			1,
 		)
@@ -253,14 +254,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.ServerList.Total = getCountComplexity
 	complexityRoot.Query.Servers = func(
 		childComplexity int,
-		filter *models.ServerFilter,
+		filter *twmodel.ServerFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, server.FetchLimit),
+			safeptr.SafeIntPointer(limit, server.FetchLimit),
 			serversTotalFieldComplexity,
 			1,
 		)
@@ -269,14 +270,14 @@ func GetComplexityRoot() generated.ComplexityRoot {
 	complexityRoot.VersionList.Total = getCountComplexity
 	complexityRoot.Query.Versions = func(
 		childComplexity int,
-		filter *models.VersionFilter,
+		filter *twmodel.VersionFilter,
 		limit *int,
 		offset *int,
 		sort []string,
 	) int {
 		return computeComplexity(
 			childComplexity,
-			utils.SafeIntPointer(limit, version.FetchLimit),
+			safeptr.SafeIntPointer(limit, version.FetchLimit),
 			versionsTotalFieldComplexity,
 			1,
 		)

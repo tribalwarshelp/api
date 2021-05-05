@@ -3,16 +3,15 @@
 package dataloaders
 
 import (
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"sync"
 	"time"
-
-	"github.com/tribalwarshelp/shared/models"
 )
 
 // VillageLoaderConfig captures the config to create a new VillageLoader
 type VillageLoaderConfig struct {
 	// Fetch is a method that provides the data for the loader
-	Fetch func(keys []int) ([]*models.Village, []error)
+	Fetch func(keys []int) ([]*twmodel.Village, []error)
 
 	// Wait is how long wait before sending a batch
 	Wait time.Duration
@@ -33,7 +32,7 @@ func NewVillageLoader(config VillageLoaderConfig) *VillageLoader {
 // VillageLoader batches and caches requests
 type VillageLoader struct {
 	// this method provides the data for the loader
-	fetch func(keys []int) ([]*models.Village, []error)
+	fetch func(keys []int) ([]*twmodel.Village, []error)
 
 	// how long to done before sending a batch
 	wait time.Duration
@@ -44,7 +43,7 @@ type VillageLoader struct {
 	// INTERNAL
 
 	// lazily created cache
-	cache map[int]*models.Village
+	cache map[int]*twmodel.Village
 
 	// the current batch. keys will continue to be collected until timeout is hit,
 	// then everything will be sent to the fetch method and out to the listeners
@@ -56,25 +55,25 @@ type VillageLoader struct {
 
 type villageLoaderBatch struct {
 	keys    []int
-	data    []*models.Village
+	data    []*twmodel.Village
 	error   []error
 	closing bool
 	done    chan struct{}
 }
 
 // Load a Village by key, batching and caching will be applied automatically
-func (l *VillageLoader) Load(key int) (*models.Village, error) {
+func (l *VillageLoader) Load(key int) (*twmodel.Village, error) {
 	return l.LoadThunk(key)()
 }
 
 // LoadThunk returns a function that when called will block waiting for a Village.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *VillageLoader) LoadThunk(key int) func() (*models.Village, error) {
+func (l *VillageLoader) LoadThunk(key int) func() (*twmodel.Village, error) {
 	l.mu.Lock()
 	if it, ok := l.cache[key]; ok {
 		l.mu.Unlock()
-		return func() (*models.Village, error) {
+		return func() (*twmodel.Village, error) {
 			return it, nil
 		}
 	}
@@ -85,10 +84,10 @@ func (l *VillageLoader) LoadThunk(key int) func() (*models.Village, error) {
 	pos := batch.keyIndex(l, key)
 	l.mu.Unlock()
 
-	return func() (*models.Village, error) {
+	return func() (*twmodel.Village, error) {
 		<-batch.done
 
-		var data *models.Village
+		var data *twmodel.Village
 		if pos < len(batch.data) {
 			data = batch.data[pos]
 		}
@@ -113,14 +112,14 @@ func (l *VillageLoader) LoadThunk(key int) func() (*models.Village, error) {
 
 // LoadAll fetches many keys at once. It will be broken into appropriate sized
 // sub batches depending on how the loader is configured
-func (l *VillageLoader) LoadAll(keys []int) ([]*models.Village, []error) {
-	results := make([]func() (*models.Village, error), len(keys))
+func (l *VillageLoader) LoadAll(keys []int) ([]*twmodel.Village, []error) {
+	results := make([]func() (*twmodel.Village, error), len(keys))
 
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
 
-	villages := make([]*models.Village, len(keys))
+	villages := make([]*twmodel.Village, len(keys))
 	errors := make([]error, len(keys))
 	for i, thunk := range results {
 		villages[i], errors[i] = thunk()
@@ -131,13 +130,13 @@ func (l *VillageLoader) LoadAll(keys []int) ([]*models.Village, []error) {
 // LoadAllThunk returns a function that when called will block waiting for a Villages.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *VillageLoader) LoadAllThunk(keys []int) func() ([]*models.Village, []error) {
-	results := make([]func() (*models.Village, error), len(keys))
+func (l *VillageLoader) LoadAllThunk(keys []int) func() ([]*twmodel.Village, []error) {
+	results := make([]func() (*twmodel.Village, error), len(keys))
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
-	return func() ([]*models.Village, []error) {
-		villages := make([]*models.Village, len(keys))
+	return func() ([]*twmodel.Village, []error) {
+		villages := make([]*twmodel.Village, len(keys))
 		errors := make([]error, len(keys))
 		for i, thunk := range results {
 			villages[i], errors[i] = thunk()
@@ -149,7 +148,7 @@ func (l *VillageLoader) LoadAllThunk(keys []int) func() ([]*models.Village, []er
 // Prime the cache with the provided key and value. If the key already exists, no change is made
 // and false is returned.
 // (To forcefully prime the cache, clear the key first with loader.clear(key).prime(key, value).)
-func (l *VillageLoader) Prime(key int, value *models.Village) bool {
+func (l *VillageLoader) Prime(key int, value *twmodel.Village) bool {
 	l.mu.Lock()
 	var found bool
 	if _, found = l.cache[key]; !found {
@@ -169,9 +168,9 @@ func (l *VillageLoader) Clear(key int) {
 	l.mu.Unlock()
 }
 
-func (l *VillageLoader) unsafeSet(key int, value *models.Village) {
+func (l *VillageLoader) unsafeSet(key int, value *twmodel.Village) {
 	if l.cache == nil {
-		l.cache = map[int]*models.Village{}
+		l.cache = map[int]*twmodel.Village{}
 	}
 	l.cache[key] = value
 }

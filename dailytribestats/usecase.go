@@ -2,10 +2,9 @@ package dailytribestats
 
 import (
 	"context"
-
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type Usecase interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.DailyTribeStats, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*twmodel.DailyTribeStats, int, error)
 }

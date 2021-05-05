@@ -3,16 +3,18 @@ package usecase
 import (
 	"context"
 	"fmt"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"sort"
 	"strconv"
 	"strings"
 	"sync"
 
 	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/map-generator/generator"
+
 	"github.com/tribalwarshelp/api/servermap"
 	"github.com/tribalwarshelp/api/village"
-	"github.com/tribalwarshelp/map-generator/generator"
-	"github.com/tribalwarshelp/shared/models"
+
 	"golang.org/x/sync/errgroup"
 )
 
@@ -52,8 +54,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
-				Filter: &models.VillageFilter{
-					PlayerFilter: &models.PlayerFilter{
+				Filter: &twmodel.VillageFilter{
+					PlayerFilter: &twmodel.PlayerFilter{
 						IDNEQ:      append(playerIDs, 0),
 						TribeIDNEQ: tribeIDs,
 					},
@@ -82,7 +84,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
-				Filter: &models.VillageFilter{
+				Filter: &twmodel.VillageFilter{
 					PlayerID: []int{0},
 				},
 				Select:  true,
@@ -110,8 +112,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
-				Filter: &models.VillageFilter{
-					PlayerFilter: &models.PlayerFilter{
+				Filter: &twmodel.VillageFilter{
+					PlayerFilter: &twmodel.PlayerFilter{
 						IDNEQ:   playerIDs,
 						TribeID: ids,
 					},
@@ -142,7 +144,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
-				Filter: &models.VillageFilter{
+				Filter: &twmodel.VillageFilter{
 					PlayerID: ids,
 				},
 				Select:  true,

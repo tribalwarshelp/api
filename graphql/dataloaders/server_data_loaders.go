@@ -2,10 +2,11 @@ package dataloaders
 
 import (
 	"context"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
+
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/api/tribe"
 	"github.com/tribalwarshelp/api/village"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type ServerDataLoaders struct {
@@ -19,9 +20,9 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 		PlayerByID: &PlayerLoader{
 			wait:     wait,
 			maxBatch: 0,
-			fetch: func(ids []int) ([]*models.Player, []error) {
+			fetch: func(ids []int) ([]*twmodel.Player, []error) {
 				players, _, err := cfg.PlayerRepo.Fetch(context.Background(), player.FetchConfig{
-					Filter: &models.PlayerFilter{
+					Filter: &twmodel.PlayerFilter{
 						ID: ids,
 					},
 					Select: true,
@@ -31,12 +32,12 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 					return nil, []error{err}
 				}
 
-				playerByID := make(map[int]*models.Player)
-				for _, player := range players {
-					playerByID[player.ID] = player
+				playerByID := make(map[int]*twmodel.Player)
+				for _, p := range players {
+					playerByID[p.ID] = p
 				}
 
-				inOrder := make([]*models.Player, len(ids))
+				inOrder := make([]*twmodel.Player, len(ids))
 				for i, id := range ids {
 					inOrder[i] = playerByID[id]
 				}
@@ -47,10 +48,10 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 		TribeByID: &TribeLoader{
 			wait:     wait,
 			maxBatch: 0,
-			fetch: func(ids []int) ([]*models.Tribe, []error) {
+			fetch: func(ids []int) ([]*twmodel.Tribe, []error) {
 				tribes, _, err := cfg.TribeRepo.Fetch(context.Background(), tribe.FetchConfig{
 					Server: server,
-					Filter: &models.TribeFilter{
+					Filter: &twmodel.TribeFilter{
 						ID: ids,
 					},
 					Select: true,
@@ -59,12 +60,12 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 					return nil, []error{err}
 				}
 
-				tribeByID := make(map[int]*models.Tribe)
-				for _, tribe := range tribes {
-					tribeByID[tribe.ID] = tribe
+				tribeByID := make(map[int]*twmodel.Tribe)
+				for _, t := range tribes {
+					tribeByID[t.ID] = t
 				}
 
-				inOrder := make([]*models.Tribe, len(ids))
+				inOrder := make([]*twmodel.Tribe, len(ids))
 				for i, id := range ids {
 					inOrder[i] = tribeByID[id]
 				}
@@ -75,11 +76,11 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 		VillageByID: &VillageLoader{
 			wait:     wait,
 			maxBatch: 0,
-			fetch: func(ids []int) ([]*models.Village, []error) {
+			fetch: func(ids []int) ([]*twmodel.Village, []error) {
 				villages, _, err := cfg.VillageRepo.Fetch(context.Background(), village.FetchConfig{
 					Server: server,
 					Count:  false,
-					Filter: &models.VillageFilter{
+					Filter: &twmodel.VillageFilter{
 						ID: ids,
 					},
 					Select: true,
@@ -88,12 +89,12 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 					return nil, []error{err}
 				}
 
-				villageByID := make(map[int]*models.Village)
-				for _, village := range villages {
-					villageByID[village.ID] = village
+				villageByID := make(map[int]*twmodel.Village)
+				for _, v := range villages {
+					villageByID[v.ID] = v
 				}
 
-				inOrder := make([]*models.Village, len(ids))
+				inOrder := make([]*twmodel.Village, len(ids))
 				for i, id := range ids {
 					inOrder[i] = villageByID[id]
 				}

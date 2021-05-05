@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -13,7 +14,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/tribalwarshelp/shared/models"
+
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -239,25 +240,25 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		DailyPlayerStats func(childComplexity int, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) int
-		DailyTribeStats  func(childComplexity int, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) int
-		Ennoblements     func(childComplexity int, server string, filter *models.EnnoblementFilter, limit *int, offset *int, sort []string) int
+		DailyPlayerStats func(childComplexity int, server string, filter *twmodel.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) int
+		DailyTribeStats  func(childComplexity int, server string, filter *twmodel.DailyTribeStatsFilter, limit *int, offset *int, sort []string) int
+		Ennoblements     func(childComplexity int, server string, filter *twmodel.EnnoblementFilter, limit *int, offset *int, sort []string) int
 		Player           func(childComplexity int, server string, id int) int
-		PlayerHistory    func(childComplexity int, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) int
-		Players          func(childComplexity int, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) int
+		PlayerHistory    func(childComplexity int, server string, filter *twmodel.PlayerHistoryFilter, limit *int, offset *int, sort []string) int
+		Players          func(childComplexity int, server string, filter *twmodel.PlayerFilter, limit *int, offset *int, sort []string) int
 		SearchPlayer     func(childComplexity int, version string, name *string, id *int, limit *int, offset *int, sort []string) int
 		SearchTribe      func(childComplexity int, version string, query string, limit *int, offset *int, sort []string) int
 		Server           func(childComplexity int, key string) int
-		ServerStats      func(childComplexity int, server string, filter *models.ServerStatsFilter, limit *int, offset *int, sort []string) int
-		Servers          func(childComplexity int, filter *models.ServerFilter, limit *int, offset *int, sort []string) int
+		ServerStats      func(childComplexity int, server string, filter *twmodel.ServerStatsFilter, limit *int, offset *int, sort []string) int
+		Servers          func(childComplexity int, filter *twmodel.ServerFilter, limit *int, offset *int, sort []string) int
 		Tribe            func(childComplexity int, server string, id int) int
-		TribeChanges     func(childComplexity int, server string, filter *models.TribeChangeFilter, limit *int, offset *int, sort []string) int
-		TribeHistory     func(childComplexity int, server string, filter *models.TribeHistoryFilter, limit *int, offset *int, sort []string) int
-		Tribes           func(childComplexity int, server string, filter *models.TribeFilter, limit *int, offset *int, sort []string) int
-		Version          func(childComplexity int, code models.VersionCode) int
-		Versions         func(childComplexity int, filter *models.VersionFilter, limit *int, offset *int, sort []string) int
+		TribeChanges     func(childComplexity int, server string, filter *twmodel.TribeChangeFilter, limit *int, offset *int, sort []string) int
+		TribeHistory     func(childComplexity int, server string, filter *twmodel.TribeHistoryFilter, limit *int, offset *int, sort []string) int
+		Tribes           func(childComplexity int, server string, filter *twmodel.TribeFilter, limit *int, offset *int, sort []string) int
+		Version          func(childComplexity int, code twmodel.VersionCode) int
+		Versions         func(childComplexity int, filter *twmodel.VersionFilter, limit *int, offset *int, sort []string) int
 		Village          func(childComplexity int, server string, id int) int
-		Villages         func(childComplexity int, server string, filter *models.VillageFilter, limit *int, offset *int, sort []string) int
+		Villages         func(childComplexity int, server string, filter *twmodel.VillageFilter, limit *int, offset *int, sort []string) int
 	}
 
 	Server struct {
@@ -571,62 +572,62 @@ type ComplexityRoot struct {
 }
 
 type DailyPlayerStatsRecordResolver interface {
-	Player(ctx context.Context, obj *models.DailyPlayerStats) (*models.Player, error)
+	Player(ctx context.Context, obj *twmodel.DailyPlayerStats) (*twmodel.Player, error)
 }
 type DailyTribeStatsRecordResolver interface {
-	Tribe(ctx context.Context, obj *models.DailyTribeStats) (*models.Tribe, error)
+	Tribe(ctx context.Context, obj *twmodel.DailyTribeStats) (*twmodel.Tribe, error)
 }
 type EnnoblementResolver interface {
-	Village(ctx context.Context, obj *models.Ennoblement) (*models.Village, error)
-	NewOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error)
-	NewOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error)
-	OldOwner(ctx context.Context, obj *models.Ennoblement) (*models.Player, error)
-	OldOwnerTribe(ctx context.Context, obj *models.Ennoblement) (*models.Tribe, error)
+	Village(ctx context.Context, obj *twmodel.Ennoblement) (*twmodel.Village, error)
+	NewOwner(ctx context.Context, obj *twmodel.Ennoblement) (*twmodel.Player, error)
+	NewOwnerTribe(ctx context.Context, obj *twmodel.Ennoblement) (*twmodel.Tribe, error)
+	OldOwner(ctx context.Context, obj *twmodel.Ennoblement) (*twmodel.Player, error)
+	OldOwnerTribe(ctx context.Context, obj *twmodel.Ennoblement) (*twmodel.Tribe, error)
 }
 type PlayerResolver interface {
-	Tribe(ctx context.Context, obj *models.Player) (*models.Tribe, error)
-	Servers(ctx context.Context, obj *models.Player) ([]string, error)
-	NameChanges(ctx context.Context, obj *models.Player) ([]*models.PlayerNameChange, error)
+	Tribe(ctx context.Context, obj *twmodel.Player) (*twmodel.Tribe, error)
+	Servers(ctx context.Context, obj *twmodel.Player) ([]string, error)
+	NameChanges(ctx context.Context, obj *twmodel.Player) ([]*twmodel.PlayerNameChange, error)
 }
 type PlayerHistoryRecordResolver interface {
-	Player(ctx context.Context, obj *models.PlayerHistory) (*models.Player, error)
+	Player(ctx context.Context, obj *twmodel.PlayerHistory) (*twmodel.Player, error)
 
-	Tribe(ctx context.Context, obj *models.PlayerHistory) (*models.Tribe, error)
+	Tribe(ctx context.Context, obj *twmodel.PlayerHistory) (*twmodel.Tribe, error)
 }
 type QueryResolver interface {
-	DailyPlayerStats(ctx context.Context, server string, filter *models.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) (*DailyPlayerStats, error)
-	DailyTribeStats(ctx context.Context, server string, filter *models.DailyTribeStatsFilter, limit *int, offset *int, sort []string) (*DailyTribeStats, error)
-	Ennoblements(ctx context.Context, server string, filter *models.EnnoblementFilter, limit *int, offset *int, sort []string) (*EnnoblementList, error)
-	Players(ctx context.Context, server string, filter *models.PlayerFilter, limit *int, offset *int, sort []string) (*PlayerList, error)
-	Player(ctx context.Context, server string, id int) (*models.Player, error)
+	DailyPlayerStats(ctx context.Context, server string, filter *twmodel.DailyPlayerStatsFilter, limit *int, offset *int, sort []string) (*DailyPlayerStats, error)
+	DailyTribeStats(ctx context.Context, server string, filter *twmodel.DailyTribeStatsFilter, limit *int, offset *int, sort []string) (*DailyTribeStats, error)
+	Ennoblements(ctx context.Context, server string, filter *twmodel.EnnoblementFilter, limit *int, offset *int, sort []string) (*EnnoblementList, error)
+	Players(ctx context.Context, server string, filter *twmodel.PlayerFilter, limit *int, offset *int, sort []string) (*PlayerList, error)
+	Player(ctx context.Context, server string, id int) (*twmodel.Player, error)
 	SearchPlayer(ctx context.Context, version string, name *string, id *int, limit *int, offset *int, sort []string) (*FoundPlayerList, error)
-	PlayerHistory(ctx context.Context, server string, filter *models.PlayerHistoryFilter, limit *int, offset *int, sort []string) (*PlayerHistory, error)
-	Servers(ctx context.Context, filter *models.ServerFilter, limit *int, offset *int, sort []string) (*ServerList, error)
-	Server(ctx context.Context, key string) (*models.Server, error)
-	ServerStats(ctx context.Context, server string, filter *models.ServerStatsFilter, limit *int, offset *int, sort []string) (*ServerStats, error)
-	Tribes(ctx context.Context, server string, filter *models.TribeFilter, limit *int, offset *int, sort []string) (*TribeList, error)
-	Tribe(ctx context.Context, server string, id int) (*models.Tribe, error)
+	PlayerHistory(ctx context.Context, server string, filter *twmodel.PlayerHistoryFilter, limit *int, offset *int, sort []string) (*PlayerHistory, error)
+	Servers(ctx context.Context, filter *twmodel.ServerFilter, limit *int, offset *int, sort []string) (*ServerList, error)
+	Server(ctx context.Context, key string) (*twmodel.Server, error)
+	ServerStats(ctx context.Context, server string, filter *twmodel.ServerStatsFilter, limit *int, offset *int, sort []string) (*ServerStats, error)
+	Tribes(ctx context.Context, server string, filter *twmodel.TribeFilter, limit *int, offset *int, sort []string) (*TribeList, error)
+	Tribe(ctx context.Context, server string, id int) (*twmodel.Tribe, error)
 	SearchTribe(ctx context.Context, version string, query string, limit *int, offset *int, sort []string) (*FoundTribeList, error)
-	TribeChanges(ctx context.Context, server string, filter *models.TribeChangeFilter, limit *int, offset *int, sort []string) (*TribeChanges, error)
-	TribeHistory(ctx context.Context, server string, filter *models.TribeHistoryFilter, limit *int, offset *int, sort []string) (*TribeHistory, error)
-	Versions(ctx context.Context, filter *models.VersionFilter, limit *int, offset *int, sort []string) (*VersionList, error)
-	Version(ctx context.Context, code models.VersionCode) (*models.Version, error)
-	Villages(ctx context.Context, server string, filter *models.VillageFilter, limit *int, offset *int, sort []string) (*VillageList, error)
-	Village(ctx context.Context, server string, id int) (*models.Village, error)
+	TribeChanges(ctx context.Context, server string, filter *twmodel.TribeChangeFilter, limit *int, offset *int, sort []string) (*TribeChanges, error)
+	TribeHistory(ctx context.Context, server string, filter *twmodel.TribeHistoryFilter, limit *int, offset *int, sort []string) (*TribeHistory, error)
+	Versions(ctx context.Context, filter *twmodel.VersionFilter, limit *int, offset *int, sort []string) (*VersionList, error)
+	Version(ctx context.Context, code twmodel.VersionCode) (*twmodel.Version, error)
+	Villages(ctx context.Context, server string, filter *twmodel.VillageFilter, limit *int, offset *int, sort []string) (*VillageList, error)
+	Village(ctx context.Context, server string, id int) (*twmodel.Village, error)
 }
 type ServerResolver interface {
-	Version(ctx context.Context, obj *models.Server) (*models.Version, error)
+	Version(ctx context.Context, obj *twmodel.Server) (*twmodel.Version, error)
 }
 type TribeChangeRecordResolver interface {
-	Player(ctx context.Context, obj *models.TribeChange) (*models.Player, error)
-	OldTribe(ctx context.Context, obj *models.TribeChange) (*models.Tribe, error)
-	NewTribe(ctx context.Context, obj *models.TribeChange) (*models.Tribe, error)
+	Player(ctx context.Context, obj *twmodel.TribeChange) (*twmodel.Player, error)
+	OldTribe(ctx context.Context, obj *twmodel.TribeChange) (*twmodel.Tribe, error)
+	NewTribe(ctx context.Context, obj *twmodel.TribeChange) (*twmodel.Tribe, error)
 }
 type TribeHistoryRecordResolver interface {
-	Tribe(ctx context.Context, obj *models.TribeHistory) (*models.Tribe, error)
+	Tribe(ctx context.Context, obj *twmodel.TribeHistory) (*twmodel.Tribe, error)
 }
 type VillageResolver interface {
-	Player(ctx context.Context, obj *models.Village) (*models.Player, error)
+	Player(ctx context.Context, obj *twmodel.Village) (*twmodel.Player, error)
 }
 
 type executableSchema struct {
@@ -1599,7 +1600,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.DailyPlayerStats(childComplexity, args["server"].(string), args["filter"].(*models.DailyPlayerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.DailyPlayerStats(childComplexity, args["server"].(string), args["filter"].(*twmodel.DailyPlayerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.dailyTribeStats":
 		if e.complexity.Query.DailyTribeStats == nil {
@@ -1611,7 +1612,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.DailyTribeStats(childComplexity, args["server"].(string), args["filter"].(*models.DailyTribeStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.DailyTribeStats(childComplexity, args["server"].(string), args["filter"].(*twmodel.DailyTribeStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.ennoblements":
 		if e.complexity.Query.Ennoblements == nil {
@@ -1623,7 +1624,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Ennoblements(childComplexity, args["server"].(string), args["filter"].(*models.EnnoblementFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.Ennoblements(childComplexity, args["server"].(string), args["filter"].(*twmodel.EnnoblementFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.player":
 		if e.complexity.Query.Player == nil {
@@ -1647,7 +1648,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.PlayerHistory(childComplexity, args["server"].(string), args["filter"].(*models.PlayerHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.PlayerHistory(childComplexity, args["server"].(string), args["filter"].(*twmodel.PlayerHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.players":
 		if e.complexity.Query.Players == nil {
@@ -1659,7 +1660,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Players(childComplexity, args["server"].(string), args["filter"].(*models.PlayerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.Players(childComplexity, args["server"].(string), args["filter"].(*twmodel.PlayerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.searchPlayer":
 		if e.complexity.Query.SearchPlayer == nil {
@@ -1707,7 +1708,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ServerStats(childComplexity, args["server"].(string), args["filter"].(*models.ServerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.ServerStats(childComplexity, args["server"].(string), args["filter"].(*twmodel.ServerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.servers":
 		if e.complexity.Query.Servers == nil {
@@ -1719,7 +1720,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Servers(childComplexity, args["filter"].(*models.ServerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.Servers(childComplexity, args["filter"].(*twmodel.ServerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.tribe":
 		if e.complexity.Query.Tribe == nil {
@@ -1743,7 +1744,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.TribeChanges(childComplexity, args["server"].(string), args["filter"].(*models.TribeChangeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.TribeChanges(childComplexity, args["server"].(string), args["filter"].(*twmodel.TribeChangeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.tribeHistory":
 		if e.complexity.Query.TribeHistory == nil {
@@ -1755,7 +1756,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.TribeHistory(childComplexity, args["server"].(string), args["filter"].(*models.TribeHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.TribeHistory(childComplexity, args["server"].(string), args["filter"].(*twmodel.TribeHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.tribes":
 		if e.complexity.Query.Tribes == nil {
@@ -1767,7 +1768,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Tribes(childComplexity, args["server"].(string), args["filter"].(*models.TribeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.Tribes(childComplexity, args["server"].(string), args["filter"].(*twmodel.TribeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.version":
 		if e.complexity.Query.Version == nil {
@@ -1779,7 +1780,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Version(childComplexity, args["code"].(models.VersionCode)), true
+		return e.complexity.Query.Version(childComplexity, args["code"].(twmodel.VersionCode)), true
 
 	case "Query.versions":
 		if e.complexity.Query.Versions == nil {
@@ -1791,7 +1792,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Versions(childComplexity, args["filter"].(*models.VersionFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.Versions(childComplexity, args["filter"].(*twmodel.VersionFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Query.village":
 		if e.complexity.Query.Village == nil {
@@ -1815,7 +1816,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Villages(childComplexity, args["server"].(string), args["filter"].(*models.VillageFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
+		return e.complexity.Query.Villages(childComplexity, args["server"].(string), args["filter"].(*twmodel.VillageFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string)), true
 
 	case "Server.buildingConfig":
 		if e.complexity.Server.BuildingConfig == nil {
@@ -4518,7 +4519,7 @@ func (ec *executionContext) field_Query_dailyPlayerStats_args(ctx context.Contex
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.DailyPlayerStatsFilter
+	var arg1 *twmodel.DailyPlayerStatsFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalODailyPlayerStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyPlayerStatsFilter(ctx, tmp)
@@ -4569,7 +4570,7 @@ func (ec *executionContext) field_Query_dailyTribeStats_args(ctx context.Context
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.DailyTribeStatsFilter
+	var arg1 *twmodel.DailyTribeStatsFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalODailyTribeStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyTribeStatsFilter(ctx, tmp)
@@ -4620,7 +4621,7 @@ func (ec *executionContext) field_Query_ennoblements_args(ctx context.Context, r
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.EnnoblementFilter
+	var arg1 *twmodel.EnnoblementFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalOEnnoblementFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilter(ctx, tmp)
@@ -4671,7 +4672,7 @@ func (ec *executionContext) field_Query_playerHistory_args(ctx context.Context, 
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.PlayerHistoryFilter
+	var arg1 *twmodel.PlayerHistoryFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalOPlayerHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryFilter(ctx, tmp)
@@ -4746,7 +4747,7 @@ func (ec *executionContext) field_Query_players_args(ctx context.Context, rawArg
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.PlayerFilter
+	var arg1 *twmodel.PlayerFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx, tmp)
@@ -4908,7 +4909,7 @@ func (ec *executionContext) field_Query_serverStats_args(ctx context.Context, ra
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.ServerStatsFilter
+	var arg1 *twmodel.ServerStatsFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalOServerStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsFilter(ctx, tmp)
@@ -4965,7 +4966,7 @@ func (ec *executionContext) field_Query_server_args(ctx context.Context, rawArgs
 func (ec *executionContext) field_Query_servers_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *models.ServerFilter
+	var arg0 *twmodel.ServerFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg0, err = ec.unmarshalOServerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerFilter(ctx, tmp)
@@ -5016,7 +5017,7 @@ func (ec *executionContext) field_Query_tribeChanges_args(ctx context.Context, r
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.TribeChangeFilter
+	var arg1 *twmodel.TribeChangeFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalOTribeChangeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilter(ctx, tmp)
@@ -5067,7 +5068,7 @@ func (ec *executionContext) field_Query_tribeHistory_args(ctx context.Context, r
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.TribeHistoryFilter
+	var arg1 *twmodel.TribeHistoryFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalOTribeHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryFilter(ctx, tmp)
@@ -5142,7 +5143,7 @@ func (ec *executionContext) field_Query_tribes_args(ctx context.Context, rawArgs
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.TribeFilter
+	var arg1 *twmodel.TribeFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx, tmp)
@@ -5184,7 +5185,7 @@ func (ec *executionContext) field_Query_tribes_args(ctx context.Context, rawArgs
 func (ec *executionContext) field_Query_version_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 models.VersionCode
+	var arg0 twmodel.VersionCode
 	if tmp, ok := rawArgs["code"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("code"))
 		arg0, err = ec.unmarshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx, tmp)
@@ -5199,7 +5200,7 @@ func (ec *executionContext) field_Query_version_args(ctx context.Context, rawArg
 func (ec *executionContext) field_Query_versions_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *models.VersionFilter
+	var arg0 *twmodel.VersionFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg0, err = ec.unmarshalOVersionFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionFilter(ctx, tmp)
@@ -5274,7 +5275,7 @@ func (ec *executionContext) field_Query_villages_args(ctx context.Context, rawAr
 		}
 	}
 	args["server"] = arg0
-	var arg1 *models.VillageFilter
+	var arg1 *twmodel.VillageFilter
 	if tmp, ok := rawArgs["filter"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
 		arg1, err = ec.unmarshalOVillageFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillageFilter(ctx, tmp)
@@ -5351,7 +5352,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Building_maxLevel(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_maxLevel(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5386,7 +5387,7 @@ func (ec *executionContext) _Building_maxLevel(ctx context.Context, field graphq
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_minLevel(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_minLevel(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5421,7 +5422,7 @@ func (ec *executionContext) _Building_minLevel(ctx context.Context, field graphq
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_wood(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_wood(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5456,7 +5457,7 @@ func (ec *executionContext) _Building_wood(ctx context.Context, field graphql.Co
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_stone(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_stone(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5491,7 +5492,7 @@ func (ec *executionContext) _Building_stone(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_iron(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_iron(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5526,7 +5527,7 @@ func (ec *executionContext) _Building_iron(ctx context.Context, field graphql.Co
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_pop(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_pop(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5561,7 +5562,7 @@ func (ec *executionContext) _Building_pop(ctx context.Context, field graphql.Col
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_woodFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_woodFactor(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5596,7 +5597,7 @@ func (ec *executionContext) _Building_woodFactor(ctx context.Context, field grap
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_stoneFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_stoneFactor(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5631,7 +5632,7 @@ func (ec *executionContext) _Building_stoneFactor(ctx context.Context, field gra
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_ironFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_ironFactor(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5666,7 +5667,7 @@ func (ec *executionContext) _Building_ironFactor(ctx context.Context, field grap
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_popFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_popFactor(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5701,7 +5702,7 @@ func (ec *executionContext) _Building_popFactor(ctx context.Context, field graph
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_buildTime(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_buildTime(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5736,7 +5737,7 @@ func (ec *executionContext) _Building_buildTime(ctx context.Context, field graph
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Building_buildTimeFactor(ctx context.Context, field graphql.CollectedField, obj *models.Building) (ret graphql.Marshaler) {
+func (ec *executionContext) _Building_buildTimeFactor(ctx context.Context, field graphql.CollectedField, obj *twmodel.Building) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5771,7 +5772,7 @@ func (ec *executionContext) _Building_buildTimeFactor(ctx context.Context, field
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_main(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_main(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5801,12 +5802,12 @@ func (ec *executionContext) _BuildingConfig_main(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_barracks(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_barracks(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5836,12 +5837,12 @@ func (ec *executionContext) _BuildingConfig_barracks(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_stable(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_stable(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5871,12 +5872,12 @@ func (ec *executionContext) _BuildingConfig_stable(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_garage(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_garage(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5906,12 +5907,12 @@ func (ec *executionContext) _BuildingConfig_garage(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_watchtower(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_watchtower(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5941,12 +5942,12 @@ func (ec *executionContext) _BuildingConfig_watchtower(ctx context.Context, fiel
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_snob(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_snob(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -5976,12 +5977,12 @@ func (ec *executionContext) _BuildingConfig_snob(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_smith(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_smith(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6011,12 +6012,12 @@ func (ec *executionContext) _BuildingConfig_smith(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_place(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_place(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6046,12 +6047,12 @@ func (ec *executionContext) _BuildingConfig_place(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_statue(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_statue(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6081,12 +6082,12 @@ func (ec *executionContext) _BuildingConfig_statue(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_market(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_market(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6116,12 +6117,12 @@ func (ec *executionContext) _BuildingConfig_market(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_wood(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_wood(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6151,12 +6152,12 @@ func (ec *executionContext) _BuildingConfig_wood(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_stone(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_stone(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6186,12 +6187,12 @@ func (ec *executionContext) _BuildingConfig_stone(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_iron(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_iron(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6221,12 +6222,12 @@ func (ec *executionContext) _BuildingConfig_iron(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_farm(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_farm(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6256,12 +6257,12 @@ func (ec *executionContext) _BuildingConfig_farm(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_storage(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_storage(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6291,12 +6292,12 @@ func (ec *executionContext) _BuildingConfig_storage(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_hide(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_hide(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6326,12 +6327,12 @@ func (ec *executionContext) _BuildingConfig_hide(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _BuildingConfig_wall(ctx context.Context, field graphql.CollectedField, obj *models.BuildingConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _BuildingConfig_wall(ctx context.Context, field graphql.CollectedField, obj *twmodel.BuildingConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6361,7 +6362,7 @@ func (ec *executionContext) _BuildingConfig_wall(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Building)
+	res := resTmp.(twmodel.Building)
 	fc.Result = res
 	return ec.marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx, field.Selections, res)
 }
@@ -6428,12 +6429,12 @@ func (ec *executionContext) _DailyPlayerStats_items(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.DailyPlayerStats)
+	res := resTmp.([]*twmodel.DailyPlayerStats)
 	fc.Result = res
 	return ec.marshalODailyPlayerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyPlayerStatsᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_player(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_player(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6460,12 +6461,12 @@ func (ec *executionContext) _DailyPlayerStatsRecord_player(ctx context.Context, 
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Player)
+	res := resTmp.(*twmodel.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_villages(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_villages(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6500,7 +6501,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_villages(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_points(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_points(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6535,7 +6536,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_points(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_rank(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_rank(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6570,7 +6571,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_rank(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6605,7 +6606,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_rankAtt(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6640,7 +6641,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_scoreAtt(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6675,7 +6676,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_rankDef(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6710,7 +6711,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_scoreDef(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_rankSup(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_rankSup(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6745,7 +6746,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_rankSup(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_scoreSup(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_scoreSup(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6780,7 +6781,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_scoreSup(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6815,7 +6816,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_rankTotal(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6850,7 +6851,7 @@ func (ec *executionContext) _DailyPlayerStatsRecord_scoreTotal(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyPlayerStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.DailyPlayerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyPlayerStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyPlayerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6947,12 +6948,12 @@ func (ec *executionContext) _DailyTribeStats_items(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.DailyTribeStats)
+	res := resTmp.([]*twmodel.DailyTribeStats)
 	fc.Result = res
 	return ec.marshalODailyTribeStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyTribeStatsᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_tribe(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_tribe(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -6979,12 +6980,12 @@ func (ec *executionContext) _DailyTribeStatsRecord_tribe(ctx context.Context, fi
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_members(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_members(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7019,7 +7020,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_members(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_villages(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_villages(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7054,7 +7055,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_villages(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_points(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_points(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7089,7 +7090,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_points(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_allPoints(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_allPoints(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7124,7 +7125,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_allPoints(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_rank(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_rank(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7159,7 +7160,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_rank(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7194,7 +7195,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_rankAtt(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7229,7 +7230,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_scoreAtt(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7264,7 +7265,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_rankDef(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7299,7 +7300,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_scoreDef(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7334,7 +7335,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_rankTotal(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7369,7 +7370,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_scoreTotal(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_dominance(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_dominance(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7404,7 +7405,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_dominance(ctx context.Context
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _DailyTribeStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.DailyTribeStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _DailyTribeStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *twmodel.DailyTribeStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7439,7 +7440,7 @@ func (ec *executionContext) _DailyTribeStatsRecord_createDate(ctx context.Contex
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Ennoblement_village(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
+func (ec *executionContext) _Ennoblement_village(ctx context.Context, field graphql.CollectedField, obj *twmodel.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7466,12 +7467,12 @@ func (ec *executionContext) _Ennoblement_village(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Village)
+	res := resTmp.(*twmodel.Village)
 	fc.Result = res
 	return ec.marshalOVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Ennoblement_newOwner(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
+func (ec *executionContext) _Ennoblement_newOwner(ctx context.Context, field graphql.CollectedField, obj *twmodel.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7498,12 +7499,12 @@ func (ec *executionContext) _Ennoblement_newOwner(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Player)
+	res := resTmp.(*twmodel.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Ennoblement_newOwnerTribe(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
+func (ec *executionContext) _Ennoblement_newOwnerTribe(ctx context.Context, field graphql.CollectedField, obj *twmodel.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7530,12 +7531,12 @@ func (ec *executionContext) _Ennoblement_newOwnerTribe(ctx context.Context, fiel
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Ennoblement_oldOwner(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
+func (ec *executionContext) _Ennoblement_oldOwner(ctx context.Context, field graphql.CollectedField, obj *twmodel.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7562,12 +7563,12 @@ func (ec *executionContext) _Ennoblement_oldOwner(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Player)
+	res := resTmp.(*twmodel.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Ennoblement_oldOwnerTribe(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
+func (ec *executionContext) _Ennoblement_oldOwnerTribe(ctx context.Context, field graphql.CollectedField, obj *twmodel.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7594,12 +7595,12 @@ func (ec *executionContext) _Ennoblement_oldOwnerTribe(ctx context.Context, fiel
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Ennoblement_ennobledAt(ctx context.Context, field graphql.CollectedField, obj *models.Ennoblement) (ret graphql.Marshaler) {
+func (ec *executionContext) _Ennoblement_ennobledAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Ennoblement) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7661,7 +7662,7 @@ func (ec *executionContext) _EnnoblementList_items(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.Ennoblement)
+	res := resTmp.([]*twmodel.Ennoblement)
 	fc.Result = res
 	return ec.marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementᚄ(ctx, field.Selections, res)
 }
@@ -7701,7 +7702,7 @@ func (ec *executionContext) _EnnoblementList_total(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundPlayer_server(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundPlayer_server(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundPlayer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7736,7 +7737,7 @@ func (ec *executionContext) _FoundPlayer_server(ctx context.Context, field graph
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundPlayer_id(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundPlayer_id(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundPlayer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7771,7 +7772,7 @@ func (ec *executionContext) _FoundPlayer_id(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundPlayer_name(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundPlayer_name(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundPlayer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7806,7 +7807,7 @@ func (ec *executionContext) _FoundPlayer_name(ctx context.Context, field graphql
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundPlayer_bestRank(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundPlayer_bestRank(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundPlayer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7841,7 +7842,7 @@ func (ec *executionContext) _FoundPlayer_bestRank(ctx context.Context, field gra
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundPlayer_mostPoints(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundPlayer_mostPoints(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundPlayer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7876,7 +7877,7 @@ func (ec *executionContext) _FoundPlayer_mostPoints(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundPlayer_mostVillages(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundPlayer_mostVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundPlayer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7911,7 +7912,7 @@ func (ec *executionContext) _FoundPlayer_mostVillages(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundPlayer_tribeID(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundPlayer_tribeID(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundPlayer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7946,7 +7947,7 @@ func (ec *executionContext) _FoundPlayer_tribeID(ctx context.Context, field grap
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundPlayer_tribeTag(ctx context.Context, field graphql.CollectedField, obj *models.FoundPlayer) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundPlayer_tribeTag(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundPlayer) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8008,7 +8009,7 @@ func (ec *executionContext) _FoundPlayerList_items(ctx context.Context, field gr
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.FoundPlayer)
+	res := resTmp.([]*twmodel.FoundPlayer)
 	fc.Result = res
 	return ec.marshalOFoundPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayerᚄ(ctx, field.Selections, res)
 }
@@ -8048,7 +8049,7 @@ func (ec *executionContext) _FoundPlayerList_total(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundTribe_server(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundTribe_server(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundTribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8083,7 +8084,7 @@ func (ec *executionContext) _FoundTribe_server(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundTribe_id(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundTribe_id(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundTribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8118,7 +8119,7 @@ func (ec *executionContext) _FoundTribe_id(ctx context.Context, field graphql.Co
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundTribe_tag(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundTribe_tag(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundTribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8153,7 +8154,7 @@ func (ec *executionContext) _FoundTribe_tag(ctx context.Context, field graphql.C
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundTribe_name(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundTribe_name(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundTribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8188,7 +8189,7 @@ func (ec *executionContext) _FoundTribe_name(ctx context.Context, field graphql.
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundTribe_bestRank(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundTribe_bestRank(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundTribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8223,7 +8224,7 @@ func (ec *executionContext) _FoundTribe_bestRank(ctx context.Context, field grap
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundTribe_mostPoints(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundTribe_mostPoints(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundTribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8258,7 +8259,7 @@ func (ec *executionContext) _FoundTribe_mostPoints(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FoundTribe_mostVillages(ctx context.Context, field graphql.CollectedField, obj *models.FoundTribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _FoundTribe_mostVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.FoundTribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8320,7 +8321,7 @@ func (ec *executionContext) _FoundTribeList_items(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.FoundTribe)
+	res := resTmp.([]*twmodel.FoundTribe)
 	fc.Result = res
 	return ec.marshalOFoundTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribeᚄ(ctx, field.Selections, res)
 }
@@ -8360,7 +8361,7 @@ func (ec *executionContext) _FoundTribeList_total(ctx context.Context, field gra
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_id(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_id(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8395,7 +8396,7 @@ func (ec *executionContext) _Player_id(ctx context.Context, field graphql.Collec
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_name(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_name(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8430,7 +8431,7 @@ func (ec *executionContext) _Player_name(ctx context.Context, field graphql.Coll
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_totalVillages(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_totalVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8465,7 +8466,7 @@ func (ec *executionContext) _Player_totalVillages(ctx context.Context, field gra
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_points(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_points(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8500,7 +8501,7 @@ func (ec *executionContext) _Player_points(ctx context.Context, field graphql.Co
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_rank(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_rank(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8535,7 +8536,7 @@ func (ec *executionContext) _Player_rank(ctx context.Context, field graphql.Coll
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_exists(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_exists(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8570,7 +8571,7 @@ func (ec *executionContext) _Player_exists(ctx context.Context, field graphql.Co
 	return ec.marshalNBoolean2ᚖbool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_rankAtt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_rankAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8605,7 +8606,7 @@ func (ec *executionContext) _Player_rankAtt(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8640,7 +8641,7 @@ func (ec *executionContext) _Player_scoreAtt(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_rankDef(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_rankDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8675,7 +8676,7 @@ func (ec *executionContext) _Player_rankDef(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_scoreDef(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_scoreDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8710,7 +8711,7 @@ func (ec *executionContext) _Player_scoreDef(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_rankSup(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_rankSup(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8745,7 +8746,7 @@ func (ec *executionContext) _Player_rankSup(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_scoreSup(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_scoreSup(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8780,7 +8781,7 @@ func (ec *executionContext) _Player_scoreSup(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_rankTotal(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_rankTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8815,7 +8816,7 @@ func (ec *executionContext) _Player_rankTotal(ctx context.Context, field graphql
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8850,7 +8851,7 @@ func (ec *executionContext) _Player_scoreTotal(ctx context.Context, field graphq
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_dailyGrowth(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_dailyGrowth(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8885,7 +8886,7 @@ func (ec *executionContext) _Player_dailyGrowth(ctx context.Context, field graph
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_bestRank(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_bestRank(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8920,7 +8921,7 @@ func (ec *executionContext) _Player_bestRank(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_bestRankAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_bestRankAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8955,7 +8956,7 @@ func (ec *executionContext) _Player_bestRankAt(ctx context.Context, field graphq
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_mostPoints(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_mostPoints(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -8990,7 +8991,7 @@ func (ec *executionContext) _Player_mostPoints(ctx context.Context, field graphq
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_mostPointsAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_mostPointsAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9025,7 +9026,7 @@ func (ec *executionContext) _Player_mostPointsAt(ctx context.Context, field grap
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_mostVillages(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_mostVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9060,7 +9061,7 @@ func (ec *executionContext) _Player_mostVillages(ctx context.Context, field grap
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_mostVillagesAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_mostVillagesAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9095,7 +9096,7 @@ func (ec *executionContext) _Player_mostVillagesAt(ctx context.Context, field gr
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_joinedAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_joinedAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9130,7 +9131,7 @@ func (ec *executionContext) _Player_joinedAt(ctx context.Context, field graphql.
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_lastActivityAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_lastActivityAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9165,7 +9166,7 @@ func (ec *executionContext) _Player_lastActivityAt(ctx context.Context, field gr
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_deletedAt(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_deletedAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9197,7 +9198,7 @@ func (ec *executionContext) _Player_deletedAt(ctx context.Context, field graphql
 	return ec.marshalOTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_tribe(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_tribe(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9224,12 +9225,12 @@ func (ec *executionContext) _Player_tribe(ctx context.Context, field graphql.Col
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_servers(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_servers(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9264,7 +9265,7 @@ func (ec *executionContext) _Player_servers(ctx context.Context, field graphql.C
 	return ec.marshalNString2ᚕstringᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Player_nameChanges(ctx context.Context, field graphql.CollectedField, obj *models.Player) (ret graphql.Marshaler) {
+func (ec *executionContext) _Player_nameChanges(ctx context.Context, field graphql.CollectedField, obj *twmodel.Player) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9294,7 +9295,7 @@ func (ec *executionContext) _Player_nameChanges(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*models.PlayerNameChange)
+	res := resTmp.([]*twmodel.PlayerNameChange)
 	fc.Result = res
 	return ec.marshalNPlayerNameChange2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerNameChangeᚄ(ctx, field.Selections, res)
 }
@@ -9361,12 +9362,12 @@ func (ec *executionContext) _PlayerHistory_items(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.PlayerHistory)
+	res := resTmp.([]*twmodel.PlayerHistory)
 	fc.Result = res
 	return ec.marshalOPlayerHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_player(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_player(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9393,12 +9394,12 @@ func (ec *executionContext) _PlayerHistoryRecord_player(ctx context.Context, fie
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Player)
+	res := resTmp.(*twmodel.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_totalVillages(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_totalVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9433,7 +9434,7 @@ func (ec *executionContext) _PlayerHistoryRecord_totalVillages(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_points(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_points(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9468,7 +9469,7 @@ func (ec *executionContext) _PlayerHistoryRecord_points(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_rank(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_rank(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9503,7 +9504,7 @@ func (ec *executionContext) _PlayerHistoryRecord_rank(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9538,7 +9539,7 @@ func (ec *executionContext) _PlayerHistoryRecord_rankAtt(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9573,7 +9574,7 @@ func (ec *executionContext) _PlayerHistoryRecord_scoreAtt(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9608,7 +9609,7 @@ func (ec *executionContext) _PlayerHistoryRecord_rankDef(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9643,7 +9644,7 @@ func (ec *executionContext) _PlayerHistoryRecord_scoreDef(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_rankSup(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_rankSup(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9678,7 +9679,7 @@ func (ec *executionContext) _PlayerHistoryRecord_rankSup(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_scoreSup(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_scoreSup(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9713,7 +9714,7 @@ func (ec *executionContext) _PlayerHistoryRecord_scoreSup(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9748,7 +9749,7 @@ func (ec *executionContext) _PlayerHistoryRecord_rankTotal(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9783,7 +9784,7 @@ func (ec *executionContext) _PlayerHistoryRecord_scoreTotal(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_tribe(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_tribe(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9810,12 +9811,12 @@ func (ec *executionContext) _PlayerHistoryRecord_tribe(ctx context.Context, fiel
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerHistoryRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.PlayerHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerHistoryRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9877,7 +9878,7 @@ func (ec *executionContext) _PlayerList_items(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.Player)
+	res := resTmp.([]*twmodel.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerᚄ(ctx, field.Selections, res)
 }
@@ -9917,7 +9918,7 @@ func (ec *executionContext) _PlayerList_total(ctx context.Context, field graphql
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerNameChange_oldName(ctx context.Context, field graphql.CollectedField, obj *models.PlayerNameChange) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerNameChange_oldName(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerNameChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9952,7 +9953,7 @@ func (ec *executionContext) _PlayerNameChange_oldName(ctx context.Context, field
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerNameChange_newName(ctx context.Context, field graphql.CollectedField, obj *models.PlayerNameChange) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerNameChange_newName(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerNameChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -9987,7 +9988,7 @@ func (ec *executionContext) _PlayerNameChange_newName(ctx context.Context, field
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _PlayerNameChange_changeDate(ctx context.Context, field graphql.CollectedField, obj *models.PlayerNameChange) (ret graphql.Marshaler) {
+func (ec *executionContext) _PlayerNameChange_changeDate(ctx context.Context, field graphql.CollectedField, obj *twmodel.PlayerNameChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -10047,7 +10048,7 @@ func (ec *executionContext) _Query_dailyPlayerStats(ctx context.Context, field g
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().DailyPlayerStats(rctx, args["server"].(string), args["filter"].(*models.DailyPlayerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().DailyPlayerStats(rctx, args["server"].(string), args["filter"].(*twmodel.DailyPlayerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10089,7 +10090,7 @@ func (ec *executionContext) _Query_dailyTribeStats(ctx context.Context, field gr
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().DailyTribeStats(rctx, args["server"].(string), args["filter"].(*models.DailyTribeStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().DailyTribeStats(rctx, args["server"].(string), args["filter"].(*twmodel.DailyTribeStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10131,7 +10132,7 @@ func (ec *executionContext) _Query_ennoblements(ctx context.Context, field graph
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Ennoblements(rctx, args["server"].(string), args["filter"].(*models.EnnoblementFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().Ennoblements(rctx, args["server"].(string), args["filter"].(*twmodel.EnnoblementFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10173,7 +10174,7 @@ func (ec *executionContext) _Query_players(ctx context.Context, field graphql.Co
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Players(rctx, args["server"].(string), args["filter"].(*models.PlayerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().Players(rctx, args["server"].(string), args["filter"].(*twmodel.PlayerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10224,7 +10225,7 @@ func (ec *executionContext) _Query_player(ctx context.Context, field graphql.Col
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Player)
+	res := resTmp.(*twmodel.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
@@ -10296,7 +10297,7 @@ func (ec *executionContext) _Query_playerHistory(ctx context.Context, field grap
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().PlayerHistory(rctx, args["server"].(string), args["filter"].(*models.PlayerHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().PlayerHistory(rctx, args["server"].(string), args["filter"].(*twmodel.PlayerHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10338,7 +10339,7 @@ func (ec *executionContext) _Query_servers(ctx context.Context, field graphql.Co
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Servers(rctx, args["filter"].(*models.ServerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().Servers(rctx, args["filter"].(*twmodel.ServerFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10389,7 +10390,7 @@ func (ec *executionContext) _Query_server(ctx context.Context, field graphql.Col
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Server)
+	res := resTmp.(*twmodel.Server)
 	fc.Result = res
 	return ec.marshalOServer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServer(ctx, field.Selections, res)
 }
@@ -10419,7 +10420,7 @@ func (ec *executionContext) _Query_serverStats(ctx context.Context, field graphq
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().ServerStats(rctx, args["server"].(string), args["filter"].(*models.ServerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().ServerStats(rctx, args["server"].(string), args["filter"].(*twmodel.ServerStatsFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10461,7 +10462,7 @@ func (ec *executionContext) _Query_tribes(ctx context.Context, field graphql.Col
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Tribes(rctx, args["server"].(string), args["filter"].(*models.TribeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().Tribes(rctx, args["server"].(string), args["filter"].(*twmodel.TribeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10512,7 +10513,7 @@ func (ec *executionContext) _Query_tribe(ctx context.Context, field graphql.Coll
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
@@ -10584,7 +10585,7 @@ func (ec *executionContext) _Query_tribeChanges(ctx context.Context, field graph
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().TribeChanges(rctx, args["server"].(string), args["filter"].(*models.TribeChangeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().TribeChanges(rctx, args["server"].(string), args["filter"].(*twmodel.TribeChangeFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10626,7 +10627,7 @@ func (ec *executionContext) _Query_tribeHistory(ctx context.Context, field graph
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().TribeHistory(rctx, args["server"].(string), args["filter"].(*models.TribeHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().TribeHistory(rctx, args["server"].(string), args["filter"].(*twmodel.TribeHistoryFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10668,7 +10669,7 @@ func (ec *executionContext) _Query_versions(ctx context.Context, field graphql.C
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Versions(rctx, args["filter"].(*models.VersionFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().Versions(rctx, args["filter"].(*twmodel.VersionFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10710,7 +10711,7 @@ func (ec *executionContext) _Query_version(ctx context.Context, field graphql.Co
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Version(rctx, args["code"].(models.VersionCode))
+		return ec.resolvers.Query().Version(rctx, args["code"].(twmodel.VersionCode))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10719,7 +10720,7 @@ func (ec *executionContext) _Query_version(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Version)
+	res := resTmp.(*twmodel.Version)
 	fc.Result = res
 	return ec.marshalOVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersion(ctx, field.Selections, res)
 }
@@ -10749,7 +10750,7 @@ func (ec *executionContext) _Query_villages(ctx context.Context, field graphql.C
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Villages(rctx, args["server"].(string), args["filter"].(*models.VillageFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
+		return ec.resolvers.Query().Villages(rctx, args["server"].(string), args["filter"].(*twmodel.VillageFilter), args["limit"].(*int), args["offset"].(*int), args["sort"].([]string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10800,7 +10801,7 @@ func (ec *executionContext) _Query_village(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Village)
+	res := resTmp.(*twmodel.Village)
 	fc.Result = res
 	return ec.marshalOVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx, field.Selections, res)
 }
@@ -10876,7 +10877,7 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	return ec.marshalO__Schema2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐSchema(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_key(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_key(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -10911,7 +10912,7 @@ func (ec *executionContext) _Server_key(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_status(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_status(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -10941,12 +10942,12 @@ func (ec *executionContext) _Server_status(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerStatus)
+	res := resTmp.(twmodel.ServerStatus)
 	fc.Result = res
 	return ec.marshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_numberOfPlayers(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_numberOfPlayers(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -10981,7 +10982,7 @@ func (ec *executionContext) _Server_numberOfPlayers(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_numberOfTribes(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_numberOfTribes(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11016,7 +11017,7 @@ func (ec *executionContext) _Server_numberOfTribes(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_numberOfVillages(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_numberOfVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11051,7 +11052,7 @@ func (ec *executionContext) _Server_numberOfVillages(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_version(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_version(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11078,12 +11079,12 @@ func (ec *executionContext) _Server_version(ctx context.Context, field graphql.C
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Version)
+	res := resTmp.(*twmodel.Version)
 	fc.Result = res
 	return ec.marshalOVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersion(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_config(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_config(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11113,12 +11114,12 @@ func (ec *executionContext) _Server_config(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfig)
+	res := resTmp.(twmodel.ServerConfig)
 	fc.Result = res
 	return ec.marshalNServerConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfig(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_unitConfig(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_unitConfig(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11148,12 +11149,12 @@ func (ec *executionContext) _Server_unitConfig(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.UnitConfig)
+	res := resTmp.(twmodel.UnitConfig)
 	fc.Result = res
 	return ec.marshalNUnitConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnitConfig(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_buildingConfig(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_buildingConfig(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11183,12 +11184,12 @@ func (ec *executionContext) _Server_buildingConfig(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.BuildingConfig)
+	res := resTmp.(twmodel.BuildingConfig)
 	fc.Result = res
 	return ec.marshalNBuildingConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuildingConfig(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_dataUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_dataUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11223,7 +11224,7 @@ func (ec *executionContext) _Server_dataUpdatedAt(ctx context.Context, field gra
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_historyUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_historyUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11258,7 +11259,7 @@ func (ec *executionContext) _Server_historyUpdatedAt(ctx context.Context, field 
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Server_statsUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Server) (ret graphql.Marshaler) {
+func (ec *executionContext) _Server_statsUpdatedAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Server) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11293,7 +11294,7 @@ func (ec *executionContext) _Server_statsUpdatedAt(ctx context.Context, field gr
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_speed(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_speed(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11328,7 +11329,7 @@ func (ec *executionContext) _ServerConfig_speed(ctx context.Context, field graph
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_unitSpeed(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_unitSpeed(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11363,7 +11364,7 @@ func (ec *executionContext) _ServerConfig_unitSpeed(ctx context.Context, field g
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_moral(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_moral(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11398,7 +11399,7 @@ func (ec *executionContext) _ServerConfig_moral(ctx context.Context, field graph
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_build(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_build(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11428,12 +11429,12 @@ func (ec *executionContext) _ServerConfig_build(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigBuild)
+	res := resTmp.(twmodel.ServerConfigBuild)
 	fc.Result = res
 	return ec.marshalNServerConfigBuild2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuild(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_misc(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_misc(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11463,12 +11464,12 @@ func (ec *executionContext) _ServerConfig_misc(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigMisc)
+	res := resTmp.(twmodel.ServerConfigMisc)
 	fc.Result = res
 	return ec.marshalNServerConfigMisc2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigMisc(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_commands(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_commands(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11498,12 +11499,12 @@ func (ec *executionContext) _ServerConfig_commands(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigCommands)
+	res := resTmp.(twmodel.ServerConfigCommands)
 	fc.Result = res
 	return ec.marshalNServerConfigCommands2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCommands(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_newbie(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_newbie(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11533,12 +11534,12 @@ func (ec *executionContext) _ServerConfig_newbie(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigNewbie)
+	res := resTmp.(twmodel.ServerConfigNewbie)
 	fc.Result = res
 	return ec.marshalNServerConfigNewbie2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNewbie(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_game(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_game(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11568,12 +11569,12 @@ func (ec *executionContext) _ServerConfig_game(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigGame)
+	res := resTmp.(twmodel.ServerConfigGame)
 	fc.Result = res
 	return ec.marshalNServerConfigGame2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigGame(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_buildings(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_buildings(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11603,12 +11604,12 @@ func (ec *executionContext) _ServerConfig_buildings(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigBuildings)
+	res := resTmp.(twmodel.ServerConfigBuildings)
 	fc.Result = res
 	return ec.marshalNServerConfigBuildings2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuildings(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_snob(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_snob(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11638,12 +11639,12 @@ func (ec *executionContext) _ServerConfig_snob(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigSnob)
+	res := resTmp.(twmodel.ServerConfigSnob)
 	fc.Result = res
 	return ec.marshalNServerConfigSnob2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSnob(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_ally(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_ally(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11673,12 +11674,12 @@ func (ec *executionContext) _ServerConfig_ally(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigAlly)
+	res := resTmp.(twmodel.ServerConfigAlly)
 	fc.Result = res
 	return ec.marshalNServerConfigAlly2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigAlly(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_coord(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_coord(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11708,12 +11709,12 @@ func (ec *executionContext) _ServerConfig_coord(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigCoord)
+	res := resTmp.(twmodel.ServerConfigCoord)
 	fc.Result = res
 	return ec.marshalNServerConfigCoord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCoord(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_sitter(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_sitter(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11743,12 +11744,12 @@ func (ec *executionContext) _ServerConfig_sitter(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigSitter)
+	res := resTmp.(twmodel.ServerConfigSitter)
 	fc.Result = res
 	return ec.marshalNServerConfigSitter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSitter(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_sleep(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_sleep(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11778,12 +11779,12 @@ func (ec *executionContext) _ServerConfig_sleep(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigSleep)
+	res := resTmp.(twmodel.ServerConfigSleep)
 	fc.Result = res
 	return ec.marshalNServerConfigSleep2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSleep(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_night(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_night(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11813,12 +11814,12 @@ func (ec *executionContext) _ServerConfig_night(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigNight)
+	res := resTmp.(twmodel.ServerConfigNight)
 	fc.Result = res
 	return ec.marshalNServerConfigNight2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNight(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfig_win(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfig_win(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11848,12 +11849,12 @@ func (ec *executionContext) _ServerConfig_win(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.ServerConfigWin)
+	res := resTmp.(twmodel.ServerConfigWin)
 	fc.Result = res
 	return ec.marshalNServerConfigWin2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigWin(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_noHarm(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_noHarm(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11888,7 +11889,7 @@ func (ec *executionContext) _ServerConfigAlly_noHarm(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_noOtherSupport(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_noOtherSupport(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11923,7 +11924,7 @@ func (ec *executionContext) _ServerConfigAlly_noOtherSupport(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_allytimeSupport(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_allytimeSupport(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11958,7 +11959,7 @@ func (ec *executionContext) _ServerConfigAlly_allytimeSupport(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_noLeave(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_noLeave(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -11993,7 +11994,7 @@ func (ec *executionContext) _ServerConfigAlly_noLeave(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_noJoin(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_noJoin(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12028,7 +12029,7 @@ func (ec *executionContext) _ServerConfigAlly_noJoin(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_limit(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_limit(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12063,7 +12064,7 @@ func (ec *executionContext) _ServerConfigAlly_limit(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_fixedAllies(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_fixedAllies(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12098,7 +12099,7 @@ func (ec *executionContext) _ServerConfigAlly_fixedAllies(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_pointsMemberCount(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_pointsMemberCount(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12133,7 +12134,7 @@ func (ec *executionContext) _ServerConfigAlly_pointsMemberCount(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_warsMemberRequirement(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_warsMemberRequirement(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12168,7 +12169,7 @@ func (ec *executionContext) _ServerConfigAlly_warsMemberRequirement(ctx context.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_warsPointsRequirement(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_warsPointsRequirement(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12203,7 +12204,7 @@ func (ec *executionContext) _ServerConfigAlly_warsPointsRequirement(ctx context.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_warsAutoacceptDays(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_warsAutoacceptDays(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12238,7 +12239,7 @@ func (ec *executionContext) _ServerConfigAlly_warsAutoacceptDays(ctx context.Con
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_levels(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_levels(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12273,7 +12274,7 @@ func (ec *executionContext) _ServerConfigAlly_levels(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigAlly_xpRequirements(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigAlly) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigAlly_xpRequirements(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigAlly) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12308,7 +12309,7 @@ func (ec *executionContext) _ServerConfigAlly_xpRequirements(ctx context.Context
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuild_destroy(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuild) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuild_destroy(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuild) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12343,7 +12344,7 @@ func (ec *executionContext) _ServerConfigBuild_destroy(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customMain(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customMain(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12378,7 +12379,7 @@ func (ec *executionContext) _ServerConfigBuildings_customMain(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customFarm(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customFarm(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12413,7 +12414,7 @@ func (ec *executionContext) _ServerConfigBuildings_customFarm(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customStorage(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customStorage(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12448,7 +12449,7 @@ func (ec *executionContext) _ServerConfigBuildings_customStorage(ctx context.Con
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customPlace(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customPlace(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12483,7 +12484,7 @@ func (ec *executionContext) _ServerConfigBuildings_customPlace(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customBarracks(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customBarracks(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12518,7 +12519,7 @@ func (ec *executionContext) _ServerConfigBuildings_customBarracks(ctx context.Co
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customChurch(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customChurch(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12553,7 +12554,7 @@ func (ec *executionContext) _ServerConfigBuildings_customChurch(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customSmith(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customSmith(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12588,7 +12589,7 @@ func (ec *executionContext) _ServerConfigBuildings_customSmith(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customWood(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customWood(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12623,7 +12624,7 @@ func (ec *executionContext) _ServerConfigBuildings_customWood(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customStone(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customStone(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12658,7 +12659,7 @@ func (ec *executionContext) _ServerConfigBuildings_customStone(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customIron(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customIron(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12693,7 +12694,7 @@ func (ec *executionContext) _ServerConfigBuildings_customIron(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customMarket(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customMarket(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12728,7 +12729,7 @@ func (ec *executionContext) _ServerConfigBuildings_customMarket(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customStable(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customStable(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12763,7 +12764,7 @@ func (ec *executionContext) _ServerConfigBuildings_customStable(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customWall(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customWall(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12798,7 +12799,7 @@ func (ec *executionContext) _ServerConfigBuildings_customWall(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customGarage(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customGarage(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12833,7 +12834,7 @@ func (ec *executionContext) _ServerConfigBuildings_customGarage(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customHide(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customHide(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12868,7 +12869,7 @@ func (ec *executionContext) _ServerConfigBuildings_customHide(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customSnob(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customSnob(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12903,7 +12904,7 @@ func (ec *executionContext) _ServerConfigBuildings_customSnob(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customStatue(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customStatue(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12938,7 +12939,7 @@ func (ec *executionContext) _ServerConfigBuildings_customStatue(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigBuildings_customWatchtower(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigBuildings) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigBuildings_customWatchtower(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigBuildings) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -12973,7 +12974,7 @@ func (ec *executionContext) _ServerConfigBuildings_customWatchtower(ctx context.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCommands_millisArrival(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCommands) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCommands_millisArrival(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCommands) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13008,7 +13009,7 @@ func (ec *executionContext) _ServerConfigCommands_millisArrival(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCommands_commandCancelTime(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCommands) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCommands_commandCancelTime(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCommands) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13043,7 +13044,7 @@ func (ec *executionContext) _ServerConfigCommands_commandCancelTime(ctx context.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_mapSize(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_mapSize(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13078,7 +13079,7 @@ func (ec *executionContext) _ServerConfigCoord_mapSize(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_func(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_func(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13113,7 +13114,7 @@ func (ec *executionContext) _ServerConfigCoord_func(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_emptyVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_emptyVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13148,7 +13149,7 @@ func (ec *executionContext) _ServerConfigCoord_emptyVillages(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_bonusVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_bonusVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13183,7 +13184,7 @@ func (ec *executionContext) _ServerConfigCoord_bonusVillages(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_bonusNew(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_bonusNew(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13218,7 +13219,7 @@ func (ec *executionContext) _ServerConfigCoord_bonusNew(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_inner(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_inner(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13253,7 +13254,7 @@ func (ec *executionContext) _ServerConfigCoord_inner(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_selectStart(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_selectStart(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13288,7 +13289,7 @@ func (ec *executionContext) _ServerConfigCoord_selectStart(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_villageMoveWait(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_villageMoveWait(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13323,7 +13324,7 @@ func (ec *executionContext) _ServerConfigCoord_villageMoveWait(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_nobleRestart(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_nobleRestart(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13358,7 +13359,7 @@ func (ec *executionContext) _ServerConfigCoord_nobleRestart(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigCoord_startVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigCoord) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigCoord_startVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigCoord) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13393,7 +13394,7 @@ func (ec *executionContext) _ServerConfigCoord_startVillages(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_buildtimeFormula(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_buildtimeFormula(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13428,7 +13429,7 @@ func (ec *executionContext) _ServerConfigGame_buildtimeFormula(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_knight(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_knight(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13463,7 +13464,7 @@ func (ec *executionContext) _ServerConfigGame_knight(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_knightNewItems(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_knightNewItems(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13498,7 +13499,7 @@ func (ec *executionContext) _ServerConfigGame_knightNewItems(ctx context.Context
 	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_archer(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_archer(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13533,7 +13534,7 @@ func (ec *executionContext) _ServerConfigGame_archer(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_tech(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_tech(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13568,7 +13569,7 @@ func (ec *executionContext) _ServerConfigGame_tech(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_farmLimit(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_farmLimit(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13603,7 +13604,7 @@ func (ec *executionContext) _ServerConfigGame_farmLimit(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_church(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_church(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13638,7 +13639,7 @@ func (ec *executionContext) _ServerConfigGame_church(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_watchtower(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_watchtower(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13673,7 +13674,7 @@ func (ec *executionContext) _ServerConfigGame_watchtower(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_stronghold(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_stronghold(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13708,7 +13709,7 @@ func (ec *executionContext) _ServerConfigGame_stronghold(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_fakeLimit(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_fakeLimit(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13743,7 +13744,7 @@ func (ec *executionContext) _ServerConfigGame_fakeLimit(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_barbarianRise(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_barbarianRise(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13778,7 +13779,7 @@ func (ec *executionContext) _ServerConfigGame_barbarianRise(ctx context.Context,
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_barbarianShrink(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_barbarianShrink(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13813,7 +13814,7 @@ func (ec *executionContext) _ServerConfigGame_barbarianShrink(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_barbarianMaxPoints(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_barbarianMaxPoints(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13848,7 +13849,7 @@ func (ec *executionContext) _ServerConfigGame_barbarianMaxPoints(ctx context.Con
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_hauls(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_hauls(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13883,7 +13884,7 @@ func (ec *executionContext) _ServerConfigGame_hauls(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_haulsBase(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_haulsBase(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13918,7 +13919,7 @@ func (ec *executionContext) _ServerConfigGame_haulsBase(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_haulsMax(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_haulsMax(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13953,7 +13954,7 @@ func (ec *executionContext) _ServerConfigGame_haulsMax(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_baseProduction(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_baseProduction(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -13988,7 +13989,7 @@ func (ec *executionContext) _ServerConfigGame_baseProduction(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_event(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_event(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14023,7 +14024,7 @@ func (ec *executionContext) _ServerConfigGame_event(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigGame_suppressEvents(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigGame) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigGame_suppressEvents(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14058,7 +14059,7 @@ func (ec *executionContext) _ServerConfigGame_suppressEvents(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigMisc_killRanking(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigMisc) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigMisc_killRanking(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigMisc) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14093,7 +14094,7 @@ func (ec *executionContext) _ServerConfigMisc_killRanking(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigMisc_tutorial(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigMisc) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigMisc_tutorial(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigMisc) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14128,7 +14129,7 @@ func (ec *executionContext) _ServerConfigMisc_tutorial(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigMisc_tradeCancelTime(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigMisc) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigMisc_tradeCancelTime(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigMisc) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14163,7 +14164,7 @@ func (ec *executionContext) _ServerConfigMisc_tradeCancelTime(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigNewbie_days(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNewbie) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigNewbie_days(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigNewbie) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14198,7 +14199,7 @@ func (ec *executionContext) _ServerConfigNewbie_days(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigNewbie_ratioDays(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNewbie) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigNewbie_ratioDays(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigNewbie) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14233,7 +14234,7 @@ func (ec *executionContext) _ServerConfigNewbie_ratioDays(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigNewbie_ratio(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNewbie) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigNewbie_ratio(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigNewbie) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14268,7 +14269,7 @@ func (ec *executionContext) _ServerConfigNewbie_ratio(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigNewbie_removeNewbieVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNewbie) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigNewbie_removeNewbieVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigNewbie) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14303,7 +14304,7 @@ func (ec *executionContext) _ServerConfigNewbie_removeNewbieVillages(ctx context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigNight_active(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNight) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigNight_active(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigNight) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14338,7 +14339,7 @@ func (ec *executionContext) _ServerConfigNight_active(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigNight_startHour(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNight) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigNight_startHour(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigNight) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14373,7 +14374,7 @@ func (ec *executionContext) _ServerConfigNight_startHour(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigNight_endHour(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNight) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigNight_endHour(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigNight) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14408,7 +14409,7 @@ func (ec *executionContext) _ServerConfigNight_endHour(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigNight_defFactor(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigNight) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigNight_defFactor(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigNight) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14443,7 +14444,7 @@ func (ec *executionContext) _ServerConfigNight_defFactor(ctx context.Context, fi
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSitter_allow(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSitter) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSitter_allow(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSitter) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14478,7 +14479,7 @@ func (ec *executionContext) _ServerConfigSitter_allow(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSleep_active(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSleep_active(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSleep) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14513,7 +14514,7 @@ func (ec *executionContext) _ServerConfigSleep_active(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSleep_delay(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSleep_delay(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSleep) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14548,7 +14549,7 @@ func (ec *executionContext) _ServerConfigSleep_delay(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSleep_min(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSleep_min(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSleep) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14583,7 +14584,7 @@ func (ec *executionContext) _ServerConfigSleep_min(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSleep_max(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSleep_max(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSleep) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14618,7 +14619,7 @@ func (ec *executionContext) _ServerConfigSleep_max(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSleep_minAwake(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSleep_minAwake(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSleep) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14653,7 +14654,7 @@ func (ec *executionContext) _ServerConfigSleep_minAwake(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSleep_maxAwake(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSleep_maxAwake(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSleep) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14688,7 +14689,7 @@ func (ec *executionContext) _ServerConfigSleep_maxAwake(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSleep_warnTime(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSleep) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSleep_warnTime(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSleep) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14723,7 +14724,7 @@ func (ec *executionContext) _ServerConfigSleep_warnTime(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_gold(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_gold(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14758,7 +14759,7 @@ func (ec *executionContext) _ServerConfigSnob_gold(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_cheapRebuild(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_cheapRebuild(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14793,7 +14794,7 @@ func (ec *executionContext) _ServerConfigSnob_cheapRebuild(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_rise(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_rise(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14828,7 +14829,7 @@ func (ec *executionContext) _ServerConfigSnob_rise(ctx context.Context, field gr
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_maxDist(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_maxDist(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14863,7 +14864,7 @@ func (ec *executionContext) _ServerConfigSnob_maxDist(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_factor(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_factor(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14898,7 +14899,7 @@ func (ec *executionContext) _ServerConfigSnob_factor(ctx context.Context, field 
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_coinWood(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_coinWood(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14933,7 +14934,7 @@ func (ec *executionContext) _ServerConfigSnob_coinWood(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_coinStone(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_coinStone(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -14968,7 +14969,7 @@ func (ec *executionContext) _ServerConfigSnob_coinStone(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_coinIron(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_coinIron(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15003,7 +15004,7 @@ func (ec *executionContext) _ServerConfigSnob_coinIron(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigSnob_noBarbConquer(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigSnob) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigSnob_noBarbConquer(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigSnob) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15038,7 +15039,7 @@ func (ec *executionContext) _ServerConfigSnob_noBarbConquer(ctx context.Context,
 	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerConfigWin_check(ctx context.Context, field graphql.CollectedField, obj *models.ServerConfigWin) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerConfigWin_check(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigWin) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15100,7 +15101,7 @@ func (ec *executionContext) _ServerList_items(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.Server)
+	res := resTmp.([]*twmodel.Server)
 	fc.Result = res
 	return ec.marshalOServer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerᚄ(ctx, field.Selections, res)
 }
@@ -15167,7 +15168,7 @@ func (ec *executionContext) _ServerStats_items(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.ServerStats)
+	res := resTmp.([]*twmodel.ServerStats)
 	fc.Result = res
 	return ec.marshalOServerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsᚄ(ctx, field.Selections, res)
 }
@@ -15207,7 +15208,7 @@ func (ec *executionContext) _ServerStats_total(ctx context.Context, field graphq
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_activePlayers(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_activePlayers(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15242,7 +15243,7 @@ func (ec *executionContext) _ServerStatsRecord_activePlayers(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_inactivePlayers(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_inactivePlayers(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15277,7 +15278,7 @@ func (ec *executionContext) _ServerStatsRecord_inactivePlayers(ctx context.Conte
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_players(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_players(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15312,7 +15313,7 @@ func (ec *executionContext) _ServerStatsRecord_players(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_activeTribes(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_activeTribes(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15347,7 +15348,7 @@ func (ec *executionContext) _ServerStatsRecord_activeTribes(ctx context.Context,
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_inactiveTribes(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_inactiveTribes(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15382,7 +15383,7 @@ func (ec *executionContext) _ServerStatsRecord_inactiveTribes(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_tribes(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_tribes(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15417,7 +15418,7 @@ func (ec *executionContext) _ServerStatsRecord_tribes(ctx context.Context, field
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_bonusVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_bonusVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15452,7 +15453,7 @@ func (ec *executionContext) _ServerStatsRecord_bonusVillages(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_barbarianVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_barbarianVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15487,7 +15488,7 @@ func (ec *executionContext) _ServerStatsRecord_barbarianVillages(ctx context.Con
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_playerVillages(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_playerVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15522,7 +15523,7 @@ func (ec *executionContext) _ServerStatsRecord_playerVillages(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_villages(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_villages(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15557,7 +15558,7 @@ func (ec *executionContext) _ServerStatsRecord_villages(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ServerStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.ServerStats) (ret graphql.Marshaler) {
+func (ec *executionContext) _ServerStatsRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerStats) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15592,7 +15593,7 @@ func (ec *executionContext) _ServerStatsRecord_createDate(ctx context.Context, f
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_id(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_id(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15627,7 +15628,7 @@ func (ec *executionContext) _Tribe_id(ctx context.Context, field graphql.Collect
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_name(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_name(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15662,7 +15663,7 @@ func (ec *executionContext) _Tribe_name(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_tag(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_tag(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15697,7 +15698,7 @@ func (ec *executionContext) _Tribe_tag(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_totalMembers(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_totalMembers(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15732,7 +15733,7 @@ func (ec *executionContext) _Tribe_totalMembers(ctx context.Context, field graph
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_totalVillages(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_totalVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15767,7 +15768,7 @@ func (ec *executionContext) _Tribe_totalVillages(ctx context.Context, field grap
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_points(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_points(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15802,7 +15803,7 @@ func (ec *executionContext) _Tribe_points(ctx context.Context, field graphql.Col
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_allPoints(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_allPoints(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15837,7 +15838,7 @@ func (ec *executionContext) _Tribe_allPoints(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_rank(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_rank(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15872,7 +15873,7 @@ func (ec *executionContext) _Tribe_rank(ctx context.Context, field graphql.Colle
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_exists(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_exists(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15907,7 +15908,7 @@ func (ec *executionContext) _Tribe_exists(ctx context.Context, field graphql.Col
 	return ec.marshalNBoolean2ᚖbool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_rankAtt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_rankAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15942,7 +15943,7 @@ func (ec *executionContext) _Tribe_rankAtt(ctx context.Context, field graphql.Co
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -15977,7 +15978,7 @@ func (ec *executionContext) _Tribe_scoreAtt(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_rankDef(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_rankDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16012,7 +16013,7 @@ func (ec *executionContext) _Tribe_rankDef(ctx context.Context, field graphql.Co
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_scoreDef(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_scoreDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16047,7 +16048,7 @@ func (ec *executionContext) _Tribe_scoreDef(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_rankTotal(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_rankTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16082,7 +16083,7 @@ func (ec *executionContext) _Tribe_rankTotal(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16117,7 +16118,7 @@ func (ec *executionContext) _Tribe_scoreTotal(ctx context.Context, field graphql
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_dominance(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_dominance(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16152,7 +16153,7 @@ func (ec *executionContext) _Tribe_dominance(ctx context.Context, field graphql.
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_bestRank(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_bestRank(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16187,7 +16188,7 @@ func (ec *executionContext) _Tribe_bestRank(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_bestRankAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_bestRankAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16222,7 +16223,7 @@ func (ec *executionContext) _Tribe_bestRankAt(ctx context.Context, field graphql
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_mostPoints(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_mostPoints(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16257,7 +16258,7 @@ func (ec *executionContext) _Tribe_mostPoints(ctx context.Context, field graphql
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_mostPointsAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_mostPointsAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16292,7 +16293,7 @@ func (ec *executionContext) _Tribe_mostPointsAt(ctx context.Context, field graph
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_mostVillages(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_mostVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16327,7 +16328,7 @@ func (ec *executionContext) _Tribe_mostVillages(ctx context.Context, field graph
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_mostVillagesAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_mostVillagesAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16362,7 +16363,7 @@ func (ec *executionContext) _Tribe_mostVillagesAt(ctx context.Context, field gra
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_createdAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16397,7 +16398,7 @@ func (ec *executionContext) _Tribe_createdAt(ctx context.Context, field graphql.
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Tribe_deletedAt(ctx context.Context, field graphql.CollectedField, obj *models.Tribe) (ret graphql.Marshaler) {
+func (ec *executionContext) _Tribe_deletedAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.Tribe) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16429,7 +16430,7 @@ func (ec *executionContext) _Tribe_deletedAt(ctx context.Context, field graphql.
 	return ec.marshalOTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeChangeRecord_player(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeChangeRecord_player(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16456,12 +16457,12 @@ func (ec *executionContext) _TribeChangeRecord_player(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Player)
+	res := resTmp.(*twmodel.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeChangeRecord_oldTribe(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeChangeRecord_oldTribe(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16488,12 +16489,12 @@ func (ec *executionContext) _TribeChangeRecord_oldTribe(ctx context.Context, fie
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeChangeRecord_newTribe(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeChangeRecord_newTribe(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16520,12 +16521,12 @@ func (ec *executionContext) _TribeChangeRecord_newTribe(ctx context.Context, fie
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeChangeRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.TribeChange) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeChangeRecord_createdAt(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeChange) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16622,7 +16623,7 @@ func (ec *executionContext) _TribeChanges_items(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.TribeChange)
+	res := resTmp.([]*twmodel.TribeChange)
 	fc.Result = res
 	return ec.marshalOTribeChangeRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeᚄ(ctx, field.Selections, res)
 }
@@ -16689,12 +16690,12 @@ func (ec *executionContext) _TribeHistory_items(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.TribeHistory)
+	res := resTmp.([]*twmodel.TribeHistory)
 	fc.Result = res
 	return ec.marshalOTribeHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_tribe(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_tribe(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16721,12 +16722,12 @@ func (ec *executionContext) _TribeHistoryRecord_tribe(ctx context.Context, field
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Tribe)
+	res := resTmp.(*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_totalVillages(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_totalVillages(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16761,7 +16762,7 @@ func (ec *executionContext) _TribeHistoryRecord_totalVillages(ctx context.Contex
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_totalMembers(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_totalMembers(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16796,7 +16797,7 @@ func (ec *executionContext) _TribeHistoryRecord_totalMembers(ctx context.Context
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_points(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_points(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16831,7 +16832,7 @@ func (ec *executionContext) _TribeHistoryRecord_points(ctx context.Context, fiel
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_allPoints(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_allPoints(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16866,7 +16867,7 @@ func (ec *executionContext) _TribeHistoryRecord_allPoints(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_rank(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_rank(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16901,7 +16902,7 @@ func (ec *executionContext) _TribeHistoryRecord_rank(ctx context.Context, field 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_dominance(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_dominance(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16936,7 +16937,7 @@ func (ec *executionContext) _TribeHistoryRecord_dominance(ctx context.Context, f
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_rankAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -16971,7 +16972,7 @@ func (ec *executionContext) _TribeHistoryRecord_rankAtt(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_scoreAtt(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17006,7 +17007,7 @@ func (ec *executionContext) _TribeHistoryRecord_scoreAtt(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_rankDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17041,7 +17042,7 @@ func (ec *executionContext) _TribeHistoryRecord_rankDef(ctx context.Context, fie
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_scoreDef(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17076,7 +17077,7 @@ func (ec *executionContext) _TribeHistoryRecord_scoreDef(ctx context.Context, fi
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_rankTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17111,7 +17112,7 @@ func (ec *executionContext) _TribeHistoryRecord_rankTotal(ctx context.Context, f
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_scoreTotal(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17146,7 +17147,7 @@ func (ec *executionContext) _TribeHistoryRecord_scoreTotal(ctx context.Context, 
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TribeHistoryRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *models.TribeHistory) (ret graphql.Marshaler) {
+func (ec *executionContext) _TribeHistoryRecord_createDate(ctx context.Context, field graphql.CollectedField, obj *twmodel.TribeHistory) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17208,7 +17209,7 @@ func (ec *executionContext) _TribeList_items(ctx context.Context, field graphql.
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.Tribe)
+	res := resTmp.([]*twmodel.Tribe)
 	fc.Result = res
 	return ec.marshalOTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeᚄ(ctx, field.Selections, res)
 }
@@ -17248,7 +17249,7 @@ func (ec *executionContext) _TribeList_total(ctx context.Context, field graphql.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Unit_buildTime(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+func (ec *executionContext) _Unit_buildTime(ctx context.Context, field graphql.CollectedField, obj *twmodel.Unit) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17283,7 +17284,7 @@ func (ec *executionContext) _Unit_buildTime(ctx context.Context, field graphql.C
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Unit_pop(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+func (ec *executionContext) _Unit_pop(ctx context.Context, field graphql.CollectedField, obj *twmodel.Unit) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17318,7 +17319,7 @@ func (ec *executionContext) _Unit_pop(ctx context.Context, field graphql.Collect
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Unit_speed(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+func (ec *executionContext) _Unit_speed(ctx context.Context, field graphql.CollectedField, obj *twmodel.Unit) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17353,7 +17354,7 @@ func (ec *executionContext) _Unit_speed(ctx context.Context, field graphql.Colle
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Unit_attack(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+func (ec *executionContext) _Unit_attack(ctx context.Context, field graphql.CollectedField, obj *twmodel.Unit) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17388,7 +17389,7 @@ func (ec *executionContext) _Unit_attack(ctx context.Context, field graphql.Coll
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Unit_defense(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+func (ec *executionContext) _Unit_defense(ctx context.Context, field graphql.CollectedField, obj *twmodel.Unit) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17423,7 +17424,7 @@ func (ec *executionContext) _Unit_defense(ctx context.Context, field graphql.Col
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Unit_defenseCavalry(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+func (ec *executionContext) _Unit_defenseCavalry(ctx context.Context, field graphql.CollectedField, obj *twmodel.Unit) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17458,7 +17459,7 @@ func (ec *executionContext) _Unit_defenseCavalry(ctx context.Context, field grap
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Unit_defenseArcher(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+func (ec *executionContext) _Unit_defenseArcher(ctx context.Context, field graphql.CollectedField, obj *twmodel.Unit) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17493,7 +17494,7 @@ func (ec *executionContext) _Unit_defenseArcher(ctx context.Context, field graph
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Unit_carry(ctx context.Context, field graphql.CollectedField, obj *models.Unit) (ret graphql.Marshaler) {
+func (ec *executionContext) _Unit_carry(ctx context.Context, field graphql.CollectedField, obj *twmodel.Unit) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17528,7 +17529,7 @@ func (ec *executionContext) _Unit_carry(ctx context.Context, field graphql.Colle
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_spear(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_spear(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17558,12 +17559,12 @@ func (ec *executionContext) _UnitConfig_spear(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_sword(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_sword(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17593,12 +17594,12 @@ func (ec *executionContext) _UnitConfig_sword(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_axe(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_axe(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17628,12 +17629,12 @@ func (ec *executionContext) _UnitConfig_axe(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_archer(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_archer(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17663,12 +17664,12 @@ func (ec *executionContext) _UnitConfig_archer(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_spy(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_spy(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17698,12 +17699,12 @@ func (ec *executionContext) _UnitConfig_spy(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_light(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_light(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17733,12 +17734,12 @@ func (ec *executionContext) _UnitConfig_light(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_marcher(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_marcher(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17768,12 +17769,12 @@ func (ec *executionContext) _UnitConfig_marcher(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_heavy(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_heavy(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17803,12 +17804,12 @@ func (ec *executionContext) _UnitConfig_heavy(ctx context.Context, field graphql
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_ram(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_ram(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17838,12 +17839,12 @@ func (ec *executionContext) _UnitConfig_ram(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_catapult(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_catapult(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17873,12 +17874,12 @@ func (ec *executionContext) _UnitConfig_catapult(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_knight(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_knight(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17908,12 +17909,12 @@ func (ec *executionContext) _UnitConfig_knight(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_snob(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_snob(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17943,12 +17944,12 @@ func (ec *executionContext) _UnitConfig_snob(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _UnitConfig_militia(ctx context.Context, field graphql.CollectedField, obj *models.UnitConfig) (ret graphql.Marshaler) {
+func (ec *executionContext) _UnitConfig_militia(ctx context.Context, field graphql.CollectedField, obj *twmodel.UnitConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -17978,12 +17979,12 @@ func (ec *executionContext) _UnitConfig_militia(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.Unit)
+	res := resTmp.(twmodel.Unit)
 	fc.Result = res
 	return ec.marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Version_code(ctx context.Context, field graphql.CollectedField, obj *models.Version) (ret graphql.Marshaler) {
+func (ec *executionContext) _Version_code(ctx context.Context, field graphql.CollectedField, obj *twmodel.Version) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18013,12 +18014,12 @@ func (ec *executionContext) _Version_code(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(models.VersionCode)
+	res := resTmp.(twmodel.VersionCode)
 	fc.Result = res
 	return ec.marshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Version_name(ctx context.Context, field graphql.CollectedField, obj *models.Version) (ret graphql.Marshaler) {
+func (ec *executionContext) _Version_name(ctx context.Context, field graphql.CollectedField, obj *twmodel.Version) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18053,7 +18054,7 @@ func (ec *executionContext) _Version_name(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Version_host(ctx context.Context, field graphql.CollectedField, obj *models.Version) (ret graphql.Marshaler) {
+func (ec *executionContext) _Version_host(ctx context.Context, field graphql.CollectedField, obj *twmodel.Version) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18088,7 +18089,7 @@ func (ec *executionContext) _Version_host(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Version_timezone(ctx context.Context, field graphql.CollectedField, obj *models.Version) (ret graphql.Marshaler) {
+func (ec *executionContext) _Version_timezone(ctx context.Context, field graphql.CollectedField, obj *twmodel.Version) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18150,7 +18151,7 @@ func (ec *executionContext) _VersionList_items(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.Version)
+	res := resTmp.([]*twmodel.Version)
 	fc.Result = res
 	return ec.marshalOVersion2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionᚄ(ctx, field.Selections, res)
 }
@@ -18190,7 +18191,7 @@ func (ec *executionContext) _VersionList_total(ctx context.Context, field graphq
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Village_id(ctx context.Context, field graphql.CollectedField, obj *models.Village) (ret graphql.Marshaler) {
+func (ec *executionContext) _Village_id(ctx context.Context, field graphql.CollectedField, obj *twmodel.Village) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18225,7 +18226,7 @@ func (ec *executionContext) _Village_id(ctx context.Context, field graphql.Colle
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Village_name(ctx context.Context, field graphql.CollectedField, obj *models.Village) (ret graphql.Marshaler) {
+func (ec *executionContext) _Village_name(ctx context.Context, field graphql.CollectedField, obj *twmodel.Village) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18260,7 +18261,7 @@ func (ec *executionContext) _Village_name(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Village_points(ctx context.Context, field graphql.CollectedField, obj *models.Village) (ret graphql.Marshaler) {
+func (ec *executionContext) _Village_points(ctx context.Context, field graphql.CollectedField, obj *twmodel.Village) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18295,7 +18296,7 @@ func (ec *executionContext) _Village_points(ctx context.Context, field graphql.C
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Village_x(ctx context.Context, field graphql.CollectedField, obj *models.Village) (ret graphql.Marshaler) {
+func (ec *executionContext) _Village_x(ctx context.Context, field graphql.CollectedField, obj *twmodel.Village) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18330,7 +18331,7 @@ func (ec *executionContext) _Village_x(ctx context.Context, field graphql.Collec
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Village_y(ctx context.Context, field graphql.CollectedField, obj *models.Village) (ret graphql.Marshaler) {
+func (ec *executionContext) _Village_y(ctx context.Context, field graphql.CollectedField, obj *twmodel.Village) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18365,7 +18366,7 @@ func (ec *executionContext) _Village_y(ctx context.Context, field graphql.Collec
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Village_bonus(ctx context.Context, field graphql.CollectedField, obj *models.Village) (ret graphql.Marshaler) {
+func (ec *executionContext) _Village_bonus(ctx context.Context, field graphql.CollectedField, obj *twmodel.Village) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18400,7 +18401,7 @@ func (ec *executionContext) _Village_bonus(ctx context.Context, field graphql.Co
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Village_player(ctx context.Context, field graphql.CollectedField, obj *models.Village) (ret graphql.Marshaler) {
+func (ec *executionContext) _Village_player(ctx context.Context, field graphql.CollectedField, obj *twmodel.Village) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -18427,7 +18428,7 @@ func (ec *executionContext) _Village_player(ctx context.Context, field graphql.C
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*models.Player)
+	res := resTmp.(*twmodel.Player)
 	fc.Result = res
 	return ec.marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx, field.Selections, res)
 }
@@ -18459,7 +18460,7 @@ func (ec *executionContext) _VillageList_items(ctx context.Context, field graphq
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*models.Village)
+	res := resTmp.([]*twmodel.Village)
 	fc.Result = res
 	return ec.marshalOVillage2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillageᚄ(ctx, field.Selections, res)
 }
@@ -19586,8 +19587,8 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Context, obj interface{}) (models.DailyPlayerStatsFilter, error) {
-	var it models.DailyPlayerStatsFilter
+func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Context, obj interface{}) (twmodel.DailyPlayerStatsFilter, error) {
+	var it twmodel.DailyPlayerStatsFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -19662,8 +19663,8 @@ func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Con
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Context, obj interface{}) (models.DailyTribeStatsFilter, error) {
-	var it models.DailyTribeStatsFilter
+func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Context, obj interface{}) (twmodel.DailyTribeStatsFilter, error) {
+	var it twmodel.DailyTribeStatsFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -19738,8 +19739,8 @@ func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Cont
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context, obj interface{}) (models.EnnoblementFilter, error) {
-	var it models.EnnoblementFilter
+func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context, obj interface{}) (twmodel.EnnoblementFilter, error) {
+	var it twmodel.EnnoblementFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -19918,8 +19919,8 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputEnnoblementFilterOr(ctx context.Context, obj interface{}) (models.EnnoblementFilterOr, error) {
-	var it models.EnnoblementFilterOr
+func (ec *executionContext) unmarshalInputEnnoblementFilterOr(ctx context.Context, obj interface{}) (twmodel.EnnoblementFilterOr, error) {
+	var it twmodel.EnnoblementFilterOr
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -19962,8 +19963,8 @@ func (ec *executionContext) unmarshalInputEnnoblementFilterOr(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj interface{}) (models.PlayerFilter, error) {
-	var it models.PlayerFilter
+func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj interface{}) (twmodel.PlayerFilter, error) {
+	var it twmodel.PlayerFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -20654,8 +20655,8 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Context, obj interface{}) (models.PlayerHistoryFilter, error) {
-	var it models.PlayerHistoryFilter
+func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Context, obj interface{}) (twmodel.PlayerHistoryFilter, error) {
+	var it twmodel.PlayerHistoryFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -20730,8 +20731,8 @@ func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputServerFilter(ctx context.Context, obj interface{}) (models.ServerFilter, error) {
-	var it models.ServerFilter
+func (ec *executionContext) unmarshalInputServerFilter(ctx context.Context, obj interface{}) (twmodel.ServerFilter, error) {
+	var it twmodel.ServerFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -20806,8 +20807,8 @@ func (ec *executionContext) unmarshalInputServerFilter(ctx context.Context, obj 
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context, obj interface{}) (models.ServerStatsFilter, error) {
-	var it models.ServerStatsFilter
+func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context, obj interface{}) (twmodel.ServerStatsFilter, error) {
+	var it twmodel.ServerStatsFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -20858,8 +20859,8 @@ func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context, obj interface{}) (models.TribeChangeFilter, error) {
-	var it models.TribeChangeFilter
+func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context, obj interface{}) (twmodel.TribeChangeFilter, error) {
+	var it twmodel.TribeChangeFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -20990,8 +20991,8 @@ func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context,
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputTribeChangeFilterOr(ctx context.Context, obj interface{}) (models.TribeChangeFilterOr, error) {
-	var it models.TribeChangeFilterOr
+func (ec *executionContext) unmarshalInputTribeChangeFilterOr(ctx context.Context, obj interface{}) (twmodel.TribeChangeFilterOr, error) {
+	var it twmodel.TribeChangeFilterOr
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -21018,8 +21019,8 @@ func (ec *executionContext) unmarshalInputTribeChangeFilterOr(ctx context.Contex
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj interface{}) (models.TribeFilter, error) {
-	var it models.TribeFilter
+func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj interface{}) (twmodel.TribeFilter, error) {
+	var it twmodel.TribeFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -21686,8 +21687,8 @@ func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj i
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputTribeFilterOr(ctx context.Context, obj interface{}) (models.TribeFilterOr, error) {
-	var it models.TribeFilterOr
+func (ec *executionContext) unmarshalInputTribeFilterOr(ctx context.Context, obj interface{}) (twmodel.TribeFilterOr, error) {
+	var it twmodel.TribeFilterOr
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -21738,8 +21739,8 @@ func (ec *executionContext) unmarshalInputTribeFilterOr(ctx context.Context, obj
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context, obj interface{}) (models.TribeHistoryFilter, error) {
-	var it models.TribeHistoryFilter
+func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context, obj interface{}) (twmodel.TribeHistoryFilter, error) {
+	var it twmodel.TribeHistoryFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -21814,8 +21815,8 @@ func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputVersionFilter(ctx context.Context, obj interface{}) (models.VersionFilter, error) {
-	var it models.VersionFilter
+func (ec *executionContext) unmarshalInputVersionFilter(ctx context.Context, obj interface{}) (twmodel.VersionFilter, error) {
+	var it twmodel.VersionFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -21874,8 +21875,8 @@ func (ec *executionContext) unmarshalInputVersionFilter(ctx context.Context, obj
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj interface{}) (models.VillageFilter, error) {
-	var it models.VillageFilter
+func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj interface{}) (twmodel.VillageFilter, error) {
+	var it twmodel.VillageFilter
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -22120,7 +22121,7 @@ func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj
 
 var buildingImplementors = []string{"Building"}
 
-func (ec *executionContext) _Building(ctx context.Context, sel ast.SelectionSet, obj *models.Building) graphql.Marshaler {
+func (ec *executionContext) _Building(ctx context.Context, sel ast.SelectionSet, obj *twmodel.Building) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, buildingImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -22202,7 +22203,7 @@ func (ec *executionContext) _Building(ctx context.Context, sel ast.SelectionSet,
 
 var buildingConfigImplementors = []string{"BuildingConfig"}
 
-func (ec *executionContext) _BuildingConfig(ctx context.Context, sel ast.SelectionSet, obj *models.BuildingConfig) graphql.Marshaler {
+func (ec *executionContext) _BuildingConfig(ctx context.Context, sel ast.SelectionSet, obj *twmodel.BuildingConfig) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, buildingConfigImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -22338,7 +22339,7 @@ func (ec *executionContext) _DailyPlayerStats(ctx context.Context, sel ast.Selec
 
 var dailyPlayerStatsRecordImplementors = []string{"DailyPlayerStatsRecord"}
 
-func (ec *executionContext) _DailyPlayerStatsRecord(ctx context.Context, sel ast.SelectionSet, obj *models.DailyPlayerStats) graphql.Marshaler {
+func (ec *executionContext) _DailyPlayerStatsRecord(ctx context.Context, sel ast.SelectionSet, obj *twmodel.DailyPlayerStats) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, dailyPlayerStatsRecordImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -22460,7 +22461,7 @@ func (ec *executionContext) _DailyTribeStats(ctx context.Context, sel ast.Select
 
 var dailyTribeStatsRecordImplementors = []string{"DailyTribeStatsRecord"}
 
-func (ec *executionContext) _DailyTribeStatsRecord(ctx context.Context, sel ast.SelectionSet, obj *models.DailyTribeStats) graphql.Marshaler {
+func (ec *executionContext) _DailyTribeStatsRecord(ctx context.Context, sel ast.SelectionSet, obj *twmodel.DailyTribeStats) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, dailyTribeStatsRecordImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -22558,7 +22559,7 @@ func (ec *executionContext) _DailyTribeStatsRecord(ctx context.Context, sel ast.
 
 var ennoblementImplementors = []string{"Ennoblement"}
 
-func (ec *executionContext) _Ennoblement(ctx context.Context, sel ast.SelectionSet, obj *models.Ennoblement) graphql.Marshaler {
+func (ec *executionContext) _Ennoblement(ctx context.Context, sel ast.SelectionSet, obj *twmodel.Ennoblement) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, ennoblementImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -22669,7 +22670,7 @@ func (ec *executionContext) _EnnoblementList(ctx context.Context, sel ast.Select
 
 var foundPlayerImplementors = []string{"FoundPlayer"}
 
-func (ec *executionContext) _FoundPlayer(ctx context.Context, sel ast.SelectionSet, obj *models.FoundPlayer) graphql.Marshaler {
+func (ec *executionContext) _FoundPlayer(ctx context.Context, sel ast.SelectionSet, obj *twmodel.FoundPlayer) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, foundPlayerImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -22760,7 +22761,7 @@ func (ec *executionContext) _FoundPlayerList(ctx context.Context, sel ast.Select
 
 var foundTribeImplementors = []string{"FoundTribe"}
 
-func (ec *executionContext) _FoundTribe(ctx context.Context, sel ast.SelectionSet, obj *models.FoundTribe) graphql.Marshaler {
+func (ec *executionContext) _FoundTribe(ctx context.Context, sel ast.SelectionSet, obj *twmodel.FoundTribe) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, foundTribeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -22846,7 +22847,7 @@ func (ec *executionContext) _FoundTribeList(ctx context.Context, sel ast.Selecti
 
 var playerImplementors = []string{"Player"}
 
-func (ec *executionContext) _Player(ctx context.Context, sel ast.SelectionSet, obj *models.Player) graphql.Marshaler {
+func (ec *executionContext) _Player(ctx context.Context, sel ast.SelectionSet, obj *twmodel.Player) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, playerImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23053,7 +23054,7 @@ func (ec *executionContext) _PlayerHistory(ctx context.Context, sel ast.Selectio
 
 var playerHistoryRecordImplementors = []string{"PlayerHistoryRecord"}
 
-func (ec *executionContext) _PlayerHistoryRecord(ctx context.Context, sel ast.SelectionSet, obj *models.PlayerHistory) graphql.Marshaler {
+func (ec *executionContext) _PlayerHistoryRecord(ctx context.Context, sel ast.SelectionSet, obj *twmodel.PlayerHistory) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, playerHistoryRecordImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23186,7 +23187,7 @@ func (ec *executionContext) _PlayerList(ctx context.Context, sel ast.SelectionSe
 
 var playerNameChangeImplementors = []string{"PlayerNameChange"}
 
-func (ec *executionContext) _PlayerNameChange(ctx context.Context, sel ast.SelectionSet, obj *models.PlayerNameChange) graphql.Marshaler {
+func (ec *executionContext) _PlayerNameChange(ctx context.Context, sel ast.SelectionSet, obj *twmodel.PlayerNameChange) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, playerNameChangeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23504,7 +23505,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 
 var serverImplementors = []string{"Server"}
 
-func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, obj *models.Server) graphql.Marshaler {
+func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, obj *twmodel.Server) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23592,7 +23593,7 @@ func (ec *executionContext) _Server(ctx context.Context, sel ast.SelectionSet, o
 
 var serverConfigImplementors = []string{"ServerConfig"}
 
-func (ec *executionContext) _ServerConfig(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfig) graphql.Marshaler {
+func (ec *executionContext) _ServerConfig(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfig) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23694,7 +23695,7 @@ func (ec *executionContext) _ServerConfig(ctx context.Context, sel ast.Selection
 
 var serverConfigAllyImplementors = []string{"ServerConfigAlly"}
 
-func (ec *executionContext) _ServerConfigAlly(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigAlly) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigAlly(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigAlly) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigAllyImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23781,7 +23782,7 @@ func (ec *executionContext) _ServerConfigAlly(ctx context.Context, sel ast.Selec
 
 var serverConfigBuildImplementors = []string{"ServerConfigBuild"}
 
-func (ec *executionContext) _ServerConfigBuild(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigBuild) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigBuild(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigBuild) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigBuildImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23808,7 +23809,7 @@ func (ec *executionContext) _ServerConfigBuild(ctx context.Context, sel ast.Sele
 
 var serverConfigBuildingsImplementors = []string{"ServerConfigBuildings"}
 
-func (ec *executionContext) _ServerConfigBuildings(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigBuildings) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigBuildings(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigBuildings) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigBuildingsImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23920,7 +23921,7 @@ func (ec *executionContext) _ServerConfigBuildings(ctx context.Context, sel ast.
 
 var serverConfigCommandsImplementors = []string{"ServerConfigCommands"}
 
-func (ec *executionContext) _ServerConfigCommands(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigCommands) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigCommands(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigCommands) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigCommandsImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -23952,7 +23953,7 @@ func (ec *executionContext) _ServerConfigCommands(ctx context.Context, sel ast.S
 
 var serverConfigCoordImplementors = []string{"ServerConfigCoord"}
 
-func (ec *executionContext) _ServerConfigCoord(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigCoord) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigCoord(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigCoord) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigCoordImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24024,7 +24025,7 @@ func (ec *executionContext) _ServerConfigCoord(ctx context.Context, sel ast.Sele
 
 var serverConfigGameImplementors = []string{"ServerConfigGame"}
 
-func (ec *executionContext) _ServerConfigGame(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigGame) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigGame(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigGame) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigGameImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24141,7 +24142,7 @@ func (ec *executionContext) _ServerConfigGame(ctx context.Context, sel ast.Selec
 
 var serverConfigMiscImplementors = []string{"ServerConfigMisc"}
 
-func (ec *executionContext) _ServerConfigMisc(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigMisc) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigMisc(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigMisc) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigMiscImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24178,7 +24179,7 @@ func (ec *executionContext) _ServerConfigMisc(ctx context.Context, sel ast.Selec
 
 var serverConfigNewbieImplementors = []string{"ServerConfigNewbie"}
 
-func (ec *executionContext) _ServerConfigNewbie(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigNewbie) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigNewbie(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigNewbie) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigNewbieImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24220,7 +24221,7 @@ func (ec *executionContext) _ServerConfigNewbie(ctx context.Context, sel ast.Sel
 
 var serverConfigNightImplementors = []string{"ServerConfigNight"}
 
-func (ec *executionContext) _ServerConfigNight(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigNight) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigNight(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigNight) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigNightImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24262,7 +24263,7 @@ func (ec *executionContext) _ServerConfigNight(ctx context.Context, sel ast.Sele
 
 var serverConfigSitterImplementors = []string{"ServerConfigSitter"}
 
-func (ec *executionContext) _ServerConfigSitter(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigSitter) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigSitter(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigSitter) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigSitterImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24289,7 +24290,7 @@ func (ec *executionContext) _ServerConfigSitter(ctx context.Context, sel ast.Sel
 
 var serverConfigSleepImplementors = []string{"ServerConfigSleep"}
 
-func (ec *executionContext) _ServerConfigSleep(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigSleep) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigSleep(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigSleep) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigSleepImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24346,7 +24347,7 @@ func (ec *executionContext) _ServerConfigSleep(ctx context.Context, sel ast.Sele
 
 var serverConfigSnobImplementors = []string{"ServerConfigSnob"}
 
-func (ec *executionContext) _ServerConfigSnob(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigSnob) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigSnob(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigSnob) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigSnobImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24413,7 +24414,7 @@ func (ec *executionContext) _ServerConfigSnob(ctx context.Context, sel ast.Selec
 
 var serverConfigWinImplementors = []string{"ServerConfigWin"}
 
-func (ec *executionContext) _ServerConfigWin(ctx context.Context, sel ast.SelectionSet, obj *models.ServerConfigWin) graphql.Marshaler {
+func (ec *executionContext) _ServerConfigWin(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerConfigWin) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverConfigWinImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24498,7 +24499,7 @@ func (ec *executionContext) _ServerStats(ctx context.Context, sel ast.SelectionS
 
 var serverStatsRecordImplementors = []string{"ServerStatsRecord"}
 
-func (ec *executionContext) _ServerStatsRecord(ctx context.Context, sel ast.SelectionSet, obj *models.ServerStats) graphql.Marshaler {
+func (ec *executionContext) _ServerStatsRecord(ctx context.Context, sel ast.SelectionSet, obj *twmodel.ServerStats) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, serverStatsRecordImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24575,7 +24576,7 @@ func (ec *executionContext) _ServerStatsRecord(ctx context.Context, sel ast.Sele
 
 var tribeImplementors = []string{"Tribe"}
 
-func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, obj *models.Tribe) graphql.Marshaler {
+func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, obj *twmodel.Tribe) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, tribeImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24714,7 +24715,7 @@ func (ec *executionContext) _Tribe(ctx context.Context, sel ast.SelectionSet, ob
 
 var tribeChangeRecordImplementors = []string{"TribeChangeRecord"}
 
-func (ec *executionContext) _TribeChangeRecord(ctx context.Context, sel ast.SelectionSet, obj *models.TribeChange) graphql.Marshaler {
+func (ec *executionContext) _TribeChangeRecord(ctx context.Context, sel ast.SelectionSet, obj *twmodel.TribeChange) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, tribeChangeRecordImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24832,7 +24833,7 @@ func (ec *executionContext) _TribeHistory(ctx context.Context, sel ast.Selection
 
 var tribeHistoryRecordImplementors = []string{"TribeHistoryRecord"}
 
-func (ec *executionContext) _TribeHistoryRecord(ctx context.Context, sel ast.SelectionSet, obj *models.TribeHistory) graphql.Marshaler {
+func (ec *executionContext) _TribeHistoryRecord(ctx context.Context, sel ast.SelectionSet, obj *twmodel.TribeHistory) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, tribeHistoryRecordImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -24959,7 +24960,7 @@ func (ec *executionContext) _TribeList(ctx context.Context, sel ast.SelectionSet
 
 var unitImplementors = []string{"Unit"}
 
-func (ec *executionContext) _Unit(ctx context.Context, sel ast.SelectionSet, obj *models.Unit) graphql.Marshaler {
+func (ec *executionContext) _Unit(ctx context.Context, sel ast.SelectionSet, obj *twmodel.Unit) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, unitImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -25021,7 +25022,7 @@ func (ec *executionContext) _Unit(ctx context.Context, sel ast.SelectionSet, obj
 
 var unitConfigImplementors = []string{"UnitConfig"}
 
-func (ec *executionContext) _UnitConfig(ctx context.Context, sel ast.SelectionSet, obj *models.UnitConfig) graphql.Marshaler {
+func (ec *executionContext) _UnitConfig(ctx context.Context, sel ast.SelectionSet, obj *twmodel.UnitConfig) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, unitConfigImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -25108,7 +25109,7 @@ func (ec *executionContext) _UnitConfig(ctx context.Context, sel ast.SelectionSe
 
 var versionImplementors = []string{"Version"}
 
-func (ec *executionContext) _Version(ctx context.Context, sel ast.SelectionSet, obj *models.Version) graphql.Marshaler {
+func (ec *executionContext) _Version(ctx context.Context, sel ast.SelectionSet, obj *twmodel.Version) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, versionImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -25179,7 +25180,7 @@ func (ec *executionContext) _VersionList(ctx context.Context, sel ast.SelectionS
 
 var villageImplementors = []string{"Village"}
 
-func (ec *executionContext) _Village(ctx context.Context, sel ast.SelectionSet, obj *models.Village) graphql.Marshaler {
+func (ec *executionContext) _Village(ctx context.Context, sel ast.SelectionSet, obj *twmodel.Village) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, villageImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -25550,11 +25551,11 @@ func (ec *executionContext) marshalNBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx context.Context, sel ast.SelectionSet, v models.Building) graphql.Marshaler {
+func (ec *executionContext) marshalNBuilding2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuilding(ctx context.Context, sel ast.SelectionSet, v twmodel.Building) graphql.Marshaler {
 	return ec._Building(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNBuildingConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuildingConfig(ctx context.Context, sel ast.SelectionSet, v models.BuildingConfig) graphql.Marshaler {
+func (ec *executionContext) marshalNBuildingConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐBuildingConfig(ctx context.Context, sel ast.SelectionSet, v twmodel.BuildingConfig) graphql.Marshaler {
 	return ec._BuildingConfig(ctx, sel, &v)
 }
 
@@ -25572,7 +25573,7 @@ func (ec *executionContext) marshalNDailyPlayerStats2ᚖgithubᚗcomᚋtribalwar
 	return ec._DailyPlayerStats(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNDailyPlayerStatsRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyPlayerStats(ctx context.Context, sel ast.SelectionSet, v *models.DailyPlayerStats) graphql.Marshaler {
+func (ec *executionContext) marshalNDailyPlayerStatsRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyPlayerStats(ctx context.Context, sel ast.SelectionSet, v *twmodel.DailyPlayerStats) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25596,7 +25597,7 @@ func (ec *executionContext) marshalNDailyTribeStats2ᚖgithubᚗcomᚋtribalwars
 	return ec._DailyTribeStats(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNDailyTribeStatsRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyTribeStats(ctx context.Context, sel ast.SelectionSet, v *models.DailyTribeStats) graphql.Marshaler {
+func (ec *executionContext) marshalNDailyTribeStatsRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyTribeStats(ctx context.Context, sel ast.SelectionSet, v *twmodel.DailyTribeStats) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25606,7 +25607,7 @@ func (ec *executionContext) marshalNDailyTribeStatsRecord2ᚖgithubᚗcomᚋtrib
 	return ec._DailyTribeStatsRecord(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNEnnoblement2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblement(ctx context.Context, sel ast.SelectionSet, v *models.Ennoblement) graphql.Marshaler {
+func (ec *executionContext) marshalNEnnoblement2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblement(ctx context.Context, sel ast.SelectionSet, v *twmodel.Ennoblement) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25645,7 +25646,7 @@ func (ec *executionContext) marshalNFloat2float64(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNFoundPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayer(ctx context.Context, sel ast.SelectionSet, v *models.FoundPlayer) graphql.Marshaler {
+func (ec *executionContext) marshalNFoundPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayer(ctx context.Context, sel ast.SelectionSet, v *twmodel.FoundPlayer) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25669,7 +25670,7 @@ func (ec *executionContext) marshalNFoundPlayerList2ᚖgithubᚗcomᚋtribalwars
 	return ec._FoundPlayerList(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNFoundTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribe(ctx context.Context, sel ast.SelectionSet, v *models.FoundTribe) graphql.Marshaler {
+func (ec *executionContext) marshalNFoundTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribe(ctx context.Context, sel ast.SelectionSet, v *twmodel.FoundTribe) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25708,7 +25709,7 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
-func (ec *executionContext) marshalNPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx context.Context, sel ast.SelectionSet, v *models.Player) graphql.Marshaler {
+func (ec *executionContext) marshalNPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx context.Context, sel ast.SelectionSet, v *twmodel.Player) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25732,7 +25733,7 @@ func (ec *executionContext) marshalNPlayerHistory2ᚖgithubᚗcomᚋtribalwarshe
 	return ec._PlayerHistory(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPlayerHistoryRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistory(ctx context.Context, sel ast.SelectionSet, v *models.PlayerHistory) graphql.Marshaler {
+func (ec *executionContext) marshalNPlayerHistoryRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistory(ctx context.Context, sel ast.SelectionSet, v *twmodel.PlayerHistory) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25756,7 +25757,7 @@ func (ec *executionContext) marshalNPlayerList2ᚖgithubᚗcomᚋtribalwarshelp�
 	return ec._PlayerList(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPlayerNameChange2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerNameChangeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.PlayerNameChange) graphql.Marshaler {
+func (ec *executionContext) marshalNPlayerNameChange2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerNameChangeᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.PlayerNameChange) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -25793,7 +25794,7 @@ func (ec *executionContext) marshalNPlayerNameChange2ᚕᚖgithubᚗcomᚋtribal
 	return ret
 }
 
-func (ec *executionContext) marshalNPlayerNameChange2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerNameChange(ctx context.Context, sel ast.SelectionSet, v *models.PlayerNameChange) graphql.Marshaler {
+func (ec *executionContext) marshalNPlayerNameChange2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerNameChange(ctx context.Context, sel ast.SelectionSet, v *twmodel.PlayerNameChange) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25803,7 +25804,7 @@ func (ec *executionContext) marshalNPlayerNameChange2ᚖgithubᚗcomᚋtribalwar
 	return ec._PlayerNameChange(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNServer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServer(ctx context.Context, sel ast.SelectionSet, v *models.Server) graphql.Marshaler {
+func (ec *executionContext) marshalNServer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServer(ctx context.Context, sel ast.SelectionSet, v *twmodel.Server) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25813,59 +25814,59 @@ func (ec *executionContext) marshalNServer2ᚖgithubᚗcomᚋtribalwarshelpᚋsh
 	return ec._Server(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNServerConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfig(ctx context.Context, sel ast.SelectionSet, v models.ServerConfig) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfig(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfig) graphql.Marshaler {
 	return ec._ServerConfig(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigAlly2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigAlly(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigAlly) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigAlly2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigAlly(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigAlly) graphql.Marshaler {
 	return ec._ServerConfigAlly(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigBuild2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuild(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigBuild) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigBuild2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuild(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigBuild) graphql.Marshaler {
 	return ec._ServerConfigBuild(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigBuildings2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuildings(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigBuildings) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigBuildings2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigBuildings(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigBuildings) graphql.Marshaler {
 	return ec._ServerConfigBuildings(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigCommands2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCommands(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigCommands) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigCommands2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCommands(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigCommands) graphql.Marshaler {
 	return ec._ServerConfigCommands(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigCoord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCoord(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigCoord) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigCoord2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigCoord(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigCoord) graphql.Marshaler {
 	return ec._ServerConfigCoord(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigGame2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigGame(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigGame) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigGame2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigGame(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigGame) graphql.Marshaler {
 	return ec._ServerConfigGame(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigMisc2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigMisc(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigMisc) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigMisc2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigMisc(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigMisc) graphql.Marshaler {
 	return ec._ServerConfigMisc(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigNewbie2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNewbie(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigNewbie) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigNewbie2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNewbie(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigNewbie) graphql.Marshaler {
 	return ec._ServerConfigNewbie(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigNight2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNight(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigNight) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigNight2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigNight(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigNight) graphql.Marshaler {
 	return ec._ServerConfigNight(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigSitter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSitter(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigSitter) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigSitter2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSitter(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigSitter) graphql.Marshaler {
 	return ec._ServerConfigSitter(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigSleep2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSleep(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigSleep) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigSleep2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSleep(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigSleep) graphql.Marshaler {
 	return ec._ServerConfigSleep(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigSnob2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSnob(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigSnob) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigSnob2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigSnob(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigSnob) graphql.Marshaler {
 	return ec._ServerConfigSnob(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNServerConfigWin2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigWin(ctx context.Context, sel ast.SelectionSet, v models.ServerConfigWin) graphql.Marshaler {
+func (ec *executionContext) marshalNServerConfigWin2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerConfigWin(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerConfigWin) graphql.Marshaler {
 	return ec._ServerConfigWin(ctx, sel, &v)
 }
 
@@ -25897,7 +25898,7 @@ func (ec *executionContext) marshalNServerStats2ᚖgithubᚗcomᚋtribalwarshelp
 	return ec._ServerStats(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNServerStatsRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStats(ctx context.Context, sel ast.SelectionSet, v *models.ServerStats) graphql.Marshaler {
+func (ec *executionContext) marshalNServerStatsRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStats(ctx context.Context, sel ast.SelectionSet, v *twmodel.ServerStats) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25907,13 +25908,13 @@ func (ec *executionContext) marshalNServerStatsRecord2ᚖgithubᚗcomᚋtribalwa
 	return ec._ServerStatsRecord(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx context.Context, v interface{}) (models.ServerStatus, error) {
-	var res models.ServerStatus
+func (ec *executionContext) unmarshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx context.Context, v interface{}) (twmodel.ServerStatus, error) {
+	var res twmodel.ServerStatus
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx context.Context, sel ast.SelectionSet, v models.ServerStatus) graphql.Marshaler {
+func (ec *executionContext) marshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx context.Context, sel ast.SelectionSet, v twmodel.ServerStatus) graphql.Marshaler {
 	return v
 }
 
@@ -25977,7 +25978,7 @@ func (ec *executionContext) marshalNTime2timeᚐTime(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) marshalNTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx context.Context, sel ast.SelectionSet, v *models.Tribe) graphql.Marshaler {
+func (ec *executionContext) marshalNTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx context.Context, sel ast.SelectionSet, v *twmodel.Tribe) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -25987,7 +25988,7 @@ func (ec *executionContext) marshalNTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsha
 	return ec._Tribe(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNTribeChangeRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChange(ctx context.Context, sel ast.SelectionSet, v *models.TribeChange) graphql.Marshaler {
+func (ec *executionContext) marshalNTribeChangeRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChange(ctx context.Context, sel ast.SelectionSet, v *twmodel.TribeChange) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -26025,7 +26026,7 @@ func (ec *executionContext) marshalNTribeHistory2ᚖgithubᚗcomᚋtribalwarshel
 	return ec._TribeHistory(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNTribeHistoryRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistory(ctx context.Context, sel ast.SelectionSet, v *models.TribeHistory) graphql.Marshaler {
+func (ec *executionContext) marshalNTribeHistoryRecord2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistory(ctx context.Context, sel ast.SelectionSet, v *twmodel.TribeHistory) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -26049,15 +26050,15 @@ func (ec *executionContext) marshalNTribeList2ᚖgithubᚗcomᚋtribalwarshelp�
 	return ec._TribeList(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx context.Context, sel ast.SelectionSet, v models.Unit) graphql.Marshaler {
+func (ec *executionContext) marshalNUnit2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnit(ctx context.Context, sel ast.SelectionSet, v twmodel.Unit) graphql.Marshaler {
 	return ec._Unit(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUnitConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnitConfig(ctx context.Context, sel ast.SelectionSet, v models.UnitConfig) graphql.Marshaler {
+func (ec *executionContext) marshalNUnitConfig2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐUnitConfig(ctx context.Context, sel ast.SelectionSet, v twmodel.UnitConfig) graphql.Marshaler {
 	return ec._UnitConfig(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersion(ctx context.Context, sel ast.SelectionSet, v *models.Version) graphql.Marshaler {
+func (ec *executionContext) marshalNVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersion(ctx context.Context, sel ast.SelectionSet, v *twmodel.Version) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -26067,13 +26068,13 @@ func (ec *executionContext) marshalNVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋs
 	return ec._Version(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx context.Context, v interface{}) (models.VersionCode, error) {
-	var res models.VersionCode
+func (ec *executionContext) unmarshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx context.Context, v interface{}) (twmodel.VersionCode, error) {
+	var res twmodel.VersionCode
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx context.Context, sel ast.SelectionSet, v models.VersionCode) graphql.Marshaler {
+func (ec *executionContext) marshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx context.Context, sel ast.SelectionSet, v twmodel.VersionCode) graphql.Marshaler {
 	return v
 }
 
@@ -26091,7 +26092,7 @@ func (ec *executionContext) marshalNVersionList2ᚖgithubᚗcomᚋtribalwarshelp
 	return ec._VersionList(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx context.Context, sel ast.SelectionSet, v *models.Village) graphql.Marshaler {
+func (ec *executionContext) marshalNVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx context.Context, sel ast.SelectionSet, v *twmodel.Village) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -26368,7 +26369,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return graphql.MarshalBoolean(*v)
 }
 
-func (ec *executionContext) unmarshalODailyPlayerStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyPlayerStatsFilter(ctx context.Context, v interface{}) (*models.DailyPlayerStatsFilter, error) {
+func (ec *executionContext) unmarshalODailyPlayerStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyPlayerStatsFilter(ctx context.Context, v interface{}) (*twmodel.DailyPlayerStatsFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26376,7 +26377,7 @@ func (ec *executionContext) unmarshalODailyPlayerStatsFilter2ᚖgithubᚗcomᚋt
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalODailyPlayerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyPlayerStatsᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.DailyPlayerStats) graphql.Marshaler {
+func (ec *executionContext) marshalODailyPlayerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyPlayerStatsᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.DailyPlayerStats) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26416,7 +26417,7 @@ func (ec *executionContext) marshalODailyPlayerStatsRecord2ᚕᚖgithubᚗcomᚋ
 	return ret
 }
 
-func (ec *executionContext) unmarshalODailyTribeStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyTribeStatsFilter(ctx context.Context, v interface{}) (*models.DailyTribeStatsFilter, error) {
+func (ec *executionContext) unmarshalODailyTribeStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyTribeStatsFilter(ctx context.Context, v interface{}) (*twmodel.DailyTribeStatsFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26424,7 +26425,7 @@ func (ec *executionContext) unmarshalODailyTribeStatsFilter2ᚖgithubᚗcomᚋtr
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalODailyTribeStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyTribeStatsᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.DailyTribeStats) graphql.Marshaler {
+func (ec *executionContext) marshalODailyTribeStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐDailyTribeStatsᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.DailyTribeStats) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26464,7 +26465,7 @@ func (ec *executionContext) marshalODailyTribeStatsRecord2ᚕᚖgithubᚗcomᚋt
 	return ret
 }
 
-func (ec *executionContext) marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Ennoblement) graphql.Marshaler {
+func (ec *executionContext) marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.Ennoblement) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26504,7 +26505,7 @@ func (ec *executionContext) marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarsh
 	return ret
 }
 
-func (ec *executionContext) unmarshalOEnnoblementFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilter(ctx context.Context, v interface{}) (*models.EnnoblementFilter, error) {
+func (ec *executionContext) unmarshalOEnnoblementFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilter(ctx context.Context, v interface{}) (*twmodel.EnnoblementFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26512,7 +26513,7 @@ func (ec *executionContext) unmarshalOEnnoblementFilter2ᚖgithubᚗcomᚋtribal
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOEnnoblementFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilterOr(ctx context.Context, v interface{}) (*models.EnnoblementFilterOr, error) {
+func (ec *executionContext) unmarshalOEnnoblementFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐEnnoblementFilterOr(ctx context.Context, v interface{}) (*twmodel.EnnoblementFilterOr, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26520,7 +26521,7 @@ func (ec *executionContext) unmarshalOEnnoblementFilterOr2ᚖgithubᚗcomᚋtrib
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFoundPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayerᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.FoundPlayer) graphql.Marshaler {
+func (ec *executionContext) marshalOFoundPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundPlayerᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.FoundPlayer) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26560,7 +26561,7 @@ func (ec *executionContext) marshalOFoundPlayer2ᚕᚖgithubᚗcomᚋtribalwarsh
 	return ret
 }
 
-func (ec *executionContext) marshalOFoundTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.FoundTribe) graphql.Marshaler {
+func (ec *executionContext) marshalOFoundTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐFoundTribeᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.FoundTribe) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26660,7 +26661,7 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 	return graphql.MarshalInt(*v)
 }
 
-func (ec *executionContext) marshalOPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Player) graphql.Marshaler {
+func (ec *executionContext) marshalOPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.Player) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26700,14 +26701,14 @@ func (ec *executionContext) marshalOPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelp�
 	return ret
 }
 
-func (ec *executionContext) marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx context.Context, sel ast.SelectionSet, v *models.Player) graphql.Marshaler {
+func (ec *executionContext) marshalOPlayer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayer(ctx context.Context, sel ast.SelectionSet, v *twmodel.Player) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Player(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx context.Context, v interface{}) (*models.PlayerFilter, error) {
+func (ec *executionContext) unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerFilter(ctx context.Context, v interface{}) (*twmodel.PlayerFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26715,7 +26716,7 @@ func (ec *executionContext) unmarshalOPlayerFilter2ᚖgithubᚗcomᚋtribalwarsh
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOPlayerHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryFilter(ctx context.Context, v interface{}) (*models.PlayerHistoryFilter, error) {
+func (ec *executionContext) unmarshalOPlayerHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryFilter(ctx context.Context, v interface{}) (*twmodel.PlayerHistoryFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26723,7 +26724,7 @@ func (ec *executionContext) unmarshalOPlayerHistoryFilter2ᚖgithubᚗcomᚋtrib
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOPlayerHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.PlayerHistory) graphql.Marshaler {
+func (ec *executionContext) marshalOPlayerHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐPlayerHistoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.PlayerHistory) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26763,7 +26764,7 @@ func (ec *executionContext) marshalOPlayerHistoryRecord2ᚕᚖgithubᚗcomᚋtri
 	return ret
 }
 
-func (ec *executionContext) marshalOServer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Server) graphql.Marshaler {
+func (ec *executionContext) marshalOServer2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.Server) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26803,14 +26804,14 @@ func (ec *executionContext) marshalOServer2ᚕᚖgithubᚗcomᚋtribalwarshelp�
 	return ret
 }
 
-func (ec *executionContext) marshalOServer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServer(ctx context.Context, sel ast.SelectionSet, v *models.Server) graphql.Marshaler {
+func (ec *executionContext) marshalOServer2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServer(ctx context.Context, sel ast.SelectionSet, v *twmodel.Server) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Server(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOServerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerFilter(ctx context.Context, v interface{}) (*models.ServerFilter, error) {
+func (ec *executionContext) unmarshalOServerFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerFilter(ctx context.Context, v interface{}) (*twmodel.ServerFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26818,7 +26819,7 @@ func (ec *executionContext) unmarshalOServerFilter2ᚖgithubᚗcomᚋtribalwarsh
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOServerStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsFilter(ctx context.Context, v interface{}) (*models.ServerStatsFilter, error) {
+func (ec *executionContext) unmarshalOServerStatsFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsFilter(ctx context.Context, v interface{}) (*twmodel.ServerStatsFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26826,7 +26827,7 @@ func (ec *executionContext) unmarshalOServerStatsFilter2ᚖgithubᚗcomᚋtribal
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOServerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.ServerStats) graphql.Marshaler {
+func (ec *executionContext) marshalOServerStatsRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatsᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.ServerStats) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26866,7 +26867,7 @@ func (ec *executionContext) marshalOServerStatsRecord2ᚕᚖgithubᚗcomᚋtriba
 	return ret
 }
 
-func (ec *executionContext) unmarshalOServerStatus2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatusᚄ(ctx context.Context, v interface{}) ([]models.ServerStatus, error) {
+func (ec *executionContext) unmarshalOServerStatus2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatusᚄ(ctx context.Context, v interface{}) ([]twmodel.ServerStatus, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -26879,7 +26880,7 @@ func (ec *executionContext) unmarshalOServerStatus2ᚕgithubᚗcomᚋtribalwarsh
 		}
 	}
 	var err error
-	res := make([]models.ServerStatus, len(vSlice))
+	res := make([]twmodel.ServerStatus, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
 		res[i], err = ec.unmarshalNServerStatus2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatus(ctx, vSlice[i])
@@ -26890,7 +26891,7 @@ func (ec *executionContext) unmarshalOServerStatus2ᚕgithubᚗcomᚋtribalwarsh
 	return res, nil
 }
 
-func (ec *executionContext) marshalOServerStatus2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []models.ServerStatus) graphql.Marshaler {
+func (ec *executionContext) marshalOServerStatus2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐServerStatusᚄ(ctx context.Context, sel ast.SelectionSet, v []twmodel.ServerStatus) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -26999,7 +27000,7 @@ func (ec *executionContext) marshalOTime2timeᚐTime(ctx context.Context, sel as
 	return graphql.MarshalTime(v)
 }
 
-func (ec *executionContext) marshalOTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Tribe) graphql.Marshaler {
+func (ec *executionContext) marshalOTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.Tribe) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -27039,14 +27040,14 @@ func (ec *executionContext) marshalOTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋ
 	return ret
 }
 
-func (ec *executionContext) marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx context.Context, sel ast.SelectionSet, v *models.Tribe) graphql.Marshaler {
+func (ec *executionContext) marshalOTribe2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribe(ctx context.Context, sel ast.SelectionSet, v *twmodel.Tribe) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Tribe(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOTribeChangeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilter(ctx context.Context, v interface{}) (*models.TribeChangeFilter, error) {
+func (ec *executionContext) unmarshalOTribeChangeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilter(ctx context.Context, v interface{}) (*twmodel.TribeChangeFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -27054,7 +27055,7 @@ func (ec *executionContext) unmarshalOTribeChangeFilter2ᚖgithubᚗcomᚋtribal
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOTribeChangeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilterOr(ctx context.Context, v interface{}) (*models.TribeChangeFilterOr, error) {
+func (ec *executionContext) unmarshalOTribeChangeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeFilterOr(ctx context.Context, v interface{}) (*twmodel.TribeChangeFilterOr, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -27062,7 +27063,7 @@ func (ec *executionContext) unmarshalOTribeChangeFilterOr2ᚖgithubᚗcomᚋtrib
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOTribeChangeRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.TribeChange) graphql.Marshaler {
+func (ec *executionContext) marshalOTribeChangeRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeChangeᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.TribeChange) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -27102,7 +27103,7 @@ func (ec *executionContext) marshalOTribeChangeRecord2ᚕᚖgithubᚗcomᚋtriba
 	return ret
 }
 
-func (ec *executionContext) unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx context.Context, v interface{}) (*models.TribeFilter, error) {
+func (ec *executionContext) unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilter(ctx context.Context, v interface{}) (*twmodel.TribeFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -27110,7 +27111,7 @@ func (ec *executionContext) unmarshalOTribeFilter2ᚖgithubᚗcomᚋtribalwarshe
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOTribeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilterOr(ctx context.Context, v interface{}) (*models.TribeFilterOr, error) {
+func (ec *executionContext) unmarshalOTribeFilterOr2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeFilterOr(ctx context.Context, v interface{}) (*twmodel.TribeFilterOr, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -27118,7 +27119,7 @@ func (ec *executionContext) unmarshalOTribeFilterOr2ᚖgithubᚗcomᚋtribalwars
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOTribeHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryFilter(ctx context.Context, v interface{}) (*models.TribeHistoryFilter, error) {
+func (ec *executionContext) unmarshalOTribeHistoryFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryFilter(ctx context.Context, v interface{}) (*twmodel.TribeHistoryFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -27126,7 +27127,7 @@ func (ec *executionContext) unmarshalOTribeHistoryFilter2ᚖgithubᚗcomᚋtriba
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOTribeHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.TribeHistory) graphql.Marshaler {
+func (ec *executionContext) marshalOTribeHistoryRecord2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐTribeHistoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.TribeHistory) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -27166,7 +27167,7 @@ func (ec *executionContext) marshalOTribeHistoryRecord2ᚕᚖgithubᚗcomᚋtrib
 	return ret
 }
 
-func (ec *executionContext) marshalOVersion2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Version) graphql.Marshaler {
+func (ec *executionContext) marshalOVersion2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.Version) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -27206,14 +27207,14 @@ func (ec *executionContext) marshalOVersion2ᚕᚖgithubᚗcomᚋtribalwarshelp�
 	return ret
 }
 
-func (ec *executionContext) marshalOVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersion(ctx context.Context, sel ast.SelectionSet, v *models.Version) graphql.Marshaler {
+func (ec *executionContext) marshalOVersion2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersion(ctx context.Context, sel ast.SelectionSet, v *twmodel.Version) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Version(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx context.Context, v interface{}) ([]models.VersionCode, error) {
+func (ec *executionContext) unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx context.Context, v interface{}) ([]twmodel.VersionCode, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -27226,7 +27227,7 @@ func (ec *executionContext) unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshe
 		}
 	}
 	var err error
-	res := make([]models.VersionCode, len(vSlice))
+	res := make([]twmodel.VersionCode, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
 		res[i], err = ec.unmarshalNVersionCode2githubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCode(ctx, vSlice[i])
@@ -27237,7 +27238,7 @@ func (ec *executionContext) unmarshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshe
 	return res, nil
 }
 
-func (ec *executionContext) marshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx context.Context, sel ast.SelectionSet, v []models.VersionCode) graphql.Marshaler {
+func (ec *executionContext) marshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionCodeᚄ(ctx context.Context, sel ast.SelectionSet, v []twmodel.VersionCode) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -27277,7 +27278,7 @@ func (ec *executionContext) marshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelp
 	return ret
 }
 
-func (ec *executionContext) unmarshalOVersionFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionFilter(ctx context.Context, v interface{}) (*models.VersionFilter, error) {
+func (ec *executionContext) unmarshalOVersionFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVersionFilter(ctx context.Context, v interface{}) (*twmodel.VersionFilter, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -27285,7 +27286,7 @@ func (ec *executionContext) unmarshalOVersionFilter2ᚖgithubᚗcomᚋtribalwars
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOVillage2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillageᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Village) graphql.Marshaler {
+func (ec *executionContext) marshalOVillage2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillageᚄ(ctx context.Context, sel ast.SelectionSet, v []*twmodel.Village) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -27325,14 +27326,14 @@ func (ec *executionContext) marshalOVillage2ᚕᚖgithubᚗcomᚋtribalwarshelp�
 	return ret
 }
 
-func (ec *executionContext) marshalOVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx context.Context, sel ast.SelectionSet, v *models.Village) graphql.Marshaler {
+func (ec *executionContext) marshalOVillage2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillage(ctx context.Context, sel ast.SelectionSet, v *twmodel.Village) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Village(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOVillageFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillageFilter(ctx context.Context, v interface{}) (*models.VillageFilter, error) {
+func (ec *executionContext) unmarshalOVillageFilter2ᚖgithubᚗcomᚋtribalwarshelpᚋsharedᚋmodelsᚐVillageFilter(ctx context.Context, v interface{}) (*twmodel.VillageFilter, error) {
 	if v == nil {
 		return nil, nil
 	}

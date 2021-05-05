@@ -2,14 +2,14 @@ package resolvers
 
 import (
 	"context"
-	"github.com/tribalwarshelp/api/utils"
+	"github.com/Kichiyaki/goutil/safeptr"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/dailytribestats"
 	"github.com/tribalwarshelp/api/graphql/generated"
-	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *dailyTribeStatsRecordResolver) Tribe(ctx context.Context, obj *models.DailyTribeStats) (*models.Tribe, error) {
+func (r *dailyTribeStatsRecordResolver) Tribe(ctx context.Context, obj *twmodel.DailyTribeStats) (*twmodel.Tribe, error) {
 	if obj.Tribe != nil {
 		return obj.Tribe, nil
 	}
@@ -19,7 +19,7 @@ func (r *dailyTribeStatsRecordResolver) Tribe(ctx context.Context, obj *models.D
 
 func (r *queryResolver) DailyTribeStats(ctx context.Context,
 	server string,
-	filter *models.DailyTribeStatsFilter,
+	filter *twmodel.DailyTribeStatsFilter,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.DailyTribeStats, error) {
@@ -29,8 +29,8 @@ func (r *queryResolver) DailyTribeStats(ctx context.Context,
 		Server: server,
 		Filter: filter,
 		Sort:   sort,
-		Limit:  utils.SafeIntPointer(limit, 0),
-		Offset: utils.SafeIntPointer(offset, 0),
+		Limit:  safeptr.SafeIntPointer(limit, 0),
+		Offset: safeptr.SafeIntPointer(offset, 0),
 		Select: shouldSelectItems(ctx),
 		Count:  shouldCount(ctx),
 	})
