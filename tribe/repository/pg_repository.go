@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"github.com/Kichiyaki/gopgutil/v10"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
@@ -46,9 +46,9 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*
 	}
 	if err != nil && err != pg.ErrNoRows {
 		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
-			return nil, 0, fmt.Errorf("Server not found")
+			return nil, 0, errors.New("Server not found")
 		}
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	return data, total, nil
@@ -62,7 +62,7 @@ func (repo *pgRepository) SearchTribe(ctx context.Context, cfg tribe.SearchTribe
 		Column("key").
 		Where("version_code = ?", cfg.Version).
 		Select(); err != nil {
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	var query *orm.Query
@@ -102,7 +102,7 @@ func (repo *pgRepository) SearchTribe(ctx context.Context, cfg tribe.SearchTribe
 			err = base.Select(&res)
 		}
 		if err != nil && err != pg.ErrNoRows {
-			return nil, 0, fmt.Errorf("Internal server error")
+			return nil, 0, errors.New("Internal server error")
 		}
 	}
 

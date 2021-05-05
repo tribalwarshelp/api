@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"github.com/Kichiyaki/gopgutil/v10"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 
@@ -52,7 +51,7 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg server.FetchConfig) ([]
 		total, err = query.Count()
 	}
 	if err != nil && err != pg.ErrNoRows {
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	return data, total, nil

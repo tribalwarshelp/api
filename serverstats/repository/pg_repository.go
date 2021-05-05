@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"github.com/Kichiyaki/gopgutil/v10"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
@@ -45,9 +45,9 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg serverstats.FetchConfig
 	}
 	if err != nil && err != pg.ErrNoRows {
 		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
-			return nil, 0, fmt.Errorf("Server not found")
+			return nil, 0, errors.New("Server not found")
 		}
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	return data, total, nil

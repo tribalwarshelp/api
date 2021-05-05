@@ -5,7 +5,7 @@ package generated
 import (
 	"bytes"
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strconv"
 	"sync"

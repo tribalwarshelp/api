@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"fmt"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/middleware"
@@ -42,7 +42,7 @@ func (ucase *usecase) GetByCode(ctx context.Context, code twmodel.VersionCode) (
 		return nil, err
 	}
 	if len(versions) == 0 {
-		return nil, fmt.Errorf("There is no version with code: %s.", code)
+		return nil, errors.Errorf("version (Code: %s) not found", code)
 	}
 	return versions[0], nil
 }

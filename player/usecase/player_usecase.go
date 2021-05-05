@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
@@ -43,7 +42,7 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*twmo
 		return nil, err
 	}
 	if len(players) == 0 {
-		return nil, fmt.Errorf("Player (ID: %d) not found.", id)
+		return nil, errors.Errorf("Player (ID: %d) not found.", id)
 	}
 	return players[0], nil
 }
@@ -53,7 +52,7 @@ func (ucase *usecase) SearchPlayer(ctx context.Context, cfg player.SearchPlayerC
 		return nil, 0, errors.New("Version is required.")
 	}
 	if "" == strings.TrimSpace(cfg.Name) && cfg.ID <= 0 {
-		return nil, 0, errors.New("Your search is ambiguous. You must specify the variable 'name' or 'id'.")
+		return nil, 0, errors.New("Query is too ambiguous. You must specify the variable 'name' or 'id'.")
 	}
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.FetchLimit

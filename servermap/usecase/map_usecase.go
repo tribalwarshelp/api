@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"sort"
 	"strconv"
@@ -194,14 +193,14 @@ func concatMarkers(slices ...[]*generator.Marker) []*generator.Marker {
 func toMarker(param string) (int, string, error) {
 	splitted := strings.Split(param, ",")
 	if len(splitted) != 2 {
-		return 0, "", fmt.Errorf("%s: Invalid marker format (should be id,#hexcolor)", param)
+		return 0, "", errors.Errorf("%s: Invalid marker format (should be id,#hexcolor)", param)
 	}
 	id, err := strconv.Atoi(splitted[0])
 	if err != nil {
 		return 0, "", errors.Wrapf(err, "%s: Invalid marker format (should be id,#hexcolor)", param)
 	}
 	if id <= 0 {
-		return 0, "", fmt.Errorf("ID should be greater than 0")
+		return 0, "", errors.New("ID should be greater than 0")
 	}
 
 	return id, splitted[1], nil

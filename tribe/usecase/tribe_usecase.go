@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"fmt"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
@@ -42,17 +42,17 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*twmo
 		return nil, err
 	}
 	if len(tribes) == 0 {
-		return nil, fmt.Errorf("Tribe (ID: %s) not found.", id)
+		return nil, errors.Errorf("Tribe (ID: %d) not found.", id)
 	}
 	return tribes[0], nil
 }
 
 func (ucase *usecase) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConfig) ([]*twmodel.FoundTribe, int, error) {
 	if "" == strings.TrimSpace(cfg.Version) {
-		return nil, 0, fmt.Errorf("Version is required.")
+		return nil, 0, errors.New("Version is required.")
 	}
 	if "" == strings.TrimSpace(cfg.Query) {
-		return nil, 0, fmt.Errorf("Your search is ambiguous. You must specify the variable 'query'.")
+		return nil, 0, errors.New("Query is too ambiguous. You must specify the variable 'query'.")
 	}
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribe.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = tribe.FetchLimit

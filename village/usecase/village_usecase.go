@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"fmt"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/middleware"
@@ -41,7 +41,7 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*twmo
 		return nil, err
 	}
 	if len(villages) == 0 {
-		return nil, fmt.Errorf("Village (ID: %d) not found.", id)
+		return nil, errors.Errorf("Village (ID: %d) not found.", id)
 	}
 	return villages[0], nil
 }

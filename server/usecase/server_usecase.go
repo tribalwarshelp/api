@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"fmt"
+	"github.com/pkg/errors"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/middleware"
@@ -40,7 +40,7 @@ func (ucase *usecase) GetByKey(ctx context.Context, key string) (*twmodel.Server
 		return nil, err
 	}
 	if len(servers) == 0 {
-		return nil, fmt.Errorf("Server (key: %s) not found.", key)
+		return nil, errors.Errorf("Server (key: %s) not found.", key)
 	}
 	return servers[0], nil
 }

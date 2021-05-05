@@ -3,6 +3,7 @@ package httpdelivery
 import (
 	"fmt"
 	"github.com/Kichiyaki/appmode"
+	"github.com/pkg/errors"
 	"net/http"
 	"strconv"
 	"time"
@@ -34,7 +35,7 @@ type handler struct {
 
 func Attach(cfg Config) error {
 	if cfg.MapUsecase == nil {
-		return fmt.Errorf("cfg.MapUsecase cannot be nil")
+		return errors.New("cfg.MapUsecase is required")
 	}
 	h := &handler{cfg.MapUsecase, cfg.ServerUsecase}
 	cfg.RouterGroup.GET("/map/:server", h.mapHandler)
