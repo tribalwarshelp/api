@@ -23,5 +23,8 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg tribehistory.FetchConfig) (
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > tribehistory.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = tribehistory.FetchLimit
 	}
+	if len(cfg.Sort) > tribehistory.MaxOrders {
+		cfg.Sort = cfg.Sort[0:tribehistory.MaxOrders]
+	}
 	return ucase.repo.Fetch(ctx, cfg)
 }

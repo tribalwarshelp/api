@@ -210,7 +210,11 @@ func toMarkers(params []string) (map[string][]int, []int, error) {
 	idsByColor := make(map[string][]int)
 	var ids []int
 	cache := make(map[int]bool)
+	count := 0
 	for _, param := range params {
+		if count >= servermap.MaxMarkers {
+			break
+		}
 		//id,#color
 		id, color, err := toMarker(param)
 		if err != nil {
@@ -222,6 +226,7 @@ func toMarkers(params []string) (map[string][]int, []int, error) {
 		ids = append(ids, id)
 		cache[id] = true
 		idsByColor[color] = append(idsByColor[color], id)
+		count++
 	}
 	return idsByColor, ids, nil
 }

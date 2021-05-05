@@ -23,5 +23,8 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg ennoblement.FetchConfig) ([
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > ennoblement.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = ennoblement.FetchLimit
 	}
+	if len(cfg.Sort) > ennoblement.MaxOrders {
+		cfg.Sort = cfg.Sort[0:ennoblement.MaxOrders]
+	}
 	return ucase.repo.Fetch(ctx, cfg)
 }

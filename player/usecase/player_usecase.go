@@ -25,6 +25,9 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*twm
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.FetchLimit
 	}
+	if len(cfg.Sort) > player.MaxOrders {
+		cfg.Sort = cfg.Sort[0:player.MaxOrders]
+	}
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
@@ -56,6 +59,9 @@ func (ucase *usecase) SearchPlayer(ctx context.Context, cfg player.SearchPlayerC
 	}
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > player.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = player.FetchLimit
+	}
+	if len(cfg.Sort) > player.MaxOrders {
+		cfg.Sort = cfg.Sort[0:player.MaxOrders]
 	}
 	return ucase.repo.SearchPlayer(ctx, cfg)
 }

@@ -23,5 +23,8 @@ func (ucase *usecase) Fetch(ctx context.Context, cfg playerhistory.FetchConfig) 
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > playerhistory.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = playerhistory.FetchLimit
 	}
+	if len(cfg.Sort) > playerhistory.MaxOrders {
+		cfg.Sort = cfg.Sort[0:playerhistory.MaxOrders]
+	}
 	return ucase.repo.Fetch(ctx, cfg)
 }
