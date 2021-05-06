@@ -23,7 +23,7 @@ func NewPGRepository(db *pg.DB) ennoblement.Repository {
 func (repo *pgRepository) Fetch(ctx context.Context, cfg ennoblement.FetchConfig) ([]*twmodel.Ennoblement, int, error) {
 	var err error
 	total := 0
-	var data []*twmodel.Ennoblement
+	data := make([]*twmodel.Ennoblement, 0)
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).

@@ -23,7 +23,7 @@ func NewPGRepository(db *pg.DB) player.Repository {
 
 func (repo *pgRepository) Fetch(ctx context.Context, cfg player.FetchConfig) ([]*twmodel.Player, int, error) {
 	var err error
-	var data []*twmodel.Player
+	data := make([]*twmodel.Player, 0)
 	total := 0
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
@@ -60,7 +60,7 @@ type fetchPlayerServersQueryResult struct {
 }
 
 func (repo *pgRepository) FetchNameChanges(ctx context.Context, code twmodel.VersionCode, playerID ...int) (map[int][]*twmodel.PlayerNameChange, error) {
-	var data []*twmodel.PlayerNameChange
+	data := make([]*twmodel.PlayerNameChange, 0)
 	if err := repo.Model(&data).
 		Context(ctx).
 		Where("version_code = ?", code).
@@ -78,7 +78,7 @@ func (repo *pgRepository) FetchNameChanges(ctx context.Context, code twmodel.Ver
 }
 
 func (repo *pgRepository) FetchPlayerServers(ctx context.Context, code twmodel.VersionCode, playerID ...int) (map[int][]string, error) {
-	var data []*fetchPlayerServersQueryResult
+	data := make([]*fetchPlayerServersQueryResult, 0)
 	if err := repo.Model(&twmodel.PlayerToServer{}).
 		Context(ctx).
 		Column("player_id").
@@ -110,7 +110,6 @@ func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPla
 	}
 
 	var query *orm.Query
-	var res []*twmodel.FoundPlayer
 	whereClause := "player.id = ?1 OR player.name ILIKE ?0"
 	if cfg.ID <= 0 {
 		whereClause = "player.name ILIKE ?0"
@@ -136,6 +135,7 @@ func (repo *pgRepository) SearchPlayer(ctx context.Context, cfg player.SearchPla
 	}
 
 	var err error
+	res := make([]*twmodel.FoundPlayer, 0)
 	count := 0
 	if query != nil {
 		base := repo.

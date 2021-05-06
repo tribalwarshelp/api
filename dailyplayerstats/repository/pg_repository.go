@@ -22,7 +22,7 @@ func NewPGRepository(db *pg.DB) dailyplayerstats.Repository {
 
 func (repo *pgRepository) Fetch(ctx context.Context, cfg dailyplayerstats.FetchConfig) ([]*twmodel.DailyPlayerStats, int, error) {
 	var err error
-	var data []*twmodel.DailyPlayerStats
+	data := make([]*twmodel.DailyPlayerStats, 0)
 	total := 0
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).

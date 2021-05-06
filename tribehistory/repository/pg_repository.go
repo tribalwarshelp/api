@@ -23,7 +23,7 @@ func NewPGRepository(db *pg.DB) tribehistory.Repository {
 func (repo *pgRepository) Fetch(ctx context.Context, cfg tribehistory.FetchConfig) ([]*twmodel.TribeHistory, int, error) {
 	var err error
 	total := 0
-	var data []*twmodel.TribeHistory
+	data := make([]*twmodel.TribeHistory, 0)
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).

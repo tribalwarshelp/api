@@ -28,7 +28,7 @@ func NewPGRepository(db *pg.DB) (server.Repository, error) {
 func (repo *pgRepository) Fetch(ctx context.Context, cfg server.FetchConfig) ([]*twmodel.Server, int, error) {
 	var err error
 	total := 0
-	var data []*twmodel.Server
+	data := make([]*twmodel.Server, 0)
 	query := repo.
 		Model(&data).
 		Context(ctx).
