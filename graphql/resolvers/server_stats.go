@@ -2,16 +2,16 @@ package resolvers
 
 import (
 	"context"
-	"github.com/tribalwarshelp/api/utils"
+	"github.com/Kichiyaki/goutil/safeptr"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/serverstats"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 func (r *Resolver) ServerStats(ctx context.Context,
 	server string,
-	f *models.ServerStatsFilter,
+	f *twmodel.ServerStatsFilter,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.ServerStats, error) {
@@ -21,8 +21,8 @@ func (r *Resolver) ServerStats(ctx context.Context,
 		Server: server,
 		Filter: f,
 		Sort:   sort,
-		Limit:  utils.SafeIntPointer(limit, 0),
-		Offset: utils.SafeIntPointer(offset, 0),
+		Limit:  safeptr.SafeIntPointer(limit, 0),
+		Offset: safeptr.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
 		Select: shouldSelectItems(ctx),
 	})

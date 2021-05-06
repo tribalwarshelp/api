@@ -2,21 +2,21 @@ package middleware
 
 import (
 	"context"
+	"github.com/Kichiyaki/appmode"
 	"net"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tribalwarshelp/shared/mode"
 )
 
 var limitWhitelistContextKey ContextKey = "limitWhitelist"
 
-type NetworksAndIps struct {
+type networksAndIPs struct {
 	Networks []*net.IPNet
-	Ips      []net.IP
+	IPs      []net.IP
 }
 
-func (networksAndIps NetworksAndIps) Contains(ip net.IP) bool {
-	for _, whitelistedIP := range networksAndIps.Ips {
+func (networksAndIps networksAndIPs) Contains(ip net.IP) bool {
+	for _, whitelistedIP := range networksAndIps.IPs {
 		if whitelistedIP.Equal(ip) {
 			return true
 		}
@@ -33,9 +33,9 @@ type LimitWhitelistConfig struct {
 	IPAddresses []string
 }
 
-func (cfg LimitWhitelistConfig) GetNetworksAndIps() NetworksAndIps {
-	networks := []*net.IPNet{}
-	ips := []net.IP{}
+func (cfg LimitWhitelistConfig) getNetworksAndIps() networksAndIPs {
+	var networks []*net.IPNet
+	var ips []net.IP
 	for _, ip := range cfg.IPAddresses {
 		_, network, err := net.ParseCIDR(ip)
 		if err == nil {
@@ -48,18 +48,18 @@ func (cfg LimitWhitelistConfig) GetNetworksAndIps() NetworksAndIps {
 			ips = append(ips, parsed)
 		}
 	}
-	return NetworksAndIps{
+	return networksAndIPs{
 		Networks: networks,
-		Ips:      ips,
+		IPs:      ips,
 	}
 }
 
 func LimitWhitelist(cfg LimitWhitelistConfig) gin.HandlerFunc {
-	networksAndIps := cfg.GetNetworksAndIps()
+	networksAndIps := cfg.getNetworksAndIps()
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()
 		clientIP := net.ParseIP(c.ClientIP())
-		canExceedLimit := networksAndIps.Contains(clientIP) || mode.Get() == mode.DevelopmentMode
+		canExceedLimit := networksAndIps.Contains(clientIP) || appmode.Equals(appmode.DevelopmentMode)
 		ctx = StoreLimitWhitelistDataInContext(ctx, canExceedLimit)
 		c.Request = c.Request.WithContext(ctx)
 		c.Next()

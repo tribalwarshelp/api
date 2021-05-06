@@ -2,12 +2,11 @@ package usecase
 
 import (
 	"context"
-	"fmt"
+	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/middleware"
-	"github.com/tribalwarshelp/api/utils"
 	"github.com/tribalwarshelp/api/village"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type usecase struct {
@@ -18,21 +17,22 @@ func New(repo village.Repository) village.Usecase {
 	return &usecase{repo}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*models.Village, int, error) {
+func (ucase *usecase) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*twmodel.Village, int, error) {
 	if cfg.Filter == nil {
-		cfg.Filter = &models.VillageFilter{}
+		cfg.Filter = &twmodel.VillageFilter{}
 	}
-
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > village.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = village.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
+	if len(cfg.Sort) > village.MaxOrders {
+		cfg.Sort = cfg.Sort[0:village.MaxOrders]
+	}
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
-func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*models.Village, error) {
+func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*twmodel.Village, error) {
 	villages, _, err := ucase.repo.Fetch(ctx, village.FetchConfig{
-		Filter: &models.VillageFilter{
+		Filter: &twmodel.VillageFilter{
 			ID: []int{id},
 		},
 		Limit:  1,
@@ -44,7 +44,7 @@ func (ucase *usecase) GetByID(ctx context.Context, server string, id int) (*mode
 		return nil, err
 	}
 	if len(villages) == 0 {
-		return nil, fmt.Errorf("Village (ID: %d) not found.", id)
+		return nil, errors.Errorf("Village (ID: %d) not found.", id)
 	}
 	return villages[0], nil
 }

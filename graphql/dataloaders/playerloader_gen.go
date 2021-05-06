@@ -3,16 +3,15 @@
 package dataloaders
 
 import (
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"sync"
 	"time"
-
-	"github.com/tribalwarshelp/shared/models"
 )
 
 // PlayerLoaderConfig captures the config to create a new PlayerLoader
 type PlayerLoaderConfig struct {
 	// Fetch is a method that provides the data for the loader
-	Fetch func(keys []int) ([]*models.Player, []error)
+	Fetch func(keys []int) ([]*twmodel.Player, []error)
 
 	// Wait is how long wait before sending a batch
 	Wait time.Duration
@@ -33,7 +32,7 @@ func NewPlayerLoader(config PlayerLoaderConfig) *PlayerLoader {
 // PlayerLoader batches and caches requests
 type PlayerLoader struct {
 	// this method provides the data for the loader
-	fetch func(keys []int) ([]*models.Player, []error)
+	fetch func(keys []int) ([]*twmodel.Player, []error)
 
 	// how long to done before sending a batch
 	wait time.Duration
@@ -44,7 +43,7 @@ type PlayerLoader struct {
 	// INTERNAL
 
 	// lazily created cache
-	cache map[int]*models.Player
+	cache map[int]*twmodel.Player
 
 	// the current batch. keys will continue to be collected until timeout is hit,
 	// then everything will be sent to the fetch method and out to the listeners
@@ -56,25 +55,25 @@ type PlayerLoader struct {
 
 type playerLoaderBatch struct {
 	keys    []int
-	data    []*models.Player
+	data    []*twmodel.Player
 	error   []error
 	closing bool
 	done    chan struct{}
 }
 
 // Load a Player by key, batching and caching will be applied automatically
-func (l *PlayerLoader) Load(key int) (*models.Player, error) {
+func (l *PlayerLoader) Load(key int) (*twmodel.Player, error) {
 	return l.LoadThunk(key)()
 }
 
 // LoadThunk returns a function that when called will block waiting for a Player.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *PlayerLoader) LoadThunk(key int) func() (*models.Player, error) {
+func (l *PlayerLoader) LoadThunk(key int) func() (*twmodel.Player, error) {
 	l.mu.Lock()
 	if it, ok := l.cache[key]; ok {
 		l.mu.Unlock()
-		return func() (*models.Player, error) {
+		return func() (*twmodel.Player, error) {
 			return it, nil
 		}
 	}
@@ -85,10 +84,10 @@ func (l *PlayerLoader) LoadThunk(key int) func() (*models.Player, error) {
 	pos := batch.keyIndex(l, key)
 	l.mu.Unlock()
 
-	return func() (*models.Player, error) {
+	return func() (*twmodel.Player, error) {
 		<-batch.done
 
-		var data *models.Player
+		var data *twmodel.Player
 		if pos < len(batch.data) {
 			data = batch.data[pos]
 		}
@@ -113,14 +112,14 @@ func (l *PlayerLoader) LoadThunk(key int) func() (*models.Player, error) {
 
 // LoadAll fetches many keys at once. It will be broken into appropriate sized
 // sub batches depending on how the loader is configured
-func (l *PlayerLoader) LoadAll(keys []int) ([]*models.Player, []error) {
-	results := make([]func() (*models.Player, error), len(keys))
+func (l *PlayerLoader) LoadAll(keys []int) ([]*twmodel.Player, []error) {
+	results := make([]func() (*twmodel.Player, error), len(keys))
 
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
 
-	players := make([]*models.Player, len(keys))
+	players := make([]*twmodel.Player, len(keys))
 	errors := make([]error, len(keys))
 	for i, thunk := range results {
 		players[i], errors[i] = thunk()
@@ -131,13 +130,13 @@ func (l *PlayerLoader) LoadAll(keys []int) ([]*models.Player, []error) {
 // LoadAllThunk returns a function that when called will block waiting for a Players.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *PlayerLoader) LoadAllThunk(keys []int) func() ([]*models.Player, []error) {
-	results := make([]func() (*models.Player, error), len(keys))
+func (l *PlayerLoader) LoadAllThunk(keys []int) func() ([]*twmodel.Player, []error) {
+	results := make([]func() (*twmodel.Player, error), len(keys))
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
-	return func() ([]*models.Player, []error) {
-		players := make([]*models.Player, len(keys))
+	return func() ([]*twmodel.Player, []error) {
+		players := make([]*twmodel.Player, len(keys))
 		errors := make([]error, len(keys))
 		for i, thunk := range results {
 			players[i], errors[i] = thunk()
@@ -149,7 +148,7 @@ func (l *PlayerLoader) LoadAllThunk(keys []int) func() ([]*models.Player, []erro
 // Prime the cache with the provided key and value. If the key already exists, no change is made
 // and false is returned.
 // (To forcefully prime the cache, clear the key first with loader.clear(key).prime(key, value).)
-func (l *PlayerLoader) Prime(key int, value *models.Player) bool {
+func (l *PlayerLoader) Prime(key int, value *twmodel.Player) bool {
 	l.mu.Lock()
 	var found bool
 	if _, found = l.cache[key]; !found {
@@ -169,9 +168,9 @@ func (l *PlayerLoader) Clear(key int) {
 	l.mu.Unlock()
 }
 
-func (l *PlayerLoader) unsafeSet(key int, value *models.Player) {
+func (l *PlayerLoader) unsafeSet(key int, value *twmodel.Player) {
 	if l.cache == nil {
-		l.cache = map[int]*models.Player{}
+		l.cache = map[int]*twmodel.Player{}
 	}
 	l.cache[key] = value
 }

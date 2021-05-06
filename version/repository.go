@@ -2,12 +2,11 @@ package version
 
 import (
 	"context"
-
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type FetchConfig struct {
-	Filter *models.VersionFilter
+	Filter *twmodel.VersionFilter
 	Select bool
 	Count  bool
 	Sort   []string
@@ -16,5 +15,5 @@ type FetchConfig struct {
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Version, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*twmodel.Version, int, error)
 }

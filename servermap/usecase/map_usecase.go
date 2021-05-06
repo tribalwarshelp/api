@@ -2,17 +2,18 @@ package usecase
 
 import (
 	"context"
-	"fmt"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"sort"
 	"strconv"
 	"strings"
 	"sync"
 
 	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/map-generator/generator"
+
 	"github.com/tribalwarshelp/api/servermap"
 	"github.com/tribalwarshelp/api/village"
-	"github.com/tribalwarshelp/map-generator/generator"
-	"github.com/tribalwarshelp/shared/models"
+
 	"golang.org/x/sync/errgroup"
 )
 
@@ -42,7 +43,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		return nil, err
 	}
 
-	otherMarkers := []*generator.Marker{}
+	var otherMarkers []*generator.Marker
 	var otherMarkersMutex sync.Mutex
 	if cfg.ShowOtherPlayerVillages {
 		color := cfg.PlayerVillageColor
@@ -52,8 +53,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
-				Filter: &models.VillageFilter{
-					PlayerFilter: &models.PlayerFilter{
+				Filter: &twmodel.VillageFilter{
+					PlayerFilter: &twmodel.PlayerFilter{
 						IDNEQ:      append(playerIDs, 0),
 						TribeIDNEQ: tribeIDs,
 					},
@@ -82,7 +83,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
-				Filter: &models.VillageFilter{
+				Filter: &twmodel.VillageFilter{
 					PlayerID: []int{0},
 				},
 				Select:  true,
@@ -102,7 +103,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		})
 	}
 
-	tribeMarkers := []*generator.Marker{}
+	var tribeMarkers []*generator.Marker
 	var tribeMarkersMutex sync.Mutex
 	for color, tribeIDs := range tribes {
 		c := color
@@ -110,8 +111,8 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
-				Filter: &models.VillageFilter{
-					PlayerFilter: &models.PlayerFilter{
+				Filter: &twmodel.VillageFilter{
+					PlayerFilter: &twmodel.PlayerFilter{
 						IDNEQ:   playerIDs,
 						TribeID: ids,
 					},
@@ -134,7 +135,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		})
 	}
 
-	playerMarkers := []*generator.Marker{}
+	var playerMarkers []*generator.Marker
 	var playerMarkersMutex sync.Mutex
 	for color, playerIDs := range players {
 		c := color
@@ -142,7 +143,7 @@ func (ucase *usecase) GetMarkers(ctx context.Context, cfg servermap.GetMarkersCo
 		g.Go(func() error {
 			villages, _, err := ucase.villageRepo.Fetch(ctx, village.FetchConfig{
 				Server: cfg.Server,
-				Filter: &models.VillageFilter{
+				Filter: &twmodel.VillageFilter{
 					PlayerID: ids,
 				},
 				Select:  true,
@@ -190,26 +191,30 @@ func concatMarkers(slices ...[]*generator.Marker) []*generator.Marker {
 }
 
 func toMarker(param string) (int, string, error) {
-	splitted := strings.Split(param, ",")
-	if len(splitted) != 2 {
-		return 0, "", fmt.Errorf("%s: Invalid marker format (should be id,#hexcolor)", param)
+	parts := strings.Split(param, ",")
+	if len(parts) != 2 {
+		return 0, "", errors.Errorf("%s: Invalid marker format (should be id,#hexcolor)", param)
 	}
-	id, err := strconv.Atoi(splitted[0])
+	id, err := strconv.Atoi(parts[0])
 	if err != nil {
 		return 0, "", errors.Wrapf(err, "%s: Invalid marker format (should be id,#hexcolor)", param)
 	}
 	if id <= 0 {
-		return 0, "", fmt.Errorf("ID should be greater than 0")
+		return 0, "", errors.New("ID should be greater than 0")
 	}
 
-	return id, splitted[1], nil
+	return id, parts[1], nil
 }
 
 func toMarkers(params []string) (map[string][]int, []int, error) {
 	idsByColor := make(map[string][]int)
-	ids := []int{}
+	var ids []int
 	cache := make(map[int]bool)
+	count := 0
 	for _, param := range params {
+		if count >= servermap.MaxMarkers {
+			break
+		}
 		//id,#color
 		id, color, err := toMarker(param)
 		if err != nil {
@@ -221,6 +226,7 @@ func toMarkers(params []string) (map[string][]int, []int, error) {
 		ids = append(ids, id)
 		cache[id] = true
 		idsByColor[color] = append(idsByColor[color], id)
+		count++
 	}
 	return idsByColor, ids, nil
 }

@@ -3,16 +3,15 @@
 package dataloaders
 
 import (
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"sync"
 	"time"
-
-	"github.com/tribalwarshelp/shared/models"
 )
 
 // PlayerNameChangesLoaderConfig captures the config to create a new PlayerNameChangesLoader
 type PlayerNameChangesLoaderConfig struct {
 	// Fetch is a method that provides the data for the loader
-	Fetch func(keys []int) ([][]*models.PlayerNameChange, []error)
+	Fetch func(keys []int) ([][]*twmodel.PlayerNameChange, []error)
 
 	// Wait is how long wait before sending a batch
 	Wait time.Duration
@@ -33,7 +32,7 @@ func NewPlayerNameChangesLoader(config PlayerNameChangesLoaderConfig) *PlayerNam
 // PlayerNameChangesLoader batches and caches requests
 type PlayerNameChangesLoader struct {
 	// this method provides the data for the loader
-	fetch func(keys []int) ([][]*models.PlayerNameChange, []error)
+	fetch func(keys []int) ([][]*twmodel.PlayerNameChange, []error)
 
 	// how long to done before sending a batch
 	wait time.Duration
@@ -44,7 +43,7 @@ type PlayerNameChangesLoader struct {
 	// INTERNAL
 
 	// lazily created cache
-	cache map[int][]*models.PlayerNameChange
+	cache map[int][]*twmodel.PlayerNameChange
 
 	// the current batch. keys will continue to be collected until timeout is hit,
 	// then everything will be sent to the fetch method and out to the listeners
@@ -56,25 +55,25 @@ type PlayerNameChangesLoader struct {
 
 type playerNameChangesLoaderBatch struct {
 	keys    []int
-	data    [][]*models.PlayerNameChange
+	data    [][]*twmodel.PlayerNameChange
 	error   []error
 	closing bool
 	done    chan struct{}
 }
 
 // Load a PlayerNameChange by key, batching and caching will be applied automatically
-func (l *PlayerNameChangesLoader) Load(key int) ([]*models.PlayerNameChange, error) {
+func (l *PlayerNameChangesLoader) Load(key int) ([]*twmodel.PlayerNameChange, error) {
 	return l.LoadThunk(key)()
 }
 
 // LoadThunk returns a function that when called will block waiting for a PlayerNameChange.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *PlayerNameChangesLoader) LoadThunk(key int) func() ([]*models.PlayerNameChange, error) {
+func (l *PlayerNameChangesLoader) LoadThunk(key int) func() ([]*twmodel.PlayerNameChange, error) {
 	l.mu.Lock()
 	if it, ok := l.cache[key]; ok {
 		l.mu.Unlock()
-		return func() ([]*models.PlayerNameChange, error) {
+		return func() ([]*twmodel.PlayerNameChange, error) {
 			return it, nil
 		}
 	}
@@ -85,10 +84,10 @@ func (l *PlayerNameChangesLoader) LoadThunk(key int) func() ([]*models.PlayerNam
 	pos := batch.keyIndex(l, key)
 	l.mu.Unlock()
 
-	return func() ([]*models.PlayerNameChange, error) {
+	return func() ([]*twmodel.PlayerNameChange, error) {
 		<-batch.done
 
-		var data []*models.PlayerNameChange
+		var data []*twmodel.PlayerNameChange
 		if pos < len(batch.data) {
 			data = batch.data[pos]
 		}
@@ -113,14 +112,14 @@ func (l *PlayerNameChangesLoader) LoadThunk(key int) func() ([]*models.PlayerNam
 
 // LoadAll fetches many keys at once. It will be broken into appropriate sized
 // sub batches depending on how the loader is configured
-func (l *PlayerNameChangesLoader) LoadAll(keys []int) ([][]*models.PlayerNameChange, []error) {
-	results := make([]func() ([]*models.PlayerNameChange, error), len(keys))
+func (l *PlayerNameChangesLoader) LoadAll(keys []int) ([][]*twmodel.PlayerNameChange, []error) {
+	results := make([]func() ([]*twmodel.PlayerNameChange, error), len(keys))
 
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
 
-	playerNameChanges := make([][]*models.PlayerNameChange, len(keys))
+	playerNameChanges := make([][]*twmodel.PlayerNameChange, len(keys))
 	errors := make([]error, len(keys))
 	for i, thunk := range results {
 		playerNameChanges[i], errors[i] = thunk()
@@ -131,13 +130,13 @@ func (l *PlayerNameChangesLoader) LoadAll(keys []int) ([][]*models.PlayerNameCha
 // LoadAllThunk returns a function that when called will block waiting for a PlayerNameChanges.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *PlayerNameChangesLoader) LoadAllThunk(keys []int) func() ([][]*models.PlayerNameChange, []error) {
-	results := make([]func() ([]*models.PlayerNameChange, error), len(keys))
+func (l *PlayerNameChangesLoader) LoadAllThunk(keys []int) func() ([][]*twmodel.PlayerNameChange, []error) {
+	results := make([]func() ([]*twmodel.PlayerNameChange, error), len(keys))
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
-	return func() ([][]*models.PlayerNameChange, []error) {
-		playerNameChanges := make([][]*models.PlayerNameChange, len(keys))
+	return func() ([][]*twmodel.PlayerNameChange, []error) {
+		playerNameChanges := make([][]*twmodel.PlayerNameChange, len(keys))
 		errors := make([]error, len(keys))
 		for i, thunk := range results {
 			playerNameChanges[i], errors[i] = thunk()
@@ -149,13 +148,13 @@ func (l *PlayerNameChangesLoader) LoadAllThunk(keys []int) func() ([][]*models.P
 // Prime the cache with the provided key and value. If the key already exists, no change is made
 // and false is returned.
 // (To forcefully prime the cache, clear the key first with loader.clear(key).prime(key, value).)
-func (l *PlayerNameChangesLoader) Prime(key int, value []*models.PlayerNameChange) bool {
+func (l *PlayerNameChangesLoader) Prime(key int, value []*twmodel.PlayerNameChange) bool {
 	l.mu.Lock()
 	var found bool
 	if _, found = l.cache[key]; !found {
 		// make a copy when writing to the cache, its easy to pass a pointer in from a loop var
 		// and end up with the whole cache pointing to the same value.
-		cpy := make([]*models.PlayerNameChange, len(value))
+		cpy := make([]*twmodel.PlayerNameChange, len(value))
 		copy(cpy, value)
 		l.unsafeSet(key, cpy)
 	}
@@ -170,9 +169,9 @@ func (l *PlayerNameChangesLoader) Clear(key int) {
 	l.mu.Unlock()
 }
 
-func (l *PlayerNameChangesLoader) unsafeSet(key int, value []*models.PlayerNameChange) {
+func (l *PlayerNameChangesLoader) unsafeSet(key int, value []*twmodel.PlayerNameChange) {
 	if l.cache == nil {
-		l.cache = map[int][]*models.PlayerNameChange{}
+		l.cache = map[int][]*twmodel.PlayerNameChange{}
 	}
 	l.cache[key] = value
 }

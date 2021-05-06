@@ -2,13 +2,12 @@ package player
 
 import (
 	"context"
-
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type FetchConfig struct {
 	Server string
-	Filter *models.PlayerFilter
+	Filter *twmodel.PlayerFilter
 	Select bool
 	Count  bool
 	Sort   []string
@@ -27,8 +26,8 @@ type SearchPlayerConfig struct {
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Player, int, error)
-	FetchNameChanges(ctx context.Context, code models.VersionCode, playerID ...int) (map[int][]*models.PlayerNameChange, error)
-	FetchPlayerServers(ctx context.Context, code models.VersionCode, playerID ...int) (map[int][]string, error)
-	SearchPlayer(ctx context.Context, cfg SearchPlayerConfig) ([]*models.FoundPlayer, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*twmodel.Player, int, error)
+	FetchNameChanges(ctx context.Context, code twmodel.VersionCode, playerID ...int) (map[int][]*twmodel.PlayerNameChange, error)
+	FetchPlayerServers(ctx context.Context, code twmodel.VersionCode, playerID ...int) (map[int][]string, error)
+	SearchPlayer(ctx context.Context, cfg SearchPlayerConfig) ([]*twmodel.FoundPlayer, int, error)
 }

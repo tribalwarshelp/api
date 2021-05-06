@@ -2,12 +2,14 @@ package repository
 
 import (
 	"context"
-	"fmt"
+	"github.com/Kichiyaki/gopgutil/v10"
+	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
 	"github.com/go-pg/pg/v10"
+
 	"github.com/tribalwarshelp/api/village"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type pgRepository struct {
@@ -18,27 +20,23 @@ func NewPGRepository(db *pg.DB) village.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*models.Village, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([]*twmodel.Village, int, error) {
 	var err error
-	data := []*models.Village{}
+	var data []*twmodel.Village
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).
 		Context(ctx).
 		Limit(cfg.Limit).
-		Offset(cfg.Offset)
+		Offset(cfg.Offset).
+		Apply(cfg.Filter.WhereWithRelations).
+		Apply(gopgutil.OrderAppender{
+			Orders:   cfg.Sort,
+			MaxDepth: 4,
+		}.Apply)
 	if len(cfg.Columns) > 0 {
 		query = query.Column(cfg.Columns...)
 	}
-	relationshipAndSortAppender := &models.VillageRelationshipAndSortAppender{
-		Filter: &models.VillageFilter{},
-		Sort:   cfg.Sort,
-	}
-	if cfg.Filter != nil {
-		query = query.Apply(cfg.Filter.Where)
-		relationshipAndSortAppender.Filter = cfg.Filter
-	}
-	query = query.Apply(relationshipAndSortAppender.Append)
 
 	total := 0
 	if cfg.Count && cfg.Select {
@@ -50,9 +48,9 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg village.FetchConfig) ([
 	}
 	if err != nil && err != pg.ErrNoRows {
 		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
-			return nil, 0, fmt.Errorf("Server not found")
+			return nil, 0, errors.New("Server not found")
 		}
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	return data, total, nil

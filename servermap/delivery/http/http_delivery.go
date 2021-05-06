@@ -2,17 +2,19 @@ package httpdelivery
 
 import (
 	"fmt"
+	"github.com/Kichiyaki/appmode"
+	"github.com/pkg/errors"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/tribalwarshelp/map-generator/generator"
-	"github.com/tribalwarshelp/shared/mode"
 
 	"github.com/gin-gonic/gin"
+	"github.com/vektah/gqlparser/v2/gqlerror"
+
 	"github.com/tribalwarshelp/api/server"
 	"github.com/tribalwarshelp/api/servermap"
-	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
 const (
@@ -33,7 +35,7 @@ type handler struct {
 
 func Attach(cfg Config) error {
 	if cfg.MapUsecase == nil {
-		return fmt.Errorf("cfg.MapUsecase cannot be nil")
+		return errors.New("cfg.MapUsecase is required")
 	}
 	h := &handler{cfg.MapUsecase, cfg.ServerUsecase}
 	cfg.RouterGroup.GET("/map/:server", h.mapHandler)
@@ -43,7 +45,7 @@ func Attach(cfg Config) error {
 func (h *handler) mapHandler(c *gin.Context) {
 	c.Header("Cache-Control", fmt.Sprintf(`public, max-age=%d`, imageTTL))
 
-	server, err := h.serverUsecase.GetByKey(c.Request.Context(), c.Param("server"))
+	srv, err := h.serverUsecase.GetByKey(c.Request.Context(), c.Param("server"))
 	if err != nil {
 		c.JSON(http.StatusNotFound, &gqlerror.Error{
 			Message: err.Error(),
@@ -55,7 +57,7 @@ func (h *handler) mapHandler(c *gin.Context) {
 	largerMarkers := c.Query("largerMarkers")
 	markersOnly := c.Query("markersOnly")
 	markers, err := h.mapUsecase.GetMarkers(c.Request.Context(), servermap.GetMarkersConfig{
-		Server:                  server.Key,
+		Server:                  srv.Key,
 		Tribes:                  c.Request.URL.Query()["tribe"],
 		Players:                 c.Request.URL.Query()["player"],
 		ShowBarbarianVillages:   showBarbarian == "true" || showBarbarian == "1",
@@ -73,7 +75,7 @@ func (h *handler) mapHandler(c *gin.Context) {
 
 	centerX, _ := strconv.Atoi(c.Query("centerX"))
 	centerY, _ := strconv.Atoi(c.Query("centerY"))
-	scale, _ := strconv.ParseFloat((c.Query("scale")), 32)
+	scale, _ := strconv.ParseFloat(c.Query("scale"), 32)
 	if scale > maxScale {
 		scale = maxScale
 	}
@@ -87,12 +89,12 @@ func (h *handler) mapHandler(c *gin.Context) {
 		BackgroundColor:      c.Query("backgroundColor"),
 		GridLineColor:        c.Query("gridLineColor"),
 		ContinentNumberColor: c.Query("continentNumberColor"),
-		MapSize:              server.Config.Coord.MapSize,
+		MapSize:              srv.Config.Coord.MapSize,
 		CenterX:              centerX,
 		CenterY:              centerY,
 		Scale:                float32(scale),
 		Quality:              90,
-		PNG:                  mode.Get() == mode.ProductionMode,
+		PNG:                  appmode.Equals(appmode.ProductionMode),
 	}); err != nil {
 		c.JSON(http.StatusBadRequest, &gqlerror.Error{
 			Message: err.Error(),

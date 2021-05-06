@@ -2,16 +2,16 @@ package resolvers
 
 import (
 	"context"
-	"github.com/tribalwarshelp/api/utils"
+	"github.com/Kichiyaki/goutil/safeptr"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/middleware"
 	"github.com/tribalwarshelp/api/server"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
-	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *serverResolver) Version(ctx context.Context, obj *models.Server) (*models.Version, error) {
+func (r *serverResolver) Version(ctx context.Context, obj *twmodel.Server) (*twmodel.Version, error) {
 	loaders := middleware.DataLoadersFromContext(ctx)
 	if loaders != nil {
 		lv, _ := loaders.VersionByCode.Load(obj.VersionCode.String())
@@ -21,7 +21,7 @@ func (r *serverResolver) Version(ctx context.Context, obj *models.Server) (*mode
 }
 
 func (r *queryResolver) Servers(ctx context.Context,
-	f *models.ServerFilter,
+	f *twmodel.ServerFilter,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.ServerList, error) {
@@ -30,14 +30,14 @@ func (r *queryResolver) Servers(ctx context.Context,
 	list.Items, list.Total, err = r.ServerUcase.Fetch(ctx, server.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  utils.SafeIntPointer(limit, 0),
-		Offset: utils.SafeIntPointer(offset, 0),
+		Limit:  safeptr.SafeIntPointer(limit, 0),
+		Offset: safeptr.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
 		Select: shouldSelectItems(ctx),
 	})
 	return list, err
 }
 
-func (r *queryResolver) Server(ctx context.Context, key string) (*models.Server, error) {
+func (r *queryResolver) Server(ctx context.Context, key string) (*twmodel.Server, error) {
 	return r.ServerUcase.GetByKey(ctx, key)
 }

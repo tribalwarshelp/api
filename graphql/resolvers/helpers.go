@@ -2,10 +2,11 @@ package resolvers
 
 import (
 	"context"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/99designs/gqlgen/graphql"
+
 	"github.com/tribalwarshelp/api/middleware"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 func getServer(ctx context.Context) (string, bool) {
@@ -22,7 +23,7 @@ func getServer(ctx context.Context) (string, bool) {
 	return server, ok
 }
 
-func getPlayer(ctx context.Context, id int) *models.Player {
+func getPlayer(ctx context.Context, id int) *twmodel.Player {
 	if server, ok := getServer(ctx); ok {
 		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
 		if dataloaders != nil {
@@ -37,7 +38,7 @@ func getPlayer(ctx context.Context, id int) *models.Player {
 	return nil
 }
 
-func getVillage(ctx context.Context, id int) *models.Village {
+func getVillage(ctx context.Context, id int) *twmodel.Village {
 	if server, ok := getServer(ctx); ok {
 		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
 		if dataloaders != nil {
@@ -52,7 +53,7 @@ func getVillage(ctx context.Context, id int) *models.Village {
 	return nil
 }
 
-func getTribe(ctx context.Context, id int) *models.Tribe {
+func getTribe(ctx context.Context, id int) *twmodel.Tribe {
 	if server, ok := getServer(ctx); ok {
 		dataloaders := middleware.ServerDataLoadersFromContext(ctx)
 		if dataloaders != nil {

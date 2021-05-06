@@ -2,14 +2,14 @@ package resolvers
 
 import (
 	"context"
-	"github.com/tribalwarshelp/api/utils"
+	"github.com/Kichiyaki/goutil/safeptr"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/playerhistory"
-	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *playerHistoryRecordResolver) Player(ctx context.Context, obj *models.PlayerHistory) (*models.Player, error) {
+func (r *playerHistoryRecordResolver) Player(ctx context.Context, obj *twmodel.PlayerHistory) (*twmodel.Player, error) {
 	if obj.Player != nil {
 		return obj.Player, nil
 	}
@@ -17,7 +17,7 @@ func (r *playerHistoryRecordResolver) Player(ctx context.Context, obj *models.Pl
 	return getPlayer(ctx, obj.PlayerID), nil
 }
 
-func (r *playerHistoryRecordResolver) Tribe(ctx context.Context, obj *models.PlayerHistory) (*models.Tribe, error) {
+func (r *playerHistoryRecordResolver) Tribe(ctx context.Context, obj *twmodel.PlayerHistory) (*twmodel.Tribe, error) {
 	if obj.Tribe != nil {
 		return obj.Tribe, nil
 	}
@@ -27,7 +27,7 @@ func (r *playerHistoryRecordResolver) Tribe(ctx context.Context, obj *models.Pla
 
 func (r *Resolver) PlayerHistory(ctx context.Context,
 	server string,
-	f *models.PlayerHistoryFilter,
+	f *twmodel.PlayerHistoryFilter,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.PlayerHistory, error) {
@@ -37,8 +37,8 @@ func (r *Resolver) PlayerHistory(ctx context.Context,
 		Server: server,
 		Filter: f,
 		Sort:   sort,
-		Limit:  utils.SafeIntPointer(limit, 0),
-		Offset: utils.SafeIntPointer(offset, 0),
+		Limit:  safeptr.SafeIntPointer(limit, 0),
+		Offset: safeptr.SafeIntPointer(offset, 0),
 		Count:  shouldCount(ctx),
 		Select: shouldSelectItems(ctx),
 	})

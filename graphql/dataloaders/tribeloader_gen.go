@@ -3,16 +3,15 @@
 package dataloaders
 
 import (
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"sync"
 	"time"
-
-	"github.com/tribalwarshelp/shared/models"
 )
 
 // TribeLoaderConfig captures the config to create a new TribeLoader
 type TribeLoaderConfig struct {
 	// Fetch is a method that provides the data for the loader
-	Fetch func(keys []int) ([]*models.Tribe, []error)
+	Fetch func(keys []int) ([]*twmodel.Tribe, []error)
 
 	// Wait is how long wait before sending a batch
 	Wait time.Duration
@@ -33,7 +32,7 @@ func NewTribeLoader(config TribeLoaderConfig) *TribeLoader {
 // TribeLoader batches and caches requests
 type TribeLoader struct {
 	// this method provides the data for the loader
-	fetch func(keys []int) ([]*models.Tribe, []error)
+	fetch func(keys []int) ([]*twmodel.Tribe, []error)
 
 	// how long to done before sending a batch
 	wait time.Duration
@@ -44,7 +43,7 @@ type TribeLoader struct {
 	// INTERNAL
 
 	// lazily created cache
-	cache map[int]*models.Tribe
+	cache map[int]*twmodel.Tribe
 
 	// the current batch. keys will continue to be collected until timeout is hit,
 	// then everything will be sent to the fetch method and out to the listeners
@@ -56,25 +55,25 @@ type TribeLoader struct {
 
 type tribeLoaderBatch struct {
 	keys    []int
-	data    []*models.Tribe
+	data    []*twmodel.Tribe
 	error   []error
 	closing bool
 	done    chan struct{}
 }
 
 // Load a Tribe by key, batching and caching will be applied automatically
-func (l *TribeLoader) Load(key int) (*models.Tribe, error) {
+func (l *TribeLoader) Load(key int) (*twmodel.Tribe, error) {
 	return l.LoadThunk(key)()
 }
 
 // LoadThunk returns a function that when called will block waiting for a Tribe.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *TribeLoader) LoadThunk(key int) func() (*models.Tribe, error) {
+func (l *TribeLoader) LoadThunk(key int) func() (*twmodel.Tribe, error) {
 	l.mu.Lock()
 	if it, ok := l.cache[key]; ok {
 		l.mu.Unlock()
-		return func() (*models.Tribe, error) {
+		return func() (*twmodel.Tribe, error) {
 			return it, nil
 		}
 	}
@@ -85,10 +84,10 @@ func (l *TribeLoader) LoadThunk(key int) func() (*models.Tribe, error) {
 	pos := batch.keyIndex(l, key)
 	l.mu.Unlock()
 
-	return func() (*models.Tribe, error) {
+	return func() (*twmodel.Tribe, error) {
 		<-batch.done
 
-		var data *models.Tribe
+		var data *twmodel.Tribe
 		if pos < len(batch.data) {
 			data = batch.data[pos]
 		}
@@ -113,14 +112,14 @@ func (l *TribeLoader) LoadThunk(key int) func() (*models.Tribe, error) {
 
 // LoadAll fetches many keys at once. It will be broken into appropriate sized
 // sub batches depending on how the loader is configured
-func (l *TribeLoader) LoadAll(keys []int) ([]*models.Tribe, []error) {
-	results := make([]func() (*models.Tribe, error), len(keys))
+func (l *TribeLoader) LoadAll(keys []int) ([]*twmodel.Tribe, []error) {
+	results := make([]func() (*twmodel.Tribe, error), len(keys))
 
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
 
-	tribes := make([]*models.Tribe, len(keys))
+	tribes := make([]*twmodel.Tribe, len(keys))
 	errors := make([]error, len(keys))
 	for i, thunk := range results {
 		tribes[i], errors[i] = thunk()
@@ -131,13 +130,13 @@ func (l *TribeLoader) LoadAll(keys []int) ([]*models.Tribe, []error) {
 // LoadAllThunk returns a function that when called will block waiting for a Tribes.
 // This method should be used if you want one goroutine to make requests to many
 // different data loaders without blocking until the thunk is called.
-func (l *TribeLoader) LoadAllThunk(keys []int) func() ([]*models.Tribe, []error) {
-	results := make([]func() (*models.Tribe, error), len(keys))
+func (l *TribeLoader) LoadAllThunk(keys []int) func() ([]*twmodel.Tribe, []error) {
+	results := make([]func() (*twmodel.Tribe, error), len(keys))
 	for i, key := range keys {
 		results[i] = l.LoadThunk(key)
 	}
-	return func() ([]*models.Tribe, []error) {
-		tribes := make([]*models.Tribe, len(keys))
+	return func() ([]*twmodel.Tribe, []error) {
+		tribes := make([]*twmodel.Tribe, len(keys))
 		errors := make([]error, len(keys))
 		for i, thunk := range results {
 			tribes[i], errors[i] = thunk()
@@ -149,7 +148,7 @@ func (l *TribeLoader) LoadAllThunk(keys []int) func() ([]*models.Tribe, []error)
 // Prime the cache with the provided key and value. If the key already exists, no change is made
 // and false is returned.
 // (To forcefully prime the cache, clear the key first with loader.clear(key).prime(key, value).)
-func (l *TribeLoader) Prime(key int, value *models.Tribe) bool {
+func (l *TribeLoader) Prime(key int, value *twmodel.Tribe) bool {
 	l.mu.Lock()
 	var found bool
 	if _, found = l.cache[key]; !found {
@@ -169,9 +168,9 @@ func (l *TribeLoader) Clear(key int) {
 	l.mu.Unlock()
 }
 
-func (l *TribeLoader) unsafeSet(key int, value *models.Tribe) {
+func (l *TribeLoader) unsafeSet(key int, value *twmodel.Tribe) {
 	if l.cache == nil {
-		l.cache = map[int]*models.Tribe{}
+		l.cache = map[int]*twmodel.Tribe{}
 	}
 	l.cache[key] = value
 }

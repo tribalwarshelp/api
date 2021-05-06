@@ -2,13 +2,13 @@ package dataloaders
 
 import (
 	"context"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"time"
 
 	"github.com/tribalwarshelp/api/player"
 	"github.com/tribalwarshelp/api/tribe"
 	"github.com/tribalwarshelp/api/version"
 	"github.com/tribalwarshelp/api/village"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 const (
@@ -31,13 +31,13 @@ func NewDataLoaders(cfg Config) *DataLoaders {
 		VersionByCode: &VersionLoader{
 			wait:     wait,
 			maxBatch: 0,
-			fetch: func(keys []string) ([]*models.Version, []error) {
-				codes := []models.VersionCode{}
+			fetch: func(keys []string) ([]*twmodel.Version, []error) {
+				var codes []twmodel.VersionCode
 				for _, code := range keys {
-					codes = append(codes, models.VersionCode(code))
+					codes = append(codes, twmodel.VersionCode(code))
 				}
 				versions, _, err := cfg.VersionRepo.Fetch(context.Background(), version.FetchConfig{
-					Filter: &models.VersionFilter{
+					Filter: &twmodel.VersionFilter{
 						Code: codes,
 					},
 					Select: true,
@@ -46,12 +46,12 @@ func NewDataLoaders(cfg Config) *DataLoaders {
 					return nil, []error{err}
 				}
 
-				versionByCode := make(map[models.VersionCode]*models.Version)
-				for _, version := range versions {
-					versionByCode[version.Code] = version
+				versionByCode := make(map[twmodel.VersionCode]*twmodel.Version)
+				for _, v := range versions {
+					versionByCode[v.Code] = v
 				}
 
-				inOrder := make([]*models.Version, len(keys))
+				inOrder := make([]*twmodel.Version, len(keys))
 				for i, code := range codes {
 					inOrder[i] = versionByCode[code]
 				}

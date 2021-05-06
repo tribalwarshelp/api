@@ -2,13 +2,15 @@ package repository
 
 import (
 	"context"
-	"fmt"
+	"github.com/Kichiyaki/gopgutil/v10"
+	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
+
 	"github.com/tribalwarshelp/api/tribe"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type pgRepository struct {
@@ -19,20 +21,21 @@ func NewPGRepository(db *pg.DB) tribe.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*models.Tribe, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*twmodel.Tribe, int, error) {
 	var err error
-	data := []*models.Tribe{}
+	var data []*twmodel.Tribe
 	total := 0
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).
 		Context(ctx).
-		Order(cfg.Sort...).
 		Limit(cfg.Limit).
-		Offset(cfg.Offset)
-	if cfg.Filter != nil {
-		query = query.Apply(cfg.Filter.Where)
-	}
+		Offset(cfg.Offset).
+		Apply(cfg.Filter.Where).
+		Apply(gopgutil.OrderAppender{
+			Orders:   cfg.Sort,
+			MaxDepth: 4,
+		}.Apply)
 
 	if cfg.Count && cfg.Select {
 		total, err = query.SelectAndCount()
@@ -43,27 +46,27 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg tribe.FetchConfig) ([]*
 	}
 	if err != nil && err != pg.ErrNoRows {
 		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
-			return nil, 0, fmt.Errorf("Server not found")
+			return nil, 0, errors.New("Server not found")
 		}
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	return data, total, nil
 }
 
-func (repo *pgRepository) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConfig) ([]*models.FoundTribe, int, error) {
-	servers := []*models.Server{}
+func (repo *pgRepository) SearchTribe(ctx context.Context, cfg tribe.SearchTribeConfig) ([]*twmodel.FoundTribe, int, error) {
+	var servers []*twmodel.Server
 	if err := repo.
 		Model(&servers).
 		Context(ctx).
 		Column("key").
 		Where("version_code = ?", cfg.Version).
 		Select(); err != nil {
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	var query *orm.Query
-	res := []*models.FoundTribe{}
+	var res []*twmodel.FoundTribe
 	for _, server := range servers {
 		safeKey := pg.Safe(server.Key)
 		otherQuery := repo.
@@ -89,14 +92,17 @@ func (repo *pgRepository) SearchTribe(ctx context.Context, cfg tribe.SearchTribe
 			Table("union_q").
 			Limit(cfg.Limit).
 			Offset(cfg.Offset).
-			Order(cfg.Sort...)
+			Apply(gopgutil.OrderAppender{
+				Orders:   cfg.Sort,
+				MaxDepth: 4,
+			}.Apply)
 		if cfg.Count {
 			count, err = base.SelectAndCount(&res)
 		} else {
 			err = base.Select(&res)
 		}
 		if err != nil && err != pg.ErrNoRows {
-			return nil, 0, fmt.Errorf("Internal server error")
+			return nil, 0, errors.New("Internal server error")
 		}
 	}
 

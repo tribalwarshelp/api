@@ -2,19 +2,18 @@ package main
 
 import (
 	"context"
+	"github.com/Kichiyaki/appmode"
+	"github.com/Kichiyaki/goutil/envutil"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/gin-contrib/cors"
 
 	servermaphttpdelivery "github.com/tribalwarshelp/api/servermap/delivery/http"
-
-	"github.com/tribalwarshelp/shared/mode"
 
 	httpdelivery "github.com/tribalwarshelp/api/graphql/delivery/http"
 	"github.com/tribalwarshelp/api/graphql/resolvers"
@@ -59,7 +58,7 @@ import (
 func init() {
 	os.Setenv("TZ", "UTC")
 
-	if mode.Get() == mode.DevelopmentMode {
+	if appmode.Equals(appmode.DevelopmentMode) {
 		godotenv.Load(".env.local")
 	}
 
@@ -72,7 +71,7 @@ func main() {
 		Password: os.Getenv("DB_PASSWORD"),
 		Database: os.Getenv("DB_NAME"),
 		Addr:     os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT"),
-		PoolSize: mustParseEnvToInt("DB_POOL_SIZE"),
+		PoolSize: envutil.GetenvInt("DB_POOL_SIZE"),
 	})
 	defer func() {
 		if err := db.Close(); err != nil {
@@ -109,7 +108,7 @@ func main() {
 
 	router := gin.New()
 	router.Use(ginlogrus.Logger(logrus.WithField("hostname", "api")), gin.Recovery())
-	if mode.Get() == mode.DevelopmentMode {
+	if appmode.Equals(appmode.DevelopmentMode) {
 		router.Use(cors.New(cors.Config{
 			AllowOriginFunc: func(string) bool {
 				return true
@@ -187,25 +186,13 @@ func main() {
 	logrus.Println("Server exiting")
 }
 
-func mustParseEnvToInt(key string) int {
-	str := os.Getenv(key)
-	if str == "" {
-		return 0
-	}
-	i, err := strconv.Atoi(str)
-	if err != nil {
-		return 0
-	}
-	return i
-}
-
 func setupLogger() {
-	if mode.Get() == mode.DevelopmentMode {
+	if appmode.Equals(appmode.DevelopmentMode) {
 		logrus.SetLevel(logrus.DebugLevel)
 	}
 
 	timestampFormat := "2006-01-02 15:04:05"
-	if mode.Get() == mode.ProductionMode {
+	if appmode.Equals(appmode.ProductionMode) {
 		customFormatter := new(logrus.JSONFormatter)
 		customFormatter.TimestampFormat = timestampFormat
 		logrus.SetFormatter(customFormatter)

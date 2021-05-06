@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/pkg/errors"
+	"time"
+
 	"github.com/tribalwarshelp/api/graphql/querycomplexity"
 	"github.com/tribalwarshelp/api/middleware"
-	"time"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
@@ -15,6 +16,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gin-gonic/gin"
+
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/graphql/resolvers"
 )

@@ -2,12 +2,14 @@ package repository
 
 import (
 	"context"
-	"fmt"
+	"github.com/Kichiyaki/gopgutil/v10"
+	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 	"strings"
 
 	"github.com/go-pg/pg/v10"
+
 	"github.com/tribalwarshelp/api/serverstats"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type pgRepository struct {
@@ -18,20 +20,21 @@ func NewPGRepository(db *pg.DB) serverstats.Repository {
 	return &pgRepository{db}
 }
 
-func (repo *pgRepository) Fetch(ctx context.Context, cfg serverstats.FetchConfig) ([]*models.ServerStats, int, error) {
+func (repo *pgRepository) Fetch(ctx context.Context, cfg serverstats.FetchConfig) ([]*twmodel.ServerStats, int, error) {
 	var err error
-	data := []*models.ServerStats{}
+	var data []*twmodel.ServerStats
 	total := 0
 	query := repo.
 		WithParam("SERVER", pg.Safe(cfg.Server)).
 		Model(&data).
 		Context(ctx).
-		Order(cfg.Sort...).
 		Limit(cfg.Limit).
-		Offset(cfg.Offset)
-	if cfg.Filter != nil {
-		query = query.Apply(cfg.Filter.Where)
-	}
+		Offset(cfg.Offset).
+		Apply(cfg.Filter.Where).
+		Apply(gopgutil.OrderAppender{
+			Orders:   cfg.Sort,
+			MaxDepth: 4,
+		}.Apply)
 
 	if cfg.Count && cfg.Select {
 		total, err = query.SelectAndCount()
@@ -42,9 +45,9 @@ func (repo *pgRepository) Fetch(ctx context.Context, cfg serverstats.FetchConfig
 	}
 	if err != nil && err != pg.ErrNoRows {
 		if strings.Contains(err.Error(), `relation "`+cfg.Server) {
-			return nil, 0, fmt.Errorf("Server not found")
+			return nil, 0, errors.New("Server not found")
 		}
-		return nil, 0, fmt.Errorf("Internal server error")
+		return nil, 0, errors.New("Internal server error")
 	}
 
 	return data, total, nil

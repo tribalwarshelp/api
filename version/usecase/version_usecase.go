@@ -2,13 +2,11 @@ package usecase
 
 import (
 	"context"
-	"fmt"
+	"github.com/pkg/errors"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/middleware"
-	"github.com/tribalwarshelp/api/utils"
-
 	"github.com/tribalwarshelp/api/version"
-	"github.com/tribalwarshelp/shared/models"
 )
 
 type usecase struct {
@@ -21,22 +19,23 @@ func New(repo version.Repository) version.Usecase {
 	}
 }
 
-func (ucase *usecase) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*models.Version, int, error) {
+func (ucase *usecase) Fetch(ctx context.Context, cfg version.FetchConfig) ([]*twmodel.Version, int, error) {
 	if cfg.Filter == nil {
-		cfg.Filter = &models.VersionFilter{}
+		cfg.Filter = &twmodel.VersionFilter{}
 	}
-
 	if !middleware.CanExceedLimit(ctx) && (cfg.Limit > version.FetchLimit || cfg.Limit <= 0) {
 		cfg.Limit = version.FetchLimit
 	}
-	cfg.Sort = utils.SanitizeSorts(cfg.Sort)
+	if len(cfg.Sort) > version.MaxOrders {
+		cfg.Sort = cfg.Sort[0:version.MaxOrders]
+	}
 	return ucase.repo.Fetch(ctx, cfg)
 }
 
-func (ucase *usecase) GetByCode(ctx context.Context, code models.VersionCode) (*models.Version, error) {
+func (ucase *usecase) GetByCode(ctx context.Context, code twmodel.VersionCode) (*twmodel.Version, error) {
 	versions, _, err := ucase.repo.Fetch(ctx, version.FetchConfig{
-		Filter: &models.VersionFilter{
-			Code: []models.VersionCode{code},
+		Filter: &twmodel.VersionFilter{
+			Code: []twmodel.VersionCode{code},
 		},
 		Limit:  1,
 		Select: true,
@@ -46,7 +45,7 @@ func (ucase *usecase) GetByCode(ctx context.Context, code models.VersionCode) (*
 		return nil, err
 	}
 	if len(versions) == 0 {
-		return nil, fmt.Errorf("There is no version with code: %s.", code)
+		return nil, errors.Errorf("version (Code: %s) not found", code)
 	}
 	return versions[0], nil
 }

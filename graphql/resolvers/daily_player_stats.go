@@ -2,14 +2,14 @@ package resolvers
 
 import (
 	"context"
-	"github.com/tribalwarshelp/api/utils"
+	"github.com/Kichiyaki/goutil/safeptr"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/dailyplayerstats"
 	"github.com/tribalwarshelp/api/graphql/generated"
-	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *dailyPlayerStatsRecordResolver) Player(ctx context.Context, obj *models.DailyPlayerStats) (*models.Player, error) {
+func (r *dailyPlayerStatsRecordResolver) Player(ctx context.Context, obj *twmodel.DailyPlayerStats) (*twmodel.Player, error) {
 	if obj.Player != nil {
 		return obj.Player, nil
 	}
@@ -19,7 +19,7 @@ func (r *dailyPlayerStatsRecordResolver) Player(ctx context.Context, obj *models
 
 func (r *queryResolver) DailyPlayerStats(ctx context.Context,
 	server string,
-	filter *models.DailyPlayerStatsFilter,
+	filter *twmodel.DailyPlayerStatsFilter,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.DailyPlayerStats, error) {
@@ -29,8 +29,8 @@ func (r *queryResolver) DailyPlayerStats(ctx context.Context,
 		Server: server,
 		Filter: filter,
 		Sort:   sort,
-		Limit:  utils.SafeIntPointer(limit, 0),
-		Offset: utils.SafeIntPointer(offset, 0),
+		Limit:  safeptr.SafeIntPointer(limit, 0),
+		Offset: safeptr.SafeIntPointer(offset, 0),
 		Select: shouldSelectItems(ctx),
 		Count:  shouldCount(ctx),
 	})

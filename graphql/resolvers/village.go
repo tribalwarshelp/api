@@ -2,14 +2,14 @@ package resolvers
 
 import (
 	"context"
-	"github.com/tribalwarshelp/api/utils"
+	"github.com/Kichiyaki/goutil/safeptr"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 
 	"github.com/tribalwarshelp/api/graphql/generated"
 	"github.com/tribalwarshelp/api/village"
-	"github.com/tribalwarshelp/shared/models"
 )
 
-func (r *villageResolver) Player(ctx context.Context, obj *models.Village) (*models.Player, error) {
+func (r *villageResolver) Player(ctx context.Context, obj *twmodel.Village) (*twmodel.Player, error) {
 	if obj.Player != nil {
 		return obj.Player, nil
 	}
@@ -19,7 +19,7 @@ func (r *villageResolver) Player(ctx context.Context, obj *models.Village) (*mod
 
 func (r *queryResolver) Villages(ctx context.Context,
 	server string,
-	f *models.VillageFilter,
+	f *twmodel.VillageFilter,
 	limit *int,
 	offset *int,
 	sort []string) (*generated.VillageList, error) {
@@ -28,8 +28,8 @@ func (r *queryResolver) Villages(ctx context.Context,
 	list.Items, list.Total, err = r.VillageUcase.Fetch(ctx, village.FetchConfig{
 		Filter: f,
 		Sort:   sort,
-		Limit:  utils.SafeIntPointer(limit, 0),
-		Offset: utils.SafeIntPointer(offset, 0),
+		Limit:  safeptr.SafeIntPointer(limit, 0),
+		Offset: safeptr.SafeIntPointer(offset, 0),
 		Select: shouldSelectItems(ctx),
 		Count:  shouldCount(ctx),
 		Server: server,
@@ -37,6 +37,6 @@ func (r *queryResolver) Villages(ctx context.Context,
 	return list, err
 }
 
-func (r *queryResolver) Village(ctx context.Context, server string, id int) (*models.Village, error) {
+func (r *queryResolver) Village(ctx context.Context, server string, id int) (*twmodel.Village, error) {
 	return r.VillageUcase.GetByID(ctx, server, id)
 }

@@ -3,75 +3,75 @@
 package generated
 
 import (
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type DailyPlayerStats struct {
-	Total int                        `json:"total"`
-	Items []*models.DailyPlayerStats `json:"items"`
+	Total int                         `json:"total"`
+	Items []*twmodel.DailyPlayerStats `json:"items"`
 }
 
 type DailyTribeStats struct {
-	Total int                       `json:"total"`
-	Items []*models.DailyTribeStats `json:"items"`
+	Total int                        `json:"total"`
+	Items []*twmodel.DailyTribeStats `json:"items"`
 }
 
 type EnnoblementList struct {
-	Items []*models.Ennoblement `json:"items"`
-	Total int                   `json:"total"`
+	Items []*twmodel.Ennoblement `json:"items"`
+	Total int                    `json:"total"`
 }
 
 type FoundPlayerList struct {
-	Items []*models.FoundPlayer `json:"items"`
-	Total int                   `json:"total"`
+	Items []*twmodel.FoundPlayer `json:"items"`
+	Total int                    `json:"total"`
 }
 
 type FoundTribeList struct {
-	Items []*models.FoundTribe `json:"items"`
-	Total int                  `json:"total"`
+	Items []*twmodel.FoundTribe `json:"items"`
+	Total int                   `json:"total"`
 }
 
 type PlayerHistory struct {
-	Total int                     `json:"total"`
-	Items []*models.PlayerHistory `json:"items"`
+	Total int                      `json:"total"`
+	Items []*twmodel.PlayerHistory `json:"items"`
 }
 
 type PlayerList struct {
-	Items []*models.Player `json:"items"`
-	Total int              `json:"total"`
+	Items []*twmodel.Player `json:"items"`
+	Total int               `json:"total"`
 }
 
 type ServerList struct {
-	Items []*models.Server `json:"items"`
-	Total int              `json:"total"`
+	Items []*twmodel.Server `json:"items"`
+	Total int               `json:"total"`
 }
 
 type ServerStats struct {
-	Items []*models.ServerStats `json:"items"`
-	Total int                   `json:"total"`
+	Items []*twmodel.ServerStats `json:"items"`
+	Total int                    `json:"total"`
 }
 
 type TribeChanges struct {
-	Total int                   `json:"total"`
-	Items []*models.TribeChange `json:"items"`
+	Total int                    `json:"total"`
+	Items []*twmodel.TribeChange `json:"items"`
 }
 
 type TribeHistory struct {
-	Total int                    `json:"total"`
-	Items []*models.TribeHistory `json:"items"`
+	Total int                     `json:"total"`
+	Items []*twmodel.TribeHistory `json:"items"`
 }
 
 type TribeList struct {
-	Items []*models.Tribe `json:"items"`
-	Total int             `json:"total"`
+	Items []*twmodel.Tribe `json:"items"`
+	Total int              `json:"total"`
 }
 
 type VersionList struct {
-	Items []*models.Version `json:"items"`
-	Total int               `json:"total"`
+	Items []*twmodel.Version `json:"items"`
+	Total int                `json:"total"`
 }
 
 type VillageList struct {
-	Items []*models.Village `json:"items"`
-	Total int               `json:"total"`
+	Items []*twmodel.Village `json:"items"`
+	Total int                `json:"total"`
 }

@@ -2,13 +2,12 @@ package village
 
 import (
 	"context"
-
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type FetchConfig struct {
 	Server  string
-	Filter  *models.VillageFilter
+	Filter  *twmodel.VillageFilter
 	Columns []string
 	Select  bool
 	Count   bool
@@ -18,5 +17,5 @@ type FetchConfig struct {
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.Village, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*twmodel.Village, int, error)
 }

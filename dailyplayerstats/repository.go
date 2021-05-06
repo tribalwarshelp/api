@@ -2,13 +2,12 @@ package dailyplayerstats
 
 import (
 	"context"
-
-	"github.com/tribalwarshelp/shared/models"
+	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
 type FetchConfig struct {
 	Server string
-	Filter *models.DailyPlayerStatsFilter
+	Filter *twmodel.DailyPlayerStatsFilter
 	Select bool
 	Count  bool
 	Sort   []string
@@ -17,5 +16,5 @@ type FetchConfig struct {
 }
 
 type Repository interface {
-	Fetch(ctx context.Context, cfg FetchConfig) ([]*models.DailyPlayerStats, int, error)
+	Fetch(ctx context.Context, cfg FetchConfig) ([]*twmodel.DailyPlayerStats, int, error)
 }

@@ -61,13 +61,10 @@ func (r *Resolver) DailyTribeStatsRecord() generated.DailyTribeStatsRecordResolv
 type queryResolver struct{ *Resolver }
 type playerResolver struct{ *Resolver }
 type villageResolver struct{ *Resolver }
-type tribeResolver struct{ *Resolver }
 type ennoblementResolver struct{ *Resolver }
 type serverResolver struct{ *Resolver }
 type playerHistoryRecordResolver struct{ *Resolver }
 type tribeHistoryRecordResolver struct{ *Resolver }
-type serverStatsRecordResolver struct{ *Resolver }
 type tribeChangeRecordResolver struct{ *Resolver }
 type dailyPlayerStatsRecordResolver struct{ *Resolver }
 type dailyTribeStatsRecordResolver struct{ *Resolver }
-type versionResolver struct{ *Resolver }
