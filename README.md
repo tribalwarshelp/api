@@ -2,7 +2,7 @@
 
 A GraphQL API for Tribal Wars data. 
 
-## API Limits
+## Limits
 
 You can fetch in one GraphQL query:
 
@@ -109,7 +109,7 @@ You can generate a server map with this API. The current endpoint is http(s)://y
 
 ## Development
 
-**Required env variables to run this API:**
+**Required ENV variables:**
 
 ```
 DB_USER=your_pgdb_user
