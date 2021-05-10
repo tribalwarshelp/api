@@ -49,7 +49,6 @@ func graphqlHandler(cfg generated.Config) gin.HandlerFunc {
 
 	srv.AddTransport(transport.GET{})
 	srv.AddTransport(transport.POST{})
-	srv.AddTransport(transport.MultipartForm{})
 	srv.Use(extension.Introspection{})
 	srv.Use(extension.AutomaticPersistedQuery{
 		Cache: lru.New(100),

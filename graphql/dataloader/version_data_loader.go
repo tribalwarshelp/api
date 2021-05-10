@@ -1,20 +1,20 @@
-package dataloaders
+package dataloader
 
 import (
 	"context"
 	"github.com/tribalwarshelp/shared/tw/twmodel"
 )
 
-type VersionDataLoaders struct {
+type VersionDataLoader struct {
 	PlayerServersByID     *PlayerServersLoader
 	PlayerNameChangesByID *PlayerNameChangesLoader
 }
 
-func NewVersionDataLoaders(versionCode twmodel.VersionCode, cfg Config) *VersionDataLoaders {
-	return &VersionDataLoaders{
+func NewVersionDataLoader(versionCode twmodel.VersionCode, cfg Config) *VersionDataLoader {
+	return &VersionDataLoader{
 		PlayerServersByID: &PlayerServersLoader{
 			wait:     wait,
-			maxBatch: 0,
+			maxBatch: maxBatch,
 			fetch: func(keys []int) ([][]string, []error) {
 				playerServersByID, err := cfg.PlayerRepo.FetchPlayerServers(context.Background(), versionCode, keys...)
 				if err != nil {
@@ -29,7 +29,7 @@ func NewVersionDataLoaders(versionCode twmodel.VersionCode, cfg Config) *Version
 		},
 		PlayerNameChangesByID: &PlayerNameChangesLoader{
 			wait:     wait,
-			maxBatch: 0,
+			maxBatch: maxBatch,
 			fetch: func(keys []int) ([][]*twmodel.PlayerNameChange, []error) {
 				playerNameChangesByID, err := cfg.PlayerRepo.FetchNameChanges(context.Background(), versionCode, keys...)
 				if err != nil {

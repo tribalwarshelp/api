@@ -1,4 +1,4 @@
-package dataloaders
+package dataloader
 
 import (
 	"context"
@@ -12,10 +12,11 @@ import (
 )
 
 const (
-	wait = 4 * time.Millisecond
+	wait     = 2 * time.Millisecond
+	maxBatch = 200
 )
 
-type DataLoaders struct {
+type DataLoader struct {
 	VersionByCode *VersionLoader
 }
 
@@ -26,11 +27,11 @@ type Config struct {
 	VersionRepo version.Repository
 }
 
-func NewDataLoaders(cfg Config) *DataLoaders {
-	return &DataLoaders{
+func NewDataLoader(cfg Config) *DataLoader {
+	return &DataLoader{
 		VersionByCode: &VersionLoader{
 			wait:     wait,
-			maxBatch: 0,
+			maxBatch: maxBatch,
 			fetch: func(keys []string) ([]*twmodel.Version, []error) {
 				var codes []twmodel.VersionCode
 				for _, code := range keys {

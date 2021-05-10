@@ -1,4 +1,4 @@
-package dataloaders
+package dataloader
 
 import (
 	"context"
@@ -9,17 +9,17 @@ import (
 	"github.com/tribalwarshelp/api/village"
 )
 
-type ServerDataLoaders struct {
+type ServerDataLoader struct {
 	PlayerByID  *PlayerLoader
 	TribeByID   *TribeLoader
 	VillageByID *VillageLoader
 }
 
-func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
-	return &ServerDataLoaders{
+func NewServerDataLoader(server string, cfg Config) *ServerDataLoader {
+	return &ServerDataLoader{
 		PlayerByID: &PlayerLoader{
 			wait:     wait,
-			maxBatch: 0,
+			maxBatch: maxBatch,
 			fetch: func(ids []int) ([]*twmodel.Player, []error) {
 				players, _, err := cfg.PlayerRepo.Fetch(context.Background(), player.FetchConfig{
 					Filter: &twmodel.PlayerFilter{
@@ -47,7 +47,7 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 		},
 		TribeByID: &TribeLoader{
 			wait:     wait,
-			maxBatch: 0,
+			maxBatch: maxBatch,
 			fetch: func(ids []int) ([]*twmodel.Tribe, []error) {
 				tribes, _, err := cfg.TribeRepo.Fetch(context.Background(), tribe.FetchConfig{
 					Server: server,
@@ -75,7 +75,7 @@ func NewServerDataLoaders(server string, cfg Config) *ServerDataLoaders {
 		},
 		VillageByID: &VillageLoader{
 			wait:     wait,
-			maxBatch: 0,
+			maxBatch: maxBatch,
 			fetch: func(ids []int) ([]*twmodel.Village, []error) {
 				villages, _, err := cfg.VillageRepo.Fetch(context.Background(), village.FetchConfig{
 					Server: server,

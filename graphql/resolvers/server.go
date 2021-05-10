@@ -12,7 +12,7 @@ import (
 )
 
 func (r *serverResolver) Version(ctx context.Context, obj *twmodel.Server) (*twmodel.Version, error) {
-	loaders := middleware.DataLoadersFromContext(ctx)
+	loaders := middleware.DataLoaderFromContext(ctx)
 	if loaders != nil {
 		lv, _ := loaders.VersionByCode.Load(obj.VersionCode.String())
 		return lv, nil

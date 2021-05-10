@@ -18,7 +18,7 @@ import (
 	httpdelivery "github.com/tribalwarshelp/api/graphql/delivery/http"
 	"github.com/tribalwarshelp/api/graphql/resolvers"
 
-	"github.com/tribalwarshelp/api/graphql/dataloaders"
+	"github.com/tribalwarshelp/api/graphql/dataloader"
 
 	dailyplayerstatsrepo "github.com/tribalwarshelp/api/dailyplayerstats/repository"
 	dailyplayerstatsucase "github.com/tribalwarshelp/api/dailyplayerstats/usecase"
@@ -132,7 +132,7 @@ func main() {
 			middleware.DataLoadersToContextConfig{
 				ServerRepo: serverRepo,
 			},
-			dataloaders.Config{
+			dataloader.Config{
 				PlayerRepo:  playerRepo,
 				TribeRepo:   tribeRepo,
 				VillageRepo: villageRepo,
