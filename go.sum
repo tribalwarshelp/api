@@ -10,8 +10,8 @@ github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210428180109-fb9729
 github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210428180109-fb97298564d9/go.mod h1:ADHVWnGlWcRn1aGthuh7I1Lrn6zzsjkVJju151dXyDw=
 github.com/Kichiyaki/go-php-serialize v0.0.0-20200601110855-47b6982acf83/go.mod h1:+iGkf5HfOVeRVd9K7qQDucIl+/Kt3MyenMa90b/O/c4=
 github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210505093434-655fa2df248f/go.mod h1:MSAEhr8oeK+Rhjhqyl31/8/AI88thYky80OyD8mheDA=
-github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210505101614-8a71f17a0466 h1:fK7dClaaUN/WV5IZgD/GbdD3YDoolNZ5oaLeNtVnfIc=
-github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210505101614-8a71f17a0466/go.mod h1:MSAEhr8oeK+Rhjhqyl31/8/AI88thYky80OyD8mheDA=
+github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210521204542-cc672e361b3d h1:7ZJVfFgAR0zNf5fNc6M9v2PZbXvTgGgDjQo4/+NIezQ=
+github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210521204542-cc672e361b3d/go.mod h1:MSAEhr8oeK+Rhjhqyl31/8/AI88thYky80OyD8mheDA=
 github.com/Kichiyaki/goutil v0.0.0-20210502095630-318d17091eab/go.mod h1:+HhI932Xb0xrCodNcCv5GPiCjLYhDxWhCtlEqMIJhB4=
 github.com/Kichiyaki/goutil v0.0.0-20210504132659-3d843a787db7 h1:OU3ZA5H8fHTzaYIw9UBfH3gtWRL0XmnczlhH3E2PjV4=
 github.com/Kichiyaki/goutil v0.0.0-20210504132659-3d843a787db7/go.mod h1:+HhI932Xb0xrCodNcCv5GPiCjLYhDxWhCtlEqMIJhB4=
@@ -168,14 +168,11 @@ github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5Cc
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc h1:9lRDQMhESg+zvGYmW5DyG0UqvY96Bu5QYsTLvCHdrgo=
 github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc/go.mod h1:bciPuU6GHm1iF1pBvUfxfsH0Wmnc2VbpgvbI9ZWuIRs=
-github.com/tribalwarshelp/map-generator v0.0.0-20210505171633-0ec559e0ee90 h1:9KG3hWBaGae1e8/+Ny7jEdwXKATnqyhipRMbZL8QsgQ=
-github.com/tribalwarshelp/map-generator v0.0.0-20210505171633-0ec559e0ee90/go.mod h1:WYM9nyZLWJIpfZu1DGjTQhraUN0lwVT2fnJ1DFWMDcI=
 github.com/tribalwarshelp/map-generator v0.0.0-20210505172714-6520104d1450 h1:Ej1AvIVPxPno6s4tr4MTg0pNlFA4E/aOxJE7uhYV3NI=
 github.com/tribalwarshelp/map-generator v0.0.0-20210505172714-6520104d1450/go.mod h1:ND7ZOyvb9Kp/Mg8z58ZZlL8JPJFk0lsP1XnzFDuvtnk=
-github.com/tribalwarshelp/shared v0.0.0-20210505171518-9aa09097fd04 h1:phczaKfpeiQt+JGnlVCuInrlv0etMk0f9RSJ9GmsgzQ=
-github.com/tribalwarshelp/shared v0.0.0-20210505171518-9aa09097fd04/go.mod h1:GBnSKQrxL8Nmi3MViIzZVbyP9+ugd28gWArsSvw1iVU=
-github.com/tribalwarshelp/shared v0.0.0-20210505172413-bf85190fd66d h1:aMlYOsJbYwKqHx7wAt526eIutV1Q5EnYK6b7lOzvPmk=
 github.com/tribalwarshelp/shared v0.0.0-20210505172413-bf85190fd66d/go.mod h1:GBnSKQrxL8Nmi3MViIzZVbyP9+ugd28gWArsSvw1iVU=
+github.com/tribalwarshelp/shared v0.0.0-20210521205055-fcef062f6b8a h1:nKEymuRmwv5qGS2uyURYwN6JKqdqEFsb6Q9Fbn4iQbY=
+github.com/tribalwarshelp/shared v0.0.0-20210521205055-fcef062f6b8a/go.mod h1://pyC+3J9nFBdpvNpVf1w7+LNNOw+L/kqxHlFK+kuLk=
 github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVMw=
 github.com/ugorji/go v1.2.5 h1:NozRHfUeEta89taVkyfsDVSy2f7v89Frft4pjnWuGuc=
 github.com/ugorji/go v1.2.5/go.mod h1:gat2tIT8KJG8TVI8yv77nEO/KYT6dV7JE1gfUa8Xuls=
