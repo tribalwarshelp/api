@@ -107,7 +107,10 @@ func main() {
 	serverUcase := serverucase.New(serverRepo)
 
 	router := gin.New()
-	router.Use(ginlogrus.Logger(logrus.WithField("hostname", "api")), gin.Recovery())
+	router.Use(gin.Recovery())
+	if !envutil.GetenvBool("DISABLE_ACCESS_LOG") {
+		router.Use(ginlogrus.Logger(logrus.StandardLogger()))
+	}
 	if appmode.Equals(appmode.DevelopmentMode) {
 		router.Use(cors.New(cors.Config{
 			AllowOriginFunc: func(string) bool {
