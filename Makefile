@@ -1,2 +1,2 @@
-gqlgen:
-	bash ./scripts/gqlgen-generate.sh
+generate:
+	go generate ./...
