@@ -1,6 +1,5 @@
 FROM golang:alpine as builder
 
-ENV CGO_ENABLED=0
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
@@ -12,6 +11,7 @@ RUN go mod download
 
 # Copy the source from the current directory to the Working Directory inside the container
 COPY . .
+RUN apk --no-cache add musl-dev gcc build-base
 RUN go generate ./...
 RUN go build -o twhelpapi .
 
