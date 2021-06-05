@@ -1,5 +1,6 @@
-FROM golang as builder
+FROM golang:alpine as builder
 
+ENV CGO_ENABLED=0
 # Set the Current Working Directory inside the container
 WORKDIR /app
 
