@@ -130,6 +130,7 @@ DB_HOST=your_pgdb_host
 DB_PASSWORD=your_pgdb_password
 LIMIT_WHITELIST=127.0.0.1,::1
 LOG_DB_QUERIES=true
+DISABLE_ACCESS_LOG=false
 ```
 
 1. Clone this repo.
