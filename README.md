@@ -139,7 +139,7 @@ DISABLE_ACCESS_LOG=false
 git clone git@github.com:tribalwarshelp/api.git
 ```
 
-2. Navigate to the directory where you have cloned this repo.
+2. Open the folder with this project in a terminal.
 3. Set the required env variables directly in your system or create .env.local file.
 4. Run the app.
 
