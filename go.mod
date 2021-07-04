@@ -22,6 +22,6 @@ require (
 	github.com/tribalwarshelp/map-generator v0.0.0-20210606172145-d82cd34c5b7e
 	github.com/tribalwarshelp/shared v0.0.0-20210521205055-fcef062f6b8a
 	github.com/vektah/gqlparser/v2 v2.1.0
-	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
