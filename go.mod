@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/Kichiyaki/appmode v0.0.0-20210502105643-0a26207c548d
-	github.com/Kichiyaki/gin-logrus v0.0.0-20210428175948-4f47ab6231a6
+	github.com/Kichiyaki/gin-logrus bb0049cc40c4
 	github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210428180109-fb97298564d9
 	github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210521204542-cc672e361b3d
 	github.com/Kichiyaki/goutil v0.0.0-20210504132659-3d843a787db7
