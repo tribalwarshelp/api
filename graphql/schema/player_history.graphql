@@ -1,4 +1,5 @@
 type PlayerHistoryRecord {
+  id: Int!
   player: Player @goField(forceResolver: true)
   totalVillages: Int!
   points: Int!

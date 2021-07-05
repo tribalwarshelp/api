@@ -1,4 +1,5 @@
 type ServerStatsRecord {
+  id: Int!
   activePlayers: Int!
   inactivePlayers: Int!
   players: Int!
