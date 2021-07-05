@@ -1,4 +1,5 @@
 type DailyPlayerStatsRecord {
+  id: Int!
   player: Player @goField(forceResolver: true)
   villages: Int!
   points: Int!

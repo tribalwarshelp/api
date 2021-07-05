@@ -1,4 +1,5 @@
 type TribeHistoryRecord {
+  id: Int!
   tribe: Tribe @goField(forceResolver: true)
   totalVillages: Int!
   totalMembers: Int!

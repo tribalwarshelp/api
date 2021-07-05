@@ -1,4 +1,5 @@
 type TribeChangeRecord {
+  id: Int!
   player: Player @goField(forceResolver: true)
   oldTribe: Tribe @goField(forceResolver: true)
   newTribe: Tribe @goField(forceResolver: true)

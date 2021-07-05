@@ -1,4 +1,5 @@
 type Ennoblement {
+  id: Int!
   village: Village @goField(forceResolver: true)
   newOwner: Player @goField(forceResolver: true)
   newOwnerTribe: Tribe @goField(forceResolver: true)

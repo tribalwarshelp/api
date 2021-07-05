@@ -1,4 +1,5 @@
 type DailyTribeStatsRecord {
+  id: Int!
   tribe: Tribe @goField(forceResolver: true)
   members: Int!
   villages: Int!
