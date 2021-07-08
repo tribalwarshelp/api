@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_latest:
     docker:
       - image: circleci/golang:1.16
     working_directory: ~/twhelpapi
@@ -13,16 +13,39 @@ jobs:
           docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       # build the application image
       - run: docker build -t $DOCKER_LOGIN/twhelp-api:latest .
-
       # deploy the image
       - run: docker push $DOCKER_LOGIN/twhelp-api:latest
+  build_version:
+    docker:
+      - image: circleci/golang:1.16
+    working_directory: ~/twhelpapi
+    steps:
+      - checkout
+      - setup_remote_docker
+      # start proprietary DB using private Docker image
+      # with credentials stored in the UI
+      - run: |
+          docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      # build the application image
+      - run: docker build -t $DOCKER_LOGIN/twhelp-api:$(echo $CIRCLE_TAG | sed -r 's/^.{1}//') .
+      # deploy the image
+      - run: docker push $DOCKER_LOGIN/twhelp-api:$(echo $CIRCLE_TAG | sed -r 's/^.{1}//')
 workflows:
   version: 2
-  deploy_prod:
+  deploy_latest:
     jobs:
-      - build:
+      - build_latest:
           context: TWHelp
           filters:
             branches:
               only:
                 - master
+  deploy_version:
+    jobs:
+      - build_version:
+          context: TWHelp
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
