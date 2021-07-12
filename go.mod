@@ -11,7 +11,7 @@ require (
 	github.com/Kichiyaki/goutil v0.0.0-20210504132659-3d843a787db7
 	github.com/agnivade/levenshtein v1.1.0 // indirect
 	github.com/gin-contrib/cors v1.3.1
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.2
 	github.com/go-pg/pg/v10 v10.10.2
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/joho/godotenv v1.3.0
