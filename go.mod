@@ -23,6 +23,6 @@ require (
 	github.com/tribalwarshelp/shared v0.0.0-20210717094429-6efa1a4f614c
 	github.com/vektah/gqlparser/v2 v2.1.0
 	go.opentelemetry.io/otel v0.20.0 // indirect
-	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
