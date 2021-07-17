@@ -185,6 +185,8 @@ github.com/tribalwarshelp/map-generator v0.0.0-20210705101130-b62ffb7f0494 h1:te
 github.com/tribalwarshelp/map-generator v0.0.0-20210705101130-b62ffb7f0494/go.mod h1:gbRMnj+DzlKVYmC/MvjuS8r8o1tRmao3Kh93eKz6mNU=
 github.com/tribalwarshelp/map-generator v0.0.0-20210712101316-ea88625fd324 h1:owMAafXBsX7CGfOcaV860XCinOSqVfqn7ON0rjQv9x4=
 github.com/tribalwarshelp/map-generator v0.0.0-20210712101316-ea88625fd324/go.mod h1:uKkPT7kAx5L+zCMUf2cX0/JU7nyyibuK+kxd6ZUdvF0=
+github.com/tribalwarshelp/map-generator v0.0.0-20210717103057-c1d24d3a3c79 h1:EeOjeuWGgfRprKQzAm836MZcY8tnyNxYdSfrPSvSUqM=
+github.com/tribalwarshelp/map-generator v0.0.0-20210717103057-c1d24d3a3c79/go.mod h1:1tUMSoIxJ5FA7ecLQQGfpVcGQiPLUABXksQCjACW7cg=
 github.com/tribalwarshelp/shared v0.0.0-20210505172413-bf85190fd66d/go.mod h1:GBnSKQrxL8Nmi3MViIzZVbyP9+ugd28gWArsSvw1iVU=
 github.com/tribalwarshelp/shared v0.0.0-20210521205055-fcef062f6b8a h1:nKEymuRmwv5qGS2uyURYwN6JKqdqEFsb6Q9Fbn4iQbY=
 github.com/tribalwarshelp/shared v0.0.0-20210521205055-fcef062f6b8a/go.mod h1://pyC+3J9nFBdpvNpVf1w7+LNNOw+L/kqxHlFK+kuLk=
@@ -194,6 +196,8 @@ github.com/tribalwarshelp/shared v0.0.0-20210704200704-f3e5bd092975 h1:H0Dm+nHpb
 github.com/tribalwarshelp/shared v0.0.0-20210704200704-f3e5bd092975/go.mod h1:R7761+5rdyaMUM2dPMgBma05Z8XDgA3bCl/Grydb09g=
 github.com/tribalwarshelp/shared v0.0.0-20210712092456-dcd6203b1fd9 h1:rpuecZUAul4lCdcWjYx05ZNDff6RBbwJatxOcYpFjRY=
 github.com/tribalwarshelp/shared v0.0.0-20210712092456-dcd6203b1fd9/go.mod h1:M+33qeTM/oxG7IyxKbIZqs0wqpB5nEHPfgdo29kqHMI=
+github.com/tribalwarshelp/shared v0.0.0-20210717094429-6efa1a4f614c h1:dgWoORgR3COUbO0Dhho+fB1axhsKGXadaxeCiw9APFA=
+github.com/tribalwarshelp/shared v0.0.0-20210717094429-6efa1a4f614c/go.mod h1:6xooIU27fjagr/KVBPayktW4gn9ylTdBPGgxlQ6+x9s=
 github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVMw=
 github.com/ugorji/go v1.2.5 h1:NozRHfUeEta89taVkyfsDVSy2f7v89Frft4pjnWuGuc=
 github.com/ugorji/go v1.2.5/go.mod h1:gat2tIT8KJG8TVI8yv77nEO/KYT6dV7JE1gfUa8Xuls=
@@ -337,6 +341,7 @@ gopkg.in/yaml.v2 v2.4.0 h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=
 gopkg.in/yaml.v2 v2.4.0/go.mod h1:RDklbk79AGWmwhnvt/jBztapEOGDOx6ZbXqjP6csGnQ=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c h1:dUUwHk2QECo/6vqA44rthZ8ie2QXMNeKRTHCNY2nXvo=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 honnef.co/go/tools v0.0.0-20190102054323-c2f93a96b099/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.0-20190523083050-ea95bdfd59fc/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 mellium.im/sasl v0.2.1 h1:nspKSRg7/SyO0cRGY71OkfHab8tf9kCts6a6oTDut0w=
