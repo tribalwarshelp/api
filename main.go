@@ -50,8 +50,8 @@ import (
 	"github.com/go-pg/pg/v10"
 	"github.com/joho/godotenv"
 
-	ginlogrus "github.com/Kichiyaki/gin-logrus"
-	gopglogrusquerylogger "github.com/Kichiyaki/go-pg-logrus-query-logger/v10"
+	"github.com/Kichiyaki/ginlogrus"
+	"github.com/Kichiyaki/go-pg-logrus-query-logger/v10"
 	"github.com/gin-gonic/gin"
 )
 
@@ -79,7 +79,7 @@ func main() {
 		}
 	}()
 	if strings.ToUpper(os.Getenv("LOG_DB_QUERIES")) == "TRUE" {
-		db.AddQueryHook(gopglogrusquerylogger.QueryLogger{
+		db.AddQueryHook(querylogger.Logger{
 			Log:            logrus.NewEntry(logrus.StandardLogger()),
 			MaxQueryLength: 5000,
 		})
