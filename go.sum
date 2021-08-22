@@ -17,6 +17,8 @@ github.com/Kichiyaki/goutil v0.0.0-20210504132659-3d843a787db7 h1:OU3ZA5H8fHTzaY
 github.com/Kichiyaki/goutil v0.0.0-20210504132659-3d843a787db7/go.mod h1:+HhI932Xb0xrCodNcCv5GPiCjLYhDxWhCtlEqMIJhB4=
 github.com/Kichiyaki/goutil v0.0.0-20210727060523-b40a549d5a72 h1:KVFjB2eyaiLm/fWQPvHrHSoWB2PNAnGROnqLnLAhpoU=
 github.com/Kichiyaki/goutil v0.0.0-20210727060523-b40a549d5a72/go.mod h1:+HhI932Xb0xrCodNcCv5GPiCjLYhDxWhCtlEqMIJhB4=
+github.com/Kichiyaki/goutil v0.1.0 h1:FxcESWhmwOuhwK2H14oDzo6kZ+J8TDOjdIulgzP/rXs=
+github.com/Kichiyaki/goutil v0.1.0/go.mod h1:c1d+I8M8Hjdb9Brn3S5cYfMQk9Nf/9mYumATyVCF3io=
 github.com/agnivade/levenshtein v1.0.1/go.mod h1:CURSv5d9Uaml+FovSIICkLbAUZ9S4RqaHDIsdSBg7lM=
 github.com/agnivade/levenshtein v1.0.3/go.mod h1:4SFRZbbXWLF4MU1T9Qg0pGgH3Pjs+t6ie5efyrwRJXs=
 github.com/agnivade/levenshtein v1.1.0 h1:n6qGwyHG61v3ABce1rPVZklEYRT8NFpCMrpZdBUbYGM=
