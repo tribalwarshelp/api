@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/99designs/gqlgen v0.13.0
-	github.com/Kichiyaki/appmode v0.0.0-20210502105643-0a26207c548d
+	github.com/Kichiyaki/appmode v1.0.0
 	github.com/Kichiyaki/gin-logrus v0.0.0-20210428175948-4f47ab6231a6
 	github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210428180109-fb97298564d9
 	github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210521204542-cc672e361b3d
@@ -22,7 +22,6 @@ require (
 	github.com/tribalwarshelp/map-generator v0.0.0-20210723120929-87acb40a7a24
 	github.com/tribalwarshelp/shared v0.0.0-20210723104616-9fe0aafafeb6
 	github.com/vektah/gqlparser/v2 v2.1.0
-	go.opentelemetry.io/otel v0.20.0 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
