@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/Kichiyaki/appmode v1.0.0
-	github.com/Kichiyaki/gin-logrus v0.0.0-20210428175948-4f47ab6231a6
+	github.com/Kichiyaki/ginlogrus v0.1.0
 	github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210822140425-1724064d6e5c
 	github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210822140115-69ad4084d89f
 	github.com/Kichiyaki/goutil v0.1.0
@@ -27,7 +27,6 @@ require (
 )
 
 require (
-	github.com/Kichiyaki/ginlogrus v0.1.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect

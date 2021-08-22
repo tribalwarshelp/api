@@ -4,17 +4,13 @@ github.com/99designs/gqlgen v0.13.0/go.mod h1:NV130r6f4tpRWuAI+zsrSdooO/eWUv+Gyy
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/Kichiyaki/appmode v1.0.0 h1:Kgk+pi45/wqIcrWmnloACUsm8HbOGd6UumSRCsm484g=
 github.com/Kichiyaki/appmode v1.0.0/go.mod h1:FDT0lWIX9MBiyiUt4b/xo6BQQyV7aebsi+x5fcljMjk=
-github.com/Kichiyaki/gin-logrus v0.0.0-20210428175948-4f47ab6231a6 h1:abarqFzXWxx4VElTTVWJch1u01Kf6T/zLip+Uv2yUf4=
-github.com/Kichiyaki/gin-logrus v0.0.0-20210428175948-4f47ab6231a6/go.mod h1:6ieK3YHhyNxjkbBUR3B1IsfXi+A+LeS0SEPV10iH/cg=
 github.com/Kichiyaki/ginlogrus v0.1.0 h1:4guX3EAwVycU7x3U1mRPcta5ifIh4sZo7D9T13W8l3U=
 github.com/Kichiyaki/ginlogrus v0.1.0/go.mod h1:5TPtmzKNj7anHQfaj2suLNF8/XBfwHDPRm58oMMJE3k=
-github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210428180109-fb97298564d9 h1:S/08K0AD4bXYeSPJKei8ZbumDy1JNARZsgYbNZgr9Tk=
-github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210428180109-fb97298564d9/go.mod h1:ADHVWnGlWcRn1aGthuh7I1Lrn6zzsjkVJju151dXyDw=
 github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210822140425-1724064d6e5c h1:ZpL24SEaHeCdqT3V5AZCClN/POvi9iefV2f0izD4sqI=
 github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210822140425-1724064d6e5c/go.mod h1:7oE1ZOK5nqdkItxsLX7F5Bh0voNHniJScxwwFYZWSSA=
 github.com/Kichiyaki/go-php-serialize v0.0.0-20200601110855-47b6982acf83/go.mod h1:+iGkf5HfOVeRVd9K7qQDucIl+/Kt3MyenMa90b/O/c4=
-github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210521204542-cc672e361b3d h1:7ZJVfFgAR0zNf5fNc6M9v2PZbXvTgGgDjQo4/+NIezQ=
 github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210521204542-cc672e361b3d/go.mod h1:MSAEhr8oeK+Rhjhqyl31/8/AI88thYky80OyD8mheDA=
+github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210822140115-69ad4084d89f h1:imH0G9JVvOkfOD/2tYdkyLMcaMqxdP2jGACgLZIZ+sw=
 github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210822140115-69ad4084d89f/go.mod h1:l0230tV4NHOKrz9unST9LC9ymduCZN1kRonIhGPZYJg=
 github.com/Kichiyaki/goutil v0.0.0-20210502095630-318d17091eab/go.mod h1:+HhI932Xb0xrCodNcCv5GPiCjLYhDxWhCtlEqMIJhB4=
 github.com/Kichiyaki/goutil v0.0.0-20210504132659-3d843a787db7/go.mod h1:+HhI932Xb0xrCodNcCv5GPiCjLYhDxWhCtlEqMIJhB4=
@@ -179,7 +175,6 @@ github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc h1:9lRDQMhESg+zvGYm
 github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc/go.mod h1:bciPuU6GHm1iF1pBvUfxfsH0Wmnc2VbpgvbI9ZWuIRs=
 github.com/tribalwarshelp/map-generator v0.0.0-20210723120929-87acb40a7a24 h1:+HJlQiSuVZZqTh+BXdQMZEv8ZOXoLiKvkS4v/k2fok8=
 github.com/tribalwarshelp/map-generator v0.0.0-20210723120929-87acb40a7a24/go.mod h1:IIyndPxBlvL/rrCtYK0p8+PLgEw0Im7G8r9j03HVIj4=
-github.com/tribalwarshelp/shared v0.0.0-20210723104616-9fe0aafafeb6 h1:QkMH4eQXHs8Q4fT1hXgEAun4F679c4rErBWvhD0pGTM=
 github.com/tribalwarshelp/shared v0.0.0-20210723104616-9fe0aafafeb6/go.mod h1:J3UEkw7lgTWFxOIp+fqCImeQBOyyXMFAfXYSHhEILys=
 github.com/tribalwarshelp/shared v0.0.0-20210822141120-6c7e460daed8 h1:D/aJEuikcllnWnBPb9745412Kv5ihrisVHaHkU+dVTI=
 github.com/tribalwarshelp/shared v0.0.0-20210822141120-6c7e460daed8/go.mod h1:ka8BzXm+IPv/ZemsMu/YmcwlqIDNgV3y3e4MfmIem0U=
@@ -197,7 +192,6 @@ github.com/vektah/gqlparser/v2 v2.1.0/go.mod h1:SyUiHgLATUR8BiYURfTirrTcGpcE+4Xk
 github.com/vmihailenco/bufpool v0.1.11 h1:gOq2WmBrq0i2yW5QJ16ykccQ4wH9UyEsgLm6czKAd94=
 github.com/vmihailenco/bufpool v0.1.11/go.mod h1:AFf/MOy3l2CFTKbxwt0mp2MwnqjNEs5H/UxrkA5jxTQ=
 github.com/vmihailenco/msgpack/v5 v5.3.0/go.mod h1:7xyJ9e+0+9SaZT0Wt1RGleJXzli6Q/V5KbhBonMG9jc=
-github.com/vmihailenco/msgpack/v5 v5.3.1 h1:0i85a4dsZh8mC//wmyyTEzidDLPQfQAxZIOLtafGbFY=
 github.com/vmihailenco/msgpack/v5 v5.3.1/go.mod h1:7xyJ9e+0+9SaZT0Wt1RGleJXzli6Q/V5KbhBonMG9jc=
 github.com/vmihailenco/msgpack/v5 v5.3.4 h1:qMKAwOV+meBw2Y8k9cVwAy7qErtYCwBzZ2ellBfvnqc=
 github.com/vmihailenco/msgpack/v5 v5.3.4/go.mod h1:7xyJ9e+0+9SaZT0Wt1RGleJXzli6Q/V5KbhBonMG9jc=
