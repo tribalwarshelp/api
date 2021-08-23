@@ -2,7 +2,7 @@ version: 2
 jobs:
   build_latest:
     docker:
-      - image: circleci/golang:1.16
+      - image: circleci/golang:1.17
     working_directory: ~/twhelpapi
     steps:
       - checkout
@@ -17,7 +17,7 @@ jobs:
       - run: docker push $DOCKER_LOGIN/twhelp-api:latest
   build_version:
     docker:
-      - image: circleci/golang:1.16
+      - image: circleci/golang:1.17
     working_directory: ~/twhelpapi
     steps:
       - checkout
