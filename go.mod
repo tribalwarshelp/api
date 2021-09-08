@@ -3,7 +3,7 @@ module github.com/tribalwarshelp/api
 go 1.17
 
 require (
-	github.com/99designs/gqlgen v0.13.0
+	github.com/99designs/gqlgen v0.14.0
 	github.com/Kichiyaki/appmode v1.0.0
 	github.com/Kichiyaki/ginlogrus v0.1.0
 	github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210822140425-1724064d6e5c
@@ -21,7 +21,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tribalwarshelp/map-generator v0.0.0-20210905053117-97d35a314650
 	github.com/tribalwarshelp/shared v0.0.0-20210904125629-f6de0a03b185
-	github.com/vektah/gqlparser/v2 v2.1.0
+	github.com/vektah/gqlparser/v2 v2.2.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
@@ -53,9 +53,10 @@ require (
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
+	golang.org/x/mod v0.3.0 // indirect
 	golang.org/x/sys v0.0.0-20210423185535-09eb48e85fd7 // indirect
 	golang.org/x/text v0.3.6 // indirect
-	golang.org/x/tools v0.0.0-20200114235610-7ae403b6b589 // indirect
+	golang.org/x/tools v0.0.0-20210106214847-113979e3529a // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	mellium.im/sasl v0.2.1 // indirect
