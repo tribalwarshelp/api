@@ -12,7 +12,7 @@ require (
 	github.com/agnivade/levenshtein v1.1.0 // indirect
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
-	github.com/go-pg/pg/v10 v10.10.5
+	github.com/go-pg/pg/v10 v10.10.6
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
@@ -51,10 +51,10 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.4 // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
-	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
 	golang.org/x/mod v0.3.0 // indirect
-	golang.org/x/sys v0.0.0-20210423185535-09eb48e85fd7 // indirect
+	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/tools v0.0.0-20210106214847-113979e3529a // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
