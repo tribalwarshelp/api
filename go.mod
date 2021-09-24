@@ -19,7 +19,7 @@ require (
 	github.com/onsi/gomega v1.10.4 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
-	github.com/tribalwarshelp/map-generator v0.0.0-20210905053117-97d35a314650
+	github.com/tribalwarshelp/map-generator v0.0.0-20210924090027-b662fc32201f
 	github.com/tribalwarshelp/shared v0.0.0-20210924044719-a52277d8a5e0
 	github.com/vektah/gqlparser/v2 v2.2.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
