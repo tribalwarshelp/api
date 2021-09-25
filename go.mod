@@ -14,7 +14,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-pg/pg/v10 v10.10.6
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
-	github.com/joho/godotenv v1.3.0
+	github.com/joho/godotenv v1.4.0
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/onsi/gomega v1.10.4 // indirect
 	github.com/pkg/errors v0.9.1
