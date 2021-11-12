@@ -4,7 +4,10 @@ import (
 	"context"
 	"github.com/Kichiyaki/appmode"
 	"github.com/Kichiyaki/goutil/envutil"
+	"github.com/getsentry/sentry-go"
+	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/sirupsen/logrus"
+	"github.com/tribalwarshelp/api/cmd/internal"
 	"net/http"
 	"os"
 	"os/signal"
@@ -47,25 +50,30 @@ import (
 	villagerepo "github.com/tribalwarshelp/api/village/repository"
 	villageucase "github.com/tribalwarshelp/api/village/usecase"
 
-	"github.com/go-pg/pg/v10"
-	"github.com/joho/godotenv"
-
 	"github.com/Kichiyaki/ginlogrus"
 	"github.com/Kichiyaki/go-pg-logrus-query-logger/v10"
 	"github.com/gin-gonic/gin"
+	"github.com/go-pg/pg/v10"
 )
+
+var Version = "development"
 
 func init() {
 	os.Setenv("TZ", "UTC")
-
-	if appmode.Equals(appmode.DevelopmentMode) {
-		godotenv.Load(".env.local")
-	}
-
-	setupLogger()
 }
 
 func main() {
+	internal.InitLogger()
+
+	if err := internal.LoadENVFiles(); err != nil {
+		logrus.Fatal("internal.LoadENVFile", err)
+	}
+
+	if err := internal.InitSentry(Version); err != nil {
+		logrus.Fatal("internal.InitSentry", err)
+	}
+	defer sentry.Flush(2 * time.Second)
+
 	db := pg.Connect(&pg.Options{
 		User:     os.Getenv("DB_USER"),
 		Password: os.Getenv("DB_PASSWORD"),
@@ -75,7 +83,7 @@ func main() {
 	})
 	defer func() {
 		if err := db.Close(); err != nil {
-			logrus.Fatalln("Couldn't close the db connections:", err)
+			logrus.Fatalln("db.Close:", err)
 		}
 	}()
 	if strings.ToUpper(os.Getenv("LOG_DB_QUERIES")) == "TRUE" {
@@ -107,7 +115,14 @@ func main() {
 	serverUcase := serverucase.New(serverRepo)
 
 	router := gin.New()
-	router.Use(gin.Recovery())
+	router.Use(
+		gin.Recovery(),
+		sentrygin.New(sentrygin.Options{
+			Repanic:         true,
+			WaitForDelivery: false,
+			Timeout:         2 * time.Second,
+		}),
+	)
 	if !envutil.GetenvBool("DISABLE_ACCESS_LOG") {
 		router.Use(ginlogrus.Logger(logrus.StandardLogger()))
 	}
@@ -123,12 +138,14 @@ func main() {
 			AllowWebSockets:  true,
 		}))
 	}
+
 	rest := router.Group("")
 	servermaphttpdelivery.Attach(servermaphttpdelivery.Config{
 		RouterGroup:   rest,
 		MapUsecase:    servermapucase.New(villageRepo),
 		ServerUsecase: serverUcase,
 	})
+
 	graphql := router.Group("")
 	graphql.Use(
 		middleware.DataLoadersToContext(
@@ -179,30 +196,12 @@ func main() {
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 	<-quit
-	logrus.Info("Shutdown Server ...")
+
+	logrus.Info("Shutdown signal received, exiting...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		logrus.Fatalln("Couldn't shutdown the server", err)
-	}
-	logrus.Println("Server exiting")
-}
-
-func setupLogger() {
-	if appmode.Equals(appmode.DevelopmentMode) {
-		logrus.SetLevel(logrus.DebugLevel)
-	}
-
-	timestampFormat := "2006-01-02 15:04:05"
-	if appmode.Equals(appmode.ProductionMode) {
-		customFormatter := new(logrus.JSONFormatter)
-		customFormatter.TimestampFormat = timestampFormat
-		logrus.SetFormatter(customFormatter)
-	} else {
-		customFormatter := new(logrus.TextFormatter)
-		customFormatter.TimestampFormat = timestampFormat
-		customFormatter.FullTimestamp = true
-		logrus.SetFormatter(customFormatter)
+		logrus.Fatalln("srv.Shutdown", err)
 	}
 }

@@ -26,6 +26,8 @@ require (
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )
 
+require github.com/getsentry/sentry-go v0.11.0
+
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
