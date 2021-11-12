@@ -7,27 +7,24 @@ require (
 	github.com/Kichiyaki/appmode v1.0.1
 	github.com/Kichiyaki/ginlogrus v0.1.0
 	github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210822140425-1724064d6e5c
-	github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210822140115-69ad4084d89f
+	github.com/Kichiyaki/gopgutil/v10 v10.0.0-20210904125602-dd871562d243
 	github.com/Kichiyaki/goutil v0.1.0
-	github.com/agnivade/levenshtein v1.1.0 // indirect
+	github.com/Kichiyaki/sentrygin v1.0.0
+	github.com/getsentry/sentry-go v0.11.0
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-pg/pg/v10 v10.10.6
-	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/joho/godotenv v1.4.0
-	github.com/mitchellh/mapstructure v1.4.1 // indirect
-	github.com/onsi/gomega v1.10.4 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tribalwarshelp/map-generator v0.0.0-20210924090027-b662fc32201f
 	github.com/tribalwarshelp/shared v0.0.0-20210924044719-a52277d8a5e0
 	github.com/vektah/gqlparser/v2 v2.2.0
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
+	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 )
 
-require github.com/getsentry/sentry-go v0.11.0
-
 require (
+	github.com/agnivade/levenshtein v1.1.0 // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-pg/zerochecker v0.2.0 // indirect
@@ -36,10 +33,12 @@ require (
 	github.com/go-playground/validator/v10 v10.5.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
+	github.com/hashicorp/golang-lru v0.5.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
+	github.com/mitchellh/mapstructure v1.1.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
