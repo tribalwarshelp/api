@@ -1,7 +1,3 @@
 package graphql
 
-//go:generate go run github.com/99designs/gqlgen
-
-import (
-	_ "github.com/99designs/gqlgen/cmd"
-)
+//go:generate gqlgen

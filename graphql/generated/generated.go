@@ -18944,6 +18944,41 @@ func (ec *executionContext) ___Directive_args(ctx context.Context, field graphql
 	return ec.marshalN__InputValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐInputValueᚄ(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) ___Directive_isRepeatable(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "__Directive",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsRepeatable, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) ___EnumValue_name(ctx context.Context, field graphql.CollectedField, obj *introspection.EnumValue) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -19896,7 +19931,10 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Context, obj interface{}) (twmodel.DailyPlayerStatsFilter, error) {
 	var it twmodel.DailyPlayerStatsFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -19972,7 +20010,10 @@ func (ec *executionContext) unmarshalInputDailyPlayerStatsFilter(ctx context.Con
 
 func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Context, obj interface{}) (twmodel.DailyTribeStatsFilter, error) {
 	var it twmodel.DailyTribeStatsFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -20048,7 +20089,10 @@ func (ec *executionContext) unmarshalInputDailyTribeStatsFilter(ctx context.Cont
 
 func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context, obj interface{}) (twmodel.EnnoblementFilter, error) {
 	var it twmodel.EnnoblementFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -20228,7 +20272,10 @@ func (ec *executionContext) unmarshalInputEnnoblementFilter(ctx context.Context,
 
 func (ec *executionContext) unmarshalInputEnnoblementFilterOr(ctx context.Context, obj interface{}) (twmodel.EnnoblementFilterOr, error) {
 	var it twmodel.EnnoblementFilterOr
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -20272,7 +20319,10 @@ func (ec *executionContext) unmarshalInputEnnoblementFilterOr(ctx context.Contex
 
 func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj interface{}) (twmodel.PlayerFilter, error) {
 	var it twmodel.PlayerFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -20964,7 +21014,10 @@ func (ec *executionContext) unmarshalInputPlayerFilter(ctx context.Context, obj 
 
 func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Context, obj interface{}) (twmodel.PlayerHistoryFilter, error) {
 	var it twmodel.PlayerHistoryFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -21040,7 +21093,10 @@ func (ec *executionContext) unmarshalInputPlayerHistoryFilter(ctx context.Contex
 
 func (ec *executionContext) unmarshalInputServerFilter(ctx context.Context, obj interface{}) (twmodel.ServerFilter, error) {
 	var it twmodel.ServerFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -21116,7 +21172,10 @@ func (ec *executionContext) unmarshalInputServerFilter(ctx context.Context, obj 
 
 func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context, obj interface{}) (twmodel.ServerStatsFilter, error) {
 	var it twmodel.ServerStatsFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -21168,7 +21227,10 @@ func (ec *executionContext) unmarshalInputServerStatsFilter(ctx context.Context,
 
 func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context, obj interface{}) (twmodel.TribeChangeFilter, error) {
 	var it twmodel.TribeChangeFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -21300,7 +21362,10 @@ func (ec *executionContext) unmarshalInputTribeChangeFilter(ctx context.Context,
 
 func (ec *executionContext) unmarshalInputTribeChangeFilterOr(ctx context.Context, obj interface{}) (twmodel.TribeChangeFilterOr, error) {
 	var it twmodel.TribeChangeFilterOr
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -21328,7 +21393,10 @@ func (ec *executionContext) unmarshalInputTribeChangeFilterOr(ctx context.Contex
 
 func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj interface{}) (twmodel.TribeFilter, error) {
 	var it twmodel.TribeFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -21996,7 +22064,10 @@ func (ec *executionContext) unmarshalInputTribeFilter(ctx context.Context, obj i
 
 func (ec *executionContext) unmarshalInputTribeFilterOr(ctx context.Context, obj interface{}) (twmodel.TribeFilterOr, error) {
 	var it twmodel.TribeFilterOr
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -22048,7 +22119,10 @@ func (ec *executionContext) unmarshalInputTribeFilterOr(ctx context.Context, obj
 
 func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context, obj interface{}) (twmodel.TribeHistoryFilter, error) {
 	var it twmodel.TribeHistoryFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -22124,7 +22198,10 @@ func (ec *executionContext) unmarshalInputTribeHistoryFilter(ctx context.Context
 
 func (ec *executionContext) unmarshalInputVersionFilter(ctx context.Context, obj interface{}) (twmodel.VersionFilter, error) {
 	var it twmodel.VersionFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -22184,7 +22261,10 @@ func (ec *executionContext) unmarshalInputVersionFilter(ctx context.Context, obj
 
 func (ec *executionContext) unmarshalInputVillageFilter(ctx context.Context, obj interface{}) (twmodel.VillageFilter, error) {
 	var it twmodel.VillageFilter
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -25640,6 +25720,11 @@ func (ec *executionContext) ___Directive(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "isRepeatable":
+			out.Values[i] = ec.___Directive_isRepeatable(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -26133,6 +26218,13 @@ func (ec *executionContext) marshalNPlayerNameChange2ᚕᚖgithubᚗcomᚋtribal
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26300,6 +26392,12 @@ func (ec *executionContext) marshalNString2ᚕstringᚄ(ctx context.Context, sel
 	ret := make(graphql.Array, len(v))
 	for i := range v {
 		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
 	}
 
 	return ret
@@ -26496,6 +26594,13 @@ func (ec *executionContext) marshalN__Directive2ᚕgithubᚗcomᚋ99designsᚋgq
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26569,6 +26674,13 @@ func (ec *executionContext) marshalN__DirectiveLocation2ᚕstringᚄ(ctx context
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26618,6 +26730,13 @@ func (ec *executionContext) marshalN__InputValue2ᚕgithubᚗcomᚋ99designsᚋg
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26659,6 +26778,13 @@ func (ec *executionContext) marshalN__Type2ᚕgithubᚗcomᚋ99designsᚋgqlgen�
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26756,6 +26882,13 @@ func (ec *executionContext) marshalODailyPlayerStatsRecord2ᚕᚖgithubᚗcomᚋ
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26804,6 +26937,13 @@ func (ec *executionContext) marshalODailyTribeStatsRecord2ᚕᚖgithubᚗcomᚋt
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26844,6 +26984,13 @@ func (ec *executionContext) marshalOEnnoblement2ᚕᚖgithubᚗcomᚋtribalwarsh
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26900,6 +27047,13 @@ func (ec *executionContext) marshalOFoundPlayer2ᚕᚖgithubᚗcomᚋtribalwarsh
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26940,6 +27094,13 @@ func (ec *executionContext) marshalOFoundTribe2ᚕᚖgithubᚗcomᚋtribalwarshe
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -26983,6 +27144,12 @@ func (ec *executionContext) marshalOInt2ᚕintᚄ(ctx context.Context, sel ast.S
 	ret := make(graphql.Array, len(v))
 	for i := range v {
 		ret[i] = ec.marshalNInt2int(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
 	}
 
 	return ret
@@ -27040,6 +27207,13 @@ func (ec *executionContext) marshalOPlayer2ᚕᚖgithubᚗcomᚋtribalwarshelp�
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27103,6 +27277,13 @@ func (ec *executionContext) marshalOPlayerHistoryRecord2ᚕᚖgithubᚗcomᚋtri
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27143,6 +27324,13 @@ func (ec *executionContext) marshalOServer2ᚕᚖgithubᚗcomᚋtribalwarshelp�
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27206,6 +27394,13 @@ func (ec *executionContext) marshalOServerStatsRecord2ᚕᚖgithubᚗcomᚋtriba
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27270,6 +27465,13 @@ func (ec *executionContext) marshalOServerStatus2ᚕgithubᚗcomᚋtribalwarshel
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27313,6 +27515,12 @@ func (ec *executionContext) marshalOString2ᚕstringᚄ(ctx context.Context, sel
 	ret := make(graphql.Array, len(v))
 	for i := range v {
 		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
 	}
 
 	return ret
@@ -27379,6 +27587,13 @@ func (ec *executionContext) marshalOTribe2ᚕᚖgithubᚗcomᚋtribalwarshelpᚋ
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27442,6 +27657,13 @@ func (ec *executionContext) marshalOTribeChangeRecord2ᚕᚖgithubᚗcomᚋtriba
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27506,6 +27728,13 @@ func (ec *executionContext) marshalOTribeHistoryRecord2ᚕᚖgithubᚗcomᚋtrib
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27546,6 +27775,13 @@ func (ec *executionContext) marshalOVersion2ᚕᚖgithubᚗcomᚋtribalwarshelp�
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27617,6 +27853,13 @@ func (ec *executionContext) marshalOVersionCode2ᚕgithubᚗcomᚋtribalwarshelp
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27665,6 +27908,13 @@ func (ec *executionContext) marshalOVillage2ᚕᚖgithubᚗcomᚋtribalwarshelp�
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27720,6 +27970,13 @@ func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgq
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27760,6 +28017,13 @@ func (ec *executionContext) marshalO__Field2ᚕgithubᚗcomᚋ99designsᚋgqlgen
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27800,6 +28064,13 @@ func (ec *executionContext) marshalO__InputValue2ᚕgithubᚗcomᚋ99designsᚋg
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -27847,6 +28118,13 @@ func (ec *executionContext) marshalO__Type2ᚕgithubᚗcomᚋ99designsᚋgqlgen�
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 

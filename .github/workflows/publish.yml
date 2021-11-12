@@ -43,5 +43,5 @@ jobs:
           tags: |
             ${{ secrets.REGISTRY_NAME }}/twhelp-api:latest
             ${{ secrets.REGISTRY_NAME }}/twhelp-api:${{ steps.get_version.outputs.VERSION }}
-          file: ./build/server/Dockerfile
+          file: ./build/api/Dockerfile
           push: true
