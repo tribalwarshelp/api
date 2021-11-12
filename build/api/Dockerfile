@@ -15,7 +15,7 @@ ARG VERSION="0.0.0"
 RUN apk --no-cache add musl-dev gcc build-base
 RUN go install github.com/99designs/gqlgen@v0.14.0
 RUN go generate ./...
-RUN go build -ldflags="-X 'main.Version=$VERSION'" -o twhelpapi .
+RUN go build -ldflags="-X 'main.Version=$VERSION'" -o twhelpapi ./cmd/api
 
 ######## Start a new stage from scratch #######
 FROM alpine:latest

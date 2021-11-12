@@ -133,19 +133,10 @@ LOG_DB_QUERIES=true
 DISABLE_ACCESS_LOG=false
 ```
 
-1. Clone this repo.
-
-```
-git clone git@github.com:tribalwarshelp/api.git
-```
-
+1. Clone this repo - ``git clone git@github.com:tribalwarshelp/api.git``
 2. Open the folder with this project in a terminal.
 3. Set the required env variables directly in your system or create .env.local file.
-4. Run the app.
-
-```
-go run main.go
-```
+4. Run the app - ``go run ./cmd/api/main.go``
 
 ## License
 
