@@ -1,4 +1,4 @@
-FROM golang:alpine as builder
+FROM golang:1.17.3-alpine as builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -11,9 +11,11 @@ RUN go mod download
 
 # Copy the source from the current directory to the Working Directory inside the container
 COPY . .
+ARG VERSION="0.0.0"
 RUN apk --no-cache add musl-dev gcc build-base
+RUN go install github.com/99designs/gqlgen@v0.14.0
 RUN go generate ./...
-RUN go build -o twhelpapi .
+RUN go build -ldflags="-X 'main.Version=$VERSION'" -o twhelpapi .
 
 ######## Start a new stage from scratch #######
 FROM alpine:latest

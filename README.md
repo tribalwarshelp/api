@@ -1,4 +1,4 @@
-# tribalwarshelp.com API
+# api.tribalwarshelp.com
 
 A GraphQL API designed for developers who want to create something meaningful for the game [Tribal Wars](https://tribalwars.net).
 
@@ -79,7 +79,7 @@ query {
 
 More examples [here](https://github.com/tribalwarshelp/scripts).
 
-## Map service
+## Map generator
 
 You can generate a server map with this API. The current endpoint is http(s)://youraddress/map/server (replace "server"
 with the server you're interested in, for example, pl151).
