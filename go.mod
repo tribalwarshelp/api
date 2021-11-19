@@ -17,7 +17,7 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
-	github.com/tribalwarshelp/map-generator v0.0.0-20210924090027-b662fc32201f
+	github.com/tribalwarshelp/map-generator v0.0.0-20211119204904-7e5f4a2c6ce5
 	github.com/tribalwarshelp/shared v0.0.0-20210924044719-a52277d8a5e0
 	github.com/vektah/gqlparser/v2 v2.2.0
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
@@ -48,7 +48,7 @@ require (
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
-	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d // indirect
+	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
 	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
