@@ -259,6 +259,8 @@ github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc h1:9lRDQMhESg+zvGYm
 github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc/go.mod h1:bciPuU6GHm1iF1pBvUfxfsH0Wmnc2VbpgvbI9ZWuIRs=
 github.com/tribalwarshelp/map-generator v0.0.0-20210924090027-b662fc32201f h1:fgq4NYO/Dto2GGTFd25vcnx76xM+zdEI5USZw5Wzt/w=
 github.com/tribalwarshelp/map-generator v0.0.0-20210924090027-b662fc32201f/go.mod h1:9qPAonMG8+XtZbZdMH+Plnptg1CRO6+8IKtABGgVW58=
+github.com/tribalwarshelp/map-generator v0.0.0-20211119204904-7e5f4a2c6ce5 h1:LIarywIm9fz2X9esJcY7bDkLlQ6TwqSLO2Um+jCJsMI=
+github.com/tribalwarshelp/map-generator v0.0.0-20211119204904-7e5f4a2c6ce5/go.mod h1:eJjGUQfBW2+YG5Y8Q2K0VaWSE4Hq9c7bzBvy7ZM9Mfc=
 github.com/tribalwarshelp/shared v0.0.0-20210924044719-a52277d8a5e0 h1:KzHt+mplWVZMQGfsiDR6fTCOUFsakUCrKBiXFkvUOD8=
 github.com/tribalwarshelp/shared v0.0.0-20210924044719-a52277d8a5e0/go.mod h1:e7btUzVL+8ESwxt8sto2uVbIJbHN43wTEg44mJW8YzM=
 github.com/ugorji/go v1.1.4/go.mod h1:uQMGLiO92mf5W77hV/PUCpI3pbzQx3CRekS0kk+RGrc=
@@ -317,6 +319,8 @@ golang.org/x/exp v0.0.0-20190121172915-509febef88a4/go.mod h1:CJ0aWSM057203Lf6IL
 golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8/go.mod h1:FeLwcggjj3mMvU+oOTbSwawSJRM1uh48EjtB4UJZlP0=
 golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d h1:RNPAfi2nHY7C2srAV8A49jpsYr0ADedCk1wq6fTMTvs=
 golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d/go.mod h1:023OzeP/+EPmXeapQh35lcL3II3LrY8Ic+EFFKVhULM=
+golang.org/x/image v0.0.0-20211028202545-6944b10bf410 h1:hTftEOvwiOq2+O8k2D5/Q7COC7k5Qcrgc2TFURJYnvQ=
+golang.org/x/image v0.0.0-20211028202545-6944b10bf410/go.mod h1:023OzeP/+EPmXeapQh35lcL3II3LrY8Ic+EFFKVhULM=
 golang.org/x/lint v0.0.0-20181026193005-c67002cb31c3/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=
 golang.org/x/lint v0.0.0-20190227174305-5b3e6a55c961/go.mod h1:wehouNa3lNwaWXcvxsM5YxQ5yQlVC4a0KAMCusXpPoU=
 golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3/go.mod h1:6SW0HCj/g11FgYtHlgUYUwCkIfeOF89ocIRzGO/8vkc=
