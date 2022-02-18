@@ -12,7 +12,7 @@ require (
 	github.com/Kichiyaki/sentrygin v1.0.0
 	github.com/getsentry/sentry-go v0.12.0
 	github.com/gin-contrib/cors v1.3.1
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.0
 	github.com/go-pg/pg/v10 v10.10.6
 	github.com/joho/godotenv v1.4.0
 	github.com/pkg/errors v0.9.1
