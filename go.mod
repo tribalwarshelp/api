@@ -18,7 +18,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tribalwarshelp/map-generator v0.0.0-20211119204904-7e5f4a2c6ce5
-	github.com/tribalwarshelp/shared v0.0.0-20210924044719-a52277d8a5e0
+	github.com/tribalwarshelp/shared v0.0.0-20220218101729-f4cb4c1f2026
 	github.com/vektah/gqlparser/v2 v2.2.0
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 )
