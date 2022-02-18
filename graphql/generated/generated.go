@@ -3958,7 +3958,7 @@ type ServerConfigGame {
   church: Int!
   watchtower: Int!
   stronghold: Int!
-  fakeLimit: Int!
+  fakeLimit: Float!
   barbarianRise: Float!
   barbarianShrink: Int!
   barbarianMaxPoints: Int!
@@ -13941,9 +13941,9 @@ func (ec *executionContext) _ServerConfigGame_fakeLimit(ctx context.Context, fie
 		}
 		return graphql.Null
 	}
-	res := resTmp.(int)
+	res := resTmp.(float64)
 	fc.Result = res
-	return ec.marshalNInt2int(ctx, field.Selections, res)
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _ServerConfigGame_barbarianRise(ctx context.Context, field graphql.CollectedField, obj *twmodel.ServerConfigGame) (ret graphql.Marshaler) {

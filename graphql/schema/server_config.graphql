@@ -30,7 +30,7 @@ type ServerConfigGame {
   church: Int!
   watchtower: Int!
   stronghold: Int!
-  fakeLimit: Int!
+  fakeLimit: Float!
   barbarianRise: Float!
   barbarianShrink: Int!
   barbarianMaxPoints: Int!
