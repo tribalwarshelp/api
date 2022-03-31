@@ -3,7 +3,7 @@ module github.com/tribalwarshelp/api
 go 1.17
 
 require (
-	github.com/99designs/gqlgen v0.14.0
+	github.com/99designs/gqlgen v0.17.2
 	github.com/Kichiyaki/appmode v1.0.1
 	github.com/Kichiyaki/ginlogrus v0.1.0
 	github.com/Kichiyaki/go-pg-logrus-query-logger/v10 v10.0.0-20210822140425-1724064d6e5c
@@ -19,7 +19,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tribalwarshelp/map-generator v0.0.0-20220218103305-47e49a539b97
 	github.com/tribalwarshelp/shared v0.0.0-20220218101729-f4cb4c1f2026
-	github.com/vektah/gqlparser/v2 v2.2.0
+	github.com/vektah/gqlparser/v2 v2.4.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
 
@@ -38,7 +38,7 @@ require (
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/mitchellh/mapstructure v1.1.2 // indirect
+	github.com/mitchellh/mapstructure v1.2.3 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
@@ -49,7 +49,7 @@ require (
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
-	golang.org/x/sys v0.0.0-20211007075335-d3039528d8ac // indirect
+	golang.org/x/sys v0.0.0-20211019181941-9d821ace8654 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
